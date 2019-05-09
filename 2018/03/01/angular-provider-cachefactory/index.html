@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="CacheFactoryProvider 简介  提供存储和访问缓存对象的服务
+CacheFactoryProvider 用法12345678910111213141516171819202122232425262728293031323334&amp;lt;!doctype html&amp;gt;  &amp;lt;html lang=&quot;en&quot; ng-app=&quot;myapp&quot;&amp;gt;   &amp;lt;head&amp;gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular源码剖析之Provider系列--CacheFactoryProvider">
+<meta property="og:url" content="http://yoursite.com/2018/03/01/angular-provider-cachefactory/index.html">
+<meta property="og:site_name" content="john's tech blog">
+<meta property="og:description" content="CacheFactoryProvider 简介  提供存储和访问缓存对象的服务
+CacheFactoryProvider 用法12345678910111213141516171819202122232425262728293031323334&amp;lt;!doctype html&amp;gt;  &amp;lt;html lang=&quot;en&quot; ng-app=&quot;myapp&quot;&amp;gt;   &amp;lt;head&amp;gt;">
+<meta property="og:updated_time" content="2019-05-07T12:32:35.557Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angular源码剖析之Provider系列--CacheFactoryProvider">
+<meta name="twitter:description" content="CacheFactoryProvider 简介  提供存储和访问缓存对象的服务
+CacheFactoryProvider 用法12345678910111213141516171819202122232425262728293031323334&amp;lt;!doctype html&amp;gt;  &amp;lt;html lang=&quot;en&quot; ng-app=&quot;myapp&quot;&amp;gt;   &amp;lt;head&amp;gt;">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2018/03/01/angular-provider-cachefactory/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>angular源码剖析之Provider系列--CacheFactoryProvider | john's tech blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">john's tech blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">hope is coming</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/01/angular-provider-cachefactory/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">angular源码剖析之Provider系列--CacheFactoryProvider
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-03-01 15:04:17" itemprop="dateCreated datePublished" datetime="2018-03-01T15:04:17+08:00">2018-03-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="CacheFactoryProvider-简介"><a href="#CacheFactoryProvider-简介" class="headerlink" title="CacheFactoryProvider 简介"></a>CacheFactoryProvider 简介</h2><p>  提供存储和访问缓存对象的服务</p>
+<h2 id="CacheFactoryProvider-用法"><a href="#CacheFactoryProvider-用法" class="headerlink" title="CacheFactoryProvider 用法"></a>CacheFactoryProvider 用法</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype html&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">ng-app</span>=<span class="string">"myapp"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"Generator"</span> <span class="attr">content</span>=<span class="string">"EditPlus®"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"Author"</span> <span class="attr">content</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"Keywords"</span> <span class="attr">content</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"Description"</span> <span class="attr">content</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"js/angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-controller</span>=<span class="string">"MyController"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">script</span> &gt;</span><span class="javascript"></span><br><span class="line">     <span class="keyword">var</span> app=angular.module(<span class="string">'myapp'</span>,[]);</span><br><span class="line">     app.controller(<span class="string">'MyController'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,$cacheFactory</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">var</span> myCache = $cacheFactory(<span class="string">"myCache"</span>,&#123;<span class="attr">capacity</span>: <span class="number">6</span>&#125;);</span><br><span class="line">     <span class="comment">//var myCache1 = $cacheFactory("myCache",&#123;capacity: 6&#125;); //会报错</span></span><br><span class="line">     myCache.put(<span class="string">"name"</span>,<span class="string">"sssss"</span>);</span><br><span class="line">     myCache.put(<span class="string">"name1"</span>,<span class="string">"sssss"</span>);</span><br><span class="line">     myCache.put(<span class="string">"name"</span>,<span class="string">"sssss"</span>);</span><br><span class="line"></span><br><span class="line">     &#125;);</span><br><span class="line"></span><br><span class="line">     app.controller(<span class="string">'getCacheController'</span>,[<span class="string">'$scope'</span>,<span class="string">'$cacheFactory'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,$cacheFactory</span>)</span>&#123;  </span><br><span class="line">        <span class="keyword">var</span> cache = $cacheFactory.get(<span class="string">'myCache'</span>);  </span><br><span class="line">        <span class="keyword">var</span> name = cache.get(<span class="string">'name'</span>);  </span><br><span class="line">        <span class="built_in">console</span>.log(name);  <span class="comment">//打印sssss</span></span><br><span class="line">    &#125;]);  </span><br><span class="line">     </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>看了上面这个一个简单的例子，读者可能会产生如下疑惑：  </p>
+<ol>
+<li>不是名为CacheFactoryProvider吗，怎么在代码里只看到cacheFactory呢？</li>
+<li>cacheFactory是怎么存储对象的？<br>下面我们来依次解答这两个问题</li>
+</ol>
+<h2 id="cacheFactory的注入"><a href="#cacheFactory的注入" class="headerlink" title="$cacheFactory的注入"></a>$cacheFactory的注入</h2><p>我们首先来看第一个问题，这个问题要牵涉到angular里面的依赖注入机制，我们前面的分析也讲过，<br>angular会在启动之前通过调用<code>publishExternalAPI</code> 函数先发布一些扩展API,同时定义ng<br>模块，在定义ng模块的时候就传入了注入provider的方法  </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">angularModule(<span class="string">'ng'</span>, [<span class="string">'ngLocale'</span>], [<span class="string">'$provide'</span>,</span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">ngModule</span><span class="params">($provide)</span> </span>&#123;</span><br><span class="line">          <span class="comment">///部分代码省略</span></span><br><span class="line">         $provide.provider(&#123;</span><br><span class="line">           $cacheFactory: $CacheFactoryProvider,</span><br><span class="line">         &#125;);</span><br><span class="line">    &#125;])</span><br></pre></td></tr></table></figure>
+<p>$cacheFactory出现了，它是通过javascript的键值对象作为键传给provider方法。那么它是如何存储<br>对象的呢？首先我们看它的定义：</p>
+<h2 id="CacheFactoryProvider的定义"><a href="#CacheFactoryProvider的定义" class="headerlink" title="CacheFactoryProvider的定义"></a>CacheFactoryProvider的定义</h2><p>内部定义了依赖注入核心的<code>$get</code>方法,<code>$get</code>方法返回cacheFactory方法(也就是上面实例代码里的<br>  <code>$cacheFactory</code>参数)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$CacheFactoryProvider</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//定义$get方法供依赖调用</span></span><br><span class="line">   <span class="keyword">this</span>.$<span class="keyword">get</span> = function() &#123;</span><br><span class="line">     <span class="keyword">var</span> caches = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">cacheFactory</span>(<span class="params">cacheId, options</span>) </span>&#123;</span><br><span class="line">       <span class="comment">//部分代码省略</span></span><br><span class="line">         <span class="keyword">if</span> (cacheId <span class="keyword">in</span> caches) &#123;<span class="comment">//如果caches中已经存在cacheId</span></span><br><span class="line">           <span class="comment">//实例代码里抛出的错误就在此处、</span></span><br><span class="line">           <span class="comment">//统一调用minErr函数</span></span><br><span class="line">           <span class="keyword">throw</span> minErr(<span class="string">'$cacheFactory'</span>)(<span class="string">'iid'</span>, <span class="string">"CacheId '&#123;0&#125;' is already taken!"</span>, cacheId);</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">var</span> size = <span class="number">0</span>,</span><br><span class="line">         <span class="comment">//把options 和&#123;id:cacheId&#125; 放入&#123;&#125; 中 不是深拷贝</span></span><br><span class="line">         stats = extend(&#123;&#125;, options, &#123;<span class="attr">id</span>: cacheId&#125;),</span><br><span class="line">         data = createMap(),<span class="comment">//通过Object.create(null) 创建个空对象</span></span><br><span class="line">         capacity = (options &amp;&amp; options.capacity) || <span class="built_in">Number</span>.MAX_VALUE,</span><br><span class="line">         lruHash = createMap(),</span><br><span class="line">         freshEnd = <span class="literal">null</span>,</span><br><span class="line">         staleEnd = <span class="literal">null</span>;</span><br><span class="line">         <span class="comment">//返回caches中的一个对象</span></span><br><span class="line">         <span class="keyword">return</span> caches[cacheId] = &#123;</span><br><span class="line">              <span class="comment">//省略部分代码</span></span><br><span class="line">              <span class="comment">//存储里讲解</span></span><br><span class="line">              put:<span class="function"><span class="keyword">function</span>(<span class="params">key,value</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">get</span>: <span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">remove</span>: <span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">removeAll</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">destroy</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">info</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">              &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">//</span></span><br><span class="line">         <span class="function"><span class="keyword">function</span> <span class="title">refresh</span>(<span class="params">entry</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">//</span></span><br><span class="line">         <span class="function"><span class="keyword">function</span> <span class="title">link</span>(<span class="params">nextEntry, prevEntry</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">         &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//所有的缓存</span></span><br><span class="line">      cacheFactory.info = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> info = &#123;&#125;;</span><br><span class="line">        forEach(caches, <span class="function"><span class="keyword">function</span>(<span class="params">cache, cacheId</span>) </span>&#123;</span><br><span class="line">          info[cacheId] = cache.info();</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> info;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      cacheFactory.get = <span class="function"><span class="keyword">function</span>(<span class="params">cacheId</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> caches[cacheId];</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> cacheFactory;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="CacheFactoryProvider的存储"><a href="#CacheFactoryProvider的存储" class="headerlink" title="CacheFactoryProvider的存储"></a>CacheFactoryProvider的存储</h2><p>存储分为这几个部分<code>put</code>,<code>refresh</code>,<code>remove</code>,<code>link</code></p>
+<h3 id="put函数"><a href="#put函数" class="headerlink" title="put函数"></a>put函数</h3><p>value会放入data对象中，key会放入lruHash链表<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">put: <span class="keyword">function</span><span class="built_in">(key</span>, <span class="keyword">value</span>) &#123;</span><br><span class="line">       <span class="keyword">if</span> (isUndefined(<span class="keyword">value</span>)) <span class="keyword">return</span>;</span><br><span class="line">         //如果设定的capcity小于maxvalue</span><br><span class="line">       <span class="keyword">if</span> (capacity &lt; Number.MAX_VALUE) &#123;</span><br><span class="line">         //lruHash 存了当前<span class="built_in">的key</span> 还有可能是 p 和n  (<span class="keyword">previous</span>和<span class="keyword">next</span>)</span><br><span class="line">         var lruEntry = lruHash<span class="built_in">[key</span>] || (lruHash<span class="built_in">[key</span>] = <span class="built_in">&#123;key</span>:<span class="built_in"> key</span>&#125;);</span><br><span class="line"></span><br><span class="line">         //刷新各节点的次序</span><br><span class="line">         refresh(lruEntry);//把当前entry放入链表末尾</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">       //如<span class="built_in">果key</span> 在data里不存在 那么增加size</span><br><span class="line">       <span class="keyword">if</span> (!<span class="built_in">(key</span> <span class="keyword">in</span> data)) size++;</span><br><span class="line">       data<span class="built_in">[key</span>] = <span class="keyword">value</span>;</span><br><span class="line"></span><br><span class="line">       //当大于capacity时 会清除最早加入的那个</span><br><span class="line">       <span class="keyword">if</span> (size &gt; capacity) &#123;</span><br><span class="line">         this<span class="built_in">.remove</span>(staleEnd<span class="built_in">.key</span>);//移除淘汰节点stableEnd</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">value</span>;</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular/" rel="tag"># angular</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/28/linux-shell-sed/" rel="next" title="linux shell命令之sed">
+                <i class="fa fa-chevron-left"></i> linux shell命令之sed
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/07/scala-caseclass-apply/" rel="prev" title="scala中caseclass自定义的apply方法">
+                scala中caseclass自定义的apply方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CacheFactoryProvider-简介"><span class="nav-number">1.</span> <span class="nav-text">CacheFactoryProvider 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CacheFactoryProvider-用法"><span class="nav-number">2.</span> <span class="nav-text">CacheFactoryProvider 用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cacheFactory的注入"><span class="nav-number">3.</span> <span class="nav-text">$cacheFactory的注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CacheFactoryProvider的定义"><span class="nav-number">4.</span> <span class="nav-text">CacheFactoryProvider的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CacheFactoryProvider的存储"><span class="nav-number">5.</span> <span class="nav-text">CacheFactoryProvider的存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#put函数"><span class="nav-number">5.1.</span> <span class="nav-text">put函数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

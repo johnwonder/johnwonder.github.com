@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="john's tech blog">
+<meta property="og:url" content="http://yoursite.com/page/32/index.html">
+<meta property="og:site_name" content="john's tech blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="john's tech blog">
+<meta name="twitter:description">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/page/32/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>john's tech blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">john's tech blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">hope is coming</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/01/csharp-linq-merge/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2015/12/01/csharp-linq-merge/" class="post-title-link" itemprop="url">csharp-linqmerge</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-12-01 18:02:00" itemprop="dateCreated datePublished" datetime="2015-12-01T18:02:00+08:00">2015-12-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:27:05" itemprop="dateModified" datetime="2019-05-09T20:27:05+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="C-Linq合并List中的对象"><a href="#C-Linq合并List中的对象" class="headerlink" title="C# Linq合并List中的对象"></a>C# Linq合并List中的对象</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">	List&lt;Person&gt; pList = <span class="keyword">new</span> List&lt;Person&gt;();</span><br><span class="line"></span><br><span class="line">	Person person1 = <span class="keyword">new</span> Person() &#123; FirstName = <span class="string">"john"</span>, LastName = <span class="string">"wonder"</span> &#125;;</span><br><span class="line">	Person person3 = <span class="keyword">new</span> Person() &#123; FirstName = <span class="string">"john2"</span>, LastName = <span class="string">"wonder22"</span> &#125;;</span><br><span class="line">	Person person4 = <span class="keyword">new</span> Person() &#123; FirstName = <span class="string">"john2"</span>, LastName = <span class="string">"wonder2233"</span> &#125;;</span><br><span class="line"></span><br><span class="line">	pList.Add(person1);</span><br><span class="line">	pList.Add(person3);</span><br><span class="line">	pList.Add(person4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> pMergeList= pList.ToLookup(x =&gt; x.FirstName).Select(x =&gt; x.Aggregate((p1, p2) =&gt;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Person&#123;</span><br><span class="line">             FirstName = p1.FirstName,</span><br><span class="line">             LastName =  p1.LastName + <span class="string">";"</span>+ p2.LastName</span><br><span class="line">        &#125;</span><br><span class="line">    )).ToList();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> pMergeList)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">"FirstName:"</span> + item.FirstName);</span><br><span class="line">        Console.WriteLine(<span class="string">"LastName:"</span> + item.LastName);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Console.Read();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">class</span> <span class="title">Person</span></span><br><span class="line">	&#123;</span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> FirstName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> LastName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">class</span> <span class="title">PersonModel</span></span><br><span class="line">	&#123;</span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> FirstName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> LastNameList &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/06/csharp-stringintern1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2015/11/06/csharp-stringintern1/" class="post-title-link" itemprop="url">csharp-stringintern1</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-11-06 10:24:50" itemprop="dateCreated datePublished" datetime="2015-11-06T10:24:50+08:00">2015-11-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:27:19" itemprop="dateModified" datetime="2019-05-09T20:27:19+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>读了<a href="http://http://tech.meituan.com/in_depth_understanding_string_intern.html" target="_blank" rel="external">深入解析String#intern</a>这篇文章，带着对C#字符串驻留的疑问，在C#里做了如下测试：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">"1"</span>;</span><br><span class="line"><span class="built_in">string</span> s11 = <span class="built_in">string</span>.<span class="constructor">Intern(<span class="params">s1</span>)</span>;</span><br><span class="line"><span class="built_in">string</span> s2 = <span class="keyword">new</span> <span class="built_in">string</span>(<span class="keyword">new</span> <span class="built_in">char</span><span class="literal">[]</span> &#123; <span class="character">'1'</span> &#125;);</span><br><span class="line"></span><br><span class="line">   Console.<span class="constructor">WriteLine(<span class="params">s1</span> <span class="operator">==</span> <span class="params">s2</span>)</span>;<span class="comment">//True</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(ReferenceEquals(<span class="params">s1</span>, <span class="params">s2</span>)</span>);<span class="comment">//False</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(Object.ReferenceEquals(<span class="params">string</span>.Intern(<span class="params">s1</span>)</span>,s2));<span class="comment">//False</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(Object.ReferenceEquals(<span class="params">s11</span> ,<span class="params">s2</span>)</span>);<span class="comment">//False</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(Object.ReferenceEquals(<span class="params">s1</span>,  String.Intern(<span class="params">s2</span>)</span>));<span class="comment">//True</span></span><br><span class="line"></span><br><span class="line">   String s22 = <span class="string">"2"</span>;</span><br><span class="line">   String s3 = s22 + <span class="string">"2"</span>;</span><br><span class="line">   String s4 = <span class="string">"22"</span>;</span><br><span class="line">   <span class="built_in">string</span> s5 = <span class="built_in">string</span>.<span class="constructor">Intern(<span class="params">s3</span>)</span>;</span><br><span class="line"></span><br><span class="line">   Console.<span class="constructor">WriteLine(<span class="params">s3</span> <span class="operator">==</span> <span class="params">s4</span>)</span>;<span class="comment">//true</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(ReferenceEquals(<span class="params">s3</span>, <span class="params">s4</span>)</span>);<span class="comment">//false</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(ReferenceEquals(<span class="params">s5</span>, <span class="params">s4</span>)</span>);<span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">//让我们来修改下s5的值 看看会不会对s4 造成影响</span></span><br><span class="line">   s5 = <span class="string">"33"</span>;</span><br><span class="line">   Console.<span class="constructor">WriteLine(<span class="params">s4</span>)</span>;<span class="comment">//还是输出22 即使同一个String实例，但是利用任何一个对String实例的引用所进行的修改操作都不会切实地影响到该实例的状态</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">//不过同样值得注意的是，使用Intern方法让一个字符串存活于驻留池中也有一个副作用：即使已经不存在任何其它引用指向驻留池中的字符串了，这个字符串仍然不一定会被垃圾回收掉。也就是说即使驻留池中的字符串已经没有用处了，它可能也要等到CLR终结时才被销毁。当您使用Intern方法的时候，也应该考虑到这个特殊的行为</span></span><br><span class="line">   Console.<span class="constructor">Read()</span>;</span><br></pre></td></tr></table></figure>
+<p>这两篇文章 <a href="http://kb.cnblogs.com/page/102225/" target="_blank" rel="external">C#中字符串的内存分配与驻留池</a>, <a href="http://blog.sina.com.cn/s/blog_7b60d05f0101s25l.html" target="_blank" rel="external">C# 字符串驻留</a> 也有阐述。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/04/jquery-filter-version/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2015/11/04/jquery-filter-version/" class="post-title-link" itemprop="url">jquery-filter-version</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-11-04 16:57:20" itemprop="dateCreated datePublished" datetime="2015-11-04T16:57:20+08:00">2015-11-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:29:18" itemprop="dateModified" datetime="2019-05-09T20:29:18+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="jquery1-0-版本的-filter函数"><a href="#jquery1-0-版本的-filter函数" class="headerlink" title="jquery1.0 版本的 filter函数"></a>jquery1.0 版本的 filter函数</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//筛选出元素</span></span><br><span class="line">	<span class="comment">//1.2.6 如果是Function的话直接grep</span></span><br><span class="line">	<span class="comment">//如果不是Function那么调用multiFilter</span></span><br><span class="line">	filter: <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.pushStack(</span><br><span class="line">			t.constructor == <span class="built_in">Array</span> &amp;&amp;</span><br><span class="line">			jQuery.map(<span class="keyword">this</span>,<span class="function"><span class="keyword">function</span>(<span class="params">a</span>)</span>&#123;</span><br><span class="line">				<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; t.length; i++ )</span><br><span class="line">					<span class="keyword">if</span> ( jQuery.filter(t[i],[a]).r.length )</span><br><span class="line">						<span class="keyword">return</span> a;</span><br><span class="line">			&#125;) ||</span><br><span class="line"></span><br><span class="line">			t.constructor == <span class="built_in">Boolean</span> &amp;&amp;</span><br><span class="line">			( t ? <span class="keyword">this</span>.get() : [] ) ||</span><br><span class="line"></span><br><span class="line">			t.constructor == <span class="built_in">Function</span> &amp;&amp;</span><br><span class="line">			jQuery.grep( <span class="keyword">this</span>, t ) ||</span><br><span class="line">			<span class="comment">//如果是字符串那么直接调用静态方法filter</span></span><br><span class="line">			jQuery.filter(t,<span class="keyword">this</span>).r, <span class="built_in">arguments</span> );</span><br><span class="line">	&#125;,</span><br></pre></td></tr></table></figure>
+<p>我们再看下静态的filter方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">filter: <span class="function"><span class="keyword">function</span>(<span class="params">t,r,not</span>) </span>&#123;</span><br><span class="line">		<span class="comment">// Figure out if we're doing regular, or inverse, filtering</span></span><br><span class="line">		<span class="keyword">var</span> g = not !== <span class="literal">false</span> ? jQuery.grep :</span><br><span class="line">			<span class="function"><span class="keyword">function</span>(<span class="params">a,f</span>) </span>&#123;<span class="keyword">return</span> jQuery.grep(a,f,<span class="literal">true</span>);&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">while</span> ( t &amp;&amp; <span class="regexp">/^[a-z[(&#123;&lt;*:.#]/i</span>.test(t) ) &#123;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">var</span> p = jQuery.parse;<span class="comment">//调用parse规则数组</span></span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; p.length; i++ ) &#123;</span><br><span class="line">				<span class="keyword">var</span> re = <span class="keyword">new</span> <span class="built_in">RegExp</span>( <span class="string">"^"</span> + p[i][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">					<span class="comment">// Look for a string-like sequence</span></span><br><span class="line">					.replace( <span class="string">'S'</span>, <span class="string">"([a-z*_-][a-z0-9_-]*)"</span> )</span><br><span class="line"></span><br><span class="line">					<span class="comment">// Look for something (optionally) enclosed with quotes</span></span><br><span class="line">					.replace( <span class="string">'Q'</span>, <span class="string">" *'?\"?([^'\"]*?)'?\"? *"</span> ), <span class="string">"i"</span> );</span><br><span class="line"></span><br><span class="line">				<span class="keyword">var</span> m = re.exec( t );</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> ( m ) &#123;</span><br><span class="line">					<span class="comment">// Re-organize the match</span></span><br><span class="line">					<span class="keyword">if</span> ( p[i][<span class="number">1</span>] )<span class="comment">//Match: [@value='test'], [@foo]  p[i][1] 为1</span></span><br><span class="line"> 						m = [<span class="string">""</span>, m[<span class="number">1</span>], m[<span class="number">3</span>], m[<span class="number">2</span>], m[<span class="number">4</span>]];</span><br><span class="line"></span><br><span class="line">					<span class="comment">// Remove what we just matched</span></span><br><span class="line">					t = t.replace( re, <span class="string">""</span> );</span><br><span class="line"></span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// :not() is a special case that can be optomized by</span></span><br><span class="line">			<span class="comment">// keeping it out of the expression list</span></span><br><span class="line">			<span class="keyword">if</span> ( m[<span class="number">1</span>] == <span class="string">":"</span> &amp;&amp; m[<span class="number">2</span>] == <span class="string">"not"</span> )</span><br><span class="line">				r = jQuery.filter(m[<span class="number">3</span>],r,<span class="literal">false</span>).r;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Otherwise, find the expression to execute</span></span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">var</span> f = jQuery.expr[m[<span class="number">1</span>]];<span class="comment">//访问expr 表达式数组</span></span><br><span class="line">				<span class="keyword">if</span> ( f.constructor != <span class="built_in">String</span> )</span><br><span class="line">					f = jQuery.expr[m[<span class="number">1</span>]][m[<span class="number">2</span>]];</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Build a custom macro to enclose it</span></span><br><span class="line">				<span class="built_in">eval</span>(<span class="string">"f = function(a,i)&#123;"</span> +</span><br><span class="line">					( m[<span class="number">1</span>] == <span class="string">"@"</span> ? <span class="string">"z=jQuery.attr(a,m[3]);"</span> : <span class="string">""</span> ) +</span><br><span class="line">					<span class="string">"return "</span> + f + <span class="string">"&#125;"</span>);</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Execute it against the current filter</span></span><br><span class="line">				r = g( r, f );<span class="comment">//调用grep函数</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Return an array of filtered elements (r)</span></span><br><span class="line">		<span class="comment">// and the modified expression string (t)</span></span><br><span class="line">		<span class="keyword">return</span> &#123; <span class="attr">r</span>: r, <span class="attr">t</span>: t &#125;;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其实要么就是根据filter筛选 ，要么就是调用grep函数</p>
+<p>我们来看看grep函数<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">grep: <span class="function"><span class="keyword">function</span>(<span class="params">elems, fn, inv</span>) </span>&#123;</span><br><span class="line">		<span class="comment">// If a string is passed in for the function, make a function</span></span><br><span class="line">		<span class="comment">// for it (a handy shortcut)</span></span><br><span class="line">		<span class="keyword">if</span> ( fn.constructor == <span class="built_in">String</span> )</span><br><span class="line">			fn = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"a"</span>,<span class="string">"i"</span>,<span class="string">"return "</span> + fn);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> result = [];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Go through the array, only saving the items</span></span><br><span class="line">		<span class="comment">// that pass the validator function</span></span><br><span class="line">		<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; elems.length; i++ )</span><br><span class="line">			<span class="keyword">if</span> ( !inv &amp;&amp; fn(elems[i],i) || inv &amp;&amp; !fn(elems[i],i) )</span><br><span class="line">				result.push( elems[i] );</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/30/csharp-classinitorder/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2015/10/30/csharp-classinitorder/" class="post-title-link" itemprop="url">csharp-classinitorder</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-10-30 15:01:30" itemprop="dateCreated datePublished" datetime="2015-10-30T15:01:30+08:00">2015-10-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:26:44" itemprop="dateModified" datetime="2019-05-09T20:26:44+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>读了<a href="http://www.jianshu.com/p/cdc5adb40bb7#" target="_blank" rel="external">Java重写方法与初始化的隐患</a>这篇文章，带着对C#初始化的疑问，在C#里做了如下测试：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BaseClass</span></span><br><span class="line">  &#123;</span><br><span class="line">  	 <span class="comment">//4</span></span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">int</span> mSuperX = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//3</span></span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> ms = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//5</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">BaseClass</span>(<span class="params"></span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">       		<span class="comment">//调用了子类setX</span></span><br><span class="line">              setX(<span class="number">99</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setX</span>(<span class="params"><span class="keyword">int</span> x</span>)</span> &#123;</span><br><span class="line">          mSuperX = x;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SubClass</span> : <span class="title">BaseClass</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//2</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> mSubX = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//1</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> m = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//6</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">SubClass</span>(<span class="params"></span>)</span></span><br><span class="line">  &#123;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">setX</span>(<span class="params"><span class="keyword">int</span> x</span>)</span> &#123;</span><br><span class="line">      <span class="keyword">base</span>.setX(x);</span><br><span class="line">      mSubX = x;</span><br><span class="line">      Console.WriteLine(<span class="string">"SubX is assigned "</span> + x);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printX</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      Console.WriteLine(<span class="string">"SubX = "</span> + mSubX);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>so,C#里面 子类static成员 -&gt; 子类普通成员初始化和初始化块 -&gt;父类static成员 -&gt; 父类static成员 -&gt; 父类普通成员初始化和初始化块 -&gt; 父类构造方法 -&gt;子类构造方法。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/29/recent-feelonwork/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2015/10/29/recent-feelonwork/" class="post-title-link" itemprop="url">recent-feelonwork</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-10-29 10:22:04" itemprop="dateCreated datePublished" datetime="2015-10-29T10:22:04+08:00">2015-10-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:31:16" itemprop="dateModified" datetime="2019-05-09T20:31:16+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>遇到的问题：</p>
+<p>1.git和svn的区别<br>2.webservice和wcf的区别</p>
+<p>这两个问题促使我在对框架和工具的使用中必须要反思不能只知道使用而不知道去理解，<br>就像只会去学习使用编程语言而不知道去理解语言之间的异同和在开发项目时应该选择哪种语言更合适。</p>
+<p>3.调试项目代码遇到的问题。</p>
+<p>在开发过程中只保证进度而不思考和立即改进现有代码和设计导致在部署后很难通过简单的测试，而且不能立即定位问题所在。这会带来时间上的浪费。</p>
+<p>归根于代码上的设计不够严谨 应该要把逻辑中可能出现的异常反馈到日志，从而对数据非预期展现的快速定位。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/31/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><span class="page-number current">32</span><a class="page-number" href="/page/33/">33</a><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/33/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+
+  
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="梳理下angular的运行流程：
+JQLitePrototype.ready
+JQLite.on此处涉及到expandoStore 的问题on里面主要是addHandler 放到eventFns里
+等到onload后 再调用
+angularInitbootstrapdoBootstrapcreateInjectorinjectionArgsinvoke -&amp;gt; $RootScopeProvid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular源码分析之运行流程">
+<meta property="og:url" content="http://yoursite.com/2019/03/12/angular-run-flow/index.html">
+<meta property="og:site_name" content="john's tech blog">
+<meta property="og:description" content="梳理下angular的运行流程：
+JQLitePrototype.ready
+JQLite.on此处涉及到expandoStore 的问题on里面主要是addHandler 放到eventFns里
+等到onload后 再调用
+angularInitbootstrapdoBootstrapcreateInjectorinjectionArgsinvoke -&amp;gt; $RootScopeProvid">
+<meta property="og:updated_time" content="2019-05-07T12:32:35.558Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angular源码分析之运行流程">
+<meta name="twitter:description" content="梳理下angular的运行流程：
+JQLitePrototype.ready
+JQLite.on此处涉及到expandoStore 的问题on里面主要是addHandler 放到eventFns里
+等到onload后 再调用
+angularInitbootstrapdoBootstrapcreateInjectorinjectionArgsinvoke -&amp;gt; $RootScopeProvid">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/03/12/angular-run-flow/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>angular源码分析之运行流程 | john's tech blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">john's tech blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">hope is coming</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/12/angular-run-flow/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">angular源码分析之运行流程
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-12 15:03:12" itemprop="dateCreated datePublished" datetime="2019-03-12T15:03:12+08:00">2019-03-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>梳理下angular的运行流程：</p>
+<p>JQLitePrototype.ready</p>
+<p>JQLite.on<br>此处涉及到expandoStore 的问题<br>on里面主要是addHandler 放到eventFns里</p>
+<p>等到onload后 再调用</p>
+<p>angularInit<br>bootstrap<br>doBootstrap<br>createInjector<br>injectionArgs<br>invoke -&gt; $RootScopeProvider</p>
+<p>以表达式 文本插值来梳理：</p>
+<p>collectDirectives -&gt; addTextInterpolateDirective -&gt; $interpolate</p>
+<p>$interpolate函数中调用parse函数，parse函数里<br>addInterceptor(parsedExpression, interceptorFn)<br>parsedExpression 为解析后的表达式，interceptorFn 为 parseStringifyInterceptor</p>
+<p>parsedExpression外面再封装一层 regularInterceptedExpression函数</p>
+<p>regularInterceptedExpression函数的watchDelegate 为inputsWatchDelegate。</p>
+<p>$interpolate函数返回的 interpolateFn实际是 调用 extend函数过后的函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回interpolationFn方法</span></span><br><span class="line">        <span class="keyword">return</span> extend(<span class="function"><span class="keyword">function</span> <span class="title">interpolationFn</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">var</span> ii = expressions.length;</span><br><span class="line">            <span class="keyword">var</span> values = <span class="keyword">new</span> <span class="built_in">Array</span>(ii);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">              <span class="comment">//根据表达式来解析</span></span><br><span class="line">              <span class="keyword">for</span> (; i &lt; ii; i++) &#123;</span><br><span class="line">                <span class="comment">//调用parseFns得到value</span></span><br><span class="line">                values[i] = parseFns[i](context);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">return</span> compute(values);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">              $exceptionHandler($interpolateMinErr.interr(text, err));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">          &#125;, &#123;</span><br><span class="line">          <span class="comment">// all of these properties are undocumented for now</span></span><br><span class="line">          exp: text, <span class="comment">//just for compatibility with regular watchers created via $watch</span></span><br><span class="line">          expressions: expressions,</span><br><span class="line">          <span class="attr">$$watchDelegate</span>: <span class="function"><span class="keyword">function</span>(<span class="params">scope, listener</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> lastValue;</span><br><span class="line">            <span class="keyword">return</span> scope.$watchGroup(parseFns, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatcher</span>(<span class="params">values, oldValues</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">var</span> currValue = compute(values);</span><br><span class="line">              <span class="keyword">if</span> (isFunction(listener)) &#123;</span><br><span class="line">                listener.call(<span class="keyword">this</span>, currValue, values !== oldValues ? lastValue : currValue, scope);</span><br><span class="line">              &#125;</span><br><span class="line">              lastValue = currValue;</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<p>所以此时的调用文本指令的时候，此时scope已经为childScope:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scope.$watch(interpolateFn, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatchAction</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">             node[<span class="number">0</span>].nodeValue = value;</span><br><span class="line">           &#125;);</span><br></pre></td></tr></table></figure>
+<p>这里的interpolateFn 就是上面的function interpolationFn(context) 函数，</p>
+<p>因为带有watchDelegate,所以直接调用watchDelegate返回:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$watch: <span class="function"><span class="keyword">function</span>(<span class="params">watchExp, listener, objectEquality, prettyPrintExpression</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">get</span> = $parse(watchExp);//watchExp为函数时直接返回watchExp</span><br><span class="line"></span><br><span class="line">        if (<span class="keyword">get</span>.$$watchDelegate) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">get</span>.$$watchDelegate(this, listener, objectEquality, <span class="keyword">get</span>, watchExp);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>从而进入<br>scope.$watchGroup :</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$watchGroup</span>: <span class="title">function</span>(<span class="params">watchExpressions, listener</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (watchExpressions.length === <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="comment">// Special case size of one</span></span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">this</span>.$watch(watchExpressions[<span class="number">0</span>], <span class="function"><span class="keyword">function</span> <span class="title">watchGroupAction</span>(<span class="params">value, oldValue, scope</span>) </span>&#123;</span><br><span class="line">            newValues[<span class="number">0</span>] = value;</span><br><span class="line">            oldValues[<span class="number">0</span>] = oldValue;</span><br><span class="line">            listener(newValues, (value === oldValue) ? newValues : oldValues, scope);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时watchExpressions就是 parseFns ，那继续进入watch,那此时的watchDelegate就是</p>
+<p>inputsWatchDelegate。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inputsWatchDelegate</span>(<span class="params">scope, listener, objectEquality, parsedExpression, prettyPrintExpression</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">var</span> inputExpressions = parsedExpression.inputs;</span><br><span class="line">   <span class="keyword">var</span> lastResult;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> (inputExpressions.length === <span class="number">1</span>) &#123;</span><br><span class="line">     <span class="keyword">var</span> oldInputValueOf = expressionInputDirtyCheck; <span class="comment">// init to something unique so that equals check fails</span></span><br><span class="line">     inputExpressions = inputExpressions[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">return</span> scope.$watch(<span class="function"><span class="keyword">function</span> <span class="title">expressionInputWatch</span>(<span class="params">scope</span>) </span>&#123;</span><br><span class="line">       <span class="keyword">var</span> newInputValue = inputExpressions(scope);</span><br><span class="line">       <span class="keyword">if</span> (!expressionInputDirtyCheck(newInputValue, oldInputValueOf)) &#123;</span><br><span class="line">         lastResult = parsedExpression(scope, <span class="literal">undefined</span>, <span class="literal">undefined</span>, [newInputValue]);</span><br><span class="line">         oldInputValueOf = newInputValue &amp;&amp; getValueOf(newInputValue);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> lastResult;</span><br><span class="line">     &#125;, listener, objectEquality, prettyPrintExpression);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>实际这个插值的watchers就只有一个，就是这个expressionInputWatch</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular/" rel="tag"># angular</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/07/scala-caseclass-apply/" rel="next" title="scala中caseclass自定义的apply方法">
+                <i class="fa fa-chevron-left"></i> scala中caseclass自定义的apply方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/05/KnowPoints/" rel="prev" title="知识点整理">
+                知识点整理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

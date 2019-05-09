@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="john's tech blog">
+<meta property="og:url" content="http://yoursite.com/page/8/index.html">
+<meta property="og:site_name" content="john's tech blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="john's tech blog">
+<meta name="twitter:description">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/page/8/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>john's tech blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">john's tech blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">hope is coming</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/04/scala-mongodb-driver/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/07/04/scala-mongodb-driver/" class="post-title-link" itemprop="url">scala_mongodb驱动的问题</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-07-04 17:08:54" itemprop="dateCreated datePublished" datetime="2017-07-04T17:08:54+08:00">2017-07-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala-mongodb-groupby-多个字段"><a href="#scala-mongodb-groupby-多个字段" class="headerlink" title="scala mongodb groupby 多个字段"></a>scala mongodb groupby 多个字段</h2><p>今天同事问groupby多个字段是怎么写的</p>
+<p>然后上<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/group/#pipe._S_group" target="_blank" rel="external">$group (aggregation)</a><br>看了下，发现要写表达式，看了这篇文章<a href="http://www.tuicool.com/articles/eAFjUbB" target="_blank" rel="external">MongoDB aggregate 运用篇 个人总结</a>，发现要像如下写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">多列group，根据name和status进行多列</span><br><span class="line"></span><br><span class="line">db.collection.aggregate([</span><br><span class="line"></span><br><span class="line">&#123;$group:&#123;_id:&#123;name:<span class="string">"$name"</span>,st:<span class="string">"$status"</span>&#125;,count:&#123;$sum:<span class="number">1</span>&#125;&#125;&#125;</span><br><span class="line"></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+<p>那么代码中应该怎么写呢，研究了半天，看到这篇文章<a href="https://stackoverflow.com/questions/36521817/mongodb-getcollection-with-a-specific-document-class" target="_blank" rel="external">MongoDB getCollection with a specific document class</a></p>
+<p>发现我们得从定义mongodbClient开始定义个codeRegistry</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">case</span> class <span class="title">GroupByCode</span><span class="params">(name:String,code:String)</span>  </span>&#123;</span><br><span class="line">    <span class="comment">// val id: String = _id.toString</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">private</span>[bigdata] val personCodecProvider = Macros.createCodecProvider[GroupByCode]()</span><br><span class="line">  <span class="keyword">private</span>[bigdata] val codecRegistry = fromRegistries( fromProviders(personCodecProvider), DEFAULT_CODEC_REGISTRY )</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span>[bigdata] val connectionString = <span class="keyword">new</span> ConnectionString(utils.dbUrl)</span><br><span class="line">  <span class="keyword">private</span>[bigdata] val   options = MongoClientSettings</span><br><span class="line">    .builder()</span><br><span class="line">    .codecRegistry(codecRegistry)</span><br><span class="line">    .clusterSettings(ClusterSettings.builder().applyConnectionString(connectionString).build())</span><br><span class="line">    .connectionPoolSettings(ConnectionPoolSettings.builder().applyConnectionString(connectionString).build())</span><br><span class="line">    .serverSettings(ServerSettings.builder().build()).credentialList(connectionString.getCredentialList)</span><br><span class="line">    .sslSettings(SslSettings.builder().applyConnectionString(connectionString).build())</span><br><span class="line">    .socketSettings(SocketSettings.builder().applyConnectionString(connectionString).build())</span><br><span class="line">    .build()</span><br><span class="line">  <span class="comment">//private[bigdata] val mongoClient = MongoClient(utils.dbUrl)</span></span><br><span class="line">  <span class="keyword">private</span>[bigdata] val mongoClient = MongoClient(options)</span><br></pre></td></tr></table></figure>
+<p>然后在用的地方直接</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val groupBy = group(GroupByCode(<span class="string">"$userType"</span>,<span class="string">"$code"</span>),sum(<span class="string">"count"</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">Await.result(prdb.aggregate(filter(Filters.and(Filters.eq(<span class="string">"code"</span>, parkCode), Filters.gte(<span class="string">"exitDate"</span>, date), Filters.lt(<span class="string">"exitDate"</span>, c.getTime))) :: groupBy :: Nil).toFuture(), read_timeout)</span><br></pre></td></tr></table></figure>
+<p>当然mongodb-scala-driver得升级到<a href="http://mongodb.github.io/mongo-scala-driver/2.1/bson/macros/" target="_blank" rel="external">2.0版</a>才支持caseClassCodec</p>
+<p>New in 2.0, the Scala driver allows you to use case classes to represent documents in a collection via the Macros helper. Simple case classes and nested case classes are supported. Hierarchical modelling can be achieve by using a sealed trait and having case classes implement the parent trait.</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/03/angular-compileProvider/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/07/03/angular-compileProvider/" class="post-title-link" itemprop="url">angular编译服务compileProvider</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-07-03 17:04:32" itemprop="dateCreated datePublished" datetime="2017-07-03T17:04:32+08:00">2017-07-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="compileProvider是什么时候注入的"><a href="#compileProvider是什么时候注入的" class="headerlink" title="compileProvider是什么时候注入的"></a>compileProvider是什么时候注入的</h2><p>在调用publishExternalAPI的时候注入的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">angularModule(<span class="string">'ng'</span>, [<span class="string">'ngLocale'</span>], [<span class="string">'$provide'</span>,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">ngModule</span>(<span class="params">$provide</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// $$sanitizeUriProvider needs to be before $compileProvider as it is used by it.</span></span><br><span class="line">    $provide.provider(&#123;</span><br><span class="line">      <span class="attr">$$sanitizeUri</span>: $$SanitizeUriProvider</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">//用 injector.invoke时候放入providerCache</span></span><br><span class="line">    $provide.provider(<span class="string">'$compile'</span>, $CompileProvider)</span><br><span class="line">      .directive(&#123;</span><br><span class="line"></span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>实际就是执行的<figure class="highlight plain"><figcaption><span>module(name, requires, configFn) &#123;&#125;```方法</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">configFn参数会在调用的时候就执行</span><br><span class="line">```js</span><br><span class="line">//configFn有可能就是[&apos;$provide&apos;,function($provide)&#123;&#125;]</span><br><span class="line">        //config 就是调用configBlocks[insertMethod || &apos;push&apos;]([provider, method, arguments]);</span><br><span class="line">        //这里的arguments就是configFn</span><br><span class="line">  if (configFn) &#123;</span><br><span class="line">          config(configFn);</span><br><span class="line">  &#125;</span><br><span class="line"> var config = invokeLater(&apos;$injector&apos;, &apos;invoke&apos;, &apos;push&apos;, configBlocks);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> function invokeLater(provider, method, insertMethod, queue) &#123;</span><br><span class="line">          if (!queue) queue = invokeQueue;</span><br><span class="line">          return function() &#123;</span><br><span class="line">            queue[insertMethod || &apos;push&apos;]([provider, method, arguments]);</span><br><span class="line">            return moduleInstance;</span><br><span class="line">          &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>queue就是configBlocks.</p>
+<p>在runInvokeQueue中就会从providerInjector中获取$injector<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">runInvokeQueue</span>(<span class="params">queue</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> i, ii;</span><br><span class="line">      <span class="keyword">for</span> (i = <span class="number">0</span>, ii = queue.length; i &lt; ii; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> invokeArgs = queue[i],</span><br><span class="line">            provider = providerInjector.get(invokeArgs[<span class="number">0</span>]);<span class="comment">//此处就是$injector</span></span><br><span class="line"></span><br><span class="line">        provider[invokeArgs[<span class="number">1</span>]].apply(provider, invokeArgs[<span class="number">2</span>]);</span><br><span class="line">        <span class="comment">// invokeArgs[2]此处就是传入的参数数组</span></span><br><span class="line">        <span class="comment">//['$provide',function ngModule($provide) &#123;&#125;]</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>providerCache在定义的时候就加入了$injector</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">providerInjector = (providerCache.$injector =</span><br><span class="line">       createInternalInjector(providerCache, <span class="function"><span class="keyword">function</span>(<span class="params">serviceName, caller</span>) </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (angular.isString(caller)) &#123;</span><br><span class="line">           path.push(caller);</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">throw</span> $injectorMinErr(<span class="string">'unpr'</span>, <span class="string">"Unknown provider: &#123;0&#125;"</span>, path.join(<span class="string">' &lt;- '</span>));</span><br><span class="line">&#125;))</span><br></pre></td></tr></table></figure>
+<p>$injector在invoke参数数组的时候去providerCache里找到$provide并且调用它的provider方法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invoke</span>(<span class="params">fn, self, locals, serviceName</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> locals === <span class="string">'string'</span>) &#123;</span><br><span class="line">        serviceName = locals;</span><br><span class="line">        locals = <span class="literal">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//注入参数 $provide</span></span><br><span class="line">      <span class="keyword">var</span> args = injectionArgs(fn, locals, serviceName);</span><br><span class="line">      <span class="keyword">if</span> (isArray(fn)) &#123; <span class="comment">//比如['$scope',function($scope)&#123;&#125;]</span></span><br><span class="line">        fn = fn[fn.length - <span class="number">1</span>];<span class="comment">//取数组的最后一个</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!isClass(fn)) &#123;</span><br><span class="line">        <span class="comment">// http://jsperf.com/angularjs-invoke-apply-vs-switch</span></span><br><span class="line">        <span class="comment">// #5388</span></span><br><span class="line">        <span class="comment">//比如 var injector = angular.injector(["myModule"]);</span></span><br><span class="line">        <span class="comment">//injector.invoke(function(myService)&#123;alert(myService.my);&#125;);</span></span><br><span class="line">        <span class="keyword">return</span> fn.apply(self, args);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        args.unshift(<span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> (<span class="built_in">Function</span>.prototype.bind.apply(fn, args))();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/01/angular-service-injector/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/07/01/angular-service-injector/" class="post-title-link" itemprop="url">angular_service_injector</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-07-01 22:13:53" itemprop="dateCreated datePublished" datetime="2017-07-01T22:13:53+08:00">2017-07-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular-service注入解析"><a href="#angular-service注入解析" class="headerlink" title="angular service注入解析"></a>angular service注入解析</h2><h3 id="setupModuleLoader"><a href="#setupModuleLoader" class="headerlink" title="setupModuleLoader"></a>setupModuleLoader</h3><p>setupModuleLoader方法中定义了module的service方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">           * @ngdoc method</span><br><span class="line">           * @name angular.Module#service</span><br><span class="line">           * @module ng</span><br><span class="line">           * @param &#123;string&#125; name service name</span><br><span class="line">           * @param &#123;Function&#125; constructor A constructor function that will be instantiated.</span><br><span class="line">           * @description</span><br><span class="line">           * See &#123;@link auto.$provide#service $provide.service()&#125;.</span><br><span class="line">           */</span></span><br><span class="line">    service: invokeLaterAndSetModuleName(<span class="string">'$provide'</span>, <span class="string">'service'</span>),</span><br></pre></td></tr></table></figure>
+<p>比如我写了个方法如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> herModule = angular.module(<span class="string">'herModule'</span>, []);</span><br><span class="line">herModule.service(<span class="string">'herService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.her = <span class="number">1</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> injector = angular.injector([<span class="string">"herModule"</span>]);</span><br></pre></td></tr></table></figure></p>
+<h3 id="runInvokeQueue"><a href="#runInvokeQueue" class="headerlink" title="runInvokeQueue"></a>runInvokeQueue</h3><p>调用angular.injector([])时，就会调用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">runInvokeQueue</span>(<span class="params">queue</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> i, ii;</span><br><span class="line">      <span class="keyword">for</span> (i = <span class="number">0</span>, ii = queue.length; i &lt; ii; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> invokeArgs = queue[i],</span><br><span class="line">            provider = providerInjector.get(invokeArgs[<span class="number">0</span>]);</span><br><span class="line">            <span class="comment">//getService 通过providerCache寻找</span></span><br><span class="line">               <span class="comment">//console.log(invokeArgs[0]); -- $injector  $controllerProvider</span></span><br><span class="line">        <span class="comment">//console.log('invokeArgs[2][0]:'+invokeArgs[2][0]);</span></span><br><span class="line">        <span class="comment">//console.log(invokeArgs[1]);  -- invoke</span></span><br><span class="line">        provider[invokeArgs[<span class="number">1</span>]].apply(provider, invokeArgs[<span class="number">2</span>]);</span><br><span class="line"></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="provide-service"><a href="#provide-service" class="headerlink" title="$provide.service"></a>$provide.service</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">provider</span>(<span class="params">name, provider_</span>) </span>&#123;</span><br><span class="line">    assertNotHasOwnProperty(name, <span class="string">'service'</span>);</span><br><span class="line">    <span class="keyword">if</span> (isFunction(provider_) || isArray(provider_)) &#123;</span><br><span class="line">      provider_ = providerInjector.instantiate(provider_);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!provider_.$<span class="keyword">get</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> $injectorMinErr(<span class="string">'pget'</span>, <span class="string">"Provider '&#123;0&#125;' must define $get factory method."</span>, name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> providerCache[name + providerSuffix] = provider_;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回一个方法而已</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">enforceReturnValue</span>(<span class="params">name, factory</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">enforcedReturnValue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> result = instanceInjector.invoke(factory, <span class="keyword">this</span>);</span><br><span class="line">      <span class="keyword">if</span> (isUndefined(result)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> $injectorMinErr(<span class="string">'undef'</span>, <span class="string">"Provider '&#123;0&#125;' must return a value from $get factory method."</span>, name);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">factory</span>(<span class="params">name, factoryFn, enforce</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> provider(name, &#123;</span><br><span class="line">      <span class="attr">$get</span>: enforce !== <span class="literal">false</span> ? enforceReturnValue(name, factoryFn) : factoryFn</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">service</span>(<span class="params">name, constructor</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> factory(name, [<span class="string">'$injector'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$injector</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> $injector.instantiate(<span class="keyword">constructor</span>);</span><br><span class="line">    &#125;]);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>其中最终调用的就是provider方法把service放入providerCache</p>
+<p>先调用service方法放入invokeQueue,然后在angular.injector([“herModule”])放入providerCache,然后在get的时候从providerCache中取出。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/21/scala-config/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/21/scala-config/" class="post-title-link" itemprop="url">scala_config</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-21 16:20:06" itemprop="dateCreated datePublished" datetime="2017-06-21T16:20:06+08:00">2017-06-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala-typesafe-config库读取配置"><a href="#scala-typesafe-config库读取配置" class="headerlink" title="scala typesafe config库读取配置"></a>scala typesafe config库读取配置</h2><p>这两天在看一个akka remote actor future超时的问题</p>
+<p>之前的超时是在remoteActor里配置的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def remoteActor = TypedActor.context.system.actorSelection(actorInfo.remoteActorPath)</span><br></pre></td></tr></table></figure>
+<p>然后调用的时候是用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Await.result(remoteActor.?(GetCarMonthlyInfo(date,parkCode))(Timeout.intToTimeout(<span class="number">5000000</span>)), timeout)</span><br></pre></td></tr></table></figure></p>
+<p>结果发现还是会出现<figure class="highlight plain"><figcaption><span>times out in 5000 ms```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">问题出在哪里呢？</span><br><span class="line"></span><br><span class="line">其实出在TypedActor本身，默认配置读取的jar包里的reference.conf</span><br><span class="line">```java</span><br><span class="line">typed &#123;</span><br><span class="line">      # Default timeout for typed actor methods with non-void return type</span><br><span class="line">      timeout = 5s</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TypedActor(system).DefaultReturnTimeout</span><br></pre></td></tr></table></figure>
+<p>这里的配置会和应用的配置文件合并</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> val config: Config = &#123;</span><br><span class="line">     <span class="comment">//cfg 应用配置文件</span></span><br><span class="line">     <span class="comment">//defaultReference 默认配置</span></span><br><span class="line">      val config = cfg.withFallback(ConfigFactory.defaultReference(classLoader))</span><br><span class="line">      config.checkValid(ConfigFactory.defaultReference(classLoader), <span class="string">"akka"</span>)</span><br><span class="line">      config</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>路径：config-1.2.1-sources.jar!\com\typesafe\config\impl\AbstractConfigValue.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> AbstractConfigValue <span class="title">withFallback</span><span class="params">(ConfigMergeable mergeable)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ignoresFallbacks()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ConfigValue other = ((MergeableValue) mergeable).toFallbackValue();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (other <span class="keyword">instanceof</span> Unmergeable) &#123;</span><br><span class="line">            <span class="keyword">return</span> mergedWithTheUnmergeable((Unmergeable) other);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (other <span class="keyword">instanceof</span> AbstractConfigObject) &#123;</span><br><span class="line">            <span class="keyword">return</span> mergedWithObject((AbstractConfigObject) other);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mergedWithNonObject((AbstractConfigValue) other);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/19/angular-newRouter/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/19/angular-newRouter/" class="post-title-link" itemprop="url">angular_newRouter</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-19 21:57:20" itemprop="dateCreated datePublished" datetime="2017-06-19T21:57:20+08:00">2017-06-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="ngNewRouter"><a href="#ngNewRouter" class="headerlink" title="ngNewRouter"></a>ngNewRouter</h2><p>项目中使用<a href="https://github.com/angular/router" target="_blank" rel="external">ngNewRouter</a>,看它的源码时候发现了</p>
+<p><a href="https://github.com/sindresorhus/gulp-traceur" target="_blank" rel="external">gulp-traceur</a> 是由Sindre Sorhus开发的</p>
+<p>看网上说是<a href="https://w3ctech.com/topic/107" target="_blank" rel="external">国外23位知名JavaScript开发者</a>之一</p>
+<p>里面源码涉及到了angular injector中的factory函数</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+
+  
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

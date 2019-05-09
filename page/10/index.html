@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="john's tech blog">
+<meta property="og:url" content="http://yoursite.com/page/10/index.html">
+<meta property="og:site_name" content="john's tech blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="john's tech blog">
+<meta name="twitter:description">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/page/10/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>john's tech blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">john's tech blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">hope is coming</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/16/node-package/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/16/node-package/" class="post-title-link" itemprop="url">nodejs的package.json文件</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-16 21:42:21" itemprop="dateCreated datePublished" datetime="2017-06-16T21:42:21+08:00">2017-06-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="nodejs-package-json-中的变量含义"><a href="#nodejs-package-json-中的变量含义" class="headerlink" title="nodejs package.json 中的变量含义"></a>nodejs package.json 中的变量含义</h2><p>这里简单把 ^ 和 ~ 的区别摘抄一下，备忘。<br>一个完整的版本号组表示为： [主要版本号，次要版本号，补丁版本号]</p>
+<h3 id="用-指示范围"><a href="#用-指示范围" class="headerlink" title="用 ~ 指示范围"></a>用 ~ 指示范围</h3><p>如果指定了次要版本，允许补丁版本升级。如果没有指定次要版本，允许次要版本升级。</p>
+<p>~1.2.3 &gt;= 1.2.3 &lt; 1.3.0<br>~1.2 &gt;= 1.2.0 &lt; 1.3.0<br>~1 &gt;= 1.0.0 &lt; 2.0.0<br>~0.2.3 &gt;= 0.2.3 &lt; 0.3.0<br>~0.2 &gt;= 0.2.0 &lt; 0.3.0<br>~0 &gt;= 0.0.0 &lt; 1.0.0<br>~1.2.3-beta.2 &gt;=1.2.3-beta.2 &lt; 1.3.0 (注：1.2.3版允许高于beta.2的beta版，但1.2.4-beta.2不被允许，因为是属于另一个版本号组的beta版本。)</p>
+<h3 id="用-指定范围"><a href="#用-指定范围" class="headerlink" title="用 ^ 指定范围"></a>用 ^ 指定范围</h3><p>允许不会改变最左边的不为零的版本号的版本提升，也就是说，^1.0.0允许次要、补丁版本升级，^0.1.0允许补丁版本升级，^0.0.x 不允许升级。</p>
+<p>有许多开发者把 ‘0.x’ 中的 ‘x’ 改变作为重大改变的指示。</p>
+<p>一个普遍的做法是，^ 适合使用在当开发者从 0.2.4 升级到 0.3.0 可能会做出不兼容的改变时。一般情况下，假定了在0.2.4 到 0.2.5 不会有不兼容改变，可以有一些新增(但不改变兼容)的改变。</p>
+<p>^1.2.3 &gt;=1.2.3 &lt; 2.0.0<br>^0.2.3 &gt;=0.2.3 &lt; 0.3.0<br>^0.0.3 &gt;=0.0.3 &lt; 0.0.4<br>^1.2.3-beta.2 &gt;=1.2.3-beta.2 &lt; 2.0.0<br>允许1.2.3 版的高于beta-2 的beta版本。<br>^0.0.3-beta.2 &gt;=0.0.3-beta.2 &lt; 0.0.4<br>只允许0.0.3 版的高于beta-2 的版本</p>
+<p>当解析带有^的版本范围时，补丁版本号缺少会补 0，但是会灵活的处理，即时主要、次要版本号都为 0 也可以。</p>
+<p>^1.2.x &gt;= 1.2.0 &lt; 2.0.0<br>^0.0.x &gt;= 0.0.0 &lt; 0.1.0<br>^0.0 &gt;= 0.0.0 &lt; 0.1.0</p>
+<p>当次要、补丁版本号缺少时会当作 0，但也会灵活处理，即时主版本号为 0 也可以 。</p>
+<p>^1.x &gt;= 1.0.0 &lt; 2.0.0<br>^0.x &gt;= 0.0.0 &lt; 1.0.0</p>
+<p>转载自：<br><a href="http://blog.163.com/sdhhqb@126/blog/static/6370553720153147217298/" target="_blank" rel="external">package.json依赖管理dependencies中 ^ 和 ~ 的区别  </a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/gzip-compress/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/15/gzip-compress/" class="post-title-link" itemprop="url">gzip压缩相关</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-15 21:51:32" itemprop="dateCreated datePublished" datetime="2017-06-15T21:51:32+08:00">2017-06-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="gzip压缩angular"><a href="#gzip压缩angular" class="headerlink" title="gzip压缩angular"></a>gzip压缩angular</h2><p>在看angular源码时看到有check-size.sh脚本:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">grunt minify</span><br><span class="line">gzip -c &lt; build/angular.min.js &gt; build/angular.min.js.gzip</span><br><span class="line">ls -l build/angular.min.*</span><br></pre></td></tr></table></figure>
+<p>1.执行grunt 压缩命令<br>2.再用gzip压缩下<br>3.列出angular.min.* 文件的大小</p>
+<p>参考资料：<br><a href="https://github.com/beatgammit/gzip-js" target="_blank" rel="external">gzip-js is a pure JavaScript implementation of the GZIP file format</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/css3-animation1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/15/css3-animation1/" class="post-title-link" itemprop="url">css3动画探秘1</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-15 14:18:35" itemprop="dateCreated datePublished" datetime="2017-06-15T14:18:35+08:00">2017-06-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="百度地图动画研究"><a href="#百度地图动画研究" class="headerlink" title="百度地图动画研究"></a>百度地图动画研究</h2><p>今天在百度地图上看到了一个动画效果，遂找了下他的源码研究一下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.poidetail-widget-generalInfo</span> <span class="selector-class">.generalInfo-function-buttons</span> <span class="selector-class">.generalInfo-function-buttons-fav</span><span class="selector-pseudo">:hover</span>&#123;<span class="attribute">cursor</span>:pointer&#125;</span><br><span class="line"><span class="selector-class">.poidetail-widget-generalInfo</span> <span class="selector-class">.generalInfo-function-buttons</span> <span class="selector-class">.generalInfo-function-buttons-fav</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.buttons-fav-icon</span>&#123;<span class="attribute">-webkit-animation-name</span>:bigsmall;<span class="attribute">animation-name</span>:bigsmall;<span class="attribute">-webkit-animation-timing-function</span>:ease-in-out;<span class="attribute">animation-timing-function</span>:ease-in-out&#125;</span><br><span class="line">@<span class="keyword">keyframes</span> bigsmall&#123;0%&#123;<span class="attribute">-webkit-transform</span>:<span class="built_in">scale</span>(1);<span class="attribute">transform</span>:<span class="built_in">scale</span>(1)&#125;30%&#123;<span class="attribute">-webkit-transform</span>:<span class="built_in">scale</span>(1.3);<span class="attribute">transform</span>:<span class="built_in">scale</span>(1.3)&#125;60%&#123;<span class="attribute">-webkit-transform</span>:<span class="built_in">scale</span>(0.7);<span class="attribute">transform</span>:<span class="built_in">scale</span>(0.7)&#125;85%&#123;<span class="attribute">-webkit-transform</span>:<span class="built_in">scale</span>(1.2);<span class="attribute">transform</span>:<span class="built_in">scale</span>(1.2)&#125;100%&#123;<span class="attribute">-webkit-transform</span>:<span class="built_in">scale</span>(1);<span class="attribute">transform</span>:<span class="built_in">scale</span>(1)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>主要就是定义animation-name,和@keyframes</p>
+<p>参考资料：<br><a href="http://www.w3school.com.cn/cssref/pr_animation-name.asp" target="_blank" rel="external">CSS3 animation-name 属性</a><br><a href="http://www.w3school.com.cn/cssref/pr_keyframes.asp" target="_blank" rel="external">CSS3 @keyframes 规则</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/14/sbt-script/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/14/sbt-script/" class="post-title-link" itemprop="url">sbt linux shell脚本解读</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-14 21:20:36" itemprop="dateCreated datePublished" datetime="2017-06-14T21:20:36+08:00">2017-06-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="set-e"><a href="#set-e" class="headerlink" title="set -e"></a>set -e</h2><p>你写的每个脚本都应该在文件开头加上set -e,这句语句告诉bash如果任何语句的执行结果不是true则应该退出。这样的好处是防止错误像滚雪球般变大导致一个致命的错误，而这些错误本应该在之前就被处理掉。如果要增加可读性，可以使用set -o errexit，它的作用与set -e相同。</p>
+<p>参考资料：<br><a href="http://blog.csdn.net/todd911/article/details/9954961" target="_blank" rel="external">Unix/Linux 脚本中 “set -e” 的作用</a></p>
+<h2 id="export"><a href="#export" class="headerlink" title="export"></a>export</h2><p>set:显示(设置)shell变量 包括的私有变量以及用户变量，不同类的shell有不同的私有变量 bash,ksh,csh每中shell私有变量都不一样</p>
+<p>env:显示(设置)用户变量变量</p>
+<p>export:显示(设置)当前导出成用户变量的shell变量。<br>参考资料：<br><a href="http://blog.csdn.net/longxibendi/article/details/6125075" target="_blank" rel="external"> shell环境变量以及set,env,export的区别 </a><br><a href="http://blog.csdn.net/u013176681/article/details/49097641" target="_blank" rel="external">set,env和export这三个命令的区别 </a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env bash</span><br><span class="line">#</span><br><span class="line"># A more capable（胜任的） sbt runner, coincidentally（巧合） also called sbt.</span><br><span class="line"># Author: Paul Phillips &lt;paulp@typesafe.com&gt;</span><br><span class="line"></span><br><span class="line"># todo - make this dynamic</span><br><span class="line">declare -r（只读） sbt_release_version=0.12.0（sbt发布版本）</span><br><span class="line">declare -r sbt_snapshot_version=0.13.0-SNAPSHOT</span><br><span class="line"></span><br><span class="line">unset(unset为shell内建指令，可删除变量或函数) sbt_jar sbt_dir sbt_create sbt_snapshot sbt_launch_dir</span><br><span class="line">unset scala_version java_home sbt_explicit_version</span><br><span class="line">unset verbose debug quiet</span><br></pre></td></tr></table></figure>
+<h2 id="usr-bin-env"><a href="#usr-bin-env" class="headerlink" title="/usr/bin/env"></a>/usr/bin/env</h2><p>在linux的一些脚本里，需在开头一行指定脚本的解释程序，如：<br><figure class="highlight plain"><figcaption><span>python```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">再如：</span><br><span class="line">```linux</span><br><span class="line">#!/usr/bin/env perl</span><br><span class="line">#!/usr/bin/env zimbu</span><br></pre></td></tr></table></figure></p>
+<p>但有时候也用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br></pre></td></tr></table></figure></p>
+<p>和<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/perl</span><br></pre></td></tr></table></figure></p>
+<p>那么 env到底有什么用？何时用这个呢？<br>脚本用env启动的原因，是因为脚本解释器在linux中可能被安装于不同的目录，env可以在系统的PATH目录中查找。同时，env还规定一些系统环境变量。</p>
+<p>执行一下 env 命令后看看打印的内容</p>
+<p>可以用env来执行程序：</p>
+<p>参考资料：<br><a href="http://blog.chinaunix.net/uid-26495963-id-3409921.html" target="_blank" rel="external"> 使用/usr/bin/env的好处 </a><br><a href="http://blog.csdn.net/austin_zhou001/article/details/46591169" target="_blank" rel="external">#!/usr/bin/env bash和#!/usr/bin/bash的比较</a><br><a href="http://blog.csdn.net/carolzhang8406/article/details/21246145" target="_blank" rel="external">Linux set unset命令</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/14/html-base/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/14/html-base/" class="post-title-link" itemprop="url">html的base节点</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-14 17:24:42" itemprop="dateCreated datePublished" datetime="2017-06-14T17:24:42+08:00">2017-06-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这可是高科技了。举个例子。<br>假如你这个页面的a标签是这样写的；<br><a href="xxx.html">text link</a><br>默认就是本页面打开；<br>但是你加了</p>
+<base target="_blank">
+
+<p>那这个链接就是新页面打开</p>
+<p>再比如：你的a标签还是这么写的</p>
+<p><a href="xxx.html">text link</a></p>
+<p>默认打开的网址就是现在的相对路径下的xxx.html<br>假如你加了</p>
+<p><base href="http://www.baidu.com"><br>那你刚才的那个链接打开的地址就是<br><a href="http://www.baidu.com/xxx.html" target="_blank" rel="external">http://www.baidu.com/xxx.html</a><br>base这个东西有点编程语言里的全局变量；<br>如果你要改变这个也是可以的。就是在你要改变的A标签里重写它定义的属性，比如刚才的链接你写成这样<a href="xxx.html" target="_self">text link</a><br>即使你定义了<base target="_blank"> 这个加了target的A链接依然是当前页面打开；</p>
+<p>转载自：<br><a href="https://zhidao.baidu.com/question/495713634816948284.html" target="_blank" rel="external">在html中base的作用是什么</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+
+  
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

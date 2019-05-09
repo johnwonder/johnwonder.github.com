@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="hexo的post创建过程要讲hexo的post.create先要看它的传入参数。1this.post.create(data, args.r || args.replace)
+data定义如下：1234567var data = &amp;#123;    title: args._.pop(),//标题    //这里layout就是可以通过 hexo n  title layout获取    lay">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo post.create的过程分析">
+<meta property="og:url" content="http://yoursite.com/2016/09/11/hexo-post-create/index.html">
+<meta property="og:site_name" content="john's tech blog">
+<meta property="og:description" content="hexo的post创建过程要讲hexo的post.create先要看它的传入参数。1this.post.create(data, args.r || args.replace)
+data定义如下：1234567var data = &amp;#123;    title: args._.pop(),//标题    //这里layout就是可以通过 hexo n  title layout获取    lay">
+<meta property="og:updated_time" content="2019-05-07T12:32:35.566Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hexo post.create的过程分析">
+<meta name="twitter:description" content="hexo的post创建过程要讲hexo的post.create先要看它的传入参数。1this.post.create(data, args.r || args.replace)
+data定义如下：1234567var data = &amp;#123;    title: args._.pop(),//标题    //这里layout就是可以通过 hexo n  title layout获取    lay">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2016/09/11/hexo-post-create/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>hexo post.create的过程分析 | john's tech blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">john's tech blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">hope is coming</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/11/hexo-post-create/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">hexo post.create的过程分析
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-11 20:21:31" itemprop="dateCreated datePublished" datetime="2016-09-11T20:21:31+08:00">2016-09-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="hexo的post创建过程"><a href="#hexo的post创建过程" class="headerlink" title="hexo的post创建过程"></a>hexo的post创建过程</h2><p>要讲hexo的post.create先要看它的传入参数。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.post.create(data, args.r || args.replace)</span><br></pre></td></tr></table></figure></p>
+<p>data定义如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> data = &#123;</span><br><span class="line">    <span class="attr">title</span>: args._.pop(),<span class="comment">//标题</span></span><br><span class="line">    <span class="comment">//这里layout就是可以通过 hexo n  title layout获取</span></span><br><span class="line">    layout: args._.length ? args._[<span class="number">0</span>] : <span class="keyword">this</span>.config.default_layout,</span><br><span class="line">    <span class="attr">slug</span>: args.s || args.slug,<span class="comment">//为undefined</span></span><br><span class="line">    path: args.p || args.path<span class="comment">//为undefined</span></span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure></p>
+<p>hexo/post.js：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">Post.prototype.create = <span class="function"><span class="keyword">function</span>(<span class="params">data, replace, callback</span>)</span>&#123;</span><br><span class="line">  <span class="comment">//callback没传入 replace 为undefined</span></span><br><span class="line">  <span class="keyword">if</span> (!callback &amp;&amp; <span class="keyword">typeof</span> replace === <span class="string">'function'</span>)&#123;</span><br><span class="line">    callback = replace;</span><br><span class="line">    replace = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> ctx = <span class="keyword">this</span>.context;<span class="comment">//为hexo对象</span></span><br><span class="line">  <span class="keyword">var</span> config = ctx.config; <span class="comment">//_.clone(defaultConfig) _:lodash库 浅拷贝</span></span><br><span class="line">  <span class="comment">//https://github.com/lodash</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//slugize为hexo_util库中的函数</span></span><br><span class="line">  data.slug = slugize((data.slug || data.title).toString(), &#123;<span class="attr">transform</span>: config.filename_case&#125;);</span><br><span class="line">  data.layout = (data.layout || config.default_layout).toLowerCase();</span><br><span class="line">  data.date = data.date ? moment(data.date) : moment();<span class="comment">//获取当前时间 moment库</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Promise</span>.all([</span><br><span class="line">    <span class="comment">// Get the post path</span></span><br><span class="line">    ctx.execFilter(<span class="string">'new_post_path'</span>, data, &#123;</span><br><span class="line">      <span class="attr">args</span>: [replace],</span><br><span class="line">      <span class="attr">context</span>: ctx</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// Get the scaffold</span></span><br><span class="line">    <span class="keyword">this</span>._getScaffold(data.layout)</span><br><span class="line">  ]).spread(<span class="function"><span class="keyword">function</span>(<span class="params">path, scaffold</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// Split data part from the raw scaffold</span></span><br><span class="line">    <span class="keyword">var</span> split = yfm.split(scaffold);</span><br><span class="line">    <span class="keyword">var</span> separator = split.separator || <span class="string">'---'</span>;</span><br><span class="line">    <span class="keyword">var</span> jsonMode = separator[<span class="number">0</span>] === <span class="string">';'</span>;</span><br><span class="line">    <span class="keyword">var</span> frontMatter = prepareFrontMatter(_.clone(data));</span><br><span class="line">    <span class="keyword">var</span> content = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Compile front-matter with data</span></span><br><span class="line">    <span class="keyword">var</span> renderedData = swig.compile(split.data)(frontMatter);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Parse front-matter</span></span><br><span class="line">    <span class="keyword">var</span> compiled;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (jsonMode)&#123;</span><br><span class="line">      compiled = <span class="built_in">JSON</span>.parse(<span class="string">'&#123;'</span> + renderedData + <span class="string">'&#125;'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      compiled = yaml.load(renderedData);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Add data which are not in the front-matter</span></span><br><span class="line">    <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(data);</span><br><span class="line">    <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">var</span> obj = compiled;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">      key = keys[i];</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!preservedKeys[key] &amp;&amp; obj[key] == <span class="literal">null</span>)&#123;</span><br><span class="line">        obj[key] = data[key];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Prepend the separator</span></span><br><span class="line">    <span class="keyword">if</span> (split.prefixSeparator) content += separator + <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">    content += yfm.stringify(obj, &#123;</span><br><span class="line">      <span class="attr">mode</span>: jsonMode ? <span class="string">'json'</span> : <span class="string">''</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Concat content</span></span><br><span class="line">    content += split.content;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (data.content)&#123;</span><br><span class="line">      content += <span class="string">'\n'</span> + data.content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> result = &#123;</span><br><span class="line">      <span class="attr">path</span>: path,</span><br><span class="line">      <span class="attr">content</span>: content</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.all([</span><br><span class="line">      <span class="comment">// Write content to file</span></span><br><span class="line">      fs.writeFile(path, content),<span class="comment">//写入内容</span></span><br><span class="line">      <span class="comment">// Create asset folder</span></span><br><span class="line">      createAssetFolder(path, config.post_asset_folder)</span><br><span class="line">    ]).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//http://biyeah.iteye.com/blog/1308954</span></span><br><span class="line">      ctx.emit(<span class="string">'new'</span>, result);</span><br><span class="line">    &#125;).thenReturn(result);</span><br><span class="line">  &#125;).nodeify(callback);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ctx.execFilter(<span class="string">'new_post_path'</span>, data, &#123;</span><br><span class="line">     <span class="attr">args</span>: [replace],</span><br><span class="line">     <span class="attr">context</span>: ctx</span><br><span class="line">   &#125;)</span><br></pre></td></tr></table></figure>
+<p>执行new_post_path类型的过滤器,hexo/index.js代码如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Hexo.prototype.execFilter = <span class="function"><span class="keyword">function</span>(<span class="params">type, data, options</span>)</span>&#123;</span><br><span class="line"> 		<span class="keyword">return</span> <span class="keyword">this</span>.extend.filter.exec(type, data, options);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>路径hexo/extend/filter.js：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Filter.prototype.exec = <span class="function"><span class="keyword">function</span>(<span class="params">type, data, options</span>)</span>&#123;</span><br><span class="line">	  options = options || &#123;&#125;;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">var</span> filters = <span class="keyword">this</span>.list(type);</span><br><span class="line">	  <span class="keyword">var</span> ctx = options.context;<span class="comment">//hexo实例对象</span></span><br><span class="line">	  <span class="keyword">var</span> args = options.args || []; <span class="comment">//上面的[replace]</span></span><br><span class="line"></span><br><span class="line">	  args.unshift(data);</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">return</span> <span class="built_in">Promise</span>.each(filters, <span class="function"><span class="keyword">function</span>(<span class="params">filter</span>)</span>&#123;</span><br><span class="line">	    <span class="keyword">return</span> <span class="built_in">Promise</span>.method(filter).apply(ctx, args).then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">	      args[<span class="number">0</span>] = result == <span class="literal">null</span> ? data : result;</span><br><span class="line">	      <span class="keyword">return</span> args[<span class="number">0</span>];</span><br><span class="line">	    &#125;);</span><br><span class="line">	  &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	    <span class="keyword">return</span> args[<span class="number">0</span>];</span><br><span class="line">	  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这里我们执行的是new_post_path的filter:<br>文件路径为hexo/lib/plugins/filter/new_post_path.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newPostPathFilter</span>(<span class="params">data, replace</span>)</span>&#123;</span><br><span class="line">  <span class="comment">/* jshint validthis: true */</span></span><br><span class="line">  data = data || &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> sourceDir = <span class="keyword">this</span>.source_dir;</span><br><span class="line">  <span class="keyword">var</span> draftDir = pathFn.join(sourceDir, <span class="string">'_drafts'</span>);</span><br><span class="line">  <span class="keyword">var</span> postDir = pathFn.join(sourceDir, <span class="string">'_posts'</span>);</span><br><span class="line">  <span class="keyword">var</span> config = <span class="keyword">this</span>.config;</span><br><span class="line">  <span class="keyword">var</span> newPostName = config.new_post_name;</span><br><span class="line">  <span class="keyword">var</span> permalinkDefaults = config.permalink_defaults;</span><br><span class="line">  <span class="keyword">var</span> path = data.path;</span><br><span class="line">  <span class="keyword">var</span> layout = data.layout;</span><br><span class="line">  <span class="keyword">var</span> slug = data.slug;</span><br><span class="line">  <span class="keyword">var</span> target = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!permalink || permalink.rule !== newPostName)&#123;</span><br><span class="line">    permalink = <span class="keyword">new</span> Permalink(newPostName);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//path为undefined</span></span><br><span class="line">  <span class="keyword">if</span> (path)&#123;</span><br><span class="line">    <span class="keyword">switch</span> (layout)&#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">'page'</span>:</span><br><span class="line">        target = pathFn.join(sourceDir, path);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">case</span> <span class="string">'draft'</span>:</span><br><span class="line">        target = pathFn.join(draftDir, path);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        target = pathFn.join(postDir, path);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (slug)&#123;</span><br><span class="line">    <span class="keyword">switch</span> (layout)&#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">'page'</span>:</span><br><span class="line">        target = pathFn.join(sourceDir, slug, <span class="string">'index'</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">case</span> <span class="string">'draft'</span>:</span><br><span class="line">        target = pathFn.join(draftDir, slug);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">var</span> date = moment(data.date || <span class="built_in">Date</span>.now());</span><br><span class="line">        <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(data);</span><br><span class="line">        <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> filenameData = &#123;</span><br><span class="line">          <span class="attr">year</span>: date.format(<span class="string">'YYYY'</span>),</span><br><span class="line">          <span class="attr">month</span>: date.format(<span class="string">'MM'</span>),</span><br><span class="line">          <span class="attr">i_month</span>: date.format(<span class="string">'M'</span>),</span><br><span class="line">          <span class="attr">day</span>: date.format(<span class="string">'DD'</span>),</span><br><span class="line">          <span class="attr">i_day</span>: date.format(<span class="string">'D'</span>),</span><br><span class="line">          <span class="attr">title</span>: slug</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">          key = keys[i];</span><br><span class="line">          <span class="keyword">if</span> (!reservedKeys[key]) filenameData[key] = data[key];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        target = pathFn.join(postDir, permalink.stringify(</span><br><span class="line">          _.defaults(filenameData, permalinkDefaults)));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(<span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Either data.path or data.slug is required!'</span>));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!pathFn.extname(target))&#123;</span><br><span class="line">    target += pathFn.extname(newPostName) || <span class="string">'.md'</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (replace)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(target);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> fs.ensurePath(target);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/11/hexo-call/" rel="next" title="hexo 命令call是如何调用的">
+                <i class="fa fa-chevron-left"></i> hexo 命令call是如何调用的
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/13/bluebird-learn/" rel="prev" title="bluebird Promise框架学习一">
+                bluebird Promise框架学习一 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo的post创建过程"><span class="nav-number">1.</span> <span class="nav-text">hexo的post创建过程</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

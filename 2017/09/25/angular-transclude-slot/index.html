@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="angular 多点嵌入举例先看html1234567&amp;lt;transclude-multi-slot-point&amp;gt;      我是不用指定插入点名称的内容部分      &amp;lt;multi-slot-point-tile&amp;gt;我是自定义的标题&amp;lt;/multi-slot-point-tile&amp;gt;      &amp;lt;multi-slot-point-content&amp;gt;我是自定义">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular源码分析之多点嵌入">
+<meta property="og:url" content="http://yoursite.com/2017/09/25/angular-transclude-slot/index.html">
+<meta property="og:site_name" content="john's tech blog">
+<meta property="og:description" content="angular 多点嵌入举例先看html1234567&amp;lt;transclude-multi-slot-point&amp;gt;      我是不用指定插入点名称的内容部分      &amp;lt;multi-slot-point-tile&amp;gt;我是自定义的标题&amp;lt;/multi-slot-point-tile&amp;gt;      &amp;lt;multi-slot-point-content&amp;gt;我是自定义">
+<meta property="og:updated_time" content="2019-05-07T12:32:35.559Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angular源码分析之多点嵌入">
+<meta name="twitter:description" content="angular 多点嵌入举例先看html1234567&amp;lt;transclude-multi-slot-point&amp;gt;      我是不用指定插入点名称的内容部分      &amp;lt;multi-slot-point-tile&amp;gt;我是自定义的标题&amp;lt;/multi-slot-point-tile&amp;gt;      &amp;lt;multi-slot-point-content&amp;gt;我是自定义">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2017/09/25/angular-transclude-slot/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>angular源码分析之多点嵌入 | john's tech blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">john's tech blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">hope is coming</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/25/angular-transclude-slot/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">angular源码分析之多点嵌入
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-09-25 09:34:57" itemprop="dateCreated datePublished" datetime="2017-09-25T09:34:57+08:00">2017-09-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="angular-多点嵌入举例"><a href="#angular-多点嵌入举例" class="headerlink" title="angular 多点嵌入举例"></a>angular 多点嵌入举例</h2><p>先看html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">transclude-multi-slot-point</span>&gt;</span>  </span><br><span class="line">    我是不用指定插入点名称的内容部分  </span><br><span class="line">    <span class="tag">&lt;<span class="name">multi-slot-point-tile</span>&gt;</span>我是自定义的标题<span class="tag">&lt;/<span class="name">multi-slot-point-tile</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">multi-slot-point-content</span>&gt;</span>我是自定义的内容<span class="tag">&lt;/<span class="name">multi-slot-point-content</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">multi-slot-point-footer</span>&gt;</span>我是自定义的页脚<span class="tag">&lt;/<span class="name">multi-slot-point-footer</span>&gt;</span>  </span><br><span class="line">     <span class="tag">&lt;<span class="name">multi-slot-point-footer</span>&gt;</span>我是自定义的页脚1<span class="tag">&lt;/<span class="name">multi-slot-point-footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">transclude-multi-slot-point</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>再上指令<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">app.directive(<span class="string">"transcludeMultiSlotPoint"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  </span><br><span class="line">    <span class="keyword">var</span> dir = [];  </span><br><span class="line">    dir.replace = <span class="literal">false</span>;<span class="comment">//看的容易 //不替换也可以</span></span><br><span class="line">    dir.restrict = <span class="string">"E"</span>;  </span><br><span class="line">    dir.transclude = &#123;  </span><br><span class="line">        <span class="attr">title</span>: <span class="string">"?multiSlotPointTile"</span>,      <span class="comment">//注释这行会报 no parent directive的错误   </span></span><br><span class="line">        content: <span class="string">"?multiSlotPointContent"</span>,  </span><br><span class="line">        <span class="attr">footer</span>: <span class="string">"?multiSlotPointFooter"</span>  </span><br><span class="line">    &#125;;  </span><br><span class="line">    dir.template = <span class="string">"&lt;div&gt;"</span> +  </span><br><span class="line">        <span class="string">"&lt;div&gt;我是模版中的内容&lt;/div&gt;"</span> +  <span class="comment">//重复属性没用</span></span><br><span class="line">        <span class="string">"&lt;div ng-transclude='title' ng-transclude='footer'&gt;我是模版中的插入点的标题&lt;/div&gt;"</span> +  </span><br><span class="line">        <span class="comment">//搞错了 ，ng-transclude不会使hasTranscludeDirective为true 反而因为有compile方法 ，导致会加入postLinkFn 最终执行的事postLinkFn</span></span><br><span class="line">        <span class="string">"&lt;div ng-transclude='content'&gt;我是模版中的插入点的内容&lt;/div&gt;"</span> +  </span><br><span class="line">        <span class="string">"&lt;div class='ng-transclude:footer'&gt;我是模版中的插入点页脚&lt;/div&gt;"</span> +  </span><br><span class="line">        <span class="string">"&lt;div ng-transclude&gt;我是模版中的默认插入点的内容&lt;/div&gt;"</span> +  </span><br><span class="line">        <span class="string">"&lt;/div&gt;"</span>;  </span><br><span class="line">    <span class="keyword">return</span> dir;  </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>angular内部首先通过collectDirectives方法会收集到transcludeMultiSlotPoint 指令，然后在applyDirectivesToNode方法中</p>
+<p>会把多嵌入点放到当前nodeLinkFn上</p>
+<h3 id="applyDirectivesToNode-gt-transclude-gt-slots"><a href="#applyDirectivesToNode-gt-transclude-gt-slots" class="headerlink" title="applyDirectivesToNode -&gt; transclude -&gt; slots"></a>applyDirectivesToNode -&gt; transclude -&gt; slots</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (directiveValue = directive.transclude) &#123;</span><br><span class="line">          hasTranscludeDirective = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">          <span class="comment">//ngif 和ngRepeat 是加了 $$tlb属性的</span></span><br><span class="line">          <span class="comment">// Special case（特殊） ngIf and ngRepeat so that we don't complain about(申诉) duplicate（多个） transclusion.</span></span><br><span class="line">          <span class="comment">// This option should only be used by directives that know how to safely handle element transclusion,</span></span><br><span class="line">          <span class="comment">// where the transcluded nodes are added or replaced after linking.</span></span><br><span class="line">          <span class="keyword">if</span> (!directive.$$tlb) &#123;</span><br><span class="line">            assertNoDuplicate(<span class="string">'transclusion'</span>, nonTlbTranscludeDirective, directive, $compileNode);</span><br><span class="line">            nonTlbTranscludeDirective = directive;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">if</span> (directiveValue == <span class="string">'element'</span>) &#123;</span><br><span class="line">            hasElementTranscludeDirective = <span class="literal">true</span>;</span><br><span class="line">            terminalPriority = directive.priority;</span><br><span class="line">            $template = $compileNode;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//注释节点</span></span><br><span class="line">            <span class="comment">//templateAttrs[directiveName] 在收集指令的时候附的值</span></span><br><span class="line">            $compileNode = templateAttrs.$$element =</span><br><span class="line">                jqLite(compile.$$createComment(directiveName, templateAttrs[directiveName]));</span><br><span class="line">            compileNode = $compileNode[<span class="number">0</span>];</span><br><span class="line">            replaceWith(jqCollection, sliceArgs($template), compileNode);</span><br><span class="line"></span><br><span class="line">            $template[<span class="number">0</span>].$$parentNode = $template[<span class="number">0</span>].parentNode;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//这里的$template 在transclude element的时候起到了关键作用</span></span><br><span class="line">            childTranscludeFn = compilationGenerator(mightHaveMultipleTransclusionError, $template, transcludeFn, terminalPriority,</span><br><span class="line">                                        replaceDirective &amp;&amp; replaceDirective.name, &#123;</span><br><span class="line">                                          <span class="attr">nonTlbTranscludeDirective</span>: nonTlbTranscludeDirective</span><br><span class="line">                                        &#125;);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> slots = createMap();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//compileNode不是jqLite对象 html节点</span></span><br><span class="line">            $template = jqLite(jqLiteClone(compileNode)).contents();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (isObject(directiveValue)) &#123;</span><br><span class="line"></span><br><span class="line">              <span class="comment">// We have transclusion slots,</span></span><br><span class="line">              <span class="comment">// collect them up, compile them and store their transclusion functions</span></span><br><span class="line">              $template = [];</span><br><span class="line"></span><br><span class="line">              <span class="keyword">var</span> slotMap = createMap();</span><br><span class="line">              <span class="keyword">var</span> filledSlots = createMap();</span><br><span class="line"></span><br><span class="line">              <span class="comment">// Parse the element selectors</span></span><br><span class="line">              <span class="comment">//foreach 为 value  key</span></span><br><span class="line">              forEach(directiveValue, <span class="function"><span class="keyword">function</span>(<span class="params">elementSelector, slotName</span>) </span>&#123;</span><br><span class="line">                <span class="comment">// If an element selector starts with a ? then it is optional</span></span><br><span class="line">                <span class="keyword">var</span> optional = (elementSelector.charAt(<span class="number">0</span>) === <span class="string">'?'</span>);</span><br><span class="line">                elementSelector = optional ? elementSelector.substring(<span class="number">1</span>) : elementSelector;</span><br><span class="line"></span><br><span class="line">                slotMap[elementSelector] = slotName;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// We explicitly assign `null` since this implies that a slot was defined but not filled.</span></span><br><span class="line">                <span class="comment">// Later when calling boundTransclusion functions with a slot name we only error if the</span></span><br><span class="line">                <span class="comment">// slot is `undefined`</span></span><br><span class="line">                slots[slotName] = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// filledSlots contains `true` for all slots that are either optional or have been</span></span><br><span class="line">                <span class="comment">// filled. This is used to check that we have not missed any required slots</span></span><br><span class="line">                filledSlots[slotName] = optional;</span><br><span class="line">              &#125;);</span><br><span class="line"></span><br><span class="line">              <span class="comment">// Add the matching elements into their slot</span></span><br><span class="line">              <span class="comment">//把符合的元素添加进他们的slot(狭槽)</span></span><br><span class="line"></span><br><span class="line">              <span class="comment">//$compileNode 可能包含多个节点</span></span><br><span class="line">              forEach($compileNode.contents(), <span class="function"><span class="keyword">function</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">var</span> slotName = slotMap[directiveNormalize(nodeName_(node))];</span><br><span class="line">                <span class="comment">//如果映射里有这个slot</span></span><br><span class="line">                <span class="keyword">if</span> (slotName) &#123;</span><br><span class="line">                  filledSlots[slotName] = <span class="literal">true</span>;</span><br><span class="line">                  slots[slotName] = slots[slotName] || [];</span><br><span class="line">                  slots[slotName].push(node);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  $template.push(node);</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;);</span><br><span class="line"></span><br><span class="line">              <span class="comment">// Check for required slots that were not filled</span></span><br><span class="line">              <span class="comment">//如果optional 为false 且 filledSlotes[slotName] 为false</span></span><br><span class="line">              forEach(filledSlots, <span class="function"><span class="keyword">function</span>(<span class="params">filled, slotName</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (!filled) &#123;</span><br><span class="line">                  <span class="keyword">throw</span> $compileMinErr(<span class="string">'reqslot'</span>, <span class="string">'Required transclusion slot `&#123;0&#125;` was not filled.'</span>, slotName);</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;);</span><br><span class="line"></span><br><span class="line">              <span class="keyword">for</span> (<span class="keyword">var</span> slotName <span class="keyword">in</span> slots) &#123;</span><br><span class="line">                <span class="keyword">if</span> (slots[slotName]) &#123;</span><br><span class="line">                  <span class="comment">// Only define a transclusion function if the slot was filled</span></span><br><span class="line">                  <span class="comment">//compilationGenerator返回的是一个函数</span></span><br><span class="line">                  slots[slotName] = compilationGenerator(mightHaveMultipleTransclusionError, slots[slotName], transcludeFn);</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            $compileNode.empty(); <span class="comment">// clear contents</span></span><br><span class="line">            childTranscludeFn = compilationGenerator(mightHaveMultipleTransclusionError, $template, transcludeFn, <span class="literal">undefined</span>,</span><br><span class="line">                <span class="literal">undefined</span>, &#123; <span class="attr">needsNewScope</span>: directive.$$isolateScope || directive.$$newScope&#125;);</span><br><span class="line">            childTranscludeFn.$$slots = slots;</span><br><span class="line">          &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中节点会把模板的html内容当作子节点添加进去</p>
+<h3 id="nodeLinkFn-transclude-childTranscludeFn"><a href="#nodeLinkFn-transclude-childTranscludeFn" class="headerlink" title="nodeLinkFn.transclude = childTranscludeFn"></a>nodeLinkFn.transclude = childTranscludeFn</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//template 字符串</span></span><br><span class="line">        <span class="keyword">if</span> (directive.template) &#123;</span><br><span class="line">          hasTemplate = <span class="literal">true</span>;</span><br><span class="line">          assertNoDuplicate(<span class="string">'template'</span>, templateDirective, directive, $compileNode);</span><br><span class="line">          templateDirective = directive;</span><br><span class="line"></span><br><span class="line">          <span class="comment">//如果template不是function 那么直接用template的值  </span></span><br><span class="line">          directiveValue = (isFunction(directive.template))</span><br><span class="line">              ? directive.template($compileNode, templateAttrs)</span><br><span class="line">              : directive.template;</span><br><span class="line"></span><br><span class="line">          <span class="comment">//判断startSymbol是不是&#123;&#123;</span></span><br><span class="line">          directiveValue = denormalizeTemplate(directiveValue);</span><br><span class="line"></span><br><span class="line">          <span class="comment">//在replace情况下 不能存在两个根节点</span></span><br><span class="line">          <span class="comment">//替换掉指令本身自定义节点</span></span><br><span class="line">          <span class="keyword">if</span> (directive.replace) &#123;</span><br><span class="line">            replaceDirective = directive;</span><br><span class="line">            <span class="keyword">if</span> (jqLiteIsTextNode(directiveValue)) &#123;</span><br><span class="line">              $template = [];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              $template = removeComments(wrapTemplate(directive.templateNamespace, trim(directiveValue)));</span><br><span class="line">            &#125;</span><br><span class="line">            compileNode = $template[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">            <span class="comment">//如果模板有两个根节点会报错</span></span><br><span class="line">            <span class="keyword">if</span> ($template.length != <span class="number">1</span> || compileNode.nodeType !== NODE_TYPE_ELEMENT) &#123;</span><br><span class="line">              <span class="keyword">throw</span> $compileMinErr(<span class="string">'tplrt'</span>,</span><br><span class="line">                  <span class="string">"Template for directive '&#123;0&#125;' must have exactly one root element. &#123;1&#125;"</span>,</span><br><span class="line">                  directiveName, <span class="string">''</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//替换注释节点</span></span><br><span class="line">            replaceWith(jqCollection, $compileNode, compileNode);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> newTemplateAttrs = &#123;<span class="attr">$attr</span>: &#123;&#125;&#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//合并原有节点中的指令和模板中的指令</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> templateDirectives = collectDirectives(compileNode, [], newTemplateAttrs);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//splice() 方法与 slice() 方法的作用是不同的，splice() 方法会直接对数组进行修改</span></span><br><span class="line">            <span class="keyword">var</span> unprocessedDirectives = directives.splice(i + <span class="number">1</span>, directives.length - (i + <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (newIsolateScopeDirective || newScopeDirective) &#123;</span><br><span class="line">              <span class="comment">// The original directive caused the current element to be replaced but this element</span></span><br><span class="line">              <span class="comment">// also needs to have a new scope, so we need to tell the template directives</span></span><br><span class="line">              <span class="comment">// that they would need to get their scope from further up, if they require transclusion</span></span><br><span class="line"></span><br><span class="line">              markDirectiveScope(templateDirectives, newIsolateScopeDirective, newScopeDirective);</span><br><span class="line">            &#125;</span><br><span class="line">            directives = directives.concat(templateDirectives).concat(unprocessedDirectives);</span><br><span class="line">            mergeTemplateAttributes(templateAttrs, newTemplateAttrs);</span><br><span class="line"></span><br><span class="line">            ii = directives.length;</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//不替换掉的话 如果是 transclude:'element' 那么还是 comment节点</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//不替换掉的话 就把directive.template当作子节点</span></span><br><span class="line">            <span class="comment">//然后在compileNodes  获取childLinkFn -&gt; compileNodes时  也是新的子节点了</span></span><br><span class="line">            $compileNode.html(directiveValue);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        nodeLinkFn.scope = newScopeDirective &amp;&amp; newScopeDirective.scope === <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果指令没有transclude 或者 transclude为false</span></span><br><span class="line">        <span class="comment">//那么hasTranscludeDirective就为false  line9303</span></span><br><span class="line">        nodeLinkFn.transcludeOnThisElement = hasTranscludeDirective;<span class="comment">//判断是否嵌入</span></span><br><span class="line">        nodeLinkFn.templateOnThisElement = hasTemplate;<span class="comment">//判断是否有模板</span></span><br><span class="line">        nodeLinkFn.transclude = childTranscludeFn; <span class="comment">//$$slots 附加在childTranscludeFn上</span></span><br><span class="line"></span><br><span class="line">        previousCompileContext.hasElementTranscludeDirective = hasElementTranscludeDirective;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//依赖于是否有templateUrl</span></span><br><span class="line">        <span class="comment">// might be normal or delayed nodeLinkFn depending on if templateUrl is present</span></span><br><span class="line">        <span class="keyword">return</span> nodeLinkFn;</span><br></pre></td></tr></table></figure>
+<p>然后在执行当前节点的compositeLinkFn的时候 去 创建 boundTranscludeFn</p>
+<p>然后调用childLinkFn(也就是compositeLinkFn方法)时 传递给 parentBoundTranscludeFn参数</p>
+<h3 id="createBoundTranscludeFn-gt-boundTranscludeFn"><a href="#createBoundTranscludeFn-gt-boundTranscludeFn" class="headerlink" title="createBoundTranscludeFn -&gt; boundTranscludeFn"></a>createBoundTranscludeFn -&gt; boundTranscludeFn</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//判断当前节点 指令的 transclude属性是否为true</span></span><br><span class="line">  <span class="keyword">if</span> (nodeLinkFn.transcludeOnThisElement) &#123;</span><br><span class="line"></span><br><span class="line">              <span class="comment">//返回 boundTranscludeFn 方法</span></span><br><span class="line"></span><br><span class="line">              <span class="comment">//nodeLinkFn.transclude 就是节点的lazycompliation方法</span></span><br><span class="line">      childBoundTranscludeFn = createBoundTranscludeFn(</span><br><span class="line">                  scope, nodeLinkFn.transclude, parentBoundTranscludeFn);</span><br><span class="line"></span><br><span class="line">   &#125;<span class="keyword">else</span> <span class="keyword">if</span> (!nodeLinkFn.templateOnThisElement &amp;&amp; parentBoundTranscludeFn) &#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//指令为slot的时候 childBoundTransclude 通常直接为 parentBoundTranscludeFn</span></span><br><span class="line">      childBoundTranscludeFn = parentBoundTranscludeFn;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//transcludeFn 有可能是directive的transclude方法</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">//调用ngTransclude内置指令compile返回的方法</span></span><br><span class="line">   <span class="comment">//方法里调用controllersTranscludeFn方法</span></span><br><span class="line">   <span class="comment">//再调用boundTranscludeFn</span></span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">createBoundTranscludeFn</span>(<span class="params">scope, transcludeFn, previousBoundTranscludeFn</span>) </span>&#123;</span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">boundTranscludeFn</span>(<span class="params">transcludedScope, cloneFn, controllers, futureParentElement, containingScope</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (!transcludedScope) &#123;</span><br><span class="line">         transcludedScope = scope.$<span class="keyword">new</span>(<span class="literal">false</span>, containingScope);</span><br><span class="line">         transcludedScope.$$transcluded = <span class="literal">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line">         <span class="comment">//调用boundTranscludeFn把 cloneFn传递进来了</span></span><br><span class="line">         <span class="comment">//再调用 publicLinkFn传递</span></span><br><span class="line">       <span class="keyword">return</span> transcludeFn(transcludedScope, cloneFn, &#123;</span><br><span class="line">         <span class="attr">parentBoundTranscludeFn</span>: previousBoundTranscludeFn,</span><br><span class="line">         <span class="attr">transcludeControllers</span>: controllers,</span><br><span class="line">         <span class="attr">futureParentElement</span>: futureParentElement</span><br><span class="line">       &#125;);</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// We need  to attach the transclusion slots onto the `boundTranscludeFn`</span></span><br><span class="line">     <span class="comment">// so that they are available inside the `controllersBoundTransclude` function</span></span><br><span class="line">     <span class="keyword">var</span> boundSlots = boundTranscludeFn.$$slots = createMap();</span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">var</span> slotName <span class="keyword">in</span> transcludeFn.$$slots) &#123;</span><br><span class="line">       <span class="keyword">if</span> (transcludeFn.$$slots[slotName]) &#123;</span><br><span class="line">         <span class="comment">//transcludeFn.$$slots[slotName] 就是 lazyCompilation</span></span><br><span class="line">         <span class="comment">//把 lazyCompilation放入</span></span><br><span class="line">         boundSlots[slotName] = createBoundTranscludeFn(scope, transcludeFn.$$slots[slotName], previousBoundTranscludeFn);</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">         boundSlots[slotName] = <span class="literal">null</span>;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">return</span> boundTranscludeFn;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="nodeLinkFn-gt-postLinkFn-gt-controllersBoundTransclude"><a href="#nodeLinkFn-gt-postLinkFn-gt-controllersBoundTransclude" class="headerlink" title="nodeLinkFn -&gt; postLinkFn -&gt; controllersBoundTransclude"></a>nodeLinkFn -&gt; postLinkFn -&gt; controllersBoundTransclude</h3><p>nodeLinkFn 函数里 会调用postLinkFn 方法，传递controllersBoundTransclude函数</p>
+<p>这里的postLinkFn 也就是 ngTransclude内置指令返回的方法</p>
+<p>当前节点的模板是在applyDirectivesToNode时通过template属性来调用的</p>
+<h3 id="directive-template"><a href="#directive-template" class="headerlink" title="directive.template"></a>directive.template</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//template 字符串</span></span><br><span class="line">       <span class="keyword">if</span> (directive.template) &#123;</span><br><span class="line">         hasTemplate = <span class="literal">true</span>;</span><br><span class="line">         assertNoDuplicate(<span class="string">'template'</span>, templateDirective, directive, $compileNode);</span><br><span class="line">         templateDirective = directive;</span><br><span class="line"></span><br><span class="line">         <span class="comment">//如果template不是function 那么直接用template的值  </span></span><br><span class="line">         directiveValue = (isFunction(directive.template))</span><br><span class="line">             ? directive.template($compileNode, templateAttrs)</span><br><span class="line">             : directive.template;</span><br><span class="line"></span><br><span class="line">         <span class="comment">//判断startSymbol是不是&#123;&#123;</span></span><br><span class="line">         directiveValue = denormalizeTemplate(directiveValue);</span><br><span class="line"></span><br><span class="line">         <span class="comment">//在replace情况下 不能存在两个根节点</span></span><br><span class="line">         <span class="comment">//替换掉指令本身自定义节点</span></span><br><span class="line">         <span class="keyword">if</span> (directive.replace) &#123;</span><br><span class="line">           replaceDirective = directive;</span><br><span class="line">           <span class="keyword">if</span> (jqLiteIsTextNode(directiveValue)) &#123;</span><br><span class="line">             $template = [];</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">             $template = removeComments(wrapTemplate(directive.templateNamespace, trim(directiveValue)));</span><br><span class="line">           &#125;</span><br><span class="line">           compileNode = $template[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">           <span class="comment">//如果模板有两个根节点会报错</span></span><br><span class="line">           <span class="keyword">if</span> ($template.length != <span class="number">1</span> || compileNode.nodeType !== NODE_TYPE_ELEMENT) &#123;</span><br><span class="line">             <span class="keyword">throw</span> $compileMinErr(<span class="string">'tplrt'</span>,</span><br><span class="line">                 <span class="string">"Template for directive '&#123;0&#125;' must have exactly one root element. &#123;1&#125;"</span>,</span><br><span class="line">                 directiveName, <span class="string">''</span>);</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="comment">//替换注释节点</span></span><br><span class="line">           replaceWith(jqCollection, $compileNode, compileNode);</span><br><span class="line"></span><br><span class="line">           <span class="keyword">var</span> newTemplateAttrs = &#123;<span class="attr">$attr</span>: &#123;&#125;&#125;;</span><br><span class="line"></span><br><span class="line">           <span class="comment">//合并原有节点中的指令和模板中的指令</span></span><br><span class="line">           <span class="comment">// combine directives from the original node and from the template:</span></span><br><span class="line">           <span class="comment">// - take the array of directives for this element</span></span><br><span class="line">           <span class="comment">// - split it into two parts, those that already applied (processed) and those that weren't (unprocessed)</span></span><br><span class="line">           <span class="comment">// - collect directives from the template and sort them by priority</span></span><br><span class="line">           <span class="comment">// - combine directives as: processed + template + unprocessed</span></span><br><span class="line">           <span class="keyword">var</span> templateDirectives = collectDirectives(compileNode, [], newTemplateAttrs);</span><br><span class="line"></span><br><span class="line">           <span class="comment">//splice() 方法与 slice() 方法的作用是不同的，splice() 方法会直接对数组进行修改</span></span><br><span class="line">           <span class="keyword">var</span> unprocessedDirectives = directives.splice(i + <span class="number">1</span>, directives.length - (i + <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">           <span class="keyword">if</span> (newIsolateScopeDirective || newScopeDirective) &#123;</span><br><span class="line">             <span class="comment">// The original directive caused the current element to be replaced but this element</span></span><br><span class="line">             <span class="comment">// also needs to have a new scope, so we need to tell the template directives</span></span><br><span class="line">             <span class="comment">// that they would need to get their scope from further up, if they require transclusion</span></span><br><span class="line"></span><br><span class="line">             markDirectiveScope(templateDirectives, newIsolateScopeDirective, newScopeDirective);</span><br><span class="line">           &#125;</span><br><span class="line">           directives = directives.concat(templateDirectives).concat(unprocessedDirectives);</span><br><span class="line">           mergeTemplateAttributes(templateAttrs, newTemplateAttrs);</span><br><span class="line"></span><br><span class="line">           ii = directives.length;</span><br><span class="line">         &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           <span class="comment">//不替换掉的话 如果是 transclude:'element' 那么还是 comment节点</span></span><br><span class="line"></span><br><span class="line">           <span class="comment">//不替换掉的话 就把directive.template当作子节点</span></span><br><span class="line">           <span class="comment">//然后在compileNodes  获取childLinkFn -&gt; compileNodes时  也是新的子节点了</span></span><br><span class="line">           $compileNode.html(directiveValue);</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>所以ngTransclude内置指令是在编译当前节点的模板子节点时 执行的，我们来看看angular内置的ngTransclude指令</p>
+<h3 id="ngTransclude"><a href="#ngTransclude" class="headerlink" title="ngTransclude"></a>ngTransclude</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ngTranscludeMinErr = minErr(<span class="string">'ngTransclude'</span>);</span><br><span class="line"><span class="keyword">var</span> ngTranscludeDirective = [<span class="string">'$compile'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$compile</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">restrict</span>: <span class="string">'EAC'</span>,</span><br><span class="line">    <span class="attr">terminal</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">compile</span>: <span class="function"><span class="keyword">function</span> <span class="title">ngTranscludeCompile</span>(<span class="params">tElement</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Remove and cache any original content to act as a fallback</span></span><br><span class="line">      <span class="keyword">var</span> fallbackLinkFn = $compile(tElement.contents());</span><br><span class="line">      tElement.empty();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">ngTranscludePostLink</span>(<span class="params">$scope, $element, $attrs, controller, $transclude</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!$transclude) &#123;</span><br><span class="line">          <span class="keyword">throw</span> ngTranscludeMinErr(<span class="string">'orphan'</span>,</span><br><span class="line">          <span class="string">'Illegal use of ngTransclude directive in the template! '</span> +</span><br><span class="line">          <span class="string">'No parent directive that requires a transclusion found. '</span> +</span><br><span class="line">          <span class="string">'Element: &#123;0&#125;'</span>,</span><br><span class="line">          startingTag($element));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// If the attribute is of the form: `ng-transclude="ng-transclude"` then treat it like the default</span></span><br><span class="line">        <span class="keyword">if</span> ($attrs.ngTransclude === $attrs.$attr.ngTransclude) &#123;</span><br><span class="line">          $attrs.ngTransclude = <span class="string">''</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> slotName = $attrs.ngTransclude || $attrs.ngTranscludeSlot;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// If the slot is required and no transclusion content is provided then this call will throw an error</span></span><br><span class="line">        <span class="comment">//没在指令属性transclude对象中声明插入点属性会报错</span></span><br><span class="line">        <span class="comment">//调用controllersTranscludeFn方法</span></span><br><span class="line">        $transclude(ngTranscludeCloneAttachFn, <span class="literal">null</span>, slotName);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// If the slot is optional and no transclusion content is provided then use the fallback content</span></span><br><span class="line">        <span class="keyword">if</span> (slotName &amp;&amp; !$transclude.isSlotFilled(slotName)) &#123;</span><br><span class="line">          useFallbackContent();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">ngTranscludeCloneAttachFn</span>(<span class="params">clone, transcludedScope</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (clone.length) &#123;</span><br><span class="line">            $element.append(clone);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            useFallbackContent();</span><br><span class="line">            <span class="comment">// There is nothing linked against the transcluded scope since no content was available,</span></span><br><span class="line">            <span class="comment">// so it should be safe to clean up the generated scope.</span></span><br><span class="line">            transcludedScope.$destroy();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">useFallbackContent</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="comment">// Since this is the fallback content rather than the transcluded content,</span></span><br><span class="line">          <span class="comment">// we link against the scope of this directive rather than the transcluded scope</span></span><br><span class="line">          fallbackLinkFn($scope, <span class="function"><span class="keyword">function</span>(<span class="params">clone</span>) </span>&#123;</span><br><span class="line">            $element.append(clone);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular/" rel="tag"># angular</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/08/csharp-delegate-event/" rel="next" title="csharp_delegate_event">
+                <i class="fa fa-chevron-left"></i> csharp_delegate_event
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/18/angular-jqlite-contents/" rel="prev" title="angular_jqlite_contents">
+                angular_jqlite_contents <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#angular-多点嵌入举例"><span class="nav-number">1.</span> <span class="nav-text">angular 多点嵌入举例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#applyDirectivesToNode-gt-transclude-gt-slots"><span class="nav-number">1.1.</span> <span class="nav-text">applyDirectivesToNode -> transclude -> slots</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nodeLinkFn-transclude-childTranscludeFn"><span class="nav-number">1.2.</span> <span class="nav-text">nodeLinkFn.transclude = childTranscludeFn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#createBoundTranscludeFn-gt-boundTranscludeFn"><span class="nav-number">1.3.</span> <span class="nav-text">createBoundTranscludeFn -> boundTranscludeFn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nodeLinkFn-gt-postLinkFn-gt-controllersBoundTransclude"><span class="nav-number">1.4.</span> <span class="nav-text">nodeLinkFn -> postLinkFn -> controllersBoundTransclude</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#directive-template"><span class="nav-number">1.5.</span> <span class="nav-text">directive.template</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ngTransclude"><span class="nav-number">1.6.</span> <span class="nav-text">ngTransclude</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
