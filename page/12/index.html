@@ -309,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/29/angular-interpolate1/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/17/angular-injector5/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -329,7 +329,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/05/29/angular-interpolate1/" class="post-title-link" itemprop="url">angular_interpolate1</a>
+                <a href="/2017/06/17/angular-injector5/" class="post-title-link" itemprop="url">angular_injector5</a>
               
             
           </h2>
@@ -354,7 +354,7 @@
                 
               
 
-              <time title="创建时间：2017-05-29 15:39:05" itemprop="dateCreated datePublished" datetime="2017-05-29T15:39:05+08:00">2017-05-29</time>
+              <time title="创建时间：2017-06-17 16:57:01" itemprop="dateCreated datePublished" datetime="2017-06-17T16:57:01+08:00">2017-06-17</time>
             
 
             
@@ -407,7 +407,20 @@
       
         
           
-            <h2 id="agnular-1-5-8-interpolate插值"><a href="#agnular-1-5-8-interpolate插值" class="headerlink" title="agnular 1.5.8 interpolate插值"></a>agnular 1.5.8 interpolate插值</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$InterpolateProvider</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> startSymbol = <span class="string">'&#123;&#123;'</span>;</span><br><span class="line">  <span class="keyword">var</span> endSymbol = <span class="string">'&#125;&#125;'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.startSymbol = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (value) &#123;</span><br><span class="line">      startSymbol = value;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> startSymbol;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.endSymbol = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (value) &#123;</span><br><span class="line">      endSymbol = value;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> endSymbol;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.$<span class="keyword">get</span> = ['$parse', '$exceptionHandler', '$sce', function($parse, $exceptionHandler, $sce) &#123;</span><br><span class="line">    <span class="keyword">var</span> startSymbolLength = startSymbol.length,</span><br><span class="line">        endSymbolLength = endSymbol.length,</span><br><span class="line">        escapedStartRegexp = <span class="keyword">new</span> <span class="built_in">RegExp</span>(startSymbol.replace(<span class="regexp">/./g</span>, <span class="built_in">escape</span>), <span class="string">'g'</span>),</span><br><span class="line">        escapedEndRegexp = <span class="keyword">new</span> <span class="built_in">RegExp</span>(endSymbol.replace(<span class="regexp">/./g</span>, <span class="built_in">escape</span>), <span class="string">'g'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">escape</span>(<span class="params">ch</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">'\\\\\\'</span> + ch;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//替换\&#123; \&#125; 为 &#123;&#123;&#125;&#125;</span></span><br><span class="line">    <span class="comment">//摆脱插值标记的机制，</span></span><br><span class="line">    <span class="comment">//那就是通过在嵌入标记的开始和结束符号前面加上反斜杠\，</span></span><br><span class="line">    <span class="comment">//AngularJS将会把这部分渲染为普通的部分，所以也不会被解读为为表达式或者数据绑定</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">unescapeText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> text.replace(escapedStartRegexp, startSymbol).</span><br><span class="line">        replace(escapedEndRegexp, endSymbol);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">stringify</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//undefined == null 为true</span></span><br><span class="line">      <span class="keyword">if</span> (value == <span class="literal">null</span>) &#123; <span class="comment">// null || undefined</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">switch</span> (<span class="keyword">typeof</span> value) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'string'</span>:</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'number'</span>:</span><br><span class="line">          value = <span class="string">''</span> + value;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">          value = toJson(value);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//<span class="doctag">TODO:</span> this is the same as the constantWatchDelegate in parse.js</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">constantWatchDelegate</span>(<span class="params">scope, listener, objectEquality, constantInterp</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> unwatch;</span><br><span class="line">      <span class="keyword">return</span> unwatch = scope.$watch(<span class="function"><span class="keyword">function</span> <span class="title">constantInterpolateWatch</span>(<span class="params">scope</span>) </span>&#123;</span><br><span class="line">        unwatch();</span><br><span class="line">        <span class="keyword">return</span> constantInterp(scope);</span><br><span class="line">      &#125;, listener, objectEquality);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">$interpolate</span>(<span class="params">text, mustHaveExpression, trustedContext, allOrNothing</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// Provide a quick exit and simplified result function for text with no interpolation</span></span><br><span class="line">      <span class="keyword">if</span> (!text.length || text.indexOf(startSymbol) === <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> constantInterp;<span class="comment">//常量</span></span><br><span class="line">        <span class="keyword">if</span> (!mustHaveExpression) &#123;</span><br><span class="line">          <span class="keyword">var</span> unescapedText = unescapeText(text);</span><br><span class="line">          constantInterp = valueFn(unescapedText);</span><br><span class="line">          constantInterp.exp = text;</span><br><span class="line">          constantInterp.expressions = [];</span><br><span class="line">          constantInterp.$$watchDelegate = constantWatchDelegate;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> constantInterp;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      allOrNothing = !!allOrNothing;</span><br><span class="line">      <span class="keyword">var</span> startIndex,</span><br><span class="line">          endIndex,</span><br><span class="line">          index = <span class="number">0</span>,</span><br><span class="line">          expressions = [],</span><br><span class="line">          parseFns = [],</span><br><span class="line">          textLength = text.length,</span><br><span class="line">          exp,</span><br><span class="line">          concat = [],</span><br><span class="line">          expressionPositions = [];</span><br><span class="line"></span><br><span class="line">      <span class="keyword">while</span> (index &lt; textLength) &#123;</span><br><span class="line">        <span class="keyword">if</span> (((startIndex = text.indexOf(startSymbol, index)) != <span class="number">-1</span>) &amp;&amp;</span><br><span class="line">             ((endIndex = text.indexOf(endSymbol, startIndex + startSymbolLength)) != <span class="number">-1</span>)) &#123;</span><br><span class="line">          <span class="keyword">if</span> (index !== startIndex) &#123;</span><br><span class="line">            <span class="comment">// 比如 hello &#123;&#123;name&#125;&#125;</span></span><br><span class="line">            concat.push(unescapeText(text.substring(index, startIndex)));</span><br><span class="line">          &#125;</span><br><span class="line">          exp = text.substring(startIndex + startSymbolLength, endIndex);</span><br><span class="line">          expressions.push(exp);</span><br><span class="line">          <span class="comment">//调用parseProvider</span></span><br><span class="line">          parseFns.push($parse(exp, parseStringifyInterceptor));</span><br><span class="line">          index = endIndex + endSymbolLength;</span><br><span class="line">          expressionPositions.push(concat.length);</span><br><span class="line">          concat.push(<span class="string">''</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// we did not find an interpolation, so we have to add the remainder to the separators array</span></span><br><span class="line">          <span class="keyword">if</span> (index !== textLength) &#123;</span><br><span class="line">            concat.push(unescapeText(text.substring(index)));</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Concatenating(连接) expressions makes it hard to reason about whether some combination of</span></span><br><span class="line">      <span class="comment">// concatenated values are unsafe to use and could easily lead to XSS.  By requiring that a</span></span><br><span class="line">      <span class="comment">// single expression be used for iframe[src], object[src], etc., we ensure that the value</span></span><br><span class="line">      <span class="comment">// that's used is assigned or constructed by some JS code somewhere that is more testable or</span></span><br><span class="line">      <span class="comment">// make it obvious that you bound the value to some user controlled value.  This helps reduce</span></span><br><span class="line">      <span class="comment">// the load when auditing for XSS issues.</span></span><br><span class="line">      <span class="keyword">if</span> (trustedContext &amp;&amp; concat.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">          $interpolateMinErr.throwNoconcat(text);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!mustHaveExpression || expressions.length) &#123;</span><br><span class="line">        <span class="keyword">var</span> compute = <span class="function"><span class="keyword">function</span>(<span class="params">values</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, ii = expressions.length; i &lt; ii; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (allOrNothing &amp;&amp; isUndefined(values[i])) <span class="keyword">return</span>;</span><br><span class="line">            concat[expressionPositions[i]] = values[i];</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> concat.join(<span class="string">''</span>);</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> getValue = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> trustedContext ?</span><br><span class="line">            $sce.getTrusted(trustedContext, value) :</span><br><span class="line">            $sce.valueOf(value);</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//返回interpolationFn方法</span></span><br><span class="line">        <span class="keyword">return</span> extend(<span class="function"><span class="keyword">function</span> <span class="title">interpolationFn</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">var</span> ii = expressions.length;</span><br><span class="line">            <span class="keyword">var</span> values = <span class="keyword">new</span> <span class="built_in">Array</span>(ii);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">              <span class="comment">//根据表达式来解析</span></span><br><span class="line">              <span class="keyword">for</span> (; i &lt; ii; i++) &#123;</span><br><span class="line">                values[i] = parseFns[i](context);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">return</span> compute(values);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">              $exceptionHandler($interpolateMinErr.interr(text, err));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">          &#125;, &#123;</span><br><span class="line">          <span class="comment">// all of these properties are undocumented for now</span></span><br><span class="line">          exp: text, <span class="comment">//just for compatibility with regular watchers created via $watch</span></span><br><span class="line">          expressions: expressions,</span><br><span class="line">          <span class="attr">$$watchDelegate</span>: <span class="function"><span class="keyword">function</span>(<span class="params">scope, listener</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> lastValue;</span><br><span class="line">            <span class="keyword">return</span> scope.$watchGroup(parseFns, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatcher</span>(<span class="params">values, oldValues</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">var</span> currValue = compute(values);</span><br><span class="line">              <span class="keyword">if</span> (isFunction(listener)) &#123;</span><br><span class="line">                listener.call(<span class="keyword">this</span>, currValue, values !== oldValues ? lastValue : currValue, scope);</span><br><span class="line">              &#125;</span><br><span class="line">              lastValue = currValue;</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">parseStringifyInterceptor</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          value = getValue(value);</span><br><span class="line">          <span class="keyword">return</span> allOrNothing &amp;&amp; !isDefined(value) ? value : stringify(value);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">          $exceptionHandler($interpolateMinErr.interr(text, err));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * @ngdoc method</span><br><span class="line">     * @name $interpolate#startSymbol</span><br><span class="line">     * @description</span><br><span class="line">     * Symbol to denote the start of expression in the interpolated string. Defaults to `&#123;&#123;`.</span><br><span class="line">     *</span><br><span class="line">     * Use &#123;@link ng.$interpolateProvider#startSymbol `$interpolateProvider.startSymbol`&#125; to change</span><br><span class="line">     * the symbol.</span><br><span class="line">     *</span><br><span class="line">     * @returns &#123;string&#125; start symbol.</span><br><span class="line">     */</span></span><br><span class="line">    $interpolate.startSymbol = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> startSymbol;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * @ngdoc method</span><br><span class="line">     * @name $interpolate#endSymbol</span><br><span class="line">     * @description</span><br><span class="line">     * Symbol to denote the end of expression in the interpolated string. Defaults to `&#125;&#125;`.</span><br><span class="line">     *</span><br><span class="line">     * Use &#123;@link ng.$interpolateProvider#endSymbol `$interpolateProvider.endSymbol`&#125; to change</span><br><span class="line">     * the symbol.</span><br><span class="line">     *</span><br><span class="line">     * @returns &#123;string&#125; end symbol.</span><br><span class="line">     */</span></span><br><span class="line">    $interpolate.endSymbol = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> endSymbol;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> $interpolate;</span><br><span class="line">  &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h2 id="angular-injector-剖析流程"><a href="#angular-injector-剖析流程" class="headerlink" title="angular injector 剖析流程"></a>angular injector 剖析流程</h2><p>angular中的注入器是承载angular整个运行的基石，如果想弄清楚angular的来龙去脉，那injector这块必须得熟悉。</p>
+<h3 id="createInjector"><a href="#createInjector" class="headerlink" title="createInjector"></a>createInjector</h3><p>createInjector方法是入口函数，方法参数是modulesToLoad和strictDi,</p>
+<p>我们主要关注modulesToLoad参数，字面含义就是待加载的模块。</p>
+<h4 id="providerCache"><a href="#providerCache" class="headerlink" title="providerCache"></a>providerCache</h4><p>函数一开始就定义了providerCache对象，顾名思义就是提供provider的缓存。</p>
+<p>providerCache内部又定义了$provide对象属性，暂且不管。</p>
+<h4 id="providerInjector"><a href="#providerInjector" class="headerlink" title="providerInjector"></a>providerInjector</h4><p>定义provider的注入器，同时也定义了providerCache.$injector.<br>最终是返回一个用于提供protoInstanceInjector查找instance的方法对象</p>
+<h4 id="publishExternalAPI"><a href="#publishExternalAPI" class="headerlink" title="publishExternalAPI"></a>publishExternalAPI</h4><p>通过setupModuleLoader 方法，顾名思义为设置模块加载器， 定义了 angularModule 对象为angular.module方法</p>
+<p>里面很重要的一个方法就是<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>随之定义了angular.module(‘ng’,[‘ngLocale’], [‘$provide’,function($provide){}])</p>
+<p>把ng模块放入了modules对象集合</p>
+<p>先是定义<figure class="highlight plain"><figcaption><span>config = invokeLater('$injector', 'invoke', 'push', configBlocks);```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### invokeLater</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">function invokeLater(provider, method, insertMethod, queue) &#123;</span><br><span class="line">          if (!queue) queue = invokeQueue;</span><br><span class="line">          return function() &#123;</span><br><span class="line">            queue[insertMethod || &apos;push&apos;]([provider, method, arguments]);</span><br><span class="line">            return moduleInstance;</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过以下方法把<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">if (configFn) &#123;</span><br><span class="line">          config(configFn);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>configBlocks一开始定义为空数组，然后push 了一个数组对象<code>[&#39;$injector&#39;,&#39;invoke&#39;,[&#39;$provide&#39;,function($provide){}]]</code></p>
+<p>  下篇文章继续分析push了以后是从哪调用的。</p>
 
           
         
@@ -464,7 +477,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/27/scala-reference-function/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/16/java-servlet/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -484,7 +497,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/05/27/scala-reference-function/" class="post-title-link" itemprop="url">scala_reference_function</a>
+                <a href="/2017/06/16/java-servlet/" class="post-title-link" itemprop="url">java_servlet</a>
               
             
           </h2>
@@ -509,7 +522,7 @@
                 
               
 
-              <time title="创建时间：2017-05-27 15:34:19" itemprop="dateCreated datePublished" datetime="2017-05-27T15:34:19+08:00">2017-05-27</time>
+              <time title="创建时间：2017-06-16 22:24:15" itemprop="dateCreated datePublished" datetime="2017-06-16T22:24:15+08:00">2017-06-16</time>
             
 
             
@@ -562,487 +575,498 @@
       
         
           
-            <h2 id="scala-函数引用"><a href="#scala-函数引用" class="headerlink" title="scala 函数引用"></a>scala 函数引用</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">def <span class="title">f</span><span class="params">(x:Int)</span>: Int </span>=&gt; Int =  &#123; n:Int =&gt; x + n &#125;</span><br><span class="line"></span><br><span class="line">val ff = f(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">println(ff(<span class="number">3</span>))<span class="comment">//5</span></span><br><span class="line">println(ff(<span class="number">5</span>))<span class="comment">//7</span></span><br></pre></td></tr></table></figure>
-<p>参考资料：<br><a href="https://stackoverflow.com/questions/3363459/scala-return-reference-to-a-function" target="_blank" rel="external">Scala: return reference to a function</a><br><a href="http://www.jianshu.com/p/a52f1cb01a51?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">小码农的碎碎念之Scala</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/27/slick-hlist/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/05/27/slick-hlist/" class="post-title-link" itemprop="url">slick_hlist</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-05-27 15:03:44" itemprop="dateCreated datePublished" datetime="2017-05-27T15:03:44+08:00">2017-05-27</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="slick-使用hlist-用于超过22列"><a href="#slick-使用hlist-用于超过22列" class="headerlink" title="slick 使用hlist 用于超过22列"></a>slick 使用hlist 用于超过22列</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"> slick.collection.heterogeneous.&#123;HNil&#125;</span><br><span class="line"> slick.collection.heterogeneous.syntax.<span class="function">_</span><br><span class="line"></span><br><span class="line"> class <span class="title">Invoice</span><span class="params">(tag:Tag)</span> extends Table[String :: String :: String :: HNil]<span class="params">(tag,<span class="string">"INVOICELOG"</span>)</span></span>&#123;</span><br><span class="line">     def logId = column[String](<span class="string">"LOGID"</span>)</span><br><span class="line">   def createDate = column[String](<span class="string">"CREATEDATE"</span>)</span><br><span class="line">   def invoiceId = column[String](<span class="string">"INVOICEID"</span>)</span><br><span class="line"></span><br><span class="line">   def * = logId :: createDate :: invoiceId :: HNil</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">val i  = db.run(invoices.filter((i) =&gt; i.logId === <span class="string">"0af9de5ab5a9457a950ecd9a97ddbe80"</span>).result)</span><br><span class="line"></span><br><span class="line">val t = Await.result(i, Duration.Inf)</span><br><span class="line"></span><br><span class="line">type MyRow  = String::String :: String :: HNil</span><br><span class="line"></span><br><span class="line">val  ssss  = t.asInstanceOf[Seq[MyRow]]</span><br><span class="line"></span><br><span class="line">   println(ssss.head(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">   t.foreach((i) =&gt;  &#123;</span><br><span class="line"></span><br><span class="line">     i match  &#123;</span><br><span class="line">       <span class="keyword">case</span> a::b::c::rest =&gt;</span><br><span class="line">           println(a)</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
-<p>参考资料：<br><a href="https://stackoverflow.com/questions/41637704/how-to-read-an-element-from-a-scala-hlist" target="_blank" rel="external">How to read an element from a Scala HList?</a><br><a href="http://underscore.io/blog/posts/2015/08/08/slickless.html" target="_blank" rel="external">Using shapeless HLists with Slick 3</a><br><a href="http://www.cnblogs.com/tiger-xc/p/6178065.html" target="_blank" rel="external">细谈Slick（6）－ Projection：ProvenShape，强类型的Query结果类型</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/27/slick-plainSQL/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/05/27/slick-plainSQL/" class="post-title-link" itemprop="url">slick_plainSQL</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-05-27 14:54:11" itemprop="dateCreated datePublished" datetime="2017-05-27T14:54:11+08:00">2017-05-27</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="slick3-1-1-使用sql语句查询"><a href="#slick3-1-1-使用sql语句查询" class="headerlink" title="slick3.1.1 使用sql语句查询"></a>slick3.1.1 使用sql语句查询</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">val db  = Database.forURL(<span class="string">"jdbc:mysql://ip:port/db?useUnicode=true"</span>,</span><br><span class="line">    driver = <span class="string">"com.mysql.jdbc.Driver"</span>,</span><br><span class="line">    user=<span class="string">"root"</span>,</span><br><span class="line">    password=<span class="string">"root"</span>)</span><br><span class="line"></span><br><span class="line"> <span class="function">def <span class="title">insertInvoice</span><span class="params">()</span>: DBIO[Int] </span>=</span><br><span class="line">    sqlu<span class="string">"insert   invoicelog values('sss','2017-05-26 12:00:00','sasas')"</span></span><br><span class="line"></span><br><span class="line"> val b:Future[Int] = db.run(insertInvoice())</span><br><span class="line">   Await.result(b, Duration.Inf)</span><br><span class="line"></span><br><span class="line"> implicit val getSupplierResult = GetResult(r =&gt; InvoiceLog(r.nextString(), r.nextString, r.nextString))</span><br><span class="line"> <span class="function">def <span class="title">selectInvoice</span><span class="params">()</span>: DBIO[Seq[InvoiceLog]] </span>=</span><br><span class="line">    sql<span class="string">"select * from invoicelog"</span>.as[InvoiceLog]</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a: Future[Seq[InvoiceLog]] = db.run(selectInvoice)</span><br><span class="line">val s = Await.result(a, Duration.Inf)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/12/tomcat-errorpage/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/05/12/tomcat-errorpage/" class="post-title-link" itemprop="url">tomcat_errorpage</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-05-12 10:02:07" itemprop="dateCreated datePublished" datetime="2017-05-12T10:02:07+08:00">2017-05-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="scalatra-自定义404文件"><a href="#scalatra-自定义404文件" class="headerlink" title="scalatra 自定义404文件"></a>scalatra 自定义404文件</h2><p>在scalatra中，如果访问servlet不存在的路由时，默认为返回<br><code>Requesting &quot;%s %s&quot; on servlet &quot;%s&quot; but only have: %s</code></p>
-<p>那么我就去源码看了看，发现如下代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">var</span> doNotFound: Action = () =&gt; &#123;</span><br><span class="line">    serveStaticResource() <span class="function">getOrElse <span class="title">resourceNotFound</span><span class="params">()</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Attempts to find a static resource matching the request path.  Override</span><br><span class="line">   * to return None to stop this.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="keyword">protected</span> def <span class="title">serveStaticResource</span><span class="params">()</span>: Option[Any] </span>=</span><br><span class="line">    servletContext.resource(request) map &#123; _ =&gt;</span><br><span class="line">      servletContext.getNamedDispatcher(<span class="string">"default"</span>).forward(request, response)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Called by default notFound if no routes matched and no static resource</span><br><span class="line">   * could be found.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> def <span class="title">resourceNotFound</span><span class="params">()</span>: Any </span>= &#123;</span><br><span class="line">    response.setStatus(<span class="number">404</span>)</span><br><span class="line">    <span class="keyword">if</span> (isDevelopmentMode) &#123;</span><br><span class="line">      val error = <span class="string">"Requesting \"%s %s\" on servlet \"%s\" but only have: %s"</span></span><br><span class="line">      response.getWriter println error.format(</span><br><span class="line">        request.getMethod,</span><br><span class="line">        Option(request.getPathInfo) getOrElse <span class="string">"/"</span>,</span><br><span class="line">        request.getServletPath,</span><br><span class="line">        routes.entryPoints.mkString(<span class="string">"&lt;ul&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;/ul&gt;"</span>))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;<span class="keyword">protected</span> <span class="keyword">var</span> doNotFound: Action = () =&gt; &#123;</span><br><span class="line">    serveStaticResource() <span class="function">getOrElse <span class="title">resourceNotFound</span><span class="params">()</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Attempts to find a static resource matching the request path.  Override</span><br><span class="line">   * to return None to stop this.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="keyword">protected</span> def <span class="title">serveStaticResource</span><span class="params">()</span>: Option[Any] </span>=</span><br><span class="line">    servletContext.resource(request) map &#123; _ =&gt;</span><br><span class="line">      servletContext.getNamedDispatcher(<span class="string">"default"</span>).forward(request, response)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Called by default notFound if no routes matched and no static resource</span><br><span class="line">   * could be found.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> def <span class="title">resourceNotFound</span><span class="params">()</span>: Any </span>= &#123;</span><br><span class="line">    response.setStatus(<span class="number">404</span>)</span><br><span class="line">    <span class="keyword">if</span> (isDevelopmentMode) &#123;</span><br><span class="line">      val error = <span class="string">"Requesting \"%s %s\" on servlet \"%s\" but only have: %s"</span></span><br><span class="line">      response.getWriter println error.format(</span><br><span class="line">        request.getMethod,</span><br><span class="line">        Option(request.getPathInfo) getOrElse <span class="string">"/"</span>,</span><br><span class="line">        request.getServletPath,</span><br><span class="line">        routes.entryPoints.mkString(<span class="string">"&lt;ul&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;/ul&gt;"</span>))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>发现它如果没找到路由时，会尝试通过defaultServlet找静态资源，如果还找不到那么就会进入resourceNotFound方法，</p>
-<p>如果是开发模式下，那么就会返回一开始提到的内容。。</p>
-<p>如果我们通过在web.xml中配置：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>org.scalatra.environment<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>production<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>就不会显示配置的404页面，那是怎么回事呢？</p>
-<p>我们来看看response.setStatus(404)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">     * Sets the status code for this response.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;This method is used to set the return status code when there is</span><br><span class="line">     * no error (for example, for the SC_OK or SC_MOVED_TEMPORARILY status</span><br><span class="line">     * codes).</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;If this method is used to set an error code, then the container's</span><br><span class="line">     * error page mechanism will not be triggered. If there is an error and</span><br><span class="line">     * the caller wishes to invoke an error page defined in the web</span><br><span class="line">     * application, then &#123;<span class="doctag">@link</span> #sendError&#125; must be used instead.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;This method preserves any cookies and other response headers.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;Valid status codes are those in the 2XX, 3XX, 4XX, and 5XX ranges.</span><br><span class="line">     * Other status codes are treated as container specific.</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span>	sc	the status code</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@see</span> #sendError</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStatus</span><span class="params">(<span class="keyword">int</span> sc)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>有这么段话：<br>If this method is used to set an error code, then the container’s</p>
-<ul>
-<li>error page mechanism（机制） will not be triggered.</li>
+            <h2 id="scalatraServlet实现"><a href="#scalatraServlet实现" class="headerlink" title="scalatraServlet实现"></a>scalatraServlet实现</h2><p>前几天看了别人的面试题，提到了HttpServlet实现了哪几个接口，</p>
+<p>今天就抽空看了下scalatraServlet中的源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpServlet</span> <span class="keyword">extends</span> <span class="title">GenericServlet</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericServlet</span></span><br><span class="line">  <span class="keyword">implements</span> <span class="title">Servlet</span>, <span class="title">ServletConfig</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h3><p>Defines methods that all servlets must implement.<br>就是说定义了所有servlets必须实现的方法。</p>
+<h3 id="ServletConfig"><a href="#ServletConfig" class="headerlink" title="ServletConfig"></a>ServletConfig</h3><ul>
+<li>A servlet configuration object used by a servlet container</li>
+<li>to pass information to a servlet during initialization.</li>
 </ul>
-<p>参考资料：<br><a href="http://tomcat.apache.org/tomcat-4.1-doc/catalina/funcspecs/fs-default.html" target="_blank" rel="external">Default Servlet</a><br><a href="http://stackoverflow.com/questions/32337999/tomcat-use-defaultservlet-for-static-content-in-external-directory" target="_blank" rel="external">Tomcat use DefaultServlet for static content in external directory</a><br><a href="http://blog.csdn.net/husan_3/article/details/23792517" target="_blank" rel="external">Tomcat处理静态文件DefaultServlet分析 </a><br><a href="http://scalatra.org/guides/2.3/deployment/configuration.html" target="_blank" rel="external">Configuration</a><br><a href="https://docs.oracle.com/cd/E13222_01/wls/docs81/webapp/components.html" target="_blank" rel="external">Configuring Web Application Components</a></p>
+<p>一个被servlet容器用来传递信息给servlet初始化的配置对象</p>
+<h3 id="java-io-Serializable"><a href="#java-io-Serializable" class="headerlink" title="java.io.Serializable"></a>java.io.Serializable</h3><p>java的序列化接口</p>
+<p>Serializability of a class is enabled by the class implementing the<br>java.io.Serializable interface. Classes that do not implement this<br> interface will not have any of their state serialized or<br>deserialized.  </p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/16/angular-api1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/16/angular-api1/" class="post-title-link" itemprop="url">angular_api1</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-16 21:57:07" itemprop="dateCreated datePublished" datetime="2017-06-16T21:57:07+08:00">2017-06-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular基础api"><a href="#angular基础api" class="headerlink" title="angular基础api"></a>angular基础api</h2><h3 id="angular-isNumber"><a href="#angular-isNumber" class="headerlink" title="angular.isNumber"></a>angular.isNumber</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * @ngdoc function</span><br><span class="line"> * @name angular.isNumber</span><br><span class="line"> * @module ng</span><br><span class="line"> * @kind function</span><br><span class="line"> *</span><br><span class="line"> * @description</span><br><span class="line"> * Determines if a reference is a `Number`.</span><br><span class="line"> *判断一个引用是否是数字</span><br><span class="line"> * This includes the "special" numbers `NaN`, `+Infinity` and `-Infinity`.</span><br><span class="line"> *包含特殊number NaN `+Infinity` and `-Infinity`.</span><br><span class="line"> * If you wish to exclude these then you can use the native</span><br><span class="line"> * [`isFinite'](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isFinite)</span><br><span class="line"> * method.</span><br><span class="line"> *</span><br><span class="line"> * @param &#123;*&#125; value Reference to check.</span><br><span class="line"> * @returns &#123;boolean&#125; True if `value` is a `Number`.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isNumber</span>(<span class="params">value</span>) </span>&#123;<span class="keyword">return</span> <span class="keyword">typeof</span> value === <span class="string">'number'</span>;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="nextUid"><a href="#nextUid" class="headerlink" title="nextUid"></a>nextUid</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * A consistent(一致的) way of creating unique IDs in angular.</span><br><span class="line"> *</span><br><span class="line"> * Using simple numbers allows us to generate 28.6 million unique ids per second for 10 years before</span><br><span class="line"> * we hit number precision issues in JavaScript.</span><br><span class="line"> *</span><br><span class="line"> * Math.pow(2,53) 2的53次幂/ 60 / 60 / 24 / 365 / 10 = 28.6M</span><br><span class="line"> *</span><br><span class="line"> * @returns &#123;number&#125; an unique alpha-numeric string</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">nextUid</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> ++uid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>10年内每秒可以生成 28.6 million的唯一标识<br><a href="http://blog.csdn.net/zhaokuner/article/details/23246795" target="_blank" rel="external"> js的精确整数最大为:Math.pow(2,53)-1 =9007199254740991.</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/16/node-package/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/16/node-package/" class="post-title-link" itemprop="url">nodejs的package.json文件</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-16 21:42:21" itemprop="dateCreated datePublished" datetime="2017-06-16T21:42:21+08:00">2017-06-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="nodejs-package-json-中的变量含义"><a href="#nodejs-package-json-中的变量含义" class="headerlink" title="nodejs package.json 中的变量含义"></a>nodejs package.json 中的变量含义</h2><p>这里简单把 ^ 和 ~ 的区别摘抄一下，备忘。<br>一个完整的版本号组表示为： [主要版本号，次要版本号，补丁版本号]</p>
+<h3 id="用-指示范围"><a href="#用-指示范围" class="headerlink" title="用 ~ 指示范围"></a>用 ~ 指示范围</h3><p>如果指定了次要版本，允许补丁版本升级。如果没有指定次要版本，允许次要版本升级。</p>
+<p>~1.2.3 &gt;= 1.2.3 &lt; 1.3.0<br>~1.2 &gt;= 1.2.0 &lt; 1.3.0<br>~1 &gt;= 1.0.0 &lt; 2.0.0<br>~0.2.3 &gt;= 0.2.3 &lt; 0.3.0<br>~0.2 &gt;= 0.2.0 &lt; 0.3.0<br>~0 &gt;= 0.0.0 &lt; 1.0.0<br>~1.2.3-beta.2 &gt;=1.2.3-beta.2 &lt; 1.3.0 (注：1.2.3版允许高于beta.2的beta版，但1.2.4-beta.2不被允许，因为是属于另一个版本号组的beta版本。)</p>
+<h3 id="用-指定范围"><a href="#用-指定范围" class="headerlink" title="用 ^ 指定范围"></a>用 ^ 指定范围</h3><p>允许不会改变最左边的不为零的版本号的版本提升，也就是说，^1.0.0允许次要、补丁版本升级，^0.1.0允许补丁版本升级，^0.0.x 不允许升级。</p>
+<p>有许多开发者把 ‘0.x’ 中的 ‘x’ 改变作为重大改变的指示。</p>
+<p>一个普遍的做法是，^ 适合使用在当开发者从 0.2.4 升级到 0.3.0 可能会做出不兼容的改变时。一般情况下，假定了在0.2.4 到 0.2.5 不会有不兼容改变，可以有一些新增(但不改变兼容)的改变。</p>
+<p>^1.2.3 &gt;=1.2.3 &lt; 2.0.0<br>^0.2.3 &gt;=0.2.3 &lt; 0.3.0<br>^0.0.3 &gt;=0.0.3 &lt; 0.0.4<br>^1.2.3-beta.2 &gt;=1.2.3-beta.2 &lt; 2.0.0<br>允许1.2.3 版的高于beta-2 的beta版本。<br>^0.0.3-beta.2 &gt;=0.0.3-beta.2 &lt; 0.0.4<br>只允许0.0.3 版的高于beta-2 的版本</p>
+<p>当解析带有^的版本范围时，补丁版本号缺少会补 0，但是会灵活的处理，即时主要、次要版本号都为 0 也可以。</p>
+<p>^1.2.x &gt;= 1.2.0 &lt; 2.0.0<br>^0.0.x &gt;= 0.0.0 &lt; 0.1.0<br>^0.0 &gt;= 0.0.0 &lt; 0.1.0</p>
+<p>当次要、补丁版本号缺少时会当作 0，但也会灵活处理，即时主版本号为 0 也可以 。</p>
+<p>^1.x &gt;= 1.0.0 &lt; 2.0.0<br>^0.x &gt;= 0.0.0 &lt; 1.0.0</p>
+<p>转载自：<br><a href="http://blog.163.com/sdhhqb@126/blog/static/6370553720153147217298/" target="_blank" rel="external">package.json依赖管理dependencies中 ^ 和 ~ 的区别  </a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/gzip-compress/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/15/gzip-compress/" class="post-title-link" itemprop="url">gzip压缩相关</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-15 21:51:32" itemprop="dateCreated datePublished" datetime="2017-06-15T21:51:32+08:00">2017-06-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="gzip压缩angular"><a href="#gzip压缩angular" class="headerlink" title="gzip压缩angular"></a>gzip压缩angular</h2><p>在看angular源码时看到有check-size.sh脚本:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">grunt minify</span><br><span class="line">gzip -c &lt; build/angular.min.js &gt; build/angular.min.js.gzip</span><br><span class="line">ls -l build/angular.min.*</span><br></pre></td></tr></table></figure>
+<p>1.执行grunt 压缩命令<br>2.再用gzip压缩下<br>3.列出angular.min.* 文件的大小</p>
+<p>参考资料：<br><a href="https://github.com/beatgammit/gzip-js" target="_blank" rel="external">gzip-js is a pure JavaScript implementation of the GZIP file format</a></p>
 
           
         
@@ -1088,7 +1112,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1130,7 +1154,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-count">183</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1203,7 +1227,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">27</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

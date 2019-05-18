@@ -309,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/23/code-algorithm/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/29/slf4j_MDC/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -329,7 +329,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/23/code-algorithm/" class="post-title-link" itemprop="url">千里码算法第一题</a>
+                <a href="/2016/12/29/slf4j_MDC/" class="post-title-link" itemprop="url">slf4j_MDC</a>
               
             
           </h2>
@@ -354,7 +354,7 @@
                 
               
 
-              <time title="创建时间：2016-10-23 20:27:53" itemprop="dateCreated datePublished" datetime="2016-10-23T20:27:53+08:00">2016-10-23</time>
+              <time title="创建时间：2016-12-29 16:50:56" itemprop="dateCreated datePublished" datetime="2016-12-29T16:50:56+08:00">2016-12-29</time>
             
 
             
@@ -371,7 +371,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+                <time title="修改时间：2019-05-09 20:37:48" itemprop="dateModified" datetime="2019-05-09T20:37:48+08:00">2019-05-09</time>
               
             
           </span>
@@ -407,672 +407,693 @@
       
         
           
-            <h2 id="码之初"><a href="#码之初" class="headerlink" title="码之初"></a>码之初</h2><p>1.第2333个能被2或者被3整除的正整数是多少?</p>
-<p>被2或者被3整除的正整数依次是：2,3,4,6,8,9,10,12,14,15,16,18…。</p>
-<p>可以考虑第N个 N为偶数的情况，推理可以得到为n+ n/2，也就是2333+ 2332/2 +2 = 3500。</p>
-<p>也可以考虑四个为一组的情况,比如2,3,4,6 一组;8,9,10,12为一组;14,15,16,18为一组。</p>
-<p>那么就为2332/4 = 583 <em>4 = 2332 + 2</em>(583)=1166   第2333个 再 +2 = 3500</p>
-<p><a href="http://www.qlcoder.com/task/751e" target="_blank" rel="external">码之初 </a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/22/sbt-settings/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/10/22/sbt-settings/" class="post-title-link" itemprop="url">sbt-settings</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-10-22 21:32:02" itemprop="dateCreated datePublished" datetime="2016-10-22T21:32:02+08:00">2016-10-22</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="sbt-Settings"><a href="#sbt-Settings" class="headerlink" title="sbt Settings"></a>sbt Settings</h2><p>Remember, a build definition creates a list of Setting, which is then used to transform sbt’s description of the build (which is a map of key-value pairs). A Setting is a transformation with sbt’s earlier map as input and a new map as output. The new map becomes sbt’s new state.</p>
-<p>build定义会创建setting列表，用于转变build的描述，是key-value pairs.<br>一个setting是之前映射的会输出新的映射。新的映射是sbt新的状态。</p>
-<p>Different settings transform the map in different ways. Earlier, you read about the := method.</p>
-<p>不同的settings通过不同的方式改变映射。比如:=。</p>
-<p>The Setting which := creates puts a fixed, constant value in the new, transformed map. For example, if you transform a map with the setting name := “hello” the new map has the string “hello” stored under the key name. </p>
-<p>:= 创建了新的常量，如果你设置了 name := “Hello” ,那么就存储了key 为name值为hello的map.<br>在build.sbt里面并非key := value, 而是key := expression. 文件里的每一行其实是一句scala语句</p>
-<p><a href="http://www.scala-sbt.org/0.13/docs/More-About-Settings.html" target="_blank" rel="external">More-About-Settings</a></p>
-<p><a href="http://beike.iteye.com/blog/1575296" target="_blank" rel="external">sbt从入门到半熟</a></p>
-<h3 id="sbt"><a href="#sbt" class="headerlink" title="sbt +="></a>sbt +=</h3><p>+=，将值添加进现有值里，适用于集合类型的key，比如libraryDependencies<br>如果是<code>version := &quot;0.1&quot;</code>,再用version += “0.2”，那么在交互模式里show version，会变成0.10.2</p>
-<h3 id="sbt-Attributed"><a href="#sbt-Attributed" class="headerlink" title="sbt.Attributed"></a>sbt.Attributed</h3><p>sbt.Attributed[java.io.File]</p>
-<p>Retrieves the associated value of key from the metadata.</p>
-<p>顾名思义，是获取java.io.File类型的Attributed[D]</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">put</span></span>[<span class="type">T</span>](key: <span class="type">AttributeKey</span>[<span class="type">T</span>], value: <span class="type">T</span>): <span class="type">Attributed</span>[<span class="type">D</span>]</span><br><span class="line"></span><br><span class="line"><span class="type">Defines</span> a mapping key -&gt; value in the metadata.</span><br></pre></td></tr></table></figure>
-<p><a href="http://www.scala-sbt.org/release/api/index.html#sbt.Attributed" target="_blank" rel="external">final case class Attributed<a href="data: D" target="_blank" rel="external">D</a></a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/22/sbt-command/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/10/22/sbt-command/" class="post-title-link" itemprop="url">sbt_command</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-10-22 14:17:42" itemprop="dateCreated datePublished" datetime="2016-10-22T14:17:42+08:00">2016-10-22</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="sbt-命令解释"><a href="#sbt-命令解释" class="headerlink" title="sbt 命令解释"></a>sbt 命令解释</h2><h3 id="run-command"><a href="#run-command" class="headerlink" title="run command"></a>run command</h3><p><a href="http://www.scala-sbt.org/0.13/docs/Command-Line-Reference.html" target="_blank" rel="external">run <argument>*</argument></a>Runs a main class, passing along arguments provided on the command line.</p>
-<p>运行一个主类，如果在文件内部定义变量或者直接调用函数，那么会提示如下：</p>
-<figure class="highlight plain"><figcaption><span>class or object definition```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">因为会先编译这个文件。</span><br><span class="line"></span><br><span class="line">文件内部必须包含main方法的类：</span><br><span class="line"></span><br><span class="line">```scala</span><br><span class="line">	object HelloWorld&#123;</span><br><span class="line">	  def main(args: Array[String]) &#123;</span><br><span class="line">	   println(ChecksumAccumulator.calculate(&quot;We&quot;))</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="package-command"><a href="#package-command" class="headerlink" title="package command"></a>package command</h3><p>在sbt交互模式下输入package，会把当前目录下的project打包，然后运行run命令，如果当前能找到object对象并且有main函数，那么就会执行它。</p>
-<h3 id="exit-command"><a href="#exit-command" class="headerlink" title="exit command"></a>exit command</h3><p>输入exit命令退出sbt交互模式。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/22/REPL-import-scala/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/10/22/REPL-import-scala/" class="post-title-link" itemprop="url">scala命令行引入scala文件</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-10-22 13:26:13" itemprop="dateCreated datePublished" datetime="2016-10-22T13:26:13+08:00">2016-10-22</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="scala命令行引入scala文件"><a href="#scala命令行引入scala文件" class="headerlink" title="scala命令行引入scala文件"></a>scala命令行引入scala文件</h2><h3 id="scala-REPL"><a href="#scala-REPL" class="headerlink" title="scala REPL"></a>scala REPL</h3><p>The Scala Interpreter (often called a REPL for Read-Evaluate-Print Loop).</p>
-<p>Scala解释器读到一个表达式，对它进行求值，将它打印出来，接着再继续读下一个表达式。这个过程被称做读取–求值–打印–循环，即：REPL。<br>从技术上讲，scala程序并不是一个解释器。实际发生的是，你输入的内容被快速地编译成字节码，然后这段字节码交由Java虚拟机执行。正因为如此，大多数scala程序员更倾向于将它称做“REPL”<br><a href="https://my.oschina.net/fhd/blog/273965" target="_blank" rel="external">scala入门之REPL</a></p>
-<h3 id="scala-i"><a href="#scala-i" class="headerlink" title="scala -i"></a>scala -i</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scala -i extractors.scala</span><br></pre></td></tr></table></figure>
-<p>运行 scala -help 可以看到如下提示：</p>
-<figure class="highlight plain"><figcaption><span><file>    preload <file> before starting the repl```</file></file></span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在启动repl之前预先加载file。</span><br><span class="line"></span><br><span class="line">按照这种方式引入的话，如果碰到companion对象,那么会报如下警告：</span><br><span class="line"></span><br><span class="line">warning: previously defined class FreeUser is not a companion to object FreeUser</span><br><span class="line">.</span><br><span class="line">Companions must be defined together; you may wish to use :paste mode for this.</span><br><span class="line">defined object PreminumUser</span><br><span class="line"></span><br><span class="line">希望你用:paste模式。</span><br><span class="line"></span><br><span class="line">### :paste file</span><br><span class="line"></span><br><span class="line">先进入REPL，然后运行如下命令:</span><br><span class="line"></span><br><span class="line">```:paste file</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/17/hexo-flow-second/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/10/17/hexo-flow-second/" class="post-title-link" itemprop="url">hexo流程梳理之database</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-10-17 22:50:07" itemprop="dateCreated datePublished" datetime="2016-10-17T22:50:07+08:00">2016-10-17</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Hexo-List命令"><a href="#Hexo-List命令" class="headerlink" title="Hexo List命令"></a>Hexo List命令</h2><p>Hexo List命令实际调用的是<code>plugins/console/list/index.js</code>文件,核心代码如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> store = &#123;</span><br><span class="line"><span class="attr">page</span>: <span class="built_in">require</span>(<span class="string">'./page'</span>),</span><br><span class="line"><span class="attr">post</span>: <span class="built_in">require</span>(<span class="string">'./post'</span>),</span><br><span class="line"><span class="attr">route</span>: <span class="built_in">require</span>(<span class="string">'./route'</span>),</span><br><span class="line"><span class="attr">tag</span>: <span class="built_in">require</span>(<span class="string">'./tag'</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//外部是调用hexo实例的call函数</span></span><br><span class="line"><span class="comment">//call函数内部从Console中获取命令函数，然后再用js原生的call函数通过hexo实例调用</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">listConsole</span>(<span class="params">args</span>)</span>&#123;</span><br><span class="line"><span class="comment">/* jshint validthis: true */</span></span><br><span class="line"><span class="keyword">var</span> type = args._.shift();<span class="comment">//弹出第一个参数</span></span><br><span class="line"><span class="keyword">var</span> self = <span class="keyword">this</span>;<span class="comment">//hexo实例</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Display help message if user didn't input any arguments</span></span><br><span class="line"><span class="comment">//如果没有输入参数就调用help命令</span></span><br><span class="line"><span class="comment">//this指向hexo对象</span></span><br><span class="line"><span class="comment">//比如输入list tag 那么type就是tag</span></span><br><span class="line"><span class="keyword">if</span> (!type || !store.hasOwnProperty(type))&#123;</span><br><span class="line">  <span class="comment">//如果只输入hexo list 或者 输入store对象中没有的参数</span></span><br><span class="line">  <span class="comment">//先调用hexo实例的call方法</span></span><br><span class="line">  <span class="comment">//方法内部调用help的入口函数</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.call(<span class="string">'help'</span>, &#123;<span class="attr">_</span>: [<span class="string">'list'</span>]&#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//调用hexo实例的load方法</span></span><br><span class="line"><span class="comment">//加载数据库db.json</span></span><br><span class="line"><span class="comment">//然后调用store中存储的type命令</span></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">this</span>.load().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> store[type].call(self, args);</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>load函数内部核心代码：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...省略</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//调用load_database.js文件，传入hexo实例</span></span><br><span class="line"><span class="keyword">return</span> loadDatabase(<span class="keyword">this</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">Promise</span>.all([</span><br><span class="line">  self.source.process(),</span><br><span class="line">  self.theme.process()</span><br><span class="line">]);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="comment">//return;</span></span><br><span class="line"><span class="keyword">return</span> self._generate(&#123;<span class="attr">cache</span>: <span class="literal">true</span>&#125;);</span><br><span class="line">&#125;).nodeify(callback);</span><br></pre></td></tr></table></figure>
-<p>传入this参数是为了在loadDatabase内部调用hexo的db变量，也就是调用warehouse模块的load函数，db是在hexo构造函数中初始化的：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//Database为warehouse模块中的database.js</span></span><br><span class="line"><span class="keyword">this</span>.database = <span class="keyword">new</span> Database(&#123;</span><br><span class="line"><span class="attr">version</span>: dbVersion,<span class="comment">//初始化为1</span></span><br><span class="line">path: pathFn.join(base, <span class="string">'db.json'</span>)<span class="comment">//传入文件名</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//db.json</span></span><br><span class="line"><span class="keyword">return</span> fs.exists(path).then(<span class="function"><span class="keyword">function</span>(<span class="params">exist</span>)</span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!exist) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">log.debug(<span class="string">'Loading database.'</span>);</span><br><span class="line">  <span class="keyword">return</span> db.load();<span class="comment">//load函数之后再展开细讲</span></span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  ctx._dbLoaded = <span class="literal">true</span>;</span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  log.error(<span class="string">'Database load failed. Deleting database.'</span>);</span><br><span class="line">  <span class="keyword">return</span> fs.unlink(path);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<h2 id="Hexo-warehouse模块"><a href="#Hexo-warehouse模块" class="headerlink" title="Hexo warehouse模块"></a>Hexo warehouse模块</h2><h3 id="database-js构造函数"><a href="#database-js构造函数" class="headerlink" title="database.js构造函数"></a>database.js构造函数</h3><p>hexo在构造函数中实例化Database之后，就通过<code>register_models.js</code>注册了database的model，相当于数据库的模型，这样就为之后调用model做准备：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//传入options参数，如上面所说的version和path</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Database</span>(<span class="params">options</span>)</span>&#123;</span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Database options.</span><br><span class="line"> *</span><br><span class="line"> * @property &#123;Object&#125; options</span><br><span class="line"> * @private</span><br><span class="line"> */</span></span><br><span class="line"> <span class="comment">//调用扩展函数</span></span><br><span class="line"><span class="keyword">this</span>.options = extend(&#123;</span><br><span class="line">  <span class="attr">version</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">onUpgrade</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;,</span><br><span class="line">  <span class="attr">onDowngrade</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">&#125;, options);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Models.</span><br><span class="line"> *</span><br><span class="line"> * @property &#123;Object&#125; _models</span><br><span class="line"> * @private</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">this</span>._models = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Model constructor for this database instance.</span><br><span class="line"> *</span><br><span class="line"> * @property &#123;Function&#125; Model</span><br><span class="line"> * @param &#123;String&#125; name</span><br><span class="line"> * @param &#123;Schema|Object&#125; [schema]</span><br><span class="line"> * @constructor</span><br><span class="line"> * @private</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">var</span> _Model = <span class="keyword">this</span>.Model = <span class="function"><span class="keyword">function</span>(<span class="params">name, schema</span>)</span>&#123;</span><br><span class="line">  <span class="comment">//内部调用Model.js</span></span><br><span class="line">  Model.call(<span class="keyword">this</span>, name, schema);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">util.inherits(_Model, Model);</span><br><span class="line">_Model.prototype._database = <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="database-js-model方法"><a href="#database-js-model方法" class="headerlink" title="database.js model方法"></a>database.js model方法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  <span class="comment">//hexo构造函数：传入hexo对象</span></span><br><span class="line">  registerModels(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//registerModels内部代码：</span></span><br><span class="line">  <span class="comment">//加载所有模型对象</span></span><br><span class="line">  <span class="keyword">var</span> models = <span class="built_in">require</span>(<span class="string">'../models'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">ctx</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> db = ctx.database;<span class="comment">//又一次引用database</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(models);</span><br><span class="line">  <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">    key = keys[i];</span><br><span class="line">    db.model(key, models[key](ctx));<span class="comment">//db.model方法</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>其中<code>../models</code>包含的模型如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">exports.Asset = <span class="built_in">require</span>(<span class="string">'./asset'</span>);</span><br><span class="line">exports.Cache = <span class="built_in">require</span>(<span class="string">'./cache'</span>);</span><br><span class="line">exports.Category = <span class="built_in">require</span>(<span class="string">'./category'</span>);</span><br><span class="line">exports.Data = <span class="built_in">require</span>(<span class="string">'./data'</span>);</span><br><span class="line">exports.Page = <span class="built_in">require</span>(<span class="string">'./page'</span>);</span><br><span class="line">exports.Post = <span class="built_in">require</span>(<span class="string">'./post'</span>);</span><br><span class="line">exports.PostAsset = <span class="built_in">require</span>(<span class="string">'./post_asset'</span>);</span><br><span class="line">exports.PostCategory = <span class="built_in">require</span>(<span class="string">'./post_category'</span>);</span><br><span class="line">exports.PostTag = <span class="built_in">require</span>(<span class="string">'./post_tag'</span>);</span><br><span class="line">exports.Tag = <span class="built_in">require</span>(<span class="string">'./tag'</span>);<span class="comment">//tag模型</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Database.prototype.model = <span class="function"><span class="keyword">function</span>(<span class="params">name, schema</span>)</span>&#123;</span><br><span class="line">  <span class="comment">//构造函数中初始化this._models</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._models[name])&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._models[name];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//调用this.Model构造函数</span></span><br><span class="line">  <span class="keyword">var</span> model = <span class="keyword">this</span>._models[name] = <span class="keyword">new</span> <span class="keyword">this</span>.Model(name, schema);</span><br><span class="line">  <span class="keyword">return</span> model;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>流程如下：<blockquote>
-<ul>
-<li>hexo实例化初始化Database,然后注册各个model</li>
-<li>hexo list命令调用database的load方法加载</li>
-</ul>
+            <h1 id="slf4j-MDC"><a href="#slf4j-MDC" class="headerlink" title="slf4j MDC"></a>slf4j MDC</h1><p>A lighter technique consists of uniquely stamping each log request servicing a given client. Neil Harrison described this method in the book Patterns for Logging Diagnostic Messages in Pattern Languages of Program Design 3, edited by R. Martin, D. Riehle, and F. Buschmann (Addison-Wesley, 1997).</p>
+<p>Logback leverages a variant of this technique included in the SLF4J API: Mapped Diagnostic Contexts (MDC).</p>
+<p>在分布式系统中，各种无关日志穿行其中，导致我们可能无法直接定位整个操作流程。因此，我们可能需要对一个用户的操作流程进行归类标记，比如使用线程+时间戳，或者用户身份标识等；如此，我们可以从大量日志信息中grep出某个用户的操作流程，或者某个时间的流转记录。</p>
+<p>因此，这就有了 Slf4j MDC 方法</p>
+<p>转载自<a href="http://www.ithao123.cn/content-8291525.html" target="_blank" rel="external">Slf4j MDC 使用和 基于 Logback 的实现分析</a></p>
+<p><a href="http://www.cnblogs.com/dumuqiao/p/3654702.html?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">LogBack sl4j 通过MDC实现日志记录区分用户Session</a></p>
+<h2 id="slf4j-api-MDC类"><a href="#slf4j-api-MDC类" class="headerlink" title="slf4j-api MDC类"></a>slf4j-api MDC类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line">   *内部静态类</span><br><span class="line">   * An adapter to remove the key when done.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MDCCloseable</span> <span class="keyword">implements</span> <span class="title">Closeable</span> </span>&#123;</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">final</span> String key;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="title">MDCCloseable</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">          <span class="keyword">this</span>.key = key;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          MDC.remove(<span class="keyword">this</span>.key);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>Java中的类可以是static吗？答案是可以。在java中我们可以有静态实例变量、静态方法、静态块。类也可以是静态的</p>
+<p>静态内部类只能访问外部类的静态成员</p>
+<p>静态内部类和非静态内部类之间到底有什么不同呢？下面是两者间主要的不同。</p>
+<blockquote>
+<p>内部静态类不需要有指向外部类的引用。但非静态内部类需要持有对外部类的引用。</p>
 </blockquote>
-</li>
-</ol>
+<blockquote>
+<p>非静态内部类能够访问外部类的静态和非静态成员。静态类不能访问外部类的非静态成员。他只能访问外部类的静态成员。</p>
+</blockquote>
+<blockquote>
+<p>一个非静态内部类不能脱离外部类实体被创建，一个非静态内部类可以访问外部类的数据和方法，因为他就在外部类里面。</p>
+</blockquote>
+<p>参考资料:<br><a href="http://www.cnblogs.com/kissazi2/p/3971065.html" target="_blank" rel="external">java中的Static class</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/29/angularjs-minError/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/12/29/angularjs-minError/" class="post-title-link" itemprop="url">angularjs源码剖析之minErr函数</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-12-29 16:09:25" itemprop="dateCreated datePublished" datetime="2016-12-29T16:09:25+08:00">2016-12-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-16 21:21:32" itemprop="dateModified" datetime="2019-05-16T21:21:32+08:00">2019-05-16</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular1-5-8-minErr函数"><a href="#angular1-5-8-minErr函数" class="headerlink" title="angular1.5.8 minErr函数"></a>angular1.5.8 minErr函数</h2><p>在运行过程中如果angularjs脚本出现错误,那么在浏览器控制台我们可以看到自定义的错误信息，<br>这些信息就是通过这个函数输出的。</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>angular.js内部代码有如下用法：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngMinErr  = minErr(<span class="string">'ng'</span>) <span class="comment">//代表是ng模块的错误</span></span><br></pre></td></tr></table></figure>
+<h3 id="函数解读"><a href="#函数解读" class="headerlink" title="函数解读"></a>函数解读</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">/**</span><br><span class="line">  * @description  描述</span><br><span class="line">  * 这个对象提供一个用于angular创建富错误信息的能力</span><br><span class="line">  * This object provides a utility for producing rich Error messages within</span><br><span class="line">  * Angular. It can be called as follows:</span><br><span class="line">  *</span><br><span class="line">  * 使用方法</span><br><span class="line">  * var exampleMinErr = minErr('example');</span><br><span class="line">  * throw exampleMinErr('one', 'This &#123;0&#125; is &#123;1&#125;', foo, bar);</span><br><span class="line">  *</span><br><span class="line">  * The above creates an instance of minErr in the example namespace. The</span><br><span class="line">  * resulting error will have a namespaced error code of example.one.  The</span><br><span class="line">  * resulting error will replace &#123;0&#125; with the value of foo, and &#123;1&#125; with the</span><br><span class="line">  * value of bar. The object is not restricted in the number of arguments it can</span><br><span class="line">  * take.</span><br><span class="line">  *</span><br><span class="line">  *如果传入比需要少点的参数，那么多出来的参数会保存起来</span><br><span class="line">  * If fewer arguments are specified than necessary for interpolation, the extra</span><br><span class="line">  * interpolation markers will be preserved in the final string.</span><br><span class="line">  *由于数据在生成过程中会被静态解析,在minErr实例创建和调用的过程中一些约束被适当的应用。</span><br><span class="line">  * Since data will be parsed statically during a build step, some restrictions</span><br><span class="line">  * are applied with respect to how minErr instances are created and called.</span><br><span class="line">  * Instances should have names of the form namespaceMinErr for a minErr created</span><br><span class="line">  * using minErr('namespace') .</span><br><span class="line">  * 错误代码，命名空间和模板字符串都应该是静态字符串，不能是变量和生成的表达式</span><br><span class="line">  * Error codes, namespaces and template strings</span><br><span class="line">  * should all be static strings, not variables or general expressions.</span><br><span class="line">  *</span><br><span class="line">  * @param &#123;string&#125; module The namespace to use for the new minErr instance.</span><br><span class="line"></span><br><span class="line">  *在angular.js 16314行 定义了一个如下Err 其中就传入了TypeError 对象</span><br><span class="line">  * var $qMinErr = minErr('$q', TypeError);</span><br><span class="line"></span><br><span class="line">  * line 16413</span><br><span class="line">  *$qMinErr(</span><br><span class="line">  *        'qcycle',</span><br><span class="line">  *        "Expected promise to be resolved with value other than itself '&#123;0&#125;'",</span><br><span class="line">  *        val)</span><br><span class="line"></span><br><span class="line">  * Promise解读</span><br><span class="line">  * 相关链接 http://lib.csdn.net/article/angularjs/33116</span><br><span class="line">  * @param &#123;function&#125; ErrorConstructor Custom error constructor to be instantiated when returning</span><br><span class="line">  *   error from returned function, for cases when a particular type of error is useful.</span><br><span class="line">  * @returns &#123;function(code:string, template:string, ...templateArgs): Error&#125; minErr instance</span><br><span class="line">  */</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">minErr</span>(<span class="params">module, ErrorConstructor</span>) </span>&#123;</span><br><span class="line">      ErrorConstructor = ErrorConstructor || <span class="built_in">Error</span>;<span class="comment">//如果没有提供Error构造函数，就用默认的Error</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">//返回真正可以使用的函数</span></span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> SKIP_INDEXES = <span class="number">2</span>;<span class="comment">//跳过的索引</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> templateArgs = <span class="built_in">arguments</span>,<span class="comment">//函数传入的参数</span></span><br><span class="line">          code = templateArgs[<span class="number">0</span>],<span class="comment">//第一个参数：错误代码</span></span><br><span class="line">          message = <span class="string">'['</span> + (<span class="built_in">module</span> ? <span class="built_in">module</span> + <span class="string">':'</span> : <span class="string">''</span>) + code + <span class="string">'] '</span>,<span class="comment">//初始化错误消息</span></span><br><span class="line">          template = templateArgs[<span class="number">1</span>],<span class="comment">//第二个参数：模板</span></span><br><span class="line">          paramPrefix, i;</span><br><span class="line"></span><br><span class="line">        message += template.replace(<span class="regexp">/\&#123;\d+\&#125;/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">match</span>) </span>&#123;</span><br><span class="line">          <span class="comment">//slice &#123;0&#125; 就提取出0</span></span><br><span class="line">          <span class="comment">//slice &#123;1&#125; 就提取出1</span></span><br><span class="line">          <span class="comment">//比如 "Unknown provider: &#123;0&#125;"就提取出&#123;0&#125;</span></span><br><span class="line">          <span class="keyword">var</span> index = +match.slice(<span class="number">1</span>, <span class="number">-1</span>),<span class="comment">//相当于把&#123;&#125;去掉</span></span><br><span class="line">            shiftedIndex = index + SKIP_INDEXES;<span class="comment">//根据参数顺序要跳过2个</span></span><br><span class="line"></span><br><span class="line">          <span class="keyword">if</span> (shiftedIndex &lt; templateArgs.length) &#123;</span><br><span class="line">            <span class="comment">// shiftedIndex 是 从 SKIP_INDEXES 开始计算的</span></span><br><span class="line">            <span class="comment">// 因为第一个参数为 错误代码 ，第二个参数为 模板</span></span><br><span class="line">            <span class="comment">//相当于格式化参数</span></span><br><span class="line">            <span class="keyword">return</span> toDebugString(templateArgs[shiftedIndex]);</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">return</span> match;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        message += <span class="string">'\nhttp://errors.angularjs.org/1.5.8/'</span> +</span><br><span class="line">          (<span class="built_in">module</span> ? <span class="built_in">module</span> + <span class="string">'/'</span> : <span class="string">''</span>) + code;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (i = SKIP_INDEXES, paramPrefix = <span class="string">'?'</span>; i &lt; templateArgs.length; i++, paramPrefix = <span class="string">'&amp;'</span>) &#123;</span><br><span class="line">          message += paramPrefix + <span class="string">'p'</span> + (i - SKIP_INDEXES) + <span class="string">'='</span> +</span><br><span class="line">            <span class="built_in">encodeURIComponent</span>(toDebugString(templateArgs[i]));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ErrorConstructor(message);</span><br><span class="line">      &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* global toDebugString: true */</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">serializeObject</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> seen = [];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//关于JSON.stringify</span></span><br><span class="line">    <span class="comment">//https://developer.mozilla.org/zh-CN/docs/Using_native_JSON</span></span><br><span class="line">    <span class="comment">//该参数可以是多种类型,如果是一个函数,则它可以改变一个javascript对象在字符串化过程中的行为,</span></span><br><span class="line">    <span class="comment">//如果是一个包含 String 和 Number 对象的数组,则它将作为一个白名单.</span></span><br><span class="line">    <span class="comment">//只有那些键存在域该白名单中的键值对才会被包含进最终生成的JSON字符串中.如果该参数值为null或者被省略,则所有的键值对都会被包含进最终生成的JSON字符串中.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">JSON</span>.stringify(obj, <span class="function"><span class="keyword">function</span>(<span class="params">key, val</span>) </span>&#123;</span><br><span class="line">      val = toJsonReplacer(key, val);</span><br><span class="line">      <span class="keyword">if</span> (isObject(val)) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (seen.indexOf(val) &gt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="string">'...'</span>;<span class="comment">//变成省略号</span></span><br><span class="line"></span><br><span class="line">        seen.push(val);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> val;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//输出调试信息</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">toDebugString</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> obj === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> obj.toString().replace(<span class="regexp">/ \&#123;[\s\S]*$/</span>, <span class="string">''</span>);<span class="comment">//把函数体去掉</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isUndefined(obj)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">'undefined'</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> obj !== <span class="string">'string'</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> serializeObject(obj);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> obj;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>从这个函数中我们可以学到以下几点</p>
+<blockquote>
+<p>函数内部返回函数</p>
+</blockquote>
+<blockquote>
+<p>javascript slice的用法</p>
+</blockquote>
+<blockquote>
+<p>javascript replace 加正则的用法</p>
+</blockquote>
+<blockquote>
+<p>函数的包装</p>
+</blockquote>
+<blockquote>
+<p>对象的序列化 通过JSON.stringify</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/29/slf4j_log4j/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/12/29/slf4j_log4j/" class="post-title-link" itemprop="url">log4j_cannot_log_in_tomcat</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-12-29 14:05:34" itemprop="dateCreated datePublished" datetime="2016-12-29T14:05:34+08:00">2016-12-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:37:34" itemprop="dateModified" datetime="2019-05-09T20:37:34+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="slf4j-日志配置"><a href="#slf4j-日志配置" class="headerlink" title="slf4j 日志配置"></a>slf4j 日志配置</h2><p>前几天遇到了一个奇怪的问题，log4j在程序调试时是可以输出到日志文件中的，但是放到tomcat下却只生成到了tomcat自带的日志文件stdout中</p>
+<p>log4j 配置如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开发</span></span><br><span class="line">  log4j.<span class="attribute">rootLogger</span>=ALL,CONSOLE,FILE,OUT,FILEERROR,FILEWARN</span><br><span class="line">  #正式</span><br><span class="line">  #log4j.<span class="attribute">rootLogger</span>=CONSOLE,FILE,OUT,FILEERROR,FILEWARN</span><br><span class="line">  log4j.logger.com.mchange.v2.log.<span class="attribute">MLog</span>=ALL</span><br><span class="line">  og4j.logger.<span class="attribute">slick</span>=WARN,ERROR</span><br><span class="line">  log4j.logger.com.<span class="attribute">ht</span>=ALL</span><br><span class="line">  log4j.logger.akka.<span class="attribute">http</span>=WARN,ERROR</span><br><span class="line">  log4j.logger.org.<span class="attribute">reflections</span>=ERROR</span><br><span class="line">  log4j.logger.<span class="attribute">kafka</span>=ERROR,WARN</span><br><span class="line">  log4j.logger.org.apache.<span class="attribute">zookeeper</span>=ERROR,WARN</span><br><span class="line">  log4j.logger.org.I0Itec.<span class="attribute">zkclient</span>=ERROR,WARN</span><br><span class="line"></span><br><span class="line">  log4j.appender.<span class="attribute">CONSOLE</span>=org.apache.log4j.ConsoleAppender</span><br><span class="line">  log4j.appender.CONSOLE.<span class="attribute">Target</span>=System.out</span><br><span class="line">  log4j.appender.CONSOLE.<span class="attribute">layout</span>=org.apache.log4j.PatternLayout</span><br><span class="line">  log4j.appender.CONSOLE.layout.<span class="attribute">ConversionPattern</span>=%d %-5p [%F(%L)] %m%n</span><br><span class="line"></span><br><span class="line">  log4j.appender.<span class="attribute">FILE</span>=org.apache.log4j.RollingFileAppender  </span><br><span class="line">  log4j.appender.FILE.<span class="attribute">File</span>=./logs/db.log</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">Append</span>=<span class="literal">true</span></span><br><span class="line">  log4j.appender.FILE.<span class="attribute">DatePattern</span>=<span class="string">'.'</span>yyyy-MM-dd'.log'</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">layout</span>=org.apache.log4j.PatternLayout</span><br><span class="line">  log4j.appender.FILE.layout.<span class="attribute">ConversionPattern</span>=%d %-5p [%c(%L)] %m%n</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">MaxFileSize</span>=10240KB</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">MaxBackupIndex</span>=1000</span><br><span class="line">  log4j.appender.FILE.Threshold = DEBUG</span><br></pre></td></tr></table></figure>
+<p>于是排查了几天，期间也参照tomcat官方的说法把tomcat打日志的方式改成log4j，但是后来发现这只是把tomcat的日志按照log4j的形式输出而已，<br>根本的问题还是没有解决，就是在上述配置的db.log或者out.log中都没有程序中输出的日志。</p>
+<p>当看到stackoverflow上得这个<a href="http://stackoverflow.com/questions/24356319/log4j-creates-log-file-but-does-not-write-to-it" target="_blank" rel="external">问题</a>后，似乎有了一点眉头：</p>
+<p>The output seems to be of the default format that Java’s standard logging framework (JUL) would emit.<br>So, there are two possibilities (that come to mind):<br>Your code imports java.util.logging.Logger, rather than org.apache.log4j.Logger.<br>There exists a library of some sort, in your classpath, that intercepts Log4J calls and converts them to JUL calls.</p>
+<p>最后一句话引起了我的注意，因为我的lib中还引入了logback-classic-1.1.3.jar,logback-core-1.1.3.jar两个包。</p>
+<p>死马当活马医，我把这两个包删除，然后再重启tomcat,结果DEBUG信息就正常写入了db.log中。</p>
+<p>参考的资料有：<br><a href="http://www.tuicool.com/articles/VF32uye" target="_blank" rel="external">log4j和logback的冲突导致日志输出异常</a><br><a href="http://phl.iteye.com/blog/2021461" target="_blank" rel="external">JAVA日志组件系列(三)log4j+logback+slf4j的关系与调试</a><br><a href="http://www.cnblogs.com/yongze103/archive/2012/05/05/2484753.html" target="_blank" rel="external">Logback浅析</a></p>
+<p>第二篇文章提到了这点：<br>只有logback配置文件即可，因为log4j的输出已经委托给了slf4j（通过log4j-over-slf4j），而slf4j的默认实现是logback。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/22/scala-import-problem/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/12/22/scala-import-problem/" class="post-title-link" itemprop="url">scala_import_problem</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-12-22 09:27:26" itemprop="dateCreated datePublished" datetime="2016-12-22T09:27:26+08:00">2016-12-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala文件导入java包"><a href="#scala文件导入java包" class="headerlink" title="scala文件导入java包"></a>scala文件导入java包</h2><p>定义一个stringTest.java文件如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">stringTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">queryVehicleNum</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="string">"ss"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用javac命令编译此文件，在目录下会生成stringTest.class<br>此时我们并没有定义它的package,如果在同级目录下新建javaStringTest.scala文件如下：</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">object</span> testIm<span class="keyword">port</span> &#123;</span><br><span class="line"></span><br><span class="line">   def main(args: <span class="type">Array</span>[<span class="type">String</span>])&#123;</span><br><span class="line"></span><br><span class="line">     println(stringTest.queryVehicleNum())</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，此时可以直接引入stringTest类不会报错，用scala命令运行此文件会输出ss</p>
+<p>如果在目录下新建com目录，在com目录下新建test目录,把stringTest文件放入test目录，那么再执行scala testImport.scala文件就会报如下错误：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">java<span class="selector-class">.lang</span><span class="selector-class">.ClassNotFoundException</span>: stringTest</span><br><span class="line">at java<span class="selector-class">.net</span><span class="selector-class">.URLClassLoader</span><span class="selector-class">.findClass</span>(URLClassLoader<span class="selector-class">.java</span>:<span class="number">381</span>)</span><br><span class="line">at java<span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.loadClass</span>(ClassLoader<span class="selector-class">.java</span>:<span class="number">424</span>)</span><br><span class="line">at java<span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.loadClass</span>(ClassLoader<span class="selector-class">.java</span>:<span class="number">357</span>)</span><br><span class="line">at Main$.main(javaStringTest<span class="selector-class">.scala</span>:<span class="number">9</span>)</span><br><span class="line">at Main.main(javaStringTest.scala)</span><br><span class="line">at sun<span class="selector-class">.reflect</span><span class="selector-class">.NativeMethodAccessorImpl</span><span class="selector-class">.invoke0</span>(Native Method)</span><br><span class="line">at sun<span class="selector-class">.reflect</span><span class="selector-class">.NativeMethodAccessorImpl</span><span class="selector-class">.invoke</span>(NativeMethodAccessorImpl<span class="selector-class">.java</span>:<span class="number">62</span>)</span><br></pre></td></tr></table></figure>
+<p>所以此时我们要在testImport类中引入stringTest包<figure class="highlight plain"><figcaption><span>com.test.stringTest```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">但是这样我们必须先编译scala文件,```scalac javaStringTest.scala</span><br></pre></td></tr></table></figure></p>
+<p>然后我们用java命令调用生成的testImportObj <code>java -classpath .;scala-library.jar testImportObj</code></p>
+<p>或者我们也可以用<code>scala -i testImportObj.java</code>命令引入scala REPL</p>
+<p>然后我们在scala命令行输入<code>testImportObj.main(new Array[String](3))</code>也会输出ss字符串</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/19/scala-implicit/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/11/19/scala-implicit/" class="post-title-link" itemprop="url">scala_implicit</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-19 21:06:25" itemprop="dateCreated datePublished" datetime="2016-11-19T21:06:25+08:00">2016-11-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="implicit"><a href="#implicit" class="headerlink" title="implicit"></a>implicit</h2><h3 id="转换成预期的数据类型"><a href="#转换成预期的数据类型" class="headerlink" title="转换成预期的数据类型"></a>转换成预期的数据类型</h3><p>比如你有一个方法参数类型是IndexedSeq[Char]，在你传入String时，编译器发现类型不匹配，就检查当前作用域是否有从String到IndexedSeq隐式转换。</p>
+<p>Scala在需要時會自動把整數轉換成雙精度實數，這是因為在Scala.Predef對象中定義了一個</p>
+<p>implicit def int2double(x:Int) :Double = x.toDouble</p>
+<p>而Scala.Predef是自動引入到當前作用域的，因此編譯器在需要時會自動把整數轉換成Double類型。</p>
+<h3 id="转换selection的receiver"><a href="#转换selection的receiver" class="headerlink" title="转换selection的receiver"></a>转换selection的receiver</h3><p>转换selection的receiver允许你适应某些方法调用，比如 “abc”.exist ，”abc”类型为String，本身没有定义exist方法，这时编辑器就检查当前作用域内String的隐式转换后的类型是否有exist方法，发现stringWrapper转换后成IndexedSeq类型后，可以有exist方法，这个和C# 静态扩展方法功能类似。</p>
+<h3 id="隐含参数"><a href="#隐含参数" class="headerlink" title="隐含参数"></a>隐含参数</h3><p>隐含参数有点类似是缺省参数，如果在调用方法时没有提供某个参数，编译器会查找当前作用域是否有符合条件的implicit对象作为参数传入（有点类似dependency injection)</p>
+<h3 id="隐式变换也可以转换调用方法的对象"><a href="#隐式变换也可以转换调用方法的对象" class="headerlink" title="隐式变换也可以转换调用方法的对象"></a>隐式变换也可以转换调用方法的对象</h3><p>编译器看到X.method,而类型X没有定义method（包括基类)方法，那么编译器就查找作用域内定义的从X到其它对象的类型转换，比如Y，而类型Y定义了method方法，编译器就首先使用隐含类型转换把X转换成Y，然后调用Y的method。</p>
+<p>隐式转换可以用来扩展Scala语言，定义新的语法结构，比如我们在定义一个Map对象时可以使用如下语法：</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map(<span class="number">1</span> -&gt; <span class="string">"One"</span>, <span class="number">2</span>-&gt;<span class="string">"Two"</span>,<span class="number">3</span>-&gt;<span class="string">"Three"</span>)</span><br></pre></td></tr></table></figure>
+<p>你有没有想过-&gt;内部是如何实现的，-&gt;不是scala本身的语法，而是类型ArrowAssoc的一个方法。这个类型定义在包Scala.Predef对象中。Scala.Predef自动引入到当前作用域，在这个对象中，同时定义了一个从类型Any到ArrowAssoc的隐含转换。因此当使用1 -&gt; “One”时，编译器自动插入从1转换到ArrowAssoc转换。</p>
 
           
         
@@ -1118,7 +1139,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/23/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/25/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/23/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/25/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1160,7 +1181,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-count">183</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1233,7 +1254,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">27</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

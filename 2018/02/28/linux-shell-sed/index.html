@@ -106,7 +106,7 @@
 <meta property="og:description" content="linux命令学习之sed今天在看beego工具bee源码的时候，看到它的makefile文件开头有这么一段命令
 1VERSION = $(shell grep &apos;const version&apos; cmd/commands/version/version.go | sed -E &apos;s/.*&quot;(.+)&quot;$$/v\1/&apos;)
 动脑思考了下它的含义，总结如下：调用shell命令grep 查找cmd/comma">
-<meta property="og:updated_time" content="2019-05-07T12:32:35.574Z">
+<meta property="og:updated_time" content="2019-05-17T12:30:54.481Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux shell命令之sed">
 <meta name="twitter:description" content="linux命令学习之sed今天在看beego工具bee源码的时候，看到它的makefile文件开头有这么一段命令
@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+                <time title="修改时间：2019-05-17 20:30:54" itemprop="dateModified" datetime="2019-05-17T20:30:54+08:00">2019-05-17</time>
               
             
           </span>
@@ -413,7 +413,7 @@
 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VERSION = <span class="constructor">$(<span class="params">shell</span> <span class="params">grep</span> '<span class="params">const</span> <span class="params">version</span>' <span class="params">cmd</span><span class="operator">/</span><span class="params">commands</span><span class="operator">/</span><span class="params">version</span><span class="operator">/</span><span class="params">version</span>.<span class="params">go</span> | <span class="params">sed</span> -E '<span class="params">s</span><span class="operator">/</span>.<span class="operator">*</span><span class="string">"(.+)"</span>$$<span class="operator">/</span><span class="params">v</span>\1<span class="operator">/</span>')</span></span><br></pre></td></tr></table></figure>
 <p>动脑思考了下它的含义，总结如下：<br>调用shell命令grep 查找cmd/commands/version/version.go文件中的const version ，我们看到<br>这个文件中的const version 一行为<code>const version = &quot;1.9.1&quot;</code><br>然后调用sed命令把这个文本替换为v1.9.1 ，最后赋值给VERSION变量<br>sed -e命令就是多点编辑命令，比如 sed -e ‘/v1/v2/‘就是把v1替换为v2</p>
 <p>sed元字符(..) 匹配子串，保存匹配的字符，如s/(love)able/\1rs，loveable被替换成lovers。<br>相当于正则表达式</p>
-<p>参考资料:<br><a href="http://man.linuxde.net/sed" target="_blank" rel="external">sed命令</a></p>
+<p>参考资料:<br><a href="http://man.linuxde.net/sed" target="_blank" rel="external">sed命令</a><br><a href="https://www.cnblogs.com/ftl1012/p/sed.html" target="_blank" rel="external">Linux sed命令详解</a></p>
 
       
     </div>
@@ -531,7 +531,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-count">183</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -604,7 +604,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">27</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

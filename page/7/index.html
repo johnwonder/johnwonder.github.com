@@ -309,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/26/angular-init-1/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/01/angular-ng-attr/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -329,7 +329,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/07/26/angular-init-1/" class="post-title-link" itemprop="url">angular_源码分析之启动过程</a>
+                <a href="/2017/09/01/angular-ng-attr/" class="post-title-link" itemprop="url">angular之ng-attr属性</a>
               
             
           </h2>
@@ -354,7 +354,7 @@
                 
               
 
-              <time title="创建时间：2017-07-26 12:41:02" itemprop="dateCreated datePublished" datetime="2017-07-26T12:41:02+08:00">2017-07-26</time>
+              <time title="创建时间：2017-09-01 10:49:55" itemprop="dateCreated datePublished" datetime="2017-09-01T10:49:55+08:00">2017-09-01</time>
             
 
             
@@ -407,14 +407,14 @@
       
         
           
-            <h2 id="启动过程"><a href="#启动过程" class="headerlink" title="启动过程"></a>启动过程</h2><p>在angular启动过程中会经历以下步骤：</p>
-<h3 id="publishExternalAPI"><a href="#publishExternalAPI" class="headerlink" title="publishExternalAPI"></a>publishExternalAPI</h3><p>函数中会加载扩展函数，定义<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### angularInit</span><br><span class="line"></span><br><span class="line">angularInit函数中会调用```bootstrap```,bootstrap中会调用```createInjector```方法完成依赖注入，然后调用```invoke```启动编译服务</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">////通过createInjector方法会调用注入时提供的ng模块中的configFn</span><br><span class="line">   //configFn中提供了$rootScope, $rootElement, $compile, $injector</span><br><span class="line">   //通过$provide.provider方法提供</span><br><span class="line">   //modules中首先就是ng模块</span><br><span class="line">var injector = createInjector(modules, config.strictDi);</span><br><span class="line">  //$rootScope,$rootElement,$compile,$injector都是在publishExternalAPI中</span><br><span class="line">   //注入ng模块时由$provide.provider提供的</span><br><span class="line">   //$rootElement在bootstrap中</span><br><span class="line">  //  modules.unshift([&apos;$provide&apos;, function($provide) &#123;</span><br><span class="line">  //     $provide.value(&apos;$rootElement&apos;, element);</span><br><span class="line">  //   &#125;]);</span><br><span class="line">   injector.invoke([&apos;$rootScope&apos;, &apos;$rootElement&apos;, &apos;$compile&apos;, &apos;$injector&apos;,</span><br><span class="line">      function bootstrapApply(scope, element, compile, injector) &#123;</span><br><span class="line">       scope.$apply(function() &#123; //rootScope</span><br><span class="line">         element.data(&apos;$injector&apos;, injector);</span><br><span class="line">         compile(element)(scope);</span><br><span class="line">       &#125;);</span><br><span class="line">     &#125;]</span><br><span class="line">   );</span><br></pre></td></tr></table></figure></p>
-<h3 id="createInjector"><a href="#createInjector" class="headerlink" title="createInjector"></a>createInjector</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> runBlocks = loadModules(modulesToLoad);</span><br></pre></td></tr></table></figure>
-<p>loadModules是createInjector内部方法,方法中会调用<figure class="highlight plain"><figcaption><span>= angularModule(module);```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">获取模块。  </span><br><span class="line"></span><br><span class="line">因为定义ng模块时是push到configBlocks中的，所以会直接调用runInvokeQueue</span><br><span class="line"></span><br><span class="line">### runInvokeQueue</span><br><span class="line">```js</span><br><span class="line">//queue就是在定义ng 模块时因为有configFn参数,然后调用config 函数（实际是通过invokeLater返回的函数)push到configBlocks中。</span><br><span class="line"> var config = invokeLater(&apos;$injector&apos;, &apos;invoke&apos;, &apos;push&apos;, configBlocks);//configBlocks此时为空</span><br><span class="line"></span><br><span class="line"> function invokeLater(provider, method, insertMethod, queue) &#123;</span><br><span class="line">          if (!queue) queue = invokeQueue;</span><br><span class="line">          return function() &#123;</span><br><span class="line">            queue[insertMethod || &apos;push&apos;]([provider, method, arguments]);</span><br><span class="line">            return moduleInstance;</span><br><span class="line">          &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//此时queue就是[&apos;$injector&apos;,&apos;invoke&apos;,[[&apos;$provide&apos;,function($provide)&#123;&#125;]]]</span><br><span class="line">function runInvokeQueue(queue) &#123;</span><br><span class="line">       var i, ii;</span><br><span class="line">       for (i = 0, ii = queue.length; i &lt; ii; i++) &#123;</span><br><span class="line">         var invokeArgs = queue[i],</span><br><span class="line"></span><br><span class="line">            //loadModules为内部方法所以能直接调用providerInjector</span><br><span class="line">            //get方法就是返回injector对象的getService方法</span><br><span class="line">             provider = providerInjector.get(invokeArgs[0]);</span><br><span class="line">          //实际就是调用$injector的invoke方法</span><br><span class="line">         provider[invokeArgs[1]].apply(provider, invokeArgs[2]);</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="invoke函数"><a href="#invoke函数" class="headerlink" title="invoke函数"></a>invoke函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//调用runInvokeQueue时,fn就是['$provide',function($provide)&#123;&#125;]</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invoke</span>(<span class="params">fn, self, locals, serviceName</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> locals === <span class="string">'string'</span>) &#123;</span><br><span class="line">        serviceName = locals;</span><br><span class="line">        locals = <span class="literal">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//注入参数</span></span><br><span class="line">      <span class="comment">//如果fn是数组那么会判断数组最后一个元素是否为函数</span></span><br><span class="line">      <span class="keyword">var</span> args = injectionArgs(fn, locals, serviceName);</span><br><span class="line">      <span class="keyword">if</span> (isArray(fn)) &#123; <span class="comment">//比如['$scope',function($scope)&#123;&#125;]</span></span><br><span class="line">        fn = fn[fn.length - <span class="number">1</span>];<span class="comment">//取数组的最后一个</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!isClass(fn)) &#123;</span><br><span class="line">        <span class="comment">// http://jsperf.com/angularjs-invoke-apply-vs-switch</span></span><br><span class="line">        <span class="comment">// #5388</span></span><br><span class="line">        <span class="comment">//比如 var injector = angular.injector(["myModule"]);</span></span><br><span class="line">        <span class="comment">//injector.invoke(function(myService)&#123;alert(myService.my);&#125;);</span></span><br><span class="line">        <span class="keyword">return</span> fn.apply(self, args);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        args.unshift(<span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> (<span class="built_in">Function</span>.prototype.bind.apply(fn, args))();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="providerCache"><a href="#providerCache" class="headerlink" title="providerCache"></a>providerCache</h3><p>$provide提供了provider方法,比如<figure class="highlight plain"><figcaption><span>$CompileProvider)```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">//providerInjector调用invoke函数时,getService</span><br><span class="line">//是从providerCache中获取的</span><br><span class="line">var providerCache = &#123;</span><br><span class="line">        $provide: &#123;</span><br><span class="line">            provider: supportObject(provider),</span><br><span class="line">            factory: supportObject(factory),</span><br><span class="line">            service: supportObject(service),</span><br><span class="line">            value: supportObject(value),</span><br><span class="line">            constant: supportObject(constant),</span><br><span class="line">            decorator: decorator</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;;</span><br></pre></td></tr></table></figure></p>
-<h3 id="provider"><a href="#provider" class="headerlink" title="provider"></a>provider</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//name $compile</span></span><br><span class="line"><span class="comment">//provider_  CompileProvider</span></span><br><span class="line"><span class="comment">//返回CompileProvider实例 并且放入providerCache中。</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">provider</span>(<span class="params">name, provider_</span>) </span>&#123;</span><br><span class="line">    assertNotHasOwnProperty(name, <span class="string">'service'</span>);</span><br><span class="line">    <span class="keyword">if</span> (isFunction(provider_) || isArray(provider_)) &#123;</span><br><span class="line">      provider_ = providerInjector.instantiate(provider_);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!provider_.$<span class="keyword">get</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> $injectorMinErr(<span class="string">'pget'</span>, <span class="string">"Provider '&#123;0&#125;' must define $get factory method."</span>, name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> providerCache[name + providerSuffix] = provider_;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>provider方法里其实调用了<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">```js</span><br><span class="line">//Type就可能是函数类型</span><br><span class="line">function instantiate(Type, locals, serviceName) &#123;</span><br><span class="line">     // Check if Type is annotated and use just the given function at n-1 as parameter</span><br><span class="line">     // e.g. someModule.factory(&apos;greeter&apos;, [&apos;$window&apos;, function(renamed$window) &#123;&#125;]);</span><br><span class="line">     var ctor = (isArray(Type) ? Type[Type.length - 1] : Type);</span><br><span class="line">     var args = injectionArgs(Type, locals, serviceName);</span><br><span class="line">     // Empty object at position 0 is ignored for invocation with `new`, but required.</span><br><span class="line">     args.unshift(null);</span><br><span class="line">     //这样构造。。返回函数本身的对象，然后就可以链式调用了。</span><br><span class="line">     return new (Function.prototype.bind.apply(ctor, args))();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+            <h2 id="ngAttr-绑定任意属性"><a href="#ngAttr-绑定任意属性" class="headerlink" title="ngAttr 绑定任意属性"></a>ngAttr 绑定任意属性</h2><p>官网上说是为了可以绕开浏览器的约束：</p>
+<p>Web browsers are sometimes picky about what values they consider valid for attributes.<br>For example, considering this template:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">svg</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"&#123;&#123;cx&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">circle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以用ng-attr-cx来绕开浏览器的限制</p>
+<p>当用了ngAttr属性后，$interpolate服务的allOrNothing标记被用到了，任何表达式里的值是undefined的时候，</p>
+<p>属性会被移除且不包含到元素上。</p>
+<p>下面的属性也会出现类似问题，select的size 属性，textarea的placeholder属性，button的type属性，</p>
+<p>progress的value属性。</p>
 
           
         
@@ -471,7 +471,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/26/angular-reverseParams/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/30/angular-normalize-directive/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -491,7 +491,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/07/26/angular-reverseParams/" class="post-title-link" itemprop="url">angular源码分析之reverseParams函数</a>
+                <a href="/2017/08/30/angular-normalize-directive/" class="post-title-link" itemprop="url">angular_指令标准化</a>
               
             
           </h2>
@@ -516,7 +516,7 @@
                 
               
 
-              <time title="创建时间：2017-07-26 11:32:03" itemprop="dateCreated datePublished" datetime="2017-07-26T11:32:03+08:00">2017-07-26</time>
+              <time title="创建时间：2017-08-30 10:34:14" itemprop="dateCreated datePublished" datetime="2017-08-30T10:34:14+08:00">2017-08-30</time>
             
 
             
@@ -569,9 +569,13 @@
       
         
           
-            <h2 id="reverseParams方法"><a href="#reverseParams方法" class="headerlink" title="reverseParams方法"></a>reverseParams方法</h2><h3 id="出处"><a href="#出处" class="headerlink" title="出处"></a>出处</h3><p>在angular注册指令方法里，如果name是数组，那么会调用<code>forEach</code>方法来遍历注册</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">forEach(name, reverseParams(registerDirective));</span><br></pre></td></tr></table></figure>
-<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">*因为forEach是value,key的顺序，但是key,value是最常用的。</span><br><span class="line">* when using forEach the params are value, key, but it is often useful to have key, value.</span><br><span class="line">* @param &#123;function(string, *)&#125; iteratorFn</span><br><span class="line">* @returns &#123;function(*, string)&#125;</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reverseParams</span>(<span class="params">iteratorFn</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">value, key</span>) </span>&#123;iteratorFn(key, value);&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h2 id="angular-指令匹配"><a href="#angular-指令匹配" class="headerlink" title="angular 指令匹配"></a>angular 指令匹配</h2><p>angular 官网自定义指令提到了如下信息：</p>
+<p>AngularJS normalizes an element’s tag and attribute name to determine which elements match which directives. We typically refer to directives by their case-sensitive camelCase normalized name (e.g. ngModel). However, since HTML is case-insensitive, we refer to directives in the DOM by lower-case forms, typically using dash-delimited attributes on DOM elements (e.g. ng-model).</p>
+<p>The normalization process is as follows:</p>
+<p>Strip x- and data- from the front of the element/attributes.<br>Convert the :, -, or _-delimited name to camelCase.</p>
+<p>意思就是跳过x-和data-,然后 把:,-,_这种分隔字符 做驼峰处理。比如下面就比配ngBind指令</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">ng-bind</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">ng:bind</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">ng_bind</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">data-ng-bind</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">x-ng-bind</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="angular内部源码"><a href="#angular内部源码" class="headerlink" title="angular内部源码"></a>angular内部源码</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> SPECIAL_CHARS_REGEXP = <span class="regexp">/([\:\-\_]+(.))/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Converts snake_case to camelCase.</span><br><span class="line"> * Also there is special case for Moz prefix starting with upper case letter.</span><br><span class="line"> * @param name Name to normalize</span><br><span class="line"> *骆驼 https://my.oschina.net/yongqing/blog/300313</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">camelCase</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> name.</span><br><span class="line">    replace(SPECIAL_CHARS_REGEXP, <span class="function"><span class="keyword">function</span>(<span class="params">_, separator, letter, offset</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> offset ? letter.toUpperCase() : letter;</span><br><span class="line">    &#125;).</span><br><span class="line">    replace(MOZ_HACK_REGEXP, <span class="string">'Moz$1'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//非获取匹配，匹配pattern但不获取匹配结果，不进行存储供以后使用。这在使用或字符“(|)”来组合一个模式的各个部分时很有用。</span></span><br><span class="line"><span class="comment">//例如“industr(?:y|ies)”就是一个比“industry|industries”更简略的表达式。</span></span><br><span class="line"><span class="keyword">var</span> PREFIX_REGEXP = <span class="regexp">/^((?:x|data)[\:\-_])/i</span>;</span><br><span class="line"><span class="comment">//http://www.cnblogs.com/whitewolf/p/3495822.html</span></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Converts all accepted directives format into proper directive name.</span><br><span class="line"> * @param name Name to normalize</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">directiveNormalize</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> camelCase(name.replace(PREFIX_REGEXP, <span class="string">''</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -628,7 +632,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/20/typescript-declare/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/24/javascript-array-unique/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -648,7 +652,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/07/20/typescript-declare/" class="post-title-link" itemprop="url">typescript声明</a>
+                <a href="/2017/08/24/javascript-array-unique/" class="post-title-link" itemprop="url">javascript数组去重</a>
               
             
           </h2>
@@ -673,7 +677,7 @@
                 
               
 
-              <time title="创建时间：2017-07-20 16:00:40" itemprop="dateCreated datePublished" datetime="2017-07-20T16:00:40+08:00">2017-07-20</time>
+              <time title="创建时间：2017-08-24 11:22:34" itemprop="dateCreated datePublished" datetime="2017-08-24T11:22:34+08:00">2017-08-24</time>
             
 
             
@@ -726,18 +730,19 @@
       
         
           
-            <p>今天在看<a href="https://mp.weixin.qq.com/s/LVoa3YnDaldiZroya_EN1A" target="_blank" rel="external">typescript 导入模块</a>的时候，看到这么一个导入法：</p>
-<p><code>import * as express from &#39;express&#39;</code></p>
-<p>文中提到了如下的问题</p>
-<p>最后一行export = express，并且上面分别定义了一个 function express() 和namespace express，这种写法是比较特殊的，我一时也没法解释清楚，反正多参照 DefinitelyTyped 上其他模块的写法即可。这个问题归根结底是 express 模块通过 import * as express from ‘express’ 引入的时候，express本身又是一个函数，这种写法在早期的 Node.js 版本的程序和 NPM 模块中是比较流行的。</p>
-<p>这个应该只和声明有关</p>
-<p>然后就看到<a href="https://segmentfault.com/q/1010000008316030" target="_blank" rel="external">这篇文章</a>,里面提到了用 tsc 编译成 commonjs</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span>;</span><br><span class="line"><span class="keyword">var</span> moment = <span class="built_in">require</span>(<span class="string">'./moment'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> moment)</span><br></pre></td></tr></table></figure>
-<p>然后我自己试了一下在target为es5的情况下确实是编译成了如下js:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>);</span><br><span class="line"><span class="keyword">var</span> app = express();</span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    res.end(<span class="string">'hello, world'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">app.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'server is listening'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>文中还提到了如何编写声明文件，然后我看了下express的声明文件：</p>
-<p>确实是像如下</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="function"><span class="keyword">function</span> <span class="title">e</span>(<span class="params"></span>): <span class="title">core</span>.<span class="title">Express</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">namespace</span> e &#123;</span><br><span class="line">     <span class="keyword">var</span> <span class="keyword">static</span>: <span class="keyword">typeof</span> serveStatic;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">Router</span>(<span class="params">options?: RouterOptions</span>): <span class="title">core</span>.<span class="title">Router</span></span>;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//内部接口 外部获取不到</span></span><br><span class="line">     <span class="keyword">interface</span> RouterOptions &#123;</span><br><span class="line"></span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> = e;</span><br></pre></td></tr></table></figure>
-<p>发现express可以定义Router，和内部的RouterOptions<br>参考资料<a href="http://www.expressjs.com.cn/4x/api.html#router" target="_blank" rel="external">Express 4.x API 中文手册</a></p>
+            <p>看到<a href="https://github.com/jawil/blog/issues/22" target="_blank" rel="external">面试分享：一年经验初探阿里巴巴前端社招 </a>这篇文章，学习到了很多，也发现了自己其实有很多不知道，所以记录下。。</p>
+<h2 id="数组去重"><a href="#数组去重" class="headerlink" title="数组去重"></a>数组去重</h2><p>博主提到了这些方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///ES6实现：</span></span><br><span class="line">[...new <span class="built_in">Set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">'a'</span>,<span class="number">1</span>,<span class="string">'a'</span>])]</span><br><span class="line"></span><br><span class="line"><span class="comment">///ES5实现：</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">'a'</span>,<span class="number">1</span>,<span class="string">'a'</span>].filter(<span class="function"><span class="keyword">function</span>(<span class="params">ele,index,array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> index===array.indexOf(ele)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>然后有人回复说用Map,我查了下，应该是<a href="http://blog.csdn.net/earscher/article/details/52803988" target="_blank" rel="external">这种方式</a>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.prototype.unique = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> arr = [];</span><br><span class="line">        <span class="keyword">var</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!map.has(<span class="keyword">this</span>[i]))&#123;</span><br><span class="line">                arr.push(<span class="keyword">this</span>[i]);</span><br><span class="line">                map.set(<span class="keyword">this</span>[i],<span class="literal">true</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Array</span>.prototype.unique2 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> arr = [];</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">set</span> = new Set(this);</span><br><span class="line">        <span class="keyword">set</span>.forEach(function (item) &#123;</span><br><span class="line">            arr.push(item);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="二分查找时间复杂度分析"><a href="#二分查找时间复杂度分析" class="headerlink" title="二分查找时间复杂度分析"></a>二分查找时间复杂度分析</h2><p>博主在二分查找的时间复杂度怎么求，是多少 问题上 没回答上来，我看的时候也忘记了，遂查了下：</p>
+<p>二分查找的基本思想是将n个元素分成大致相等的两部分，去a[n/2]与x做比较，如果x=a[n/2],则找到x,算法中止；如果x&lt;a[n/2],则只要在数组a的左半部分继续搜索x,如果x&gt;a[n/2],则只要在数组a的右半部搜索x.</p>
+<p>时间复杂度无非就是while循环的次数！</p>
+<p>总共有n个元素，</p>
+<p>渐渐跟下去就是n,n/2,n/4,….n/2^k，其中k就是循环的次数</p>
+<p>由于你n/2^k取整后&gt;=1</p>
+<p>即令n/2^k=1</p>
+<p>可得k=log2n,（是以2为底，n的对数）</p>
+<p>参考资料：<br><a href="http://blog.csdn.net/frances_han/article/details/6458067" target="_blank" rel="external">二分查找时间复杂度的计算(转)</a><br><a href="http://www.cnblogs.com/qiaozhoulin/p/5328090.html" target="_blank" rel="external">二分查找时间复杂度分析</a><br><a href="http://blog.csdn.net/sosesoa/article/details/52775202" target="_blank" rel="external">理解O(log2N)和O(Nlog2N)</a></p>
 
           
         
@@ -794,7 +799,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/10/jad-decompiler/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/07/scalatra-requestImplicits/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -814,7 +819,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/07/10/jad-decompiler/" class="post-title-link" itemprop="url">jad_decompiler</a>
+                <a href="/2017/08/07/scalatra-requestImplicits/" class="post-title-link" itemprop="url">scalatra之隐式request</a>
               
             
           </h2>
@@ -839,7 +844,7 @@
                 
               
 
-              <time title="创建时间：2017-07-10 10:49:12" itemprop="dateCreated datePublished" datetime="2017-07-10T10:49:12+08:00">2017-07-10</time>
+              <time title="创建时间：2017-08-07 15:04:43" itemprop="dateCreated datePublished" datetime="2017-08-07T15:04:43+08:00">2017-08-07</time>
             
 
             
@@ -892,10 +897,18 @@
       
         
           
-            <p>用jad来反编译scala代码，看看版本是否是老版本：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jad.exe -r -ff -d src -s java F:\<span class="class"><span class="keyword">class</span>\**\*.<span class="title">class</span></span></span><br></pre></td></tr></table></figure>
-<p>反编译的代码会在执行jad程序的目录src下</p>
-<p>参考文章：<br><a href="http://blog.csdn.net/jiajane/article/details/50947853" target="_blank" rel="external">Windows下利用jad批量反编译class文件</a><br><a href="http://blog.csdn.net/abeetle/article/details/1733407" target="_blank" rel="external">反编译jad的命令使用</a></p>
+            <h2 id="scalatra隐式request"><a href="#scalatra隐式request" class="headerlink" title="scalatra隐式request"></a>scalatra隐式request</h2><p>在之前<a href>scala之隐式servletContext</a>这篇文章中，我们提到了scalatra实现的隐式servletContext是如何实现的，那今天我们来看看在scalatra中是如何利用scala的特性来实现隐式HttpServletRequest的：</p>
+<h3 id="ScalatraBase"><a href="#ScalatraBase" class="headerlink" title="ScalatraBase"></a>ScalatraBase</h3><p>在ScalatraBase这个伴生对象中，我们可以看到如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>[<span class="keyword">this</span>] val KeyPrefix: String = classOf[FutureSupport].getName</span><br><span class="line">val Callbacks: String = s<span class="string">"$KeyPrefix.callbacks"</span></span><br><span class="line"></span><br><span class="line"><span class="function">def <span class="title">addCallback</span><span class="params">(callback: Try[Any] =&gt; Unit)</span><span class="params">(implicit request: HttpServletRequest)</span>: Unit </span>= &#123;</span><br><span class="line">  <span class="comment">//http://johnwonder.github.io/2017/03/25/scala-implicit1/</span></span><br><span class="line">  <span class="comment">//放入AttributesMap中</span></span><br><span class="line">  request(Callbacks) = callback :: callbacks</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ServletApiImplicits"><a href="#ServletApiImplicits" class="headerlink" title="ServletApiImplicits"></a>ServletApiImplicits</h3><p>这边的request(Callbacks)到底是啥呢？我们来结合scala的隐式调用来分析</p>
+<p>ScalatraBase中引入了ServletApiImplicits</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.scalatra.servlet.ServletApiImplicits._</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//隐式的ServletApi</span></span><br><span class="line">trait ServletApiImplicits &#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">implicit def <span class="title">enrichRequest</span><span class="params">(request: HttpServletRequest)</span>: RichRequest </span>=</span><br><span class="line">  RichRequest(request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那说明实现是在RichRequest中</p>
+<h3 id="RichRequest"><a href="#RichRequest" class="headerlink" title="RichRequest"></a>RichRequest</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">case</span> class <span class="title">RichRequest</span><span class="params">(r: HttpServletRequest)</span> extends AttributesMap </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看到它还实现了AttributesMap这个trait</p>
+<h3 id="AttributesMap"><a href="#AttributesMap" class="headerlink" title="AttributesMap"></a>AttributesMap</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line">*映射ServletRequest的属性到map</span><br><span class="line">* Adapts attributes from servlet objects (e.g., ServletRequest, HttpSession,</span><br><span class="line">* ServletContext) to a mutable map.</span><br><span class="line">*/</span></span><br><span class="line">trait AttributesMap extends Map[String, Any] with MutableMapWithIndifferentAccess[Any] &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看到他最终是继承自Map的，所以request()是Map调用。</p>
 
           
         
@@ -952,7 +965,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/06/scala-mongodb-driver1/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/07/lodash-templatesettings/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -972,7 +985,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/07/06/scala-mongodb-driver1/" class="post-title-link" itemprop="url">scala_mongodb-driver1</a>
+                <a href="/2017/08/07/lodash-templatesettings/" class="post-title-link" itemprop="url">lodash之模板设置</a>
               
             
           </h2>
@@ -997,7 +1010,7 @@
                 
               
 
-              <time title="创建时间：2017-07-06 21:23:21" itemprop="dateCreated datePublished" datetime="2017-07-06T21:23:21+08:00">2017-07-06</time>
+              <time title="创建时间：2017-08-07 13:23:49" itemprop="dateCreated datePublished" datetime="2017-08-07T13:23:49+08:00">2017-08-07</time>
             
 
             
@@ -1050,11 +1063,15 @@
       
         
           
-            <p>前两天研究scala mongodb groupby的问题，又有了另外种解决方案：</p>
-<p>在看driver core源码的时候 发现传入的表达式在encode的时候有如下判断：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">BuildersHelper</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">  <span class="keyword">static</span> &lt;TItem&gt; <span class="function"><span class="keyword">void</span> <span class="title">encodeValue</span><span class="params">(<span class="keyword">final</span> BsonDocumentWriter writer, <span class="keyword">final</span> TItem value, <span class="keyword">final</span> CodecRegistry codecRegistry)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123;</span><br><span class="line">          writer.writeNull();</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value <span class="keyword">instanceof</span> Bson) &#123;</span><br><span class="line">          ((Encoder) codecRegistry.get(BsonDocument.class)).encode(writer,</span><br><span class="line">                                                                   ((Bson) value).toBsonDocument(BsonDocument.class, codecRegistry),</span><br><span class="line">                                                                   EncoderContext.builder().build());</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          ((Encoder) codecRegistry.get(value.getClass())).encode(writer, value, EncoderContext.builder().build());</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="title">BuildersHelper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>发现会判断value是否为Bson，那么想到Filter也是Bson类型，所以有了如下表达式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Filters.and(Filters.all(<span class="string">"$code"</span>),Filters.all(<span class="string">"$userType"</span>))</span><br></pre></td></tr></table></figure>
+            <h2 id="templateSettings"><a href="#templateSettings" class="headerlink" title="templateSettings"></a>templateSettings</h2><p>今天在看lodash的typescript定义文件时，发现有这么一处定义：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">declare namespace _ &#123;</span><br><span class="line">     interface LoDashStatic &#123;</span><br><span class="line"></span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">/**</span><br><span class="line">  * By default, the template delimiters used by Lo-Dash are similar to those in embedded Ruby</span><br><span class="line">  *默认像ruby里的嵌入式</span><br><span class="line">  * (ERB). Change the following template settings to use alternative delimiters.</span><br><span class="line">  **/</span></span><br><span class="line">  interface TemplateSettings &#123;</span><br><span class="line">      <span class="comment">/**</span><br><span class="line">      * The "escape" delimiter.</span><br><span class="line">      **/</span></span><br><span class="line">      <span class="built_in">escape</span>?: <span class="built_in">RegExp</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/**</span><br><span class="line">      * The "evaluate" delimiter.</span><br><span class="line">      **/</span></span><br><span class="line">      evaluate?: <span class="built_in">RegExp</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/**</span><br><span class="line">      * An object to import into the template as local variables.</span><br><span class="line">      **/</span></span><br><span class="line">      imports?: Dictionary&lt;any&gt;;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/**</span><br><span class="line">      * The "interpolate" delimiter.</span><br><span class="line">      **/</span></span><br><span class="line">      interpolate?: <span class="built_in">RegExp</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/**</span><br><span class="line">      * Used to reference the data object in the template text.</span><br><span class="line">      **/</span></span><br><span class="line">      variable?: string;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看到lodash的官网上有这么一处举例：</p>
+<p><code>`js
+// using custom template delimiters(分隔符)
+_.templateSettings.interpolate = /undefined/g;
+var compiled = _.template(&#39;hello !&#39;);
+compiled({ &#39;user&#39;: &#39;mustache&#39; });
+// =&gt; &#39;hello mustache!&#39;</code></p>
 
           
         
@@ -1100,7 +1117,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1142,7 +1159,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">170</span>
+                    <span class="site-state-item-count">183</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1215,7 +1232,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">27</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
