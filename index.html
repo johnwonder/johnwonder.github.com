@@ -309,6 +309,465 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/25/javascript-bind/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/25/javascript-bind/" class="post-title-link" itemprop="url">javascript基础知识之bind</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-25 13:19:16 / 修改时间：13:37:10" itemprop="dateCreated datePublished" datetime="2019-05-25T13:19:16+08:00">2019-05-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="JavaScript-bind方法使用"><a href="#JavaScript-bind方法使用" class="headerlink" title="JavaScript bind方法使用"></a>JavaScript bind方法使用</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">myFun</span>:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> db = &#123;</span><br><span class="line">   <span class="attr">name</span> :<span class="string">"john"</span></span><br><span class="line">&#125;</span><br><span class="line">　  obj.myFun.bind(db)();　　　<span class="comment">//john</span></span><br></pre></td></tr></table></figure>
+<p>以上出了bind 方法后面多了个 () 外 ，结果返回都一致！<br>由此得出结论，bind 返回的是一个新的函数，你必须调用它才会被执行</p>
+<h2 id="JavaScript-bind多次绑定"><a href="#JavaScript-bind多次绑定" class="headerlink" title="JavaScript bind多次绑定"></a>JavaScript bind多次绑定</h2><p>昨天看到掘金小册 <a href="https://juejin.im/book/5bdc715fe51d454e755f75ef/section/5bdc715f6fb9a049c15ea4e0" target="_blank" rel="external">前端面试之道</a>时 看到bind的特殊用法，之前不知道有这么一回事，所以在此记录下.<br>下面转载自原文。</p>
+<p>如果对一个函数进行多次 bind，那么上下文会是什么呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = &#123;&#125;</span><br><span class="line"><span class="keyword">let</span> fn = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="keyword">this</span>) &#125;</span><br><span class="line">fn.bind().bind(a)() <span class="comment">// =&gt; ?</span></span><br></pre></td></tr></table></figure>
+<p>如果你认为输出结果是 a，那么你就错了，其实我们可以把上述代码转换成另一种形式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fn.bind().bind(a) 等于</span></span><br><span class="line"><span class="keyword">let</span> fn2 = <span class="function"><span class="keyword">function</span> <span class="title">fn1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> fn.apply()</span><br><span class="line">&#125;.apply(a)</span><br><span class="line">&#125;</span><br><span class="line">fn2()</span><br></pre></td></tr></table></figure>
+<p>可以从上述代码中发现，不管我们给函数 bind 几次，fn 中的 this 永远由第一次 bind 决定，所以结果永远是 window。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = &#123; <span class="attr">name</span>: <span class="string">'yck'</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">foo.bind(a)() <span class="comment">// =&gt; 'yck'</span></span><br></pre></td></tr></table></figure>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://juejin.im/book/5bdc715fe51d454e755f75ef/section/5bdc715f6fb9a049c15ea4e0" target="_blank" rel="external">前端面试之道</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/22/angular-provider-httpprovider/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/22/angular-provider-httpprovider/" class="post-title-link" itemprop="url">angular源码剖析之Provider系列-$http</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-22 22:21:52" itemprop="dateCreated datePublished" datetime="2019-05-22T22:21:52+08:00">2019-05-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-24 20:26:02" itemprop="dateModified" datetime="2019-05-24T20:26:02+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>虽然现在angular.js已经不怎么流行，也逐渐被react,vue等主流框架取代，但是angular.js中的一些<br>设计我觉得非常值得学习，我们不仅仅要跟随潮流，也得了解曾经优秀流行的框架是怎么设计的，为什么要这么<br>设计，这样我觉得学习新技术才会思路更清晰，才能更快上手。<br>我们在工作中为了尽快完成领导交给我们的任务不得不去熟悉使用现有框架提供给我们的福利，<br>却忽略了基础知识或者说底层技术的掌握，框架就是把各种基础函数和技术封装好让软件开发的效率提升，所以现在我们的很多开发人员只停留在使用层面却<br>不去想这个功能建立在哪些基础知识点上，</p>
+<h2 id="http简介"><a href="#http简介" class="headerlink" title="$http简介"></a>$http简介</h2><p>先来看官方文档的简介:<br>The $http service is a core AngularJS service that facilitates communication with<br> the remote HTTP servers via the browser’s XMLHttpRequest object or via JSONP.</p>
+<p> $http服务是AngularJs的核心服务，是通过浏览器的XMLHttpRequest对象或者JSONP来跟远程http服务<br> 进行通信的.也就是说$http内部必然是通过封装的ajax来完成他的设计的。<br> $http是基于$q服务暴露出来的deferred/promise api,所以要知道$http的高级使用得熟悉这些api.</p>
+<h2 id="http核心"><a href="#http核心" class="headerlink" title="$http核心"></a>$http核心</h2><p>1.扩展配置<br>2.把请求拦截器和响应拦截器放入promise链<br>3.把核心方法serverRequest放入promise链</p>
+<p>核心方法里最终返回了promise对象<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$http</span>(<span class="params">requestConfig</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//忽略部分代码</span></span><br><span class="line">      <span class="comment">//扩展了requestConfig</span></span><br><span class="line">      <span class="keyword">var</span> config = extend(&#123;</span><br><span class="line">        <span class="attr">method</span>: <span class="string">'get'</span>,</span><br><span class="line">        <span class="attr">transformRequest</span>: defaults.transformRequest,</span><br><span class="line">        <span class="attr">transformResponse</span>: defaults.transformResponse,</span><br><span class="line">        <span class="attr">paramSerializer</span>: defaults.paramSerializer</span><br><span class="line">      &#125;, requestConfig);</span><br><span class="line"></span><br><span class="line">      config.headers = mergeHeaders(requestConfig);</span><br><span class="line">      config.method = uppercase(config.method);</span><br><span class="line">      config.paramSerializer = isString(config.paramSerializer) ?</span><br><span class="line">          $injector.get(config.paramSerializer) : config.paramSerializer;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//请求拦截器</span></span><br><span class="line">      <span class="keyword">var</span> requestInterceptors = [];</span><br><span class="line">      <span class="comment">//响应拦截器</span></span><br><span class="line">      <span class="keyword">var</span> responseInterceptors = [];</span><br><span class="line">      <span class="comment">//调用$q的静态方法when</span></span><br><span class="line">      <span class="keyword">var</span> promise = $q.when(config);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// apply interceptors</span></span><br><span class="line">      <span class="comment">//加入拦截器</span></span><br><span class="line">      forEach(reversedInterceptors, <span class="function"><span class="keyword">function</span>(<span class="params">interceptor</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (interceptor.request || interceptor.requestError) &#123;</span><br><span class="line">          <span class="comment">//unshift在顶部插入</span></span><br><span class="line">          <span class="comment">//unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span></span><br><span class="line">          <span class="comment">//随后在chain的时候一次取出两个元素</span></span><br><span class="line">          requestInterceptors.unshift(interceptor.request, interceptor.requestError);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (interceptor.response || interceptor.responseError) &#123;</span><br><span class="line">          <span class="comment">//push在尾部插入</span></span><br><span class="line">          <span class="comment">//push() 方法可向数组的末尾添加一个或多个元素，并返回新的长度。</span></span><br><span class="line">          responseInterceptors.push(interceptor.response, interceptor.responseError);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      promise = chainInterceptors(promise, requestInterceptors);</span><br><span class="line">      <span class="comment">//核心请求放入promise链</span></span><br><span class="line">      promise = promise.then(serverRequest);</span><br><span class="line">      promise = chainInterceptors(promise, responseInterceptors);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//忽略部分代码</span></span><br><span class="line">      <span class="keyword">return</span> promise;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="serverRequest方法"><a href="#serverRequest方法" class="headerlink" title="serverRequest方法"></a>serverRequest方法</h2><p>serverRequest调用sendReq方法发送请求。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//放在promise里</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">serverRequest</span>(<span class="params">config</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//配置的请求头</span></span><br><span class="line">      <span class="keyword">var</span> headers = config.headers;</span><br><span class="line">      <span class="comment">//转换请求数据</span></span><br><span class="line">      <span class="keyword">var</span> reqData = transformData(config.data, headersGetter(headers), <span class="literal">undefined</span>, config.transformRequest);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// strip content-type if data is undefined</span></span><br><span class="line">      <span class="keyword">if</span> (isUndefined(reqData)) &#123;</span><br><span class="line">        forEach(headers, <span class="function"><span class="keyword">function</span>(<span class="params">value, header</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (lowercase(header) === <span class="string">'content-type'</span>) &#123;</span><br><span class="line">            <span class="keyword">delete</span> headers[header];</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (isUndefined(config.withCredentials) &amp;&amp; !isUndefined(defaults.withCredentials)) &#123;</span><br><span class="line">        config.withCredentials = defaults.withCredentials;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//关键的步骤 发送请求</span></span><br><span class="line">      <span class="comment">// send request</span></span><br><span class="line">      <span class="comment">//返回新的promise供外部调用</span></span><br><span class="line">      <span class="keyword">return</span> sendReq(config, reqData).then(transformResponse, transformResponse);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sendReq</span>(<span class="params">config, reqData</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//创建defrred对象</span></span><br><span class="line">      <span class="keyword">var</span> deferred = $q.defer(),</span><br><span class="line">          promise = deferred.promise,</span><br><span class="line">          cache,</span><br><span class="line">          cachedResp,</span><br><span class="line">          reqHeaders = config.headers,</span><br><span class="line">          <span class="comment">//构造请求url</span></span><br><span class="line">          url = buildUrl(config.url, config.paramSerializer(config.params));</span><br><span class="line"></span><br><span class="line">      <span class="comment">//</span></span><br><span class="line">      $http.pendingRequests.push(config);</span><br><span class="line">      promise.then(removePendingReq, removePendingReq);</span><br><span class="line">      <span class="comment">//配置了cache属性且是get 方法时</span></span><br><span class="line">      <span class="keyword">if</span> ((config.cache || defaults.cache) &amp;&amp; config.cache !== <span class="literal">false</span> &amp;&amp;</span><br><span class="line">          (config.method === <span class="string">'GET'</span> || config.method === <span class="string">'JSONP'</span>)) &#123;</span><br><span class="line">        cache = isObject(config.cache) ? config.cache</span><br><span class="line">              : isObject(defaults.cache) ? defaults.cache</span><br><span class="line">              : defaultCache;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (cache) &#123;</span><br><span class="line">        <span class="comment">//cachedResp是个promise对象</span></span><br><span class="line">        cachedResp = cache.get(url);</span><br><span class="line">        <span class="comment">//如果存在缓存那么就存缓存中获取响应结果</span></span><br><span class="line">        <span class="keyword">if</span> (isDefined(cachedResp)) &#123;</span><br><span class="line">          <span class="keyword">if</span> (isPromiseLike(cachedResp)) &#123;</span><br><span class="line">            <span class="comment">// cached request has already been sent, but there is no response yet</span></span><br><span class="line">            cachedResp.then(resolvePromiseWithResult, resolvePromiseWithResult);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// serving from cache</span></span><br><span class="line">            <span class="keyword">if</span> (isArray(cachedResp)) &#123;</span><br><span class="line">              resolvePromise(cachedResp[<span class="number">1</span>], cachedResp[<span class="number">0</span>], shallowCopy(cachedResp[<span class="number">2</span>]), cachedResp[<span class="number">3</span>]);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              resolvePromise(cachedResp, <span class="number">200</span>, &#123;&#125;, <span class="string">'OK'</span>);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// put the promise for the non-transformed response into cache as a placeholder</span></span><br><span class="line">          cache.put(url, promise);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// if we won't have the response in cache, set the xsrf headers and</span></span><br><span class="line">      <span class="comment">// send the request to the backend</span></span><br><span class="line">      <span class="keyword">if</span> (isUndefined(cachedResp)) &#123;</span><br><span class="line">        <span class="keyword">var</span> xsrfValue = urlIsSameOrigin(config.url)</span><br><span class="line">            ? $$cookieReader()[config.xsrfCookieName || defaults.xsrfCookieName]</span><br><span class="line">            : <span class="literal">undefined</span>;</span><br><span class="line">        <span class="keyword">if</span> (xsrfValue) &#123;</span><br><span class="line">          reqHeaders[(config.xsrfHeaderName || defaults.xsrfHeaderName)] = xsrfValue;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//done函数里调用了promise</span></span><br><span class="line">        <span class="comment">//调用httpBackend</span></span><br><span class="line">        <span class="comment">//事件处理器</span></span><br><span class="line">        <span class="comment">//上传事件处理器</span></span><br><span class="line">        <span class="comment">//done方法在httpBackend中回调</span></span><br><span class="line">        $httpBackend(config.method, url, reqData, done, reqHeaders, config.timeout,</span><br><span class="line">            config.withCredentials, config.responseType,</span><br><span class="line">            createApplyHandlers(config.eventHandlers),</span><br><span class="line">            createApplyHandlers(config.uploadEventHandlers));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//返回promise函数</span></span><br><span class="line">      <span class="keyword">return</span> promise;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">createApplyHandlers</span>(<span class="params">eventHandlers</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (eventHandlers) &#123;</span><br><span class="line">          <span class="keyword">var</span> applyHandlers = &#123;&#125;;</span><br><span class="line">          forEach(eventHandlers, <span class="function"><span class="keyword">function</span>(<span class="params">eventHandler, key</span>) </span>&#123;</span><br><span class="line">            applyHandlers[key] = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">if</span> (useApplyAsync) &#123;</span><br><span class="line">                $rootScope.$applyAsync(callEventHandler);</span><br><span class="line">              &#125; <span class="keyword">else</span> <span class="keyword">if</span> ($rootScope.$$phase) &#123;</span><br><span class="line">                callEventHandler();</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                $rootScope.$apply(callEventHandler);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="function"><span class="keyword">function</span> <span class="title">callEventHandler</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                eventHandler(event);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">          &#125;);</span><br><span class="line">          <span class="keyword">return</span> applyHandlers;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//重要的一步</span></span><br><span class="line">      <span class="comment">//注册到$httpBackend()方法</span></span><br><span class="line">      <span class="comment">//缓存响应</span></span><br><span class="line">      <span class="comment">//处理原始$http promise</span></span><br><span class="line">      <span class="comment">//调用$apply</span></span><br><span class="line">      <span class="comment">/**</span><br><span class="line">       * Callback registered to $httpBackend():</span><br><span class="line">       *  - caches the response if desired</span><br><span class="line">       *  - resolves the raw $http promise</span><br><span class="line">       *  - calls $apply</span><br><span class="line">       */</span></span><br><span class="line">       <span class="comment">//status 响应状态 response 响应对象  </span></span><br><span class="line">       <span class="comment">//headersString 响应头</span></span><br><span class="line">       <span class="comment">//statusText 状态文本</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">done</span>(<span class="params">status, response, headersString, statusText</span>) </span>&#123;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/20/angular-init-flow/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/20/angular-init-flow/" class="post-title-link" itemprop="url">angular源码剖析之启动流程图</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-20 17:06:40 / 修改时间：21:03:57" itemprop="dateCreated datePublished" datetime="2019-05-20T17:06:40+08:00">2019-05-20</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="angularInit.png" alt></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/16/nodejs-knownpoints/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -371,7 +830,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-17 20:30:54" itemprop="dateModified" datetime="2019-05-17T20:30:54+08:00">2019-05-17</time>
+                <time title="修改时间：2019-05-19 19:54:04" itemprop="dateModified" datetime="2019-05-19T19:54:04+08:00">2019-05-19</time>
               
             
           </span>
@@ -412,6 +871,10 @@
 <li><a href="https://zhuanlan.zhihu.com/p/66039729?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">npm install 版本号^的坑</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/59365797?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">使用 Puppeteer 导出声享 PPT</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/48319397" target="_blank" rel="external">『Carlo』 一个新的 Electron ?</a></li>
+<li><a href="https://blog.csdn.net/weixin_40817115/article/details/81007774" target="_blank" rel="external">关于npm audit fix</a></li>
+<li><a href="https://blog.csdn.net/qq_25106703/article/details/84786250" target="_blank" rel="external">MAC终端安装指定版本node</a></li>
+<li><a href="https://blog.csdn.net/weixin_28906733/article/details/82215842" target="_blank" rel="external">macOS工具使用篇之–Homebrew</a></li>
+<li><a href="https://github.com/yarnpkg/yarn/issues/5725" target="_blank" rel="external">“yarn global list” doesn’t list globally installed packages that don’t have binaries </a><br><a href="mailto:iltorb@1.3.10" target="_blank" rel="external">iltorb@1.3.10</a></li>
 </ol>
 
           
@@ -604,498 +1067,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/14/angular-provider-q/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/14/angular-provider-q/" class="post-title-link" itemprop="url">angular源码剖析之Provider系列--QProvider</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-14 09:44:14" itemprop="dateCreated datePublished" datetime="2019-05-14T09:44:14+08:00">2019-05-14</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-15 22:17:00" itemprop="dateModified" datetime="2019-05-15T22:17:00+08:00">2019-05-15</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="QProvider-简介"><a href="#QProvider-简介" class="headerlink" title="QProvider 简介"></a>QProvider 简介</h2><p>源码里是这么描述的：</p>
-<p>A service that helps you run functions asynchronously, and use their return values (or exceptions) when they are done processing.</p>
-<p>大概意思是帮助你异步执行方法，且当他们执行完后可以使用他们的返回值。</p>
-<p>This is an implementation of promises/deferred objects inspired by Kris Kowal’s Q.</p>
-<p>这是一个 promises/deferred 对象的实现,灵感来自于 <a href="https://github.com/kriskowal/q" target="_blank" rel="external">Kris Kowal’s Q</a></p>
-<h2 id="QProvider-用法"><a href="#QProvider-用法" class="headerlink" title="QProvider 用法"></a>QProvider 用法</h2><p>下面的例子假设$q和asyncGreet在当前作用域内是有效的.</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncGreet</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line"><span class="comment">// perform some asynchronous operation, resolve or reject the promise when appropriate.</span></span><br><span class="line"><span class="keyword">return</span> $q(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (okToGreet(name)) &#123;</span><br><span class="line">      resolve(<span class="string">'Hello, '</span> + name + <span class="string">'!'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      reject(<span class="string">'Greeting '</span> + name + <span class="string">' is not allowed.'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> promise = asyncGreet(<span class="string">'Robin Hood'</span>);</span><br><span class="line"><span class="comment">//then函数放入pending数组</span></span><br><span class="line">promise.then(<span class="function"><span class="keyword">function</span>(<span class="params">greeting</span>) </span>&#123;</span><br><span class="line">alert(<span class="string">'Success: '</span> + greeting);</span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">alert(<span class="string">'Failed: '</span> + reason);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>下面我们深入源码内部去一探究竟：</p>
-<h2 id="QProvider-定义"><a href="#QProvider-定义" class="headerlink" title="$QProvider 定义"></a>$QProvider 定义</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$QProvider</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.$<span class="keyword">get</span> = ['$rootScope', '$exceptionHandler', function($rootScope, $exceptionHandler) &#123;</span><br><span class="line">    <span class="keyword">return</span> qFactory(<span class="function"><span class="keyword">function</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">      $rootScope.$evalAsync(callback);</span><br><span class="line">    &#125;, $exceptionHandler);</span><br><span class="line">  &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$evalAsync: <span class="function"><span class="keyword">function</span>(<span class="params">expr, locals</span>) </span>&#123;</span><br><span class="line">     <span class="comment">// if we are outside of an $digest loop and this is the first time we are scheduling async</span></span><br><span class="line">     <span class="comment">// task also schedule async auto-flush</span></span><br><span class="line">     <span class="comment">//如果当前不处于$digest或者$apply的过程中(只有在$apply和$digest方法中才会设置$$phase这个字段)，并且asyncQueue数组中还不存在任务时，</span></span><br><span class="line">     <span class="comment">//就会异步调度一轮digest循环来确保asyncQueue数组中的表达式会被执行</span></span><br><span class="line">     <span class="keyword">if</span> (!$rootScope.$$phase &amp;&amp; !asyncQueue.length) &#123;</span><br><span class="line">       $browser.defer(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">         <span class="comment">//最终调用的是setTimeout</span></span><br><span class="line">         <span class="keyword">if</span> (asyncQueue.length) &#123;</span><br><span class="line">           $rootScope.$digest();<span class="comment">//执行消化功能</span></span><br><span class="line">         &#125;</span><br><span class="line">       &#125;);</span><br><span class="line">     &#125;</span><br><span class="line">     asyncQueue.push(&#123;<span class="attr">scope</span>: <span class="keyword">this</span>, <span class="attr">expression</span>: $parse(expr), <span class="attr">locals</span>: locals&#125;);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>由之前 <a href="http://johnwonder.coding.me/2018/03/01/angular-provider-cachefactory/" target="_blank" rel="external">cacheFactory的分析</a><br>，再结合上面源码我们就知道  注入$q时调用了qFactory工厂方法：</p>
-<h2 id="qFactory"><a href="#qFactory" class="headerlink" title="qFactory"></a>qFactory</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">qFactory</span>(<span class="params">nextTick, exceptionHandler</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Promise</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//初始化Promise的状态对象</span></span><br><span class="line">    <span class="keyword">this</span>.$$state = &#123; <span class="attr">status</span>: <span class="number">0</span> &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//扩展Promise类原型</span></span><br><span class="line">  extend(<span class="built_in">Promise</span>.prototype, &#123;</span><br><span class="line">    <span class="comment">//then主要是把一个defer对象和fullfiled reject 函数 放入pending数组</span></span><br><span class="line">    then: <span class="function"><span class="keyword">function</span>(<span class="params">onFulfilled, onRejected, progressBack</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (isUndefined(onFulfilled) &amp;&amp; isUndefined(onRejected) &amp;&amp; isUndefined(progressBack)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">var</span> result = <span class="keyword">new</span> Deferred();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">this</span>.$$state.pending = <span class="keyword">this</span>.$$state.pending || [];</span><br><span class="line">      <span class="comment">//把一个新的 Defer 对象push进pending数组</span></span><br><span class="line">      <span class="keyword">this</span>.$$state.pending.push([result, onFulfilled, onRejected, progressBack]);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.$$state.status &gt; <span class="number">0</span>) scheduleProcessQueue(<span class="keyword">this</span>.$$state);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//返回这个新建Defer对象的promise</span></span><br><span class="line">      <span class="comment">//可以形成promise chain</span></span><br><span class="line">      <span class="keyword">return</span> result.promise;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//代码省略</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//通过$q注入时返回Q函数</span></span><br><span class="line">  <span class="comment">//随后Q函数 传入resolver参数调用</span></span><br><span class="line">  <span class="comment">//调用resolver函数时传入包装deferred对象的resolve和 reject函数</span></span><br><span class="line">  <span class="comment">//随后返回promise对象</span></span><br><span class="line">  <span class="comment">//promise对象调用then函数时放入pending队列</span></span><br><span class="line">  <span class="keyword">var</span> $Q = <span class="function"><span class="keyword">function</span> <span class="title">Q</span>(<span class="params">resolver</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (!isFunction(resolver)) &#123;</span><br><span class="line">       <span class="keyword">throw</span> $qMinErr(<span class="string">'norslvr'</span>, <span class="string">"Expected resolverFn, got '&#123;0&#125;'"</span>, resolver);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//构造一个Deferred对象</span></span><br><span class="line">     <span class="keyword">var</span> deferred = <span class="keyword">new</span> Deferred();</span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">resolveFn</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">       deferred.resolve(value);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">rejectFn</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">       deferred.reject(reason);</span><br><span class="line">     &#125;</span><br><span class="line">      <span class="comment">//调用resolver参数函数</span></span><br><span class="line">      <span class="comment">//resolveFn供外部调用</span></span><br><span class="line">     resolver(resolveFn, rejectFn);</span><br><span class="line">     <span class="comment">//返回一个promise对象</span></span><br><span class="line">     <span class="comment">//供调用then函数</span></span><br><span class="line">     <span class="keyword">return</span> deferred.promise;</span><br><span class="line">   &#125;;</span><br><span class="line">    <span class="comment">// Let's make the instanceof operator work for promises, so that</span></span><br><span class="line">    <span class="comment">// `new $q(fn) instanceof $q` would evaluate to true.</span></span><br><span class="line">    <span class="comment">//使得new $q(fn) 也可以调用promise的方法</span></span><br><span class="line">    $Q.prototype = <span class="built_in">Promise</span>.prototype;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//暴露内部方法</span></span><br><span class="line">    $Q.defer = defer;</span><br><span class="line">    $Q.reject = reject;</span><br><span class="line">    $Q.when = when;</span><br><span class="line">    $Q.resolve = resolve;</span><br><span class="line">    <span class="comment">//$q.all是用于执行多个异步任务进行回调，它可以接受一个promise的数组，</span></span><br><span class="line">    <span class="comment">//或是promise的hash(object)。任何一个promise失败，都会导致整个任务的失败。</span></span><br><span class="line">    <span class="comment">//https://blog.csdn.net/shidaping/article/details/52398925</span></span><br><span class="line">    $Q.all = all;</span><br><span class="line">    <span class="comment">//$q.race() 是 Angular 里面的一个新方法，和 $q.all() 类似，但是它只会返回第一个处理完成的 Promise 给你///。假定 API 调用 1 和 API 调用 2 同时执行，而 API 调用 2 在 API 调用 1 之前处理完成，那么你就只会得到 //API 调用 2 的返回对象。换句话说，最快（处理完成）的 Promise 会赢得返回对象的机会：</span></span><br><span class="line">    $Q.race = race;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> $Q;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>调用then方法时实际上是新建一个defer对象放入pending数组，在调用defer.resolve的时候<br>去调度这个数组中的元素，也就是任务.</p>
-<h2 id="resolve-方法"><a href="#resolve-方法" class="headerlink" title="resolve 方法"></a>resolve 方法</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">extend(Deferred.prototype, &#123;</span><br><span class="line">  <span class="attr">resolve</span>: <span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//第一次resolve的时候为0 所以会往下走</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.promise.$$state.status) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (val === <span class="keyword">this</span>.promise) &#123;</span><br><span class="line">      <span class="keyword">this</span>.$$reject($qMinErr(</span><br><span class="line">        <span class="string">'qcycle'</span>,</span><br><span class="line">        <span class="string">"Expected promise to be resolved with value other than itself '&#123;0&#125;'"</span>,</span><br><span class="line">        val));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">//调度pending数组里的任务</span></span><br><span class="line">      <span class="keyword">this</span>.$$resolve(val);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="attr">$$resolve</span>: <span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> then;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> done = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> ((isObject(val) || isFunction(val))) then = val &amp;&amp; val.then;</span><br><span class="line">      <span class="keyword">if</span> (isFunction(then)) &#123;</span><br><span class="line">         <span class="comment">//val.then方法 val是promise的时候</span></span><br><span class="line">         <span class="comment">//resolvePromise函数里放入了当前defer对象</span></span><br><span class="line">        <span class="keyword">this</span>.promise.$$state.status = <span class="number">-1</span>;</span><br><span class="line">        then.call(val, resolvePromise, rejectPromise, simpleBind(<span class="keyword">this</span>, <span class="keyword">this</span>.notify));</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//更新promise的状态对象</span></span><br><span class="line">        <span class="keyword">this</span>.promise.$$state.value = val;</span><br><span class="line">        <span class="keyword">this</span>.promise.$$state.status = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//调度的时候pending为空就返回了</span></span><br><span class="line">        scheduleProcessQueue(<span class="keyword">this</span>.promise.$$state);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      rejectPromise(e);</span><br><span class="line">      exceptionHandler(e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">resolvePromise</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (done) <span class="keyword">return</span>;</span><br><span class="line">      done = <span class="literal">true</span>;</span><br><span class="line">      that.$$resolve(val);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">rejectPromise</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (done) <span class="keyword">return</span>;</span><br><span class="line">      done = <span class="literal">true</span>;</span><br><span class="line">      that.$$reject(val);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="scheduleProcessQueue-方法"><a href="#scheduleProcessQueue-方法" class="headerlink" title="scheduleProcessQueue 方法"></a>scheduleProcessQueue 方法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//传入promise的state对象</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scheduleProcessQueue</span>(<span class="params">state</span>) </span>&#123;</span><br><span class="line"> <span class="keyword">if</span> (state.processScheduled || !state.pending) <span class="keyword">return</span>;</span><br><span class="line"> state.processScheduled = <span class="literal">true</span>;</span><br><span class="line"> <span class="comment">//nextTick里调用$browser.defer函数</span></span><br><span class="line"></span><br><span class="line"> nextTick(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; processQueue(state); &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="processQueue-方法"><a href="#processQueue-方法" class="headerlink" title="processQueue 方法"></a>processQueue 方法</h3><p>实际最终处理的还是processQueue函数，里面循环调用pending数组<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">processQueue</span>(<span class="params">state</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> fn, deferred, pending;</span><br><span class="line"></span><br><span class="line">  pending = state.pending;</span><br><span class="line">  state.processScheduled = <span class="literal">false</span>;</span><br><span class="line">  state.pending = <span class="literal">undefined</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, ii = pending.length; i &lt; ii; ++i) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取pending数组的元素 元素本身也是数组</span></span><br><span class="line">    deferred = pending[i][<span class="number">0</span>];</span><br><span class="line">    fn = pending[i][state.status];</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (isFunction(fn)) &#123;</span><br><span class="line">        deferred.resolve(fn(state.value));</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (state.status === <span class="number">1</span>) &#123;</span><br><span class="line">        deferred.resolve(state.value);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        deferred.reject(state.value);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      deferred.reject(e);</span><br><span class="line">      exceptionHandler(e);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://github.com/stefanpenner/es6-promise/" target="_blank" rel="external">a tiny implementation of Promises/A+.</a></li>
-<li><a href="https://www.cnblogs.com/ZengYunChun/p/6438330.html" target="_blank" rel="external">Angular中的$q的形象解释及深入用法</a></li>
-<li><a href="https://juejin.im/post/58465c4979bc440065c6e720" target="_blank" rel="external">关于 Angular 里的 $q 和 Promise</a></li>
-<li><a href="https://glumes.com/post/android/understand-state-machine/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">理解状态机</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/vue-knownpoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/12/vue-knownpoints/" class="post-title-link" itemprop="url">vue框架学习资料整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-12 10:44:46" itemprop="dateCreated datePublished" datetime="2019-05-12T10:44:46+08:00">2019-05-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-16 21:35:41" itemprop="dateModified" datetime="2019-05-16T21:35:41+08:00">2019-05-16</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><a href="https://github.com/lybenson/bilibili-vue" target="_blank" rel="external">前端vue+后端koa，全栈式开发bilibili首页</a></li>
-<li><a href="https://blog.csdn.net/sunhuaqiang1/article/details/86702926" target="_blank" rel="external">Vue进阶（三十六）：vue.js中created方法的使用详解</a></li>
-<li><a href="https://juejin.im/post/5cd783c4e51d453a4d530d8f" target="_blank" rel="external">《阿里云前端技术周刊》第四期</a></li>
-<li><a href="https://www.xcodebuild.com/" target="_blank" rel="external">阿里前端开发 macOS个人开发</a></li>
-<li><a href="https://github.com/jsfront/month" target="_blank" rel="external">前端知识月刊 </a></li>
-<li><a href="https://juejin.im/book/5a36661851882538e2259c0f" target="_blank" rel="external">剖析 Vue.js 内部运行机制</a></li>
-<li><a href="https://www.cnblogs.com/MrZouJian/p/8645625.html#top" target="_blank" rel="external">vue数据传递–我有特殊的实现技巧</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/docker-knownpoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/12/docker-knownpoints/" class="post-title-link" itemprop="url">docker容器学习资料整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-12 09:08:25 / 修改时间：09:11:47" itemprop="dateCreated datePublished" datetime="2019-05-12T09:08:25+08:00">2019-05-12</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><p>docker rm -f db01 db02 强制删除容器db01、db02<br>-f :通过SIGKILL信号强制删除一个运行中的容器</p>
-</li>
-<li><p>docker cp :用于容器与主机之间的数据拷贝。<br>docker cp  96f7f14e99ab:/www /tmp/<br>将容器96f7f14e99ab的/www目录拷贝到主机的/tmp目录中。</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1137,7 +1113,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">183</span>
+                    <span class="site-state-item-count">186</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

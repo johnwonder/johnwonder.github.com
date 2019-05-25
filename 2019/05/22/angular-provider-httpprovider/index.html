@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言虽然现在angular.js已经不怎么流行，也逐渐被react,vue等主流框架取代，但是angular.js中的一些设计我觉得非常值得学习，我们不仅仅要跟随潮流，也得了解曾经优秀流行的框架是怎么设计的，为什么要这么设计，这样我觉得学习新技术才会思路更清晰，才能更快上手。我们在工作中为了尽快完成领导交给我们的任务不得不去熟悉使用现有框架提供给我们的福利，却忽略了基础知识或者说底层技术的掌握，框">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular源码剖析之Provider系列-$http">
+<meta property="og:url" content="http://yoursite.com/2019/05/22/angular-provider-httpprovider/index.html">
+<meta property="og:site_name" content="john's tech blog">
+<meta property="og:description" content="前言虽然现在angular.js已经不怎么流行，也逐渐被react,vue等主流框架取代，但是angular.js中的一些设计我觉得非常值得学习，我们不仅仅要跟随潮流，也得了解曾经优秀流行的框架是怎么设计的，为什么要这么设计，这样我觉得学习新技术才会思路更清晰，才能更快上手。我们在工作中为了尽快完成领导交给我们的任务不得不去熟悉使用现有框架提供给我们的福利，却忽略了基础知识或者说底层技术的掌握，框">
+<meta property="og:updated_time" content="2019-05-24T12:26:02.017Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angular源码剖析之Provider系列-$http">
+<meta name="twitter:description" content="前言虽然现在angular.js已经不怎么流行，也逐渐被react,vue等主流框架取代，但是angular.js中的一些设计我觉得非常值得学习，我们不仅仅要跟随潮流，也得了解曾经优秀流行的框架是怎么设计的，为什么要这么设计，这样我觉得学习新技术才会思路更清晰，才能更快上手。我们在工作中为了尽快完成领导交给我们的任务不得不去熟悉使用现有框架提供给我们的福利，却忽略了基础知识或者说底层技术的掌握，框">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/05/22/angular-provider-httpprovider/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>angular源码剖析之Provider系列-$http | john's tech blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">john's tech blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">hope is coming</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/22/angular-provider-httpprovider/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">angular源码剖析之Provider系列-$http
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-22 22:21:52" itemprop="dateCreated datePublished" datetime="2019-05-22T22:21:52+08:00">2019-05-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-24 20:26:02" itemprop="dateModified" datetime="2019-05-24T20:26:02+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>虽然现在angular.js已经不怎么流行，也逐渐被react,vue等主流框架取代，但是angular.js中的一些<br>设计我觉得非常值得学习，我们不仅仅要跟随潮流，也得了解曾经优秀流行的框架是怎么设计的，为什么要这么<br>设计，这样我觉得学习新技术才会思路更清晰，才能更快上手。<br>我们在工作中为了尽快完成领导交给我们的任务不得不去熟悉使用现有框架提供给我们的福利，<br>却忽略了基础知识或者说底层技术的掌握，框架就是把各种基础函数和技术封装好让软件开发的效率提升，所以现在我们的很多开发人员只停留在使用层面却<br>不去想这个功能建立在哪些基础知识点上，</p>
+<h2 id="http简介"><a href="#http简介" class="headerlink" title="$http简介"></a>$http简介</h2><p>先来看官方文档的简介:<br>The $http service is a core AngularJS service that facilitates communication with<br> the remote HTTP servers via the browser’s XMLHttpRequest object or via JSONP.</p>
+<p> $http服务是AngularJs的核心服务，是通过浏览器的XMLHttpRequest对象或者JSONP来跟远程http服务<br> 进行通信的.也就是说$http内部必然是通过封装的ajax来完成他的设计的。<br> $http是基于$q服务暴露出来的deferred/promise api,所以要知道$http的高级使用得熟悉这些api.</p>
+<h2 id="http核心"><a href="#http核心" class="headerlink" title="$http核心"></a>$http核心</h2><p>1.扩展配置<br>2.把请求拦截器和响应拦截器放入promise链<br>3.把核心方法serverRequest放入promise链</p>
+<p>核心方法里最终返回了promise对象<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$http</span>(<span class="params">requestConfig</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//忽略部分代码</span></span><br><span class="line">      <span class="comment">//扩展了requestConfig</span></span><br><span class="line">      <span class="keyword">var</span> config = extend(&#123;</span><br><span class="line">        <span class="attr">method</span>: <span class="string">'get'</span>,</span><br><span class="line">        <span class="attr">transformRequest</span>: defaults.transformRequest,</span><br><span class="line">        <span class="attr">transformResponse</span>: defaults.transformResponse,</span><br><span class="line">        <span class="attr">paramSerializer</span>: defaults.paramSerializer</span><br><span class="line">      &#125;, requestConfig);</span><br><span class="line"></span><br><span class="line">      config.headers = mergeHeaders(requestConfig);</span><br><span class="line">      config.method = uppercase(config.method);</span><br><span class="line">      config.paramSerializer = isString(config.paramSerializer) ?</span><br><span class="line">          $injector.get(config.paramSerializer) : config.paramSerializer;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//请求拦截器</span></span><br><span class="line">      <span class="keyword">var</span> requestInterceptors = [];</span><br><span class="line">      <span class="comment">//响应拦截器</span></span><br><span class="line">      <span class="keyword">var</span> responseInterceptors = [];</span><br><span class="line">      <span class="comment">//调用$q的静态方法when</span></span><br><span class="line">      <span class="keyword">var</span> promise = $q.when(config);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// apply interceptors</span></span><br><span class="line">      <span class="comment">//加入拦截器</span></span><br><span class="line">      forEach(reversedInterceptors, <span class="function"><span class="keyword">function</span>(<span class="params">interceptor</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (interceptor.request || interceptor.requestError) &#123;</span><br><span class="line">          <span class="comment">//unshift在顶部插入</span></span><br><span class="line">          <span class="comment">//unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span></span><br><span class="line">          <span class="comment">//随后在chain的时候一次取出两个元素</span></span><br><span class="line">          requestInterceptors.unshift(interceptor.request, interceptor.requestError);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (interceptor.response || interceptor.responseError) &#123;</span><br><span class="line">          <span class="comment">//push在尾部插入</span></span><br><span class="line">          <span class="comment">//push() 方法可向数组的末尾添加一个或多个元素，并返回新的长度。</span></span><br><span class="line">          responseInterceptors.push(interceptor.response, interceptor.responseError);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      promise = chainInterceptors(promise, requestInterceptors);</span><br><span class="line">      <span class="comment">//核心请求放入promise链</span></span><br><span class="line">      promise = promise.then(serverRequest);</span><br><span class="line">      promise = chainInterceptors(promise, responseInterceptors);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//忽略部分代码</span></span><br><span class="line">      <span class="keyword">return</span> promise;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="serverRequest方法"><a href="#serverRequest方法" class="headerlink" title="serverRequest方法"></a>serverRequest方法</h2><p>serverRequest调用sendReq方法发送请求。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//放在promise里</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">serverRequest</span>(<span class="params">config</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//配置的请求头</span></span><br><span class="line">      <span class="keyword">var</span> headers = config.headers;</span><br><span class="line">      <span class="comment">//转换请求数据</span></span><br><span class="line">      <span class="keyword">var</span> reqData = transformData(config.data, headersGetter(headers), <span class="literal">undefined</span>, config.transformRequest);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// strip content-type if data is undefined</span></span><br><span class="line">      <span class="keyword">if</span> (isUndefined(reqData)) &#123;</span><br><span class="line">        forEach(headers, <span class="function"><span class="keyword">function</span>(<span class="params">value, header</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (lowercase(header) === <span class="string">'content-type'</span>) &#123;</span><br><span class="line">            <span class="keyword">delete</span> headers[header];</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (isUndefined(config.withCredentials) &amp;&amp; !isUndefined(defaults.withCredentials)) &#123;</span><br><span class="line">        config.withCredentials = defaults.withCredentials;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//关键的步骤 发送请求</span></span><br><span class="line">      <span class="comment">// send request</span></span><br><span class="line">      <span class="comment">//返回新的promise供外部调用</span></span><br><span class="line">      <span class="keyword">return</span> sendReq(config, reqData).then(transformResponse, transformResponse);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sendReq</span>(<span class="params">config, reqData</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//创建defrred对象</span></span><br><span class="line">      <span class="keyword">var</span> deferred = $q.defer(),</span><br><span class="line">          promise = deferred.promise,</span><br><span class="line">          cache,</span><br><span class="line">          cachedResp,</span><br><span class="line">          reqHeaders = config.headers,</span><br><span class="line">          <span class="comment">//构造请求url</span></span><br><span class="line">          url = buildUrl(config.url, config.paramSerializer(config.params));</span><br><span class="line"></span><br><span class="line">      <span class="comment">//</span></span><br><span class="line">      $http.pendingRequests.push(config);</span><br><span class="line">      promise.then(removePendingReq, removePendingReq);</span><br><span class="line">      <span class="comment">//配置了cache属性且是get 方法时</span></span><br><span class="line">      <span class="keyword">if</span> ((config.cache || defaults.cache) &amp;&amp; config.cache !== <span class="literal">false</span> &amp;&amp;</span><br><span class="line">          (config.method === <span class="string">'GET'</span> || config.method === <span class="string">'JSONP'</span>)) &#123;</span><br><span class="line">        cache = isObject(config.cache) ? config.cache</span><br><span class="line">              : isObject(defaults.cache) ? defaults.cache</span><br><span class="line">              : defaultCache;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (cache) &#123;</span><br><span class="line">        <span class="comment">//cachedResp是个promise对象</span></span><br><span class="line">        cachedResp = cache.get(url);</span><br><span class="line">        <span class="comment">//如果存在缓存那么就存缓存中获取响应结果</span></span><br><span class="line">        <span class="keyword">if</span> (isDefined(cachedResp)) &#123;</span><br><span class="line">          <span class="keyword">if</span> (isPromiseLike(cachedResp)) &#123;</span><br><span class="line">            <span class="comment">// cached request has already been sent, but there is no response yet</span></span><br><span class="line">            cachedResp.then(resolvePromiseWithResult, resolvePromiseWithResult);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// serving from cache</span></span><br><span class="line">            <span class="keyword">if</span> (isArray(cachedResp)) &#123;</span><br><span class="line">              resolvePromise(cachedResp[<span class="number">1</span>], cachedResp[<span class="number">0</span>], shallowCopy(cachedResp[<span class="number">2</span>]), cachedResp[<span class="number">3</span>]);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              resolvePromise(cachedResp, <span class="number">200</span>, &#123;&#125;, <span class="string">'OK'</span>);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// put the promise for the non-transformed response into cache as a placeholder</span></span><br><span class="line">          cache.put(url, promise);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// if we won't have the response in cache, set the xsrf headers and</span></span><br><span class="line">      <span class="comment">// send the request to the backend</span></span><br><span class="line">      <span class="keyword">if</span> (isUndefined(cachedResp)) &#123;</span><br><span class="line">        <span class="keyword">var</span> xsrfValue = urlIsSameOrigin(config.url)</span><br><span class="line">            ? $$cookieReader()[config.xsrfCookieName || defaults.xsrfCookieName]</span><br><span class="line">            : <span class="literal">undefined</span>;</span><br><span class="line">        <span class="keyword">if</span> (xsrfValue) &#123;</span><br><span class="line">          reqHeaders[(config.xsrfHeaderName || defaults.xsrfHeaderName)] = xsrfValue;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//done函数里调用了promise</span></span><br><span class="line">        <span class="comment">//调用httpBackend</span></span><br><span class="line">        <span class="comment">//事件处理器</span></span><br><span class="line">        <span class="comment">//上传事件处理器</span></span><br><span class="line">        <span class="comment">//done方法在httpBackend中回调</span></span><br><span class="line">        $httpBackend(config.method, url, reqData, done, reqHeaders, config.timeout,</span><br><span class="line">            config.withCredentials, config.responseType,</span><br><span class="line">            createApplyHandlers(config.eventHandlers),</span><br><span class="line">            createApplyHandlers(config.uploadEventHandlers));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//返回promise函数</span></span><br><span class="line">      <span class="keyword">return</span> promise;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">createApplyHandlers</span>(<span class="params">eventHandlers</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (eventHandlers) &#123;</span><br><span class="line">          <span class="keyword">var</span> applyHandlers = &#123;&#125;;</span><br><span class="line">          forEach(eventHandlers, <span class="function"><span class="keyword">function</span>(<span class="params">eventHandler, key</span>) </span>&#123;</span><br><span class="line">            applyHandlers[key] = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">if</span> (useApplyAsync) &#123;</span><br><span class="line">                $rootScope.$applyAsync(callEventHandler);</span><br><span class="line">              &#125; <span class="keyword">else</span> <span class="keyword">if</span> ($rootScope.$$phase) &#123;</span><br><span class="line">                callEventHandler();</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                $rootScope.$apply(callEventHandler);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="function"><span class="keyword">function</span> <span class="title">callEventHandler</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                eventHandler(event);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">          &#125;);</span><br><span class="line">          <span class="keyword">return</span> applyHandlers;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//重要的一步</span></span><br><span class="line">      <span class="comment">//注册到$httpBackend()方法</span></span><br><span class="line">      <span class="comment">//缓存响应</span></span><br><span class="line">      <span class="comment">//处理原始$http promise</span></span><br><span class="line">      <span class="comment">//调用$apply</span></span><br><span class="line">      <span class="comment">/**</span><br><span class="line">       * Callback registered to $httpBackend():</span><br><span class="line">       *  - caches the response if desired</span><br><span class="line">       *  - resolves the raw $http promise</span><br><span class="line">       *  - calls $apply</span><br><span class="line">       */</span></span><br><span class="line">       <span class="comment">//status 响应状态 response 响应对象  </span></span><br><span class="line">       <span class="comment">//headersString 响应头</span></span><br><span class="line">       <span class="comment">//statusText 状态文本</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">done</span>(<span class="params">status, response, headersString, statusText</span>) </span>&#123;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular/" rel="tag"># angular</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/20/angular-init-flow/" rel="next" title="angular源码剖析之启动流程图">
+                <i class="fa fa-chevron-left"></i> angular源码剖析之启动流程图
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/25/javascript-bind/" rel="prev" title="javascript基础知识之bind">
+                javascript基础知识之bind <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">186</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http简介"><span class="nav-number">2.</span> <span class="nav-text">$http简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http核心"><span class="nav-number">3.</span> <span class="nav-text">$http核心</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#serverRequest方法"><span class="nav-number">4.</span> <span class="nav-text">serverRequest方法</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

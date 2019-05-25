@@ -309,6 +309,495 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/11/hexo-Promise/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/09/11/hexo-Promise/" class="post-title-link" itemprop="url">hexo中的Promise应用</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-11 10:46:55" itemprop="dateCreated datePublished" datetime="2016-09-11T10:46:55+08:00">2016-09-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="hexo-Promise的使用"><a href="#hexo-Promise的使用" class="headerlink" title="hexo Promise的使用"></a>hexo Promise的使用</h2><p>hexo中的Promise用的是<code>bluebird</code>框架提供的，到处都是，基本上每个和执行命令相关的都用上了Promise，我们来看相关代码：</p>
+<h3 id="Promise-each"><a href="#Promise-each" class="headerlink" title="Promise.each:"></a>Promise.each:</h3><p>位于hexo/index.js：Hexo.prototype.init<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Load config</span></span><br><span class="line"> <span class="keyword">return</span> <span class="built_in">Promise</span>.each([</span><br><span class="line">   <span class="string">'update_package'</span>, <span class="comment">// Update package.json</span></span><br><span class="line">   <span class="string">'load_config'</span>, <span class="comment">// Load config</span></span><br><span class="line">   <span class="string">'load_plugins'</span> <span class="comment">// Load external plugins &amp; scripts</span></span><br><span class="line"> ], <span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="built_in">require</span>(<span class="string">'./'</span> + name)(self);</span><br><span class="line"> &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="keyword">return</span> self.execFilter(<span class="string">'after_init'</span>, <span class="literal">null</span>, &#123;<span class="attr">context</span>: self&#125;);</span><br><span class="line"> &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="comment">// Ready to go!</span></span><br><span class="line">   self.emit(<span class="string">'ready'</span>);</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>遍历参数数组中的每个元素传递给参数方法</p>
+<h3 id="new-Promise-func"><a href="#new-Promise-func" class="headerlink" title="new Promise(func)"></a>new Promise(func)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Hexo.prototype.call = <span class="function"><span class="keyword">function</span>(<span class="params">name, args, callback</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!callback &amp;&amp; <span class="keyword">typeof</span> args === <span class="string">'function'</span>)&#123;</span><br><span class="line">    callback = args;</span><br><span class="line">    args = &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> c = self.extend.console.get(name);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (c)&#123;</span><br><span class="line">      c.call(self, args).then(resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Console `'</span> + name + <span class="string">'` has not been registered yet!'</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;).nodeify(callback);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>实例化一个Promise，这个call是调用命令控制台命令的函数。</p>
+<h3 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all"></a>Promise.all</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Hexo.prototype.load = <span class="function"><span class="keyword">function</span>(<span class="params">callback</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> loadDatabase(<span class="keyword">this</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.all([</span><br><span class="line">      self.source.process(),</span><br><span class="line">      self.theme.process()</span><br><span class="line">    ]);</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> self._generate(&#123;<span class="attr">cache</span>: <span class="literal">true</span>&#125;);</span><br><span class="line">  &#125;).nodeify(callback);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>调用所有数组中的方法。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/09/hexo-new/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/09/09/hexo-new/" class="post-title-link" itemprop="url">hexo new命令解析</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-09 22:28:15" itemprop="dateCreated datePublished" datetime="2016-09-09T22:28:15+08:00">2016-09-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="hexo-new命令"><a href="#hexo-new命令" class="headerlink" title="hexo new命令"></a>hexo new命令</h2><p>hexo new命令是创建新文章的，后面跟文章的名字比如hexo new helloworld,那么就会创建一篇title为helloworld的文章。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cmd = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!args.h &amp;&amp; !args.help) &#123;</span><br><span class="line">    cmd = args._.shift();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cmd) &#123;</span><br><span class="line">      <span class="keyword">var</span> c = hexo.extend.console.get(cmd);</span><br><span class="line">      <span class="keyword">if</span> (!c) cmd = <span class="string">'help'</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      cmd = <span class="string">'help'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    cmd = <span class="string">'help'</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>args对象类似<code>{ _: [ &#39;n&#39;, &#39;hexo_new&#39; ] }</code>这种形式，所以args._.shift()得到的结果是n。</p>
+<p><code>hexo.extend.console.get</code>是通过定义extend对象，extend对象中定义console对象：<br>代码在hexo目录index.js文件中：</p>
+<p>头部先require入extend文件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> extend = <span class="built_in">require</span>(<span class="string">'../extend'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>../extend默认会引入extend目录下的index.js文件：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"></span><br><span class="line">exports.Console = <span class="built_in">require</span>(<span class="string">'./console'</span>);</span><br><span class="line">exports.Deployer = <span class="built_in">require</span>(<span class="string">'./deployer'</span>);</span><br><span class="line">exports.Filter = <span class="built_in">require</span>(<span class="string">'./filter'</span>);</span><br><span class="line">exports.Generator = <span class="built_in">require</span>(<span class="string">'./generator'</span>);</span><br><span class="line">exports.Helper = <span class="built_in">require</span>(<span class="string">'./helper'</span>);</span><br><span class="line">exports.Migrator = <span class="built_in">require</span>(<span class="string">'./migrator'</span>);</span><br><span class="line">exports.Processor = <span class="built_in">require</span>(<span class="string">'./processor'</span>);</span><br><span class="line">exports.Renderer = <span class="built_in">require</span>(<span class="string">'./renderer'</span>);</span><br><span class="line">exports.Tag = <span class="built_in">require</span>(<span class="string">'./tag'</span>);</span><br></pre></td></tr></table></figure></p>
+<p><code>require(&#39;./console&#39;)</code>引入同级目录下的console文件：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">   ...部分代码省略</span><br><span class="line">Console.prototype.get = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">	  name = name.toLowerCase();</span><br><span class="line">	  <span class="keyword">return</span> <span class="keyword">this</span>.store[<span class="keyword">this</span>.alias[name]];</span><br><span class="line">&#125;;</span><br><span class="line">...部分代码省略</span><br></pre></td></tr></table></figure></p>
+<p>随后在Hexo构造函数中定义：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.extend = &#123;</span><br><span class="line">   <span class="attr">console</span>: <span class="keyword">new</span> extend.Console(),</span><br><span class="line">   <span class="attr">deployer</span>: <span class="keyword">new</span> extend.Deployer(),</span><br><span class="line">   <span class="attr">filter</span>: <span class="keyword">new</span> extend.Filter(),</span><br><span class="line">   <span class="attr">generator</span>: <span class="keyword">new</span> extend.Generator(),</span><br><span class="line">   <span class="attr">helper</span>: <span class="keyword">new</span> extend.Helper(),</span><br><span class="line">   <span class="attr">migrator</span>: <span class="keyword">new</span> extend.Migrator(),</span><br><span class="line">   <span class="attr">processor</span>: <span class="keyword">new</span> extend.Processor(),</span><br><span class="line">   <span class="attr">renderer</span>: <span class="keyword">new</span> extend.Renderer(),</span><br><span class="line">   <span class="attr">tag</span>: <span class="keyword">new</span> extend.Tag()</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure></p>
+<p>所以我们看到了hexo.extend.console.get的流程，既然是获取，那么肯定有注册的过程</p>
+<p>注册时在<code>hexo.init()</code>的时候注册的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  ...hexo_cli/lib/hexo.js中 找到hexo模块后调用此方法,部分代码省略</span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params">mod</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (mod) hexo = mod;</span><br><span class="line">   log = hexo.log;</span><br><span class="line"></span><br><span class="line">   <span class="built_in">require</span>(<span class="string">'./console'</span>)(hexo);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> hexo.init();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Hexo.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.log.debug(<span class="string">'Hexo version: %s'</span>, chalk.magenta(<span class="keyword">this</span>.version));</span><br><span class="line">  <span class="keyword">this</span>.log.debug(<span class="string">'Working directory: %s'</span>, chalk.magenta(tildify(<span class="keyword">this</span>.base_dir)));</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Load internal plugins</span></span><br><span class="line">  <span class="comment">//加载内部插件</span></span><br><span class="line">  <span class="built_in">require</span>(<span class="string">'../plugins/console'</span>)(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> plugins/console/index.js部分代码如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//先获取在构造函数中定义的console对象</span></span><br><span class="line"> <span class="keyword">var</span> <span class="built_in">console</span> = ctx.extend.console;</span><br><span class="line"></span><br><span class="line"> ...部分代码省略</span><br><span class="line"> <span class="built_in">console</span>.register(<span class="string">'new'</span>, <span class="string">'Create a new post.'</span>, &#123;</span><br><span class="line">    <span class="attr">usage</span>: <span class="string">'[layout] &lt;title&gt;'</span>,</span><br><span class="line">    <span class="attr">arguments</span>: [</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'layout'</span>, <span class="attr">desc</span>: <span class="string">'Post layout. Use post, page, draft or whatever you want.'</span>&#125;,</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'title'</span>, <span class="attr">desc</span>: <span class="string">'Post title. Wrap it with quotations to escape.'</span>&#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">options</span>: [</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'-r, --replace'</span>, <span class="attr">desc</span>: <span class="string">'Replace the current post if existed.'</span>&#125;,</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'-s, --slug'</span>, <span class="attr">desc</span>: <span class="string">'Post slug. Customize the URL of the post.'</span>&#125;,</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'-p, --path'</span>, <span class="attr">desc</span>: <span class="string">'Post path. Customize the path of the post.'</span>&#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;, <span class="built_in">require</span>(<span class="string">'./new'</span>));</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">Console.prototype.register = <span class="function"><span class="keyword">function</span>(<span class="params">name, desc, options, fn</span>)</span>&#123;</span><br><span class="line">	  <span class="keyword">if</span> (!name) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'name is required'</span>);</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">if</span> (!fn)&#123;</span><br><span class="line">	    <span class="keyword">if</span> (options)&#123;</span><br><span class="line">	      <span class="keyword">if</span> (<span class="keyword">typeof</span> options === <span class="string">'function'</span>)&#123;</span><br><span class="line">	        fn = options;</span><br><span class="line"></span><br><span class="line">	        <span class="keyword">if</span> (<span class="keyword">typeof</span> desc === <span class="string">'object'</span>)&#123; <span class="comment">// name, options, fn</span></span><br><span class="line">	          options = desc;</span><br><span class="line">	          desc = <span class="string">''</span>;</span><br><span class="line">	        &#125; <span class="keyword">else</span> &#123; <span class="comment">// name, desc, fn</span></span><br><span class="line">	          options = &#123;&#125;;</span><br><span class="line">	        &#125;</span><br><span class="line">	      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'fn must be a function'</span>);</span><br><span class="line">	      &#125;</span><br><span class="line">	    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	      <span class="comment">// name, fn</span></span><br><span class="line">	      <span class="keyword">if</span> (<span class="keyword">typeof</span> desc === <span class="string">'function'</span>)&#123;</span><br><span class="line">	        fn = desc;</span><br><span class="line">	        options = &#123;&#125;;</span><br><span class="line">	        desc = <span class="string">''</span>;</span><br><span class="line">	      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'fn must be a function'</span>);</span><br><span class="line">	      &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	  &#125;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">if</span> (fn.length &gt; <span class="number">1</span>)&#123;</span><br><span class="line">	    fn = <span class="built_in">Promise</span>.promisify(fn);</span><br><span class="line">	  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	    fn = <span class="built_in">Promise</span>.method(fn);</span><br><span class="line">	  &#125;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">var</span> c = <span class="keyword">this</span>.store[name.toLowerCase()] = fn;</span><br><span class="line">	  c.options = options;</span><br><span class="line">	  c.desc = desc;</span><br><span class="line">	  <span class="comment">//new 变成n ne</span></span><br><span class="line">	  <span class="keyword">this</span>.alias = abbrev(<span class="built_in">Object</span>.keys(<span class="keyword">this</span>.store));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看看执行new的函数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newConsole</span>(<span class="params">args</span>)</span>&#123;</span><br><span class="line">	  <span class="comment">/* jshint validthis: true */</span></span><br><span class="line">	  <span class="comment">// Display help message if user didn't input any arguments</span></span><br><span class="line">	  <span class="keyword">if</span> (!args._.length)&#123;</span><br><span class="line">	    <span class="keyword">return</span> <span class="keyword">this</span>.call(<span class="string">'help'</span>, &#123;<span class="attr">_</span>: [<span class="string">'new'</span>]&#125;);</span><br><span class="line">	    <span class="comment">//控制台打出类似`Usage: hexo new [layout] &lt;title&gt;`</span></span><br><span class="line">	  &#125;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">var</span> data = &#123;</span><br><span class="line">	    <span class="attr">title</span>: args._.pop(),</span><br><span class="line">	    <span class="attr">layout</span>: args._.length ? args._[<span class="number">0</span>] : <span class="keyword">this</span>.config.default_layout,</span><br><span class="line">	    <span class="attr">slug</span>: args.s || args.slug,</span><br><span class="line">	    <span class="attr">path</span>: args.p || args.path</span><br><span class="line">	  &#125;;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(args);</span><br><span class="line">	  <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line">	  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">	    key = keys[i];</span><br><span class="line">	    <span class="keyword">if</span> (!reservedKeys[key]) data[key] = args[key];</span><br><span class="line">	  &#125;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">return</span> <span class="keyword">this</span>.post.create(data, args.r || args.replace).then(<span class="function"><span class="keyword">function</span>(<span class="params">post</span>)</span>&#123;</span><br><span class="line">	    self.log.info(<span class="string">'Created: %s'</span>, chalk.magenta(tildify(post.path)));</span><br><span class="line">	  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/08/jquery-nth-1-2-6/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/09/08/jquery-nth-1-2-6/" class="post-title-link" itemprop="url">jquery_1.2.6版本中的nth函数</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-08 22:52:37" itemprop="dateCreated datePublished" datetime="2016-09-08T22:52:37+08:00">2016-09-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:29:32" itemprop="dateModified" datetime="2019-05-09T20:29:32+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="jquery1-2-6-版本的-nth函数"><a href="#jquery1-2-6-版本的-nth函数" class="headerlink" title="jquery1.2.6 版本的 nth函数"></a>jquery1.2.6 版本的 nth函数</h2><h3 id="jQuery-each"><a href="#jQuery-each" class="headerlink" title="jQuery.each"></a>jQuery.each</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">next: <span class="function"><span class="keyword">function</span>(<span class="params">elem</span>)</span>&#123;<span class="keyword">return</span> jQuery.nth(elem,<span class="number">2</span>,<span class="string">"nextSibling"</span>);&#125;,</span><br><span class="line"><span class="attr">prev</span>: <span class="function"><span class="keyword">function</span>(<span class="params">elem</span>)</span>&#123;<span class="keyword">return</span> jQuery.nth(elem,<span class="number">2</span>,<span class="string">"previousSibling"</span>);&#125;</span><br><span class="line"></span><br><span class="line">...省略部分代码</span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params">name, fn</span>) </span>&#123;</span><br><span class="line">jQuery.fn[ name ] = <span class="function"><span class="keyword">function</span>(<span class="params"> selector </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> ret = jQuery.map( <span class="keyword">this</span>, fn );</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ( selector &amp;&amp; <span class="keyword">typeof</span> selector == <span class="string">"string"</span> )</span><br><span class="line">		ret = jQuery.multiFilter( selector, ret );</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.pushStack( jQuery.unique( ret ) );</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>jquery对象函数next,prev中都用到了jQuery的静态函数nth：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">nth: <span class="function"><span class="keyword">function</span>(<span class="params">cur,result,dir,elem</span>)</span>&#123;</span><br><span class="line">	result = result || <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">var</span> num = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> ( ; cur; cur = cur[dir] )</span><br><span class="line">		<span class="keyword">if</span> ( cur.nodeType == <span class="number">1</span> &amp;&amp; ++num == result )</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> cur;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="jQuery-map"><a href="#jQuery-map" class="headerlink" title="jQuery.map"></a>jQuery.map</h3><p>再来看看1.2.6版本的map函数:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">map: <span class="function"><span class="keyword">function</span>(<span class="params"> elems, callback </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> ret = [];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Go through the array, translating each of the items to their</span></span><br><span class="line">	<span class="comment">// new value (or values).</span></span><br><span class="line">	<span class="comment">//调用callback函数返回新值</span></span><br><span class="line">	<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>, length = elems.length; i &lt; length; i++ ) &#123;</span><br><span class="line">		<span class="keyword">var</span> value = callback( elems[ i ], i );</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> ( value != <span class="literal">null</span> )</span><br><span class="line">			ret[ ret.length ] = value;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret.concat.apply( [], ret );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="jQuery-unique"><a href="#jQuery-unique" class="headerlink" title="jQuery.unique"></a>jQuery.unique</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">unique: <span class="function"><span class="keyword">function</span>(<span class="params"> array </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> ret = [], done = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>, length = array.length; i &lt; length; i++ ) &#123;</span><br><span class="line">			<span class="keyword">var</span> id = jQuery.data( array[ i ] );</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> ( !done[ id ] ) &#123;</span><br><span class="line">				done[ id ] = <span class="literal">true</span>;</span><br><span class="line">				ret.push( array[ i ] );</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125; <span class="keyword">catch</span>( e ) &#123;</span><br><span class="line">		ret = array;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="jQuery-data"><a href="#jQuery-data" class="headerlink" title="jQuery.data"></a>jQuery.data</h3><p>在each方法中用到了jQuery.data方法，我们来看看：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">data: <span class="function"><span class="keyword">function</span>(<span class="params"> elem, name, data </span>) </span>&#123;</span><br><span class="line">	elem = elem == <span class="built_in">window</span> ?</span><br><span class="line">		windowData :</span><br><span class="line">		elem;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> id = elem[ expando ];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Compute a unique ID for the element</span></span><br><span class="line">	<span class="keyword">if</span> ( !id )</span><br><span class="line">		id = elem[ expando ] = ++uuid;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Only generate the data cache if we're</span></span><br><span class="line">	<span class="comment">// trying to access or manipulate it</span></span><br><span class="line">	<span class="keyword">if</span> ( name &amp;&amp; !jQuery.cache[ id ] )</span><br><span class="line">		jQuery.cache[ id ] = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Prevent overriding the named cache with undefined values</span></span><br><span class="line">	<span class="keyword">if</span> ( data !== <span class="literal">undefined</span> )</span><br><span class="line">		jQuery.cache[ id ][ name ] = data;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Return the named cache data, or the ID for the element</span></span><br><span class="line">	<span class="keyword">return</span> name ?</span><br><span class="line">		jQuery.cache[ id ][ name ] :</span><br><span class="line">		id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>expando和uuid是这样定义的：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> expando = <span class="string">"jQuery"</span> + now(), uuid = <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/07/jquery-parents/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -619,485 +1108,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/05/jquery-clean/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/09/05/jquery-clean/" class="post-title-link" itemprop="url">jquery_clean源码分析</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-09-05 22:16:24" itemprop="dateCreated datePublished" datetime="2016-09-05T22:16:24+08:00">2016-09-05</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><h3 id="jQuery函数"><a href="#jQuery函数" class="headerlink" title="jQuery函数"></a>jQuery函数</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Handle HTML strings</span></span><br><span class="line"><span class="comment">//处理html字符串</span></span><br><span class="line"><span class="comment">//以非&lt;开头 当中&lt;&gt; 非&gt;结束</span></span><br><span class="line"><span class="comment">//如果a是html代码，$("&lt;div/&gt;")，把html代码转成Dom元素</span></span><br><span class="line">   <span class="comment">//jQuery.clean 就是把html代码 转换成Dom元素数组</span></span><br><span class="line"><span class="keyword">var</span> m = <span class="regexp">/^[^&lt;]*(&lt;.+&gt;)[^&gt;]*$/</span>.exec(a);</span><br><span class="line"><span class="keyword">if</span> ( m ) a = jQuery.clean( [ m[<span class="number">1</span>] ] );</span><br><span class="line">...省略</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">//比如$('&lt;div&gt;123&lt;/div&gt;,&lt;a&gt;&lt;223/a&gt;')</span></span><br><span class="line">   <span class="comment">//用调用jQuery.clean方法返回</span></span><br><span class="line">	<span class="comment">//a 需是一个数组</span></span><br><span class="line">clean: <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> r = [];</span><br><span class="line">	<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; a.length; i++ ) &#123;</span><br><span class="line">		<span class="keyword">if</span> ( a[i].constructor == <span class="built_in">String</span> ) &#123;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">var</span> table = <span class="string">""</span>;</span><br><span class="line">            <span class="comment">//indexOf 返回0 !0才是正确的</span></span><br><span class="line">			<span class="keyword">if</span> ( !a[i].indexOf(<span class="string">"&lt;thead"</span>) || !a[i].indexOf(<span class="string">"&lt;tbody"</span>) ) &#123;</span><br><span class="line">				table = <span class="string">"thead"</span>;</span><br><span class="line">				a[i] = <span class="string">"&lt;table&gt;"</span> + a[i] + <span class="string">"&lt;/table&gt;"</span>;</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> ( !a[i].indexOf(<span class="string">"&lt;tr"</span>) ) &#123;</span><br><span class="line">				table = <span class="string">"tr"</span>;</span><br><span class="line">				a[i] = <span class="string">"&lt;table&gt;"</span> + a[i] + <span class="string">"&lt;/table&gt;"</span>;</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> ( !a[i].indexOf(<span class="string">"&lt;td"</span>) || !a[i].indexOf(<span class="string">"&lt;th"</span>) ) &#123;</span><br><span class="line">				table = <span class="string">"td"</span>;</span><br><span class="line">				a[i] = <span class="string">"&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;"</span> + a[i] + <span class="string">"&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;"</span>;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">var</span> div = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</span><br><span class="line">			div.innerHTML = a[i];<span class="comment">//构造div 把table放在div中。</span></span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> ( table ) &#123;</span><br><span class="line">				div = div.firstChild;<span class="comment">// table元素</span></span><br><span class="line"></span><br><span class="line">				<span class="comment">//如果table是 tr 那么 div就变成tr元素</span></span><br><span class="line">				<span class="comment">//如果table是 td 那么 div也变成tr元素 ，但是下面的div就变成tr了。</span></span><br><span class="line">				<span class="keyword">if</span> ( table != <span class="string">"thead"</span> ) div = div.firstChild;<span class="comment">//t的时候</span></span><br><span class="line">				<span class="keyword">if</span> ( table == <span class="string">"td"</span> ) div = div.firstChild;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> ( <span class="keyword">var</span> j = <span class="number">0</span>; j &lt; div.childNodes.length; j++ )</span><br><span class="line">				r.push( div.childNodes[j] );</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> ( a[i].jquery || a[i].length &amp;&amp; !a[i].nodeType )</span><br><span class="line">				<span class="keyword">for</span> ( <span class="keyword">var</span> k = <span class="number">0</span>; k &lt; a[i].length; k++ )</span><br><span class="line">					r.push( a[i][k] );</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> ( a[i] !== <span class="literal">null</span> )</span><br><span class="line">				r.push(	a[i].nodeType ? a[i] : <span class="built_in">document</span>.createTextNode(a[i].toString()) );</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="http://www.cnblogs.com/yy-hh/p/4517223.html" target="_blank" rel="external">jQuery.clean()方法源码分析（一）</a><br><a href="http://www.cnblogs.com/nuysoft/archive/2011/12/22/2297923.html" target="_blank" rel="external">[原创] jQuery源码分析-13 CSS操作-CSS-样式表-jQuery.fn.css()</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/04/jquery-pushstack/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/09/04/jquery-pushstack/" class="post-title-link" itemprop="url">jquery_pushstack函数分析</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-09-04 22:10:07" itemprop="dateCreated datePublished" datetime="2016-09-04T22:10:07+08:00">2016-09-04</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><h3 id="pushStack函数"><a href="#pushStack函数" class="headerlink" title="pushStack函数"></a>pushStack函数</h3><p>pushStack是个对象函数，不是静态方法，用jQuery.pushStack调用会报错，我们来看代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//实例方法保证a是数组。。。</span></span><br><span class="line">pushStack: <span class="function"><span class="keyword">function</span>(<span class="params">a,args</span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取args中的最后一个参数</span></span><br><span class="line">	<span class="keyword">var</span> fn = args &amp;&amp; args[args.length<span class="number">-1</span>];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ( !fn || fn.constructor != <span class="built_in">Function</span> ) &#123;</span><br><span class="line">		内部维护一个stack数组。用来pop 或者push</span><br><span class="line">		<span class="keyword">if</span> ( !<span class="keyword">this</span>.stack ) <span class="keyword">this</span>.stack = [];</span><br><span class="line">		<span class="keyword">this</span>.stack.push( <span class="keyword">this</span>.get() );<span class="comment">//get()把当前对象压入堆栈</span></span><br><span class="line">		<span class="comment">//jQuery.map( this, function(a)&#123; return a &#125; ) :</span></span><br><span class="line">		<span class="keyword">this</span>.get( a );</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">var</span> old = <span class="keyword">this</span>.get();<span class="comment">//里面调用map function ,返回当前jquery对象</span></span><br><span class="line">		<span class="keyword">this</span>.get( a );<span class="comment">//貌似是为了执行fn</span></span><br><span class="line">		<span class="keyword">if</span> ( fn.constructor == <span class="built_in">Function</span> )</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">this</span>.each( fn );</span><br><span class="line">		<span class="keyword">this</span>.get( old );<span class="comment">//重新返回old元素数组</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>我们看他关联的end函数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">end: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.get( <span class="keyword">this</span>.stack.pop() );<span class="comment">//stack 保存了元素数组,get把当前元素数组 push 到新数组，1.0还没有prevObject</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/03/jquery-filter-grep/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/09/03/jquery-filter-grep/" class="post-title-link" itemprop="url">jquery的filter和grep函数思考</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-09-03 22:11:04" itemprop="dateCreated datePublished" datetime="2016-09-03T22:11:04+08:00">2016-09-03</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:29:10" itemprop="dateModified" datetime="2019-05-09T20:29:10+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><p>filter函数首先根据参数not确定是不是筛选出不满足参数t的：<br>1.not为true时筛选出不满足参数t的元素:<br>  构造<code>function(a,f) {return jQuery.grep(a,f,true);}</code>，因为要传递true，所以只能构造。</p>
-<p>2.not为false时筛选出满足参数t的元素：调用<code>jQuery.grep</code></p>
-<p>然后根据<code>while ( t &amp;&amp; /^[a-z[({&lt;*:.#]/i.test(t) )</code>来循环筛选元素</p>
-<p>1.必须满足<code>/^[a-z[({&lt;*:.#]/i</code>正则才会进入<code>while</code>循环，否则直接返回<code>return { r: r, t: t };</code></p>
-<p>2.进入循环后就开始应用<code>jQuery.parse</code>数组循环筛选：</p>
-<p>  因为jQuery.parse数组中包含S，Q两个正则常量:<br>  1.//Look for a string-like sequence<br>    replace( ‘S’, “([a-z<em><em>-][a-z0-9</em>-]</em>)” )<br>    就是要找类似字符串的<br>  2.//Look for something (optionally) enclosed with quotes<br>    .replace( ‘Q’, “ <em>‘?\”?([^’\”]</em>?)’?\”? *” ), “i” );<br>    寻找通过引号关闭的<br>    如果满足parse数组中的某个，那么就跳出for循环，这时候<code>t = t.replace( re, &quot;&quot; )</code>，t就把满足正则的替换为空了(ps:一般到这t就为空了。)<br>  3.如果匹配出的结果中包含not,那么就递归进入filter继续筛选出not的元素。<br>  4.如果没有not，那么就根据<code>jQuery.expr</code>找出符合筛选规则的函数进行eval<br>    因为要传入字符串，所以用eval<br>  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(<span class="string">"f = function(a,i)&#123;"</span> +</span><br><span class="line">	( m[<span class="number">1</span>] == <span class="string">"@"</span> ? <span class="string">"z=jQuery.attr(a,m[3]);"</span> : <span class="string">""</span> ) +</span><br><span class="line">	<span class="string">"return "</span> + f + <span class="string">"&#125;"</span>);</span><br></pre></td></tr></table></figure></p>
-<p>  最后通过grep函数传入f规则函数 再筛选出剩余的元素。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/30/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/32/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/30/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="extend next" rel="next" href="/page/32/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1139,7 +1154,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">183</span>
+                    <span class="site-state-item-count">186</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

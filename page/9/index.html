@@ -309,6 +309,493 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/02/angular-scope-first/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/08/02/angular-scope-first/" class="post-title-link" itemprop="url">angular源码分析之scope步步解析</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-08-02 11:31:28" itemprop="dateCreated datePublished" datetime="2017-08-02T11:31:28+08:00">2017-08-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>看了<a href="https://teropa.info/build-your-own-angular/build_your_own_angularjs_sample.pdf" target="_blank" rel="external">Scopes and DirtyChecking</a>这篇文章深有体会，所以打算简单翻译一下以做记录。</p>
+<h2 id="Scope对象"><a href="#Scope对象" class="headerlink" title="Scope对象"></a>Scope对象</h2><p>Scopes能通过Scope的构造函数new来创建。结果就是一个简单的javascript对象。先创建一个简单的例子。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Scope</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> scope = <span class="keyword">new</span> Scope();</span><br><span class="line">scope.aProperty = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="Watching对象属性：-watch和-digest"><a href="#Watching对象属性：-watch和-digest" class="headerlink" title="Watching对象属性：$watch和$digest"></a>Watching对象属性：$watch和$digest</h2><p>$watch和$digest是同一个硬币的俩面，他们一起承载消费周期的核心：反应数据的变化</p>
+<p>通过$watch你可以添加一个watcher到scope对象上。当scope上有变化发生时watcher会收到通知。</p>
+<p>你可以通过两个函数参数调用$watch 函数:</p>
+<p>1.一个watch函数，可以指定你感兴趣的数据。<br>2.一个listener函数，当数据改变时会被调用。</p>
+<p>在angular里，你通常会指定一个watch表达式来代替watch函数</p>
+<p>一个watch表达式可以是一个字符串，像”user.firstName”，可以放在数据绑定，指令属性或者javascript代码里。</p>
+<p>它在angualr内部被解析和编译成watch函数。</p>
+<p>另外一个是$digest函数，它会遍历scope上所有的watchers,运行他们的watch和listener函数</p>
+<p>Scope首先需要存储所有被注册的watchers：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Scope</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="keyword">this</span>.$$watchers = [];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Scope.prototype.$watch = <span class="function"><span class="keyword">function</span>(<span class="params">watchFn,listenerFn</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> watcher = &#123;</span><br><span class="line">     <span class="attr">watchFn</span>: watchFn,</span><br><span class="line">     <span class="attr">listenerFn</span>:listenerFn</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">this</span>.$$watchers.push(watcher);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后有个$digest函数，让我们定义个简单版本，只是遍历所有注册过的watchers，然后调用他们的listener函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Scope.prototype.$digest = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  _.foreach(<span class="keyword">this</span>.$$watchers,<span class="function"><span class="keyword">function</span>(<span class="params">watcher</span>)</span>&#123;</span><br><span class="line">      watcher.listenerFn();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我们也能看到angular scopes有重要的性能指标：<br>1.不是通过scope附加的data在性能上必须考虑。如果没有watcher监控属性，它就不关心是否是在scope上。angular不会遍历scope上的所有属性，它只会遍历watchers。<br>2.美一个watch函数在每一个$digest调用中被调用。基于这个原因，得考虑你拥有的watches,还有你的watch函数和表达式的性能。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/28/javascript-proto/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/07/28/javascript-proto/" class="post-title-link" itemprop="url">javascript之__proto__</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-07-28 16:20:20" itemprop="dateCreated datePublished" datetime="2017-07-28T16:20:20+08:00">2017-07-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="proto作用"><a href="#proto作用" class="headerlink" title="proto作用"></a>proto作用</h2><h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>今天在看chalk源码时，发现这么一段话：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">build</span>(<span class="params">_styles</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> builder = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> applyStyle.apply(builder, <span class="built_in">arguments</span>);</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	builder._styles = _styles;</span><br><span class="line">	builder.enabled = <span class="keyword">this</span>.enabled;</span><br><span class="line">	<span class="comment">// __proto__ is used because we must return a function, but there is</span></span><br><span class="line">	<span class="comment">// no way to create a function with a different prototype.</span></span><br><span class="line">	<span class="comment">/* eslint-disable no-proto */</span></span><br><span class="line">	builder.__proto__ = proto;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> builder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>用<strong>proto</strong>是因为要返回一个方法，而且要带上一个不同的原型。</p>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><p>我们用以下方法来做个测试：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> proto1 = defineProps(<span class="function"><span class="keyword">function</span> <span class="title">chalk1</span>(<span class="params"></span>) </span>&#123;&#125;, &#123;</span><br><span class="line"></span><br><span class="line">	<span class="string">'ss'</span>:  &#123;</span><br><span class="line">				<span class="attr">get</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">				<span class="keyword">return</span>  <span class="string">"ssssss"</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(proto1.ss);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">build</span>(<span class="params">_styles</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> builder = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// __proto__ is used because we must return a function, but there is</span></span><br><span class="line">	<span class="comment">// no way to create a function with a different prototype.</span></span><br><span class="line">	<span class="comment">/* eslint-disable no-proto */</span></span><br><span class="line">	builder.__proto__ = proto1;</span><br><span class="line">	<span class="keyword">return</span> builder;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> _b = build();</span><br><span class="line"><span class="built_in">console</span>.log(_b.ss);</span><br></pre></td></tr></table></figure>
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出:"></a>输出:</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssssss</span><br><span class="line">ssssss</span><br></pre></td></tr></table></figure>
+<p>参考资料：<br><a href="https://stackoverflow.com/questions/12443769/create-function-in-javascript-with-custom-prototype" target="_blank" rel="external">create function in javascript with custom prototype</a><br><a href="https://stackoverflow.com/questions/5135326/is-it-possible-to-create-a-function-with-another-prototype-than-function-prototy" target="_blank" rel="external">Is it possible to create a function with another prototype than Function.prototype?</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/27/angular-isClass/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/07/27/angular-isClass/" class="post-title-link" itemprop="url">angular-源码分析之isClass函数</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-07-27 16:05:36" itemprop="dateCreated datePublished" datetime="2017-07-27T16:05:36+08:00">2017-07-27</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="isClass函数"><a href="#isClass函数" class="headerlink" title="isClass函数"></a>isClass函数</h2><p>isClass函数顾名思义是判断函数是否是类的<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">stringifyFn</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Support: Chrome 50-51 only</span></span><br><span class="line">  <span class="comment">// Creating a new string by adding `' '` at the end, to hack around some bug in Chrome v50/51</span></span><br><span class="line">  <span class="comment">// (See https://github.com/angular/angular.js/issues/14487.)</span></span><br><span class="line">  <span class="comment">// TODO (gkalpak): Remove workaround when Chrome v52 is released</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Function</span>.prototype.toString.call(fn) + <span class="string">' '</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isClass</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// IE 9-11 do not support classes and IE9 leaks with the code below.</span></span><br><span class="line">    <span class="keyword">if</span> (msie &lt;= <span class="number">11</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Support: Edge 12-13 only</span></span><br><span class="line">    <span class="comment">// See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/6156135/</span></span><br><span class="line">    <span class="comment">/*调用 stringifyFn字符串化后再用正则判断*/</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">typeof</span> func === <span class="string">'function'</span></span><br><span class="line">      &amp;&amp; <span class="regexp">/^(?:class\b|constructor\()/</span>.test(stringifyFn(func));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(name) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name=name||<span class="string">"Default"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(stringifyFn(Person));</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person === <span class="string">'function'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(isClass(Person));</span><br></pre></td></tr></table></figure>
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(name) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name=name||<span class="string">"Default"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// toString()&#123;</span></span><br><span class="line">  <span class="comment">//   return 'Name:'+this.name;</span></span><br><span class="line">  <span class="comment">// &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/27/angular-rootScope/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -612,492 +1099,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/26/angular-rootElement/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/07/26/angular-rootElement/" class="post-title-link" itemprop="url">angular_源码分析之rootElement</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-07-26 16:15:30" itemprop="dateCreated datePublished" datetime="2017-07-26T16:15:30+08:00">2017-07-26</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="rootElementProvider"><a href="#rootElementProvider" class="headerlink" title="rootElementProvider"></a>rootElementProvider</h2><p>rootElementProvider是从哪来的，我们先来看段源码中的话：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * @ngdoc service</span><br><span class="line"> * @name $rootElement</span><br><span class="line"> *</span><br><span class="line"> * @description</span><br><span class="line"> * The root element of Angular application. This is either the element where &#123;@link</span><br><span class="line"> * ng.directive:ngApp ngApp&#125; was declared or the element passed into</span><br><span class="line"> * &#123;@link angular.bootstrap&#125;. The element represents the root element of application. It is also the</span><br><span class="line"> *根元素</span><br><span class="line"> * location where the application's &#123;@link auto.$injector $injector&#125; service gets</span><br><span class="line"> * published, and can be retrieved using `$rootElement.injector()`.</span><br><span class="line"> */</span></span><br><span class="line"><span class="comment">// the implementation is in angular.bootstrap</span></span><br><span class="line"><span class="comment">//实现在angular.bootstrap函数中</span></span><br></pre></td></tr></table></figure>
-<p>我们回到bootstrap函数中一探究竟：</p>
-<h3 id="bootstrap"><a href="#bootstrap" class="headerlink" title="bootstrap"></a>bootstrap</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bootstrap</span>(<span class="params">element, modules, config</span>) </span>&#123;</span><br><span class="line">      modules = modules || [];</span><br><span class="line">      <span class="comment">//unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span></span><br><span class="line">      modules.unshift([<span class="string">'$provide'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$provide</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//调用$provide方法</span></span><br><span class="line">        $provide.value(<span class="string">'$rootElement'</span>, element);</span><br><span class="line">      &#125;]);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>调用了$provide的value方法</p>
-<h3 id="provide-value"><a href="#provide-value" class="headerlink" title="$provide.value"></a>$provide.value</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用个valueFn包装下,再调用factory方法</span></span><br><span class="line"><span class="comment">//不需要返回值，所以第三个参数传false</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">value</span>(<span class="params">name, val</span>) </span>&#123; <span class="keyword">return</span> factory(name, valueFn(val), <span class="literal">false</span>); &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="provide-factory"><a href="#provide-factory" class="headerlink" title="$provide.factory"></a>$provide.factory</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factory</span>(<span class="params">name, factoryFn, enforce</span>) </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> provider(name, &#123;</span><br><span class="line">   <span class="attr">$get</span>: enforce !== <span class="literal">false</span> ? enforceReturnValue(name, factoryFn) : factoryFn</span><br><span class="line"> &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回一个方法而已,方法里要调用factory方法</span></span><br><span class="line"><span class="comment">//相当于一定要有返回值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">enforceReturnValue</span>(<span class="params">name, factory</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">enforcedReturnValue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> result = instanceInjector.invoke(factory, <span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">if</span> (isUndefined(result)) &#123;</span><br><span class="line">      <span class="keyword">throw</span> $injectorMinErr(<span class="string">'undef'</span>, <span class="string">"Provider '&#123;0&#125;' must return a value from $get factory method."</span>, name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="provide-provider"><a href="#provide-provider" class="headerlink" title="$provide.provider"></a>$provide.provider</h3><p>最终调用provider方法,provider后缀为<figure class="highlight plain"><figcaption><span>= 'Provider',```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">```js</span><br><span class="line"></span><br><span class="line">function provider(name, provider_) &#123;</span><br><span class="line">  assertNotHasOwnProperty(name, &apos;service&apos;);</span><br><span class="line">  if (isFunction(provider_) || isArray(provider_)) &#123;</span><br><span class="line">    provider_ = providerInjector.instantiate(provider_);</span><br><span class="line">  &#125;</span><br><span class="line">  //没有定义$get函数会报错</span><br><span class="line">  if (!provider_.$get) &#123;</span><br><span class="line">    throw $injectorMinErr(&apos;pget&apos;, &quot;Provider &apos;&#123;0&#125;&apos; must define $get factory method.&quot;, name);</span><br><span class="line">  &#125;</span><br><span class="line">  return providerCache[name + providerSuffix] = provider_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/26/angular-init-1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/07/26/angular-init-1/" class="post-title-link" itemprop="url">angular_源码分析之启动过程</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-07-26 12:41:02" itemprop="dateCreated datePublished" datetime="2017-07-26T12:41:02+08:00">2017-07-26</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="启动过程"><a href="#启动过程" class="headerlink" title="启动过程"></a>启动过程</h2><p>在angular启动过程中会经历以下步骤：</p>
-<h3 id="publishExternalAPI"><a href="#publishExternalAPI" class="headerlink" title="publishExternalAPI"></a>publishExternalAPI</h3><p>函数中会加载扩展函数，定义<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### angularInit</span><br><span class="line"></span><br><span class="line">angularInit函数中会调用```bootstrap```,bootstrap中会调用```createInjector```方法完成依赖注入，然后调用```invoke```启动编译服务</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">////通过createInjector方法会调用注入时提供的ng模块中的configFn</span><br><span class="line">   //configFn中提供了$rootScope, $rootElement, $compile, $injector</span><br><span class="line">   //通过$provide.provider方法提供</span><br><span class="line">   //modules中首先就是ng模块</span><br><span class="line">var injector = createInjector(modules, config.strictDi);</span><br><span class="line">  //$rootScope,$rootElement,$compile,$injector都是在publishExternalAPI中</span><br><span class="line">   //注入ng模块时由$provide.provider提供的</span><br><span class="line">   //$rootElement在bootstrap中</span><br><span class="line">  //  modules.unshift([&apos;$provide&apos;, function($provide) &#123;</span><br><span class="line">  //     $provide.value(&apos;$rootElement&apos;, element);</span><br><span class="line">  //   &#125;]);</span><br><span class="line">   injector.invoke([&apos;$rootScope&apos;, &apos;$rootElement&apos;, &apos;$compile&apos;, &apos;$injector&apos;,</span><br><span class="line">      function bootstrapApply(scope, element, compile, injector) &#123;</span><br><span class="line">       scope.$apply(function() &#123; //rootScope</span><br><span class="line">         element.data(&apos;$injector&apos;, injector);</span><br><span class="line">         compile(element)(scope);</span><br><span class="line">       &#125;);</span><br><span class="line">     &#125;]</span><br><span class="line">   );</span><br></pre></td></tr></table></figure></p>
-<h3 id="createInjector"><a href="#createInjector" class="headerlink" title="createInjector"></a>createInjector</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> runBlocks = loadModules(modulesToLoad);</span><br></pre></td></tr></table></figure>
-<p>loadModules是createInjector内部方法,方法中会调用<figure class="highlight plain"><figcaption><span>= angularModule(module);```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">获取模块。  </span><br><span class="line"></span><br><span class="line">因为定义ng模块时是push到configBlocks中的，所以会直接调用runInvokeQueue</span><br><span class="line"></span><br><span class="line">### runInvokeQueue</span><br><span class="line">```js</span><br><span class="line">//queue就是在定义ng 模块时因为有configFn参数,然后调用config 函数（实际是通过invokeLater返回的函数)push到configBlocks中。</span><br><span class="line"> var config = invokeLater(&apos;$injector&apos;, &apos;invoke&apos;, &apos;push&apos;, configBlocks);//configBlocks此时为空</span><br><span class="line"></span><br><span class="line"> function invokeLater(provider, method, insertMethod, queue) &#123;</span><br><span class="line">          if (!queue) queue = invokeQueue;</span><br><span class="line">          return function() &#123;</span><br><span class="line">            queue[insertMethod || &apos;push&apos;]([provider, method, arguments]);</span><br><span class="line">            return moduleInstance;</span><br><span class="line">          &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//此时queue就是[&apos;$injector&apos;,&apos;invoke&apos;,[[&apos;$provide&apos;,function($provide)&#123;&#125;]]]</span><br><span class="line">function runInvokeQueue(queue) &#123;</span><br><span class="line">       var i, ii;</span><br><span class="line">       for (i = 0, ii = queue.length; i &lt; ii; i++) &#123;</span><br><span class="line">         var invokeArgs = queue[i],</span><br><span class="line"></span><br><span class="line">            //loadModules为内部方法所以能直接调用providerInjector</span><br><span class="line">            //get方法就是返回injector对象的getService方法</span><br><span class="line">             provider = providerInjector.get(invokeArgs[0]);</span><br><span class="line">          //实际就是调用$injector的invoke方法</span><br><span class="line">         provider[invokeArgs[1]].apply(provider, invokeArgs[2]);</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="invoke函数"><a href="#invoke函数" class="headerlink" title="invoke函数"></a>invoke函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//调用runInvokeQueue时,fn就是['$provide',function($provide)&#123;&#125;]</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invoke</span>(<span class="params">fn, self, locals, serviceName</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> locals === <span class="string">'string'</span>) &#123;</span><br><span class="line">        serviceName = locals;</span><br><span class="line">        locals = <span class="literal">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//注入参数</span></span><br><span class="line">      <span class="comment">//如果fn是数组那么会判断数组最后一个元素是否为函数</span></span><br><span class="line">      <span class="keyword">var</span> args = injectionArgs(fn, locals, serviceName);</span><br><span class="line">      <span class="keyword">if</span> (isArray(fn)) &#123; <span class="comment">//比如['$scope',function($scope)&#123;&#125;]</span></span><br><span class="line">        fn = fn[fn.length - <span class="number">1</span>];<span class="comment">//取数组的最后一个</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!isClass(fn)) &#123;</span><br><span class="line">        <span class="comment">// http://jsperf.com/angularjs-invoke-apply-vs-switch</span></span><br><span class="line">        <span class="comment">// #5388</span></span><br><span class="line">        <span class="comment">//比如 var injector = angular.injector(["myModule"]);</span></span><br><span class="line">        <span class="comment">//injector.invoke(function(myService)&#123;alert(myService.my);&#125;);</span></span><br><span class="line">        <span class="keyword">return</span> fn.apply(self, args);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        args.unshift(<span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> (<span class="built_in">Function</span>.prototype.bind.apply(fn, args))();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="providerCache"><a href="#providerCache" class="headerlink" title="providerCache"></a>providerCache</h3><p>$provide提供了provider方法,比如<figure class="highlight plain"><figcaption><span>$CompileProvider)```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">//providerInjector调用invoke函数时,getService</span><br><span class="line">//是从providerCache中获取的</span><br><span class="line">var providerCache = &#123;</span><br><span class="line">        $provide: &#123;</span><br><span class="line">            provider: supportObject(provider),</span><br><span class="line">            factory: supportObject(factory),</span><br><span class="line">            service: supportObject(service),</span><br><span class="line">            value: supportObject(value),</span><br><span class="line">            constant: supportObject(constant),</span><br><span class="line">            decorator: decorator</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;;</span><br></pre></td></tr></table></figure></p>
-<h3 id="provider"><a href="#provider" class="headerlink" title="provider"></a>provider</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//name $compile</span></span><br><span class="line"><span class="comment">//provider_  CompileProvider</span></span><br><span class="line"><span class="comment">//返回CompileProvider实例 并且放入providerCache中。</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">provider</span>(<span class="params">name, provider_</span>) </span>&#123;</span><br><span class="line">    assertNotHasOwnProperty(name, <span class="string">'service'</span>);</span><br><span class="line">    <span class="keyword">if</span> (isFunction(provider_) || isArray(provider_)) &#123;</span><br><span class="line">      provider_ = providerInjector.instantiate(provider_);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!provider_.$<span class="keyword">get</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> $injectorMinErr(<span class="string">'pget'</span>, <span class="string">"Provider '&#123;0&#125;' must define $get factory method."</span>, name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> providerCache[name + providerSuffix] = provider_;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>provider方法里其实调用了<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">```js</span><br><span class="line">//Type就可能是函数类型</span><br><span class="line">function instantiate(Type, locals, serviceName) &#123;</span><br><span class="line">     // Check if Type is annotated and use just the given function at n-1 as parameter</span><br><span class="line">     // e.g. someModule.factory(&apos;greeter&apos;, [&apos;$window&apos;, function(renamed$window) &#123;&#125;]);</span><br><span class="line">     var ctor = (isArray(Type) ? Type[Type.length - 1] : Type);</span><br><span class="line">     var args = injectionArgs(Type, locals, serviceName);</span><br><span class="line">     // Empty object at position 0 is ignored for invocation with `new`, but required.</span><br><span class="line">     args.unshift(null);</span><br><span class="line">     //这样构造。。返回函数本身的对象，然后就可以链式调用了。</span><br><span class="line">     return new (Function.prototype.bind.apply(ctor, args))();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/26/angular-reverseParams/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/07/26/angular-reverseParams/" class="post-title-link" itemprop="url">angular源码分析之reverseParams函数</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-07-26 11:32:03" itemprop="dateCreated datePublished" datetime="2017-07-26T11:32:03+08:00">2017-07-26</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="reverseParams方法"><a href="#reverseParams方法" class="headerlink" title="reverseParams方法"></a>reverseParams方法</h2><h3 id="出处"><a href="#出处" class="headerlink" title="出处"></a>出处</h3><p>在angular注册指令方法里，如果name是数组，那么会调用<code>forEach</code>方法来遍历注册</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">forEach(name, reverseParams(registerDirective));</span><br></pre></td></tr></table></figure>
-<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">*因为forEach是value,key的顺序，但是key,value是最常用的。</span><br><span class="line">* when using forEach the params are value, key, but it is often useful to have key, value.</span><br><span class="line">* @param &#123;function(string, *)&#125; iteratorFn</span><br><span class="line">* @returns &#123;function(*, string)&#125;</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reverseParams</span>(<span class="params">iteratorFn</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">value, key</span>) </span>&#123;iteratorFn(key, value);&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1139,7 +1145,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">183</span>
+                    <span class="site-state-item-count">186</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

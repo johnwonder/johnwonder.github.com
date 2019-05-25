@@ -309,6 +309,494 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/14/angular-provider-q/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/14/angular-provider-q/" class="post-title-link" itemprop="url">angular源码剖析之Provider系列--QProvider</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-14 09:44:14" itemprop="dateCreated datePublished" datetime="2019-05-14T09:44:14+08:00">2019-05-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-15 22:17:00" itemprop="dateModified" datetime="2019-05-15T22:17:00+08:00">2019-05-15</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="QProvider-简介"><a href="#QProvider-简介" class="headerlink" title="QProvider 简介"></a>QProvider 简介</h2><p>源码里是这么描述的：</p>
+<p>A service that helps you run functions asynchronously, and use their return values (or exceptions) when they are done processing.</p>
+<p>大概意思是帮助你异步执行方法，且当他们执行完后可以使用他们的返回值。</p>
+<p>This is an implementation of promises/deferred objects inspired by Kris Kowal’s Q.</p>
+<p>这是一个 promises/deferred 对象的实现,灵感来自于 <a href="https://github.com/kriskowal/q" target="_blank" rel="external">Kris Kowal’s Q</a></p>
+<h2 id="QProvider-用法"><a href="#QProvider-用法" class="headerlink" title="QProvider 用法"></a>QProvider 用法</h2><p>下面的例子假设$q和asyncGreet在当前作用域内是有效的.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncGreet</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line"><span class="comment">// perform some asynchronous operation, resolve or reject the promise when appropriate.</span></span><br><span class="line"><span class="keyword">return</span> $q(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (okToGreet(name)) &#123;</span><br><span class="line">      resolve(<span class="string">'Hello, '</span> + name + <span class="string">'!'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      reject(<span class="string">'Greeting '</span> + name + <span class="string">' is not allowed.'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> promise = asyncGreet(<span class="string">'Robin Hood'</span>);</span><br><span class="line"><span class="comment">//then函数放入pending数组</span></span><br><span class="line">promise.then(<span class="function"><span class="keyword">function</span>(<span class="params">greeting</span>) </span>&#123;</span><br><span class="line">alert(<span class="string">'Success: '</span> + greeting);</span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">alert(<span class="string">'Failed: '</span> + reason);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>下面我们深入源码内部去一探究竟：</p>
+<h2 id="QProvider-定义"><a href="#QProvider-定义" class="headerlink" title="$QProvider 定义"></a>$QProvider 定义</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$QProvider</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.$<span class="keyword">get</span> = ['$rootScope', '$exceptionHandler', function($rootScope, $exceptionHandler) &#123;</span><br><span class="line">    <span class="keyword">return</span> qFactory(<span class="function"><span class="keyword">function</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">      $rootScope.$evalAsync(callback);</span><br><span class="line">    &#125;, $exceptionHandler);</span><br><span class="line">  &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$evalAsync: <span class="function"><span class="keyword">function</span>(<span class="params">expr, locals</span>) </span>&#123;</span><br><span class="line">     <span class="comment">// if we are outside of an $digest loop and this is the first time we are scheduling async</span></span><br><span class="line">     <span class="comment">// task also schedule async auto-flush</span></span><br><span class="line">     <span class="comment">//如果当前不处于$digest或者$apply的过程中(只有在$apply和$digest方法中才会设置$$phase这个字段)，并且asyncQueue数组中还不存在任务时，</span></span><br><span class="line">     <span class="comment">//就会异步调度一轮digest循环来确保asyncQueue数组中的表达式会被执行</span></span><br><span class="line">     <span class="keyword">if</span> (!$rootScope.$$phase &amp;&amp; !asyncQueue.length) &#123;</span><br><span class="line">       $browser.defer(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">         <span class="comment">//最终调用的是setTimeout</span></span><br><span class="line">         <span class="keyword">if</span> (asyncQueue.length) &#123;</span><br><span class="line">           $rootScope.$digest();<span class="comment">//执行消化功能</span></span><br><span class="line">         &#125;</span><br><span class="line">       &#125;);</span><br><span class="line">     &#125;</span><br><span class="line">     asyncQueue.push(&#123;<span class="attr">scope</span>: <span class="keyword">this</span>, <span class="attr">expression</span>: $parse(expr), <span class="attr">locals</span>: locals&#125;);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>由之前 <a href="http://johnwonder.coding.me/2018/03/01/angular-provider-cachefactory/" target="_blank" rel="external">cacheFactory的分析</a><br>，再结合上面源码我们就知道  注入$q时调用了qFactory工厂方法：</p>
+<h2 id="qFactory"><a href="#qFactory" class="headerlink" title="qFactory"></a>qFactory</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">qFactory</span>(<span class="params">nextTick, exceptionHandler</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Promise</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//初始化Promise的状态对象</span></span><br><span class="line">    <span class="keyword">this</span>.$$state = &#123; <span class="attr">status</span>: <span class="number">0</span> &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//扩展Promise类原型</span></span><br><span class="line">  extend(<span class="built_in">Promise</span>.prototype, &#123;</span><br><span class="line">    <span class="comment">//then主要是把一个defer对象和fullfiled reject 函数 放入pending数组</span></span><br><span class="line">    then: <span class="function"><span class="keyword">function</span>(<span class="params">onFulfilled, onRejected, progressBack</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (isUndefined(onFulfilled) &amp;&amp; isUndefined(onRejected) &amp;&amp; isUndefined(progressBack)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">var</span> result = <span class="keyword">new</span> Deferred();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">this</span>.$$state.pending = <span class="keyword">this</span>.$$state.pending || [];</span><br><span class="line">      <span class="comment">//把一个新的 Defer 对象push进pending数组</span></span><br><span class="line">      <span class="keyword">this</span>.$$state.pending.push([result, onFulfilled, onRejected, progressBack]);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.$$state.status &gt; <span class="number">0</span>) scheduleProcessQueue(<span class="keyword">this</span>.$$state);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//返回这个新建Defer对象的promise</span></span><br><span class="line">      <span class="comment">//可以形成promise chain</span></span><br><span class="line">      <span class="keyword">return</span> result.promise;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//代码省略</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//通过$q注入时返回Q函数</span></span><br><span class="line">  <span class="comment">//随后Q函数 传入resolver参数调用</span></span><br><span class="line">  <span class="comment">//调用resolver函数时传入包装deferred对象的resolve和 reject函数</span></span><br><span class="line">  <span class="comment">//随后返回promise对象</span></span><br><span class="line">  <span class="comment">//promise对象调用then函数时放入pending队列</span></span><br><span class="line">  <span class="keyword">var</span> $Q = <span class="function"><span class="keyword">function</span> <span class="title">Q</span>(<span class="params">resolver</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (!isFunction(resolver)) &#123;</span><br><span class="line">       <span class="keyword">throw</span> $qMinErr(<span class="string">'norslvr'</span>, <span class="string">"Expected resolverFn, got '&#123;0&#125;'"</span>, resolver);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//构造一个Deferred对象</span></span><br><span class="line">     <span class="keyword">var</span> deferred = <span class="keyword">new</span> Deferred();</span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">resolveFn</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">       deferred.resolve(value);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">rejectFn</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">       deferred.reject(reason);</span><br><span class="line">     &#125;</span><br><span class="line">      <span class="comment">//调用resolver参数函数</span></span><br><span class="line">      <span class="comment">//resolveFn供外部调用</span></span><br><span class="line">     resolver(resolveFn, rejectFn);</span><br><span class="line">     <span class="comment">//返回一个promise对象</span></span><br><span class="line">     <span class="comment">//供调用then函数</span></span><br><span class="line">     <span class="keyword">return</span> deferred.promise;</span><br><span class="line">   &#125;;</span><br><span class="line">    <span class="comment">// Let's make the instanceof operator work for promises, so that</span></span><br><span class="line">    <span class="comment">// `new $q(fn) instanceof $q` would evaluate to true.</span></span><br><span class="line">    <span class="comment">//使得new $q(fn) 也可以调用promise的方法</span></span><br><span class="line">    $Q.prototype = <span class="built_in">Promise</span>.prototype;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//暴露内部方法</span></span><br><span class="line">    $Q.defer = defer;</span><br><span class="line">    $Q.reject = reject;</span><br><span class="line">    $Q.when = when;</span><br><span class="line">    $Q.resolve = resolve;</span><br><span class="line">    <span class="comment">//$q.all是用于执行多个异步任务进行回调，它可以接受一个promise的数组，</span></span><br><span class="line">    <span class="comment">//或是promise的hash(object)。任何一个promise失败，都会导致整个任务的失败。</span></span><br><span class="line">    <span class="comment">//https://blog.csdn.net/shidaping/article/details/52398925</span></span><br><span class="line">    $Q.all = all;</span><br><span class="line">    <span class="comment">//$q.race() 是 Angular 里面的一个新方法，和 $q.all() 类似，但是它只会返回第一个处理完成的 Promise 给你///。假定 API 调用 1 和 API 调用 2 同时执行，而 API 调用 2 在 API 调用 1 之前处理完成，那么你就只会得到 //API 调用 2 的返回对象。换句话说，最快（处理完成）的 Promise 会赢得返回对象的机会：</span></span><br><span class="line">    $Q.race = race;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> $Q;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用then方法时实际上是新建一个defer对象放入pending数组，在调用defer.resolve的时候<br>去调度这个数组中的元素，也就是任务.</p>
+<h2 id="resolve-方法"><a href="#resolve-方法" class="headerlink" title="resolve 方法"></a>resolve 方法</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">extend(Deferred.prototype, &#123;</span><br><span class="line">  <span class="attr">resolve</span>: <span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//第一次resolve的时候为0 所以会往下走</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.promise.$$state.status) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (val === <span class="keyword">this</span>.promise) &#123;</span><br><span class="line">      <span class="keyword">this</span>.$$reject($qMinErr(</span><br><span class="line">        <span class="string">'qcycle'</span>,</span><br><span class="line">        <span class="string">"Expected promise to be resolved with value other than itself '&#123;0&#125;'"</span>,</span><br><span class="line">        val));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">//调度pending数组里的任务</span></span><br><span class="line">      <span class="keyword">this</span>.$$resolve(val);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="attr">$$resolve</span>: <span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> then;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> done = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> ((isObject(val) || isFunction(val))) then = val &amp;&amp; val.then;</span><br><span class="line">      <span class="keyword">if</span> (isFunction(then)) &#123;</span><br><span class="line">         <span class="comment">//val.then方法 val是promise的时候</span></span><br><span class="line">         <span class="comment">//resolvePromise函数里放入了当前defer对象</span></span><br><span class="line">        <span class="keyword">this</span>.promise.$$state.status = <span class="number">-1</span>;</span><br><span class="line">        then.call(val, resolvePromise, rejectPromise, simpleBind(<span class="keyword">this</span>, <span class="keyword">this</span>.notify));</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//更新promise的状态对象</span></span><br><span class="line">        <span class="keyword">this</span>.promise.$$state.value = val;</span><br><span class="line">        <span class="keyword">this</span>.promise.$$state.status = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//调度的时候pending为空就返回了</span></span><br><span class="line">        scheduleProcessQueue(<span class="keyword">this</span>.promise.$$state);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      rejectPromise(e);</span><br><span class="line">      exceptionHandler(e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">resolvePromise</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (done) <span class="keyword">return</span>;</span><br><span class="line">      done = <span class="literal">true</span>;</span><br><span class="line">      that.$$resolve(val);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">rejectPromise</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (done) <span class="keyword">return</span>;</span><br><span class="line">      done = <span class="literal">true</span>;</span><br><span class="line">      that.$$reject(val);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="scheduleProcessQueue-方法"><a href="#scheduleProcessQueue-方法" class="headerlink" title="scheduleProcessQueue 方法"></a>scheduleProcessQueue 方法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//传入promise的state对象</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scheduleProcessQueue</span>(<span class="params">state</span>) </span>&#123;</span><br><span class="line"> <span class="keyword">if</span> (state.processScheduled || !state.pending) <span class="keyword">return</span>;</span><br><span class="line"> state.processScheduled = <span class="literal">true</span>;</span><br><span class="line"> <span class="comment">//nextTick里调用$browser.defer函数</span></span><br><span class="line"></span><br><span class="line"> nextTick(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; processQueue(state); &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="processQueue-方法"><a href="#processQueue-方法" class="headerlink" title="processQueue 方法"></a>processQueue 方法</h3><p>实际最终处理的还是processQueue函数，里面循环调用pending数组<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">processQueue</span>(<span class="params">state</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> fn, deferred, pending;</span><br><span class="line"></span><br><span class="line">  pending = state.pending;</span><br><span class="line">  state.processScheduled = <span class="literal">false</span>;</span><br><span class="line">  state.pending = <span class="literal">undefined</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, ii = pending.length; i &lt; ii; ++i) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取pending数组的元素 元素本身也是数组</span></span><br><span class="line">    deferred = pending[i][<span class="number">0</span>];</span><br><span class="line">    fn = pending[i][state.status];</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (isFunction(fn)) &#123;</span><br><span class="line">        deferred.resolve(fn(state.value));</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (state.status === <span class="number">1</span>) &#123;</span><br><span class="line">        deferred.resolve(state.value);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        deferred.reject(state.value);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      deferred.reject(e);</span><br><span class="line">      exceptionHandler(e);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://github.com/stefanpenner/es6-promise/" target="_blank" rel="external">a tiny implementation of Promises/A+.</a></li>
+<li><a href="https://www.cnblogs.com/ZengYunChun/p/6438330.html" target="_blank" rel="external">Angular中的$q的形象解释及深入用法</a></li>
+<li><a href="https://juejin.im/post/58465c4979bc440065c6e720" target="_blank" rel="external">关于 Angular 里的 $q 和 Promise</a></li>
+<li><a href="https://glumes.com/post/android/understand-state-machine/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">理解状态机</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/vue-knownpoints/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/12/vue-knownpoints/" class="post-title-link" itemprop="url">vue框架学习资料整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-12 10:44:46" itemprop="dateCreated datePublished" datetime="2019-05-12T10:44:46+08:00">2019-05-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-23 21:45:37" itemprop="dateModified" datetime="2019-05-23T21:45:37+08:00">2019-05-23</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><a href="https://github.com/lybenson/bilibili-vue" target="_blank" rel="external">前端vue+后端koa，全栈式开发bilibili首页</a></li>
+<li><a href="https://blog.csdn.net/sunhuaqiang1/article/details/86702926" target="_blank" rel="external">Vue进阶（三十六）：vue.js中created方法的使用详解</a></li>
+<li><a href="https://juejin.im/post/5cd783c4e51d453a4d530d8f" target="_blank" rel="external">《阿里云前端技术周刊》第四期</a></li>
+<li><a href="https://www.xcodebuild.com/" target="_blank" rel="external">阿里前端开发 macOS个人开发</a></li>
+<li><a href="https://github.com/jsfront/month" target="_blank" rel="external">前端知识月刊 </a></li>
+<li><a href="https://juejin.im/book/5a36661851882538e2259c0f" target="_blank" rel="external">剖析 Vue.js 内部运行机制</a></li>
+<li><a href="https://www.cnblogs.com/MrZouJian/p/8645625.html#top" target="_blank" rel="external">vue数据传递–我有特殊的实现技巧</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/62923353?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">金三银四的魔都两年半前端面经</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/docker-knownpoints/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/12/docker-knownpoints/" class="post-title-link" itemprop="url">docker容器学习资料整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-12 09:08:25 / 修改时间：09:11:47" itemprop="dateCreated datePublished" datetime="2019-05-12T09:08:25+08:00">2019-05-12</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><p>docker rm -f db01 db02 强制删除容器db01、db02<br>-f :通过SIGKILL信号强制删除一个运行中的容器</p>
+</li>
+<li><p>docker cp :用于容器与主机之间的数据拷贝。<br>docker cp  96f7f14e99ab:/www /tmp/<br>将容器96f7f14e99ab的/www目录拷贝到主机的/tmp目录中。</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/spring-knownpoints/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -607,478 +1095,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/java-concurrent-knownpoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/11/java-concurrent-knownpoints/" class="post-title-link" itemprop="url">java并发知识点整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-11 14:28:58" itemprop="dateCreated datePublished" datetime="2019-05-11T14:28:58+08:00">2019-05-11</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-15 23:29:33" itemprop="dateModified" datetime="2019-05-15T23:29:33+08:00">2019-05-15</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><a href="https://blog.csdn.net/dm_vincent/article/details/79604716" target="_blank" rel="external">为什么volatile++不是原子性的？</a></li>
-<li><a href="https://mp.weixin.qq.com/s/wvBziVsRNS7pXyknAHEYKg" target="_blank" rel="external">分享一道阿里Java并发面试题 (详细分析篇)</a></li>
-<li><a href="https://www.cnblogs.com/dancser/p/4450963.html#top" target="_blank" rel="external">不错的TOMCAT监控好工具probe</a></li>
-<li><a href="http://www.linkedkeeper.com/detail/blog.action?bid=1453&amp;hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">JDK1.8应用启动出现fullgc问题解决方案</a></li>
-<li><a href="https://mp.weixin.qq.com/s/TeDvhjZoldoJs4VZNS26tg" target="_blank" rel="external">阿里Sentinel整合Zuul网关详解</a></li>
-<li><a href="https://mp.weixin.qq.com/s/uDwX0iq9RWs1sK1ct0tiCg" target="_blank" rel="external">干货 | 浅谈Node.js在携程的应用</a></li>
-<li><a href="https://mp.weixin.qq.com/s/qeYRAcDm2ZNmYgcPndAZjQ" target="_blank" rel="external">Kubernetes 原生 CI/CD 系统 Prow 简介</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/Algorithm-knownpoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/11/Algorithm-knownpoints/" class="post-title-link" itemprop="url">算法学习资料整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-11 10:05:49 / 修改时间：10:07:30" itemprop="dateCreated datePublished" datetime="2019-05-11T10:05:49+08:00">2019-05-11</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><a href="https://blog.csdn.net/dennis_wu_/article/category/6977094/2?" target="_blank" rel="external">剑指offer</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/flutter-knownpoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/10/flutter-knownpoints/" class="post-title-link" itemprop="url">flutter跨平台开发资料整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-10 10:02:17" itemprop="dateCreated datePublished" datetime="2019-05-10T10:02:17+08:00">2019-05-10</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-18 09:22:52" itemprop="dateModified" datetime="2019-05-18T09:22:52+08:00">2019-05-18</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><a href="https://blog.csdn.net/ddwhan0123" target="_blank" rel="external">Flutter学写个NIO APP</a></li>
-<li><a href="https://github.com/Sky24n" target="_blank" rel="external">基于Google Flutter的WanAndroid客户端</a></li>
-<li><a href="https://github.com/pedromassango/my_flutter_challenges" target="_blank" rel="external">My Flutter Challenges</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1120,7 +1141,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">183</span>
+                    <span class="site-state-item-count">186</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

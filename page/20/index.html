@@ -309,6 +309,499 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/25/scala-implicit1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/03/25/scala-implicit1/" class="post-title-link" itemprop="url">scala之隐式servletContext</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-25 15:20:48" itemprop="dateCreated datePublished" datetime="2017-03-25T15:20:48+08:00">2017-03-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala-转换被方法调用的对象"><a href="#scala-转换被方法调用的对象" class="headerlink" title="scala 转换被方法调用的对象"></a>scala 转换被方法调用的对象</h2><p>在scalatra启动时，会mount多个servlet ,但是servletContext并没有定义mount方法，那为什么servletContext能调用mount方法呢？</p>
+<p>这就是scala隐式转换的魅力。</p>
+<p>在看scalatra源码时，看到在trait ServletApiImplicits定义了如下代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用来调用mount</span></span><br><span class="line"><span class="function">implicit def <span class="title">enrichServletContext</span><span class="params">(servletContext: ServletContext)</span>: RichServletContext </span>=</span><br><span class="line"> RichServletContext(servletContext)</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">在RichServletContext中定义了mount方法：</span><br><span class="line">```java</span><br><span class="line"><span class="comment">/**</span><br><span class="line">* Mounts a handler to the servlet context.  Must be an HttpServlet or a</span><br><span class="line">* Filter.</span><br><span class="line">*</span><br><span class="line">* <span class="doctag">@param</span> handler the handler to mount</span><br><span class="line">*</span><br><span class="line">* <span class="doctag">@param</span> urlPattern the URL pattern to mount.  Will be appended with `\/\*` if</span><br><span class="line">* not already, as path-mapping is the most natural fit for Scalatra.</span><br><span class="line">* If you don't want path mapping, use the native Servlet API.</span><br><span class="line">*</span><br><span class="line">* <span class="doctag">@param</span> name the name of the handler</span><br><span class="line">*/</span></span><br><span class="line"><span class="function">def <span class="title">mount</span><span class="params">(handler: Handler, urlPattern: String, name: String)</span>: Unit </span>= &#123;</span><br><span class="line"> mount(handler, urlPattern, name, <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看如下代码：</p>
+<pre><code class="java"><span class="function">implicit def <span class="title">enrichServletContext</span><span class="params">(sc: String)</span>: RichServletContext </span>=
+  RichServletContext(sc)
+
+<span class="function"><span class="keyword">case</span> class <span class="title">RichServletContext</span><span class="params">(sc:String)</span></span>{
+
+<span class="function">def <span class="title">mount</span><span class="params">()</span>:Unit </span>= {
+  println(sc)
+}
+}
+
+val ss = <span class="string">"sssss"</span>
+ss.mount
+</code></pre>
+<p>在这篇文章中就提到了<a href="http://www.guidebee.info/wordpress/archives/5076" target="_blank" rel="external">转换被方法调用的对象</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/24/scala-object/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/03/24/scala-object/" class="post-title-link" itemprop="url">scala_object</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-24 09:26:06" itemprop="dateCreated datePublished" datetime="2017-03-24T09:26:06+08:00">2017-03-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala-object-线程安全"><a href="#scala-object-线程安全" class="headerlink" title="scala object 线程安全"></a>scala object 线程安全</h2><p>这篇<a href="http://www.scala-lang.org/old/node/6610" target="_blank" rel="external">Scala thread-safety question</a>回复</p>
+<p>提到如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">object Class &#123;</span><br><span class="line">val students = <span class="keyword">new</span> mutable.List()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>“object” initialization is thread safe. “mutable.List” is not thread<br>safe and needs to be synchronized.</p>
+<p>然后我们自己定义一个object用于测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">  object  TestObject &#123;</span><br><span class="line"></span><br><span class="line">    val prop1 = <span class="string">"sad"</span></span><br><span class="line"></span><br><span class="line">    lazy  val prop2 = <span class="string">"testLazy"</span></span><br><span class="line">    println(<span class="string">"propinitialize"</span>)</span><br><span class="line">    <span class="keyword">private</span> val props: java.util.Map[String, Object] = <span class="keyword">new</span> java.util.HashMap[String, Object]</span><br><span class="line"></span><br><span class="line">    props.put(<span class="string">"prop2"</span>,prop2)<span class="comment">//访问prop2的时候会给prop2赋值</span></span><br><span class="line"></span><br><span class="line">    <span class="function">def <span class="title">initialize</span><span class="params">()</span> </span>= &#123;</span><br><span class="line">      println(<span class="string">"initialize"</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">def <span class="title">apply</span><span class="params">()</span> </span>=&#123;</span><br><span class="line"></span><br><span class="line">      println(props.get(<span class="string">"prop2"</span>).toString)</span><br><span class="line">      println(<span class="string">"initializing"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用以下代码测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">object  TestObjectInitializer extends  App &#123;</span><br><span class="line"></span><br><span class="line">  val exce = Executors.newFixedThreadPool(<span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (i &lt;- <span class="number">0</span>.to(<span class="number">100</span>))&#123;</span><br><span class="line">    val runner = <span class="keyword">new</span> Runnable &#123;</span><br><span class="line">      <span class="function">def <span class="title">run</span><span class="params">()</span>: Unit </span>= &#123;</span><br><span class="line"></span><br><span class="line">        TestObject()</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    exce.submit(runner)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  println(<span class="string">"initialized"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印如下代码：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">propinitialize</span><br><span class="line">initialized</span><br><span class="line">testLazy</span><br><span class="line">testLazy</span><br><span class="line">initializing</span><br><span class="line">testLazy</span><br><span class="line">testLazy</span><br><span class="line">initializing</span><br><span class="line">testLazy</span><br><span class="line">testLazy</span><br><span class="line">initializing</span><br><span class="line">initializing</span></span><br></pre></td></tr></table></figure>
+<p>propinitialize只执行一次。</p>
+<p>参考资料：<br><a href="http://stackoverflow.com/questions/19934176/scala-singleton-object-with-multi-threading" target="_blank" rel="external">Scala Singleton Object with Multi-threading</a><br><a href="http://stackoverflow.com/questions/8318461/how-to-make-object-a-mutable-stack-thread-safe" target="_blank" rel="external">How to make object (a mutable stack) thread-safe</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/18/scalatra-LifeCycle/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/03/18/scalatra-LifeCycle/" class="post-title-link" itemprop="url">scalatra_LifeCycle</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-18 23:09:15" itemprop="dateCreated datePublished" datetime="2017-03-18T23:09:15+08:00">2017-03-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scalatra是如何启动的"><a href="#scalatra是如何启动的" class="headerlink" title="scalatra是如何启动的"></a>scalatra是如何启动的</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ScalatraListener</span> <span class="keyword">extends</span> <span class="title">ServletContextListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.scalatra.servlet.ScalatraListener._</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>[<span class="keyword">this</span>] val logger: Logger = Logger[<span class="keyword">this</span>.type]</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>[<span class="keyword">this</span>] <span class="keyword">var</span> cycle: LifeCycle = _</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>[<span class="keyword">this</span>] <span class="keyword">var</span> servletContext: ServletContext = <span class="function">_</span><br><span class="line"></span><br><span class="line">override def <span class="title">contextInitialized</span><span class="params">(sce: ServletContextEvent)</span>: Unit </span>= &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//contextInitialized 后赋值给servletContext</span></span><br><span class="line">    configureServletContext(sce)</span><br><span class="line">    configureCycleClass(Thread.currentThread.getContextClassLoader)</span><br><span class="line">  &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> e: Throwable =&gt;</span><br><span class="line">      logger.error(<span class="string">"Failed to initialize scalatra application at "</span> + sce.getServletContext.getContextPath, e)</span><br><span class="line">      <span class="keyword">throw</span> e</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">def <span class="title">contextDestroyed</span><span class="params">(sce: ServletContextEvent)</span>: Unit </span>= &#123;</span><br><span class="line">  <span class="keyword">if</span> (cycle != <span class="keyword">null</span>) &#123;</span><br><span class="line">    logger.info(<span class="string">"Destroying life cycle class: %s"</span>.format(cycle.getClass.getName))</span><br><span class="line">    cycle.destroy(servletContext)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> def <span class="title">configureExecutionContext</span><span class="params">(sce: ServletContextEvent)</span>: Unit </span>= &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//寻找LifeCycle</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> def <span class="title">probeForCycleClass</span><span class="params">(classLoader: ClassLoader)</span>: <span class="params">(String, LifeCycle)</span> </span>= &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> def <span class="title">configureServletContext</span><span class="params">(sce: ServletContextEvent)</span>: Unit </span>= &#123;</span><br><span class="line">  <span class="comment">//定义servletContext 从sce获取</span></span><br><span class="line">  servletContext = sce.getServletContext</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> def <span class="title">configureCycleClass</span><span class="params">(classLoader: ClassLoader)</span>: Unit </span>= &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">object ScalatraListener &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DO NOT RENAME THIS CLASS NAME AS IT BREAKS THE ENTIRE WORLD</span></span><br><span class="line"><span class="comment">// TOGETHER WITH THE WORLD IT WILL BREAK ALL EXISTING SCALATRA APPS</span></span><br><span class="line"><span class="comment">// RENAMING THIS CLASS WILL RESULT IN GETTING SHOT, IF YOU SURVIVE YOU WILL BE SHOT AGAIN</span></span><br><span class="line">val DefaultLifeCycle: String = <span class="string">"ScalatraBootstrap"</span></span><br><span class="line">val OldDefaultLifeCycle: String = <span class="string">"Scalatra"</span></span><br><span class="line">val LifeCycleKey: String = <span class="string">"org.scalatra.LifeCycle"</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/18/angular-injector-module/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -610,506 +1103,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/15/angular-injector4/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/03/15/angular-injector4/" class="post-title-link" itemprop="url">angular源码分析之依赖注入--注解</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-15 09:45:28" itemprop="dateCreated datePublished" datetime="2017-03-15T09:45:28+08:00">2017-03-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="angular-1-5-8-注入annotate方式解析"><a href="#angular-1-5-8-注入annotate方式解析" class="headerlink" title="angular 1.5.8 注入annotate方式解析"></a>angular 1.5.8 注入annotate方式解析</h2><p>先看使用案例：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建myModule模块、注册服务</span></span><br><span class="line"><span class="keyword">var</span> myModule = angular.module(<span class="string">'myModule'</span>, []);</span><br><span class="line">myModule.service(<span class="string">'myService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.my = <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取injector</span></span><br><span class="line"><span class="keyword">var</span> injector = angular.injector([<span class="string">"myModule"</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二种annotation</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">explicit</span>(<span class="params">serviceA</span>) </span>&#123;alert(serviceA.my);&#125;;</span><br><span class="line">explicit.$inject = [<span class="string">'myService'</span>];</span><br><span class="line">injector.invoke(explicit);</span><br></pre></td></tr></table></figure>
-<h3 id="angular-module函数"><a href="#angular-module函数" class="headerlink" title="angular.module函数"></a>angular.module函数</h3><p>核心angular.module方法是通过执行factory函数返回factory内部的函数</p>
-<p>调用angular.module(‘myModule’, [])方法的时候已经是执行最内部的函数了</p>
-<p>最终演变为modules[“myModule”] = factory(); 返回moduleInstance。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setupModuleLoader</span>(<span class="params">window</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">var</span> angular = ensure(<span class="built_in">window</span>, <span class="string">'angular'</span>, <span class="built_in">Object</span>);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> ensure(angular, <span class="string">'module'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">var</span> modules = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">module</span>(<span class="params">name, requires, configFn</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> ensure(modules, name, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="module的service函数"><a href="#module的service函数" class="headerlink" title="module的service函数"></a>module的service函数</h3><p>module里包含了一系列方法:provider,factory,service,value,constant,decorator,</p>
-<p>animation,filter,controller,directive,component。</p>
-<p>value和constance 是invokeLater函数的返回值，其他是invokeLaterAndSetModuleName函数的</p>
-<p>返回值。</p>
-<p>service函数主要作用就是把函数放入providerCache<br>service内部 就是实例化传入的函数</p>
-<p>最终调用invoke函数的时候 通过$injectorProvider 去调用instantiate函数把service中的function当作参数传入<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">service: invokeLaterAndSetModuleName(<span class="string">'$provide'</span>, <span class="string">'service'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">service</span>(<span class="params">name, constructor</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> factory(name, [<span class="string">'$injector'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$injector</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> $injector.instantiate(<span class="keyword">constructor</span>);</span><br><span class="line">    &#125;]);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  //强制返回一个方法而已</span><br><span class="line"> function enforceReturnValue(name, factory) &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">enforcedReturnValue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="keyword">var</span> result = instanceInjector.invoke(factory, <span class="keyword">this</span>);</span><br><span class="line">     <span class="keyword">if</span> (isUndefined(result)) &#123;</span><br><span class="line">       <span class="keyword">throw</span> $injectorMinErr(<span class="string">'undef'</span>, <span class="string">"Provider '&#123;0&#125;' must return a value from $get factory method."</span>, name);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> result;</span><br><span class="line">   &#125;;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//最终放入provider</span></span><br><span class="line">   <span class="comment">//此处的factoryFn就是 上面的第二个参数 数组了</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">factory</span>(<span class="params">name, factoryFn, enforce</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> provider(name, &#123;</span><br><span class="line">     <span class="comment">//undefind !== false 为true</span></span><br><span class="line">     $<span class="keyword">get</span>: enforce !== false ? enforceReturnValue(name, factoryFn) : factoryFn</span><br><span class="line">   &#125;);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> //返回实例化的 provider</span><br><span class="line">//比如在定义ng模块的时候函数内部用到的链式调用</span><br><span class="line"> function provider(name, provider_) &#123;</span><br><span class="line">   assertNotHasOwnProperty(name, <span class="string">'service'</span>);</span><br><span class="line">   <span class="keyword">if</span> (isFunction(provider_) || isArray(provider_)) &#123;</span><br><span class="line">     provider_ = providerInjector.instantiate(provider_);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//没有定义$get函数会报错</span></span><br><span class="line">   <span class="keyword">if</span> (!provider_.$<span class="keyword">get</span>) &#123;</span><br><span class="line">     <span class="keyword">throw</span> $injectorMinErr(<span class="string">'pget'</span>, <span class="string">"Provider '&#123;0&#125;' must define $get factory method."</span>, name);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> providerCache[name + providerSuffix] = provider_;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>放入moduleInstance的invokeQueue中</p>
-<h3 id="angular-injector函数"><a href="#angular-injector函数" class="headerlink" title="angular.injector函数"></a>angular.injector函数</h3><p>angular.injector函数返回一个instanceInjector</p>
-<p>调用invoke函数  通过参数解析函数 annotate ，此函数可以直接把$inject属性当作参数传入</p>
-<p>核心就是获取$provide  缓存<br>通过$provide 的providerCache 去获取 Provider</p>
-<p>annotate函数在injectionArgs函数中被调用</p>
-<p>返回注入的参数后 继续调用getService 去providerCache里去找 provider</p>
-<h3 id="instanceInjector-invoke函数"><a href="#instanceInjector-invoke函数" class="headerlink" title="instanceInjector.invoke函数"></a>instanceInjector.invoke函数</h3><p>invoke函数会调用传入的函数 ，如果函数包含$inject属性，那么会直接把$inject属性通过getService获取</p>
-<p>该属性返回值，然后当作参数传入函数。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//注解函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">annotate</span>(<span class="params">fn, strictDi, name</span>) </span>&#123;</span><br><span class="line"><span class="keyword">var</span> $inject,</span><br><span class="line">    argDecl,</span><br><span class="line">    last;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> fn === <span class="string">'function'</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!($inject = fn.$inject)) &#123; <span class="comment">//如果fn有$inject属性，那么$injector就不为空</span></span><br><span class="line">    $inject = [];</span><br><span class="line">    <span class="keyword">if</span> (fn.length) &#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">'fnlength:'</span>+fn.length);<span class="comment">//function length 等于1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log($inject.length);</span><br><span class="line">    fn.$inject = $inject;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (isArray(fn)) &#123; <span class="comment">//比如['$scope',function($scope)&#123;&#125;]</span></span><br><span class="line">  last = fn.length - <span class="number">1</span>;</span><br><span class="line">  <span class="comment">//assertArgFn(fn[last], 'fn');//判断参数fn是否是个函数</span></span><br><span class="line">  $inject = fn.slice(<span class="number">0</span>, last);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">//assertArgFn(fn, 'fn', true);</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> $inject;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//经过publishExternalAPI发布后 该函数可以通过angular.injector调用</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createInjector</span>(<span class="params">modulesToLoad, strictDi</span>) </span>&#123;</span><br><span class="line">strictDi = (strictDi === <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">var</span> INSTANTIATING = &#123;&#125;,<span class="comment">//instantiating</span></span><br><span class="line">    providerSuffix = <span class="string">'Provider'</span>,</span><br><span class="line">    path = [],</span><br><span class="line">    <span class="comment">//loadedModules = new HashMap([], true),</span></span><br><span class="line">    providerCache = &#123;</span><br><span class="line">      <span class="attr">$provide</span>: &#123;</span><br><span class="line">          <span class="attr">provider</span>: &#123;&#125;,</span><br><span class="line">          <span class="attr">factory</span>:  &#123;&#125;,</span><br><span class="line">          <span class="attr">service</span>: &#123;&#125;,</span><br><span class="line">          <span class="attr">value</span>: &#123;&#125;,</span><br><span class="line">          <span class="attr">constant</span>: &#123;&#125;,</span><br><span class="line">          <span class="attr">decorator</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">//createInternalInjector 返回</span></span><br><span class="line">    <span class="comment">//return &#123;</span></span><br><span class="line">  <span class="comment">//   invoke: invoke,</span></span><br><span class="line">  <span class="comment">//   instantiate: instantiate,</span></span><br><span class="line">  <span class="comment">//   get: getService,</span></span><br><span class="line">  <span class="comment">//   annotate: createInjector.$$annotate,</span></span><br><span class="line">  <span class="comment">//   has: function(name) &#123;</span></span><br><span class="line">  <span class="comment">//     return providerCache.hasOwnProperty(name + providerSuffix) || cache.hasOwnProperty(name);</span></span><br><span class="line">  <span class="comment">//   &#125;</span></span><br><span class="line">  <span class="comment">// &#125;;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//createInternalInjector(cache,factory)</span></span><br><span class="line">    providerInjector = (providerCache.$injector =</span><br><span class="line">        createInternalInjector(providerCache, <span class="function"><span class="keyword">function</span>(<span class="params">serviceName, caller</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (angular.isString(caller)) &#123;</span><br><span class="line">            path.push(caller);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">//throw $injectorMinErr('unpr', "Unknown provider: &#123;0&#125;", path.join(' &lt;- '));</span></span><br><span class="line">        &#125;)),</span><br><span class="line">    instanceCache = &#123;&#125;,</span><br><span class="line">    protoInstanceInjector =</span><br><span class="line">        createInternalInjector(instanceCache, <span class="function"><span class="keyword">function</span>(<span class="params">serviceName, caller</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">          <span class="comment">//去providerCache里去找</span></span><br><span class="line">          <span class="keyword">var</span> provider = providerInjector.get(serviceName + providerSuffix, caller);</span><br><span class="line"></span><br><span class="line">          <span class="built_in">console</span>.log(serviceName+ providerSuffix);</span><br><span class="line">          <span class="keyword">return</span> instanceInjector.invoke(</span><br><span class="line">              provider.$<span class="keyword">get</span>, provider, undefined, serviceName);</span><br><span class="line">          //$<span class="keyword">get</span> 就返回下面的valueFn</span><br><span class="line">        &#125;),</span><br><span class="line">    instanceInjector = protoInstanceInjector;</span><br><span class="line"></span><br><span class="line">//为了下面的protoInstanceInjector.<span class="keyword">get</span>里的调用</span><br><span class="line"></span><br><span class="line">//$<span class="keyword">get</span> 返回一个 返回protoInstanceInjector的函数</span><br><span class="line">//function valueFn(value) &#123;<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">valueRef</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> value;&#125;;&#125;</span><br><span class="line">providerCache[<span class="string">'$injector'</span> + providerSuffix] = &#123; <span class="attr">$get</span>: valueFn(protoInstanceInjector) &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//var runBlocks = loadModules(modulesToLoad);</span></span><br><span class="line"><span class="comment">//loadModules很重要</span></span><br><span class="line"><span class="comment">//在injector.injector(['myModule'])时加载</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//调用providerInjector.get</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//调用的时候 instanceInjector还是protoInstanceInjector</span></span><br><span class="line"><span class="comment">//而且instanceCache里还没有任何属性</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//去ProviderInjector的 providerCache里去找</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//invoke $get就是返回  protorInstanceInjector</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//为了之后调用getService('$injector',serviceName)时能找到</span></span><br><span class="line">instanceInjector = protoInstanceInjector.get(<span class="string">'$injector'</span>);<span class="comment">//上面定义的providerCache.$jnjector</span></span><br><span class="line">instanceInjector.strictDi = strictDi;</span><br><span class="line"><span class="comment">//forEach(runBlocks, function(fn) &#123; if (fn) instanceInjector.invoke(fn); &#125;);</span></span><br><span class="line"><span class="built_in">console</span>.log(instanceInjector === protoInstanceInjector);</span><br><span class="line"><span class="keyword">return</span> instanceInjector;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">createInternalInjector</span>(<span class="params">cache, factory</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//没有cache里的serviceName的时候 ，再调用factory方法。</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">getService</span>(<span class="params">serviceName, caller</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//http://blog.csdn.net/webdesman/article/details/20040815</span></span><br><span class="line">    <span class="comment">//对象是否有自己的属性 不在原型链上扩展的</span></span><br><span class="line">      <span class="keyword">if</span> (cache.hasOwnProperty(serviceName)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (cache[serviceName] === INSTANTIATING) &#123;</span><br><span class="line">          <span class="keyword">throw</span> $injectorMinErr(<span class="string">'cdep'</span>, <span class="string">'Circular dependency found: &#123;0&#125;'</span>,</span><br><span class="line">                    serviceName + <span class="string">' &lt;- '</span> + path.join(<span class="string">' &lt;- '</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cache[serviceName];</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="comment">//unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span></span><br><span class="line">          path.unshift(serviceName);</span><br><span class="line">          cache[serviceName] = INSTANTIATING;</span><br><span class="line">          <span class="comment">//如果没有属性 那就调用factory函数 传入serviceName和caller</span></span><br><span class="line">          <span class="comment">//caller也是函数</span></span><br><span class="line">          <span class="keyword">return</span> cache[serviceName] = factory(serviceName, caller);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">          <span class="keyword">if</span> (cache[serviceName] === INSTANTIATING) &#123;</span><br><span class="line">            <span class="keyword">delete</span> cache[serviceName];</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">throw</span> err;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">//shift() 方法用于把数组的第一个元素从其中删除，并返回第一个元素的值</span></span><br><span class="line">          path.shift();</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">injectionArgs</span>(<span class="params">fn, locals, serviceName</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> args = [],</span><br><span class="line">          <span class="comment">//$$annotate就是外面的annotate函数</span></span><br><span class="line">          <span class="comment">//line 3966</span></span><br><span class="line">          <span class="comment">//函数参数列表</span></span><br><span class="line">          $inject = createInjector.$$annotate(fn, strictDi, serviceName);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = $inject.length; i &lt; length; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> key = $inject[i];</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> key !== <span class="string">'string'</span>) &#123;</span><br><span class="line">          <span class="keyword">throw</span> $injectorMinErr(<span class="string">'itkn'</span>,</span><br><span class="line">                  <span class="string">'Incorrect injection token! Expected service name as string, got &#123;0&#125;'</span>, key);</span><br><span class="line">        &#125;</span><br><span class="line">        args.push(locals &amp;&amp; locals.hasOwnProperty(key) ? locals[key] :</span><br><span class="line">                                                         getService(key, serviceName));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> args;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">isClass</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// IE 9-11 do not support classes and IE9 leaks with the code below.</span></span><br><span class="line">      <span class="keyword">if</span> (msie &lt;= <span class="number">11</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// Support: Edge 12-13 only</span></span><br><span class="line">      <span class="comment">// See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/6156135/</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">typeof</span> func === <span class="string">'function'</span></span><br><span class="line">        &amp;&amp; <span class="regexp">/^(?:class\b|constructor\()/</span>.test(stringifyFn(func));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">invoke</span>(<span class="params">fn, self, locals, serviceName</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> locals === <span class="string">'string'</span>) &#123;</span><br><span class="line">        serviceName = locals;</span><br><span class="line">        locals = <span class="literal">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="built_in">console</span>.log(fn);</span><br><span class="line">      <span class="comment">//注入参数</span></span><br><span class="line">      <span class="keyword">var</span> args = injectionArgs(fn, locals, serviceName);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"argslength:"</span>+args.length);</span><br><span class="line">      <span class="keyword">if</span> (isArray(fn)) &#123; <span class="comment">//比如['$scope',function($scope)&#123;&#125;]</span></span><br><span class="line">        fn = fn[fn.length - <span class="number">1</span>];<span class="comment">//取数组的最后一个</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!isClass(fn)) &#123;</span><br><span class="line">        <span class="comment">// http://jsperf.com/angularjs-invoke-apply-vs-switch</span></span><br><span class="line">        <span class="comment">// #5388</span></span><br><span class="line">        <span class="comment">//比如 var injector = angular.injector(["myModule"]);</span></span><br><span class="line">        <span class="comment">//injector.invoke(function(myService)&#123;alert(myService.my);&#125;);</span></span><br><span class="line">        <span class="keyword">return</span> fn.apply(self, args);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        args.unshift(<span class="literal">null</span>);<span class="comment">//在头部插入Null</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> (<span class="built_in">Function</span>.prototype.bind.apply(fn, args))();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">invoke</span>: invoke,</span><br><span class="line">      <span class="attr">get</span>: getService,</span><br><span class="line">      <span class="comment">// instantiate: instantiate,</span></span><br><span class="line">      annotate: createInjector.$$annotate,</span><br><span class="line">      <span class="attr">has</span>: <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> providerCache.hasOwnProperty(name + providerSuffix) || cache.hasOwnProperty(name);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">createInjector.$$annotate = annotate;</span><br><span class="line"><span class="keyword">var</span> msie = <span class="literal">false</span>;<span class="comment">//window.document.documentMode;</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">valueFn</span>(<span class="params">value</span>) </span>&#123;<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">valueRef</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> value;&#125;;&#125;</span><br><span class="line"><span class="keyword">var</span> isArray = <span class="built_in">Array</span>.isArray;</span><br></pre></td></tr></table></figure>
-<p>createInjector 函数整体返回</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">return</span> &#123;</span><br><span class="line">   <span class="attr">invoke</span>: invoke,</span><br><span class="line">   <span class="attr">instantiate</span>: instantiate,</span><br><span class="line">   <span class="attr">get</span>: getService,</span><br><span class="line">   <span class="attr">annotate</span>: createInjector.$$annotate,</span><br><span class="line">   <span class="attr">has</span>: <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> providerCache.hasOwnProperty(name + providerSuffix) || cache.hasOwnProperty(name);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="http://www.mamicode.com/info-detail-247448.html" target="_blank" rel="external">理解angular中的module和injector，即依赖注入</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/14/linux-command1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/03/14/linux-command1/" class="post-title-link" itemprop="url">linux_command1</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-14 17:12:29" itemprop="dateCreated datePublished" datetime="2017-03-14T17:12:29+08:00">2017-03-14</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="ps相关"><a href="#ps相关" class="headerlink" title="ps相关"></a>ps相关</h2><p><code>ps -ef|grep java</code> 筛选出跟java相关的进程  </p>
-<p><code>ps -u -p 22350</code> 查看进程ID为22350的详细信息<code>`</code>  </p>
-<p>##　nohup相关</p>
-<p><code>nohup java -jar -Xmx2048m  /home/appserver/apiserver/apiserver.jar</code></p>
-<p>参考资料：  </p>
-<p><a href="http://blog.csdn.net/hongweigg/article/details/44828353" target="_blank" rel="external">Linux 查找指定名称的进程并显示进程详细信息</a><br><a href="http://www.cnblogs.com/hf8051/p/4494735.html" target="_blank" rel="external">linux – 进程的查看、进程id的获取、进程的杀死</a>  </p>
-<p><a href="http://www.cnblogs.com/allenblogs/archive/2011/05/19/2051136.html" target="_blank" rel="external">linux的nohup命令的用法。</a><br><a href="http://blog.csdn.net/tang9140/article/details/38899345" target="_blank" rel="external">linux下利用nohup后台运行jar文件包程序</a><br><a href="http://www.jb51.net/LINUXjishu/34604.html" target="_blank" rel="external">Linux Top 命令解析 比较详细</a></p>
-<p><a href="http://blog.csdn.net/qiuxin315/article/details/6828467" target="_blank" rel="external">pmap : 理解linux的进程内存占用 </a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/14/angular-assertArg/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/03/14/angular-assertArg/" class="post-title-link" itemprop="url">angular-assertArg</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-14 12:53:11" itemprop="dateCreated datePublished" datetime="2017-03-14T12:53:11+08:00">2017-03-14</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="angular-1-5-8-源码解析"><a href="#angular-1-5-8-源码解析" class="headerlink" title="angular 1.5.8 源码解析"></a>angular 1.5.8 源码解析</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">* throw error if the argument is falsy.</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">assertArg</span>(<span class="params">arg, name, reason</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//如果arg 判断错误 就抛出ngMinErr</span></span><br><span class="line">    <span class="keyword">if</span> (!arg) &#123;</span><br><span class="line">      <span class="keyword">throw</span> ngMinErr(<span class="string">'areq'</span>, <span class="string">"Argument '&#123;0&#125;' is &#123;1&#125;"</span>, (name || <span class="string">'?'</span>), (reason || <span class="string">"required"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//接受数组的annotate</span></span><br><span class="line"><span class="comment">//比如['$scope',function($scope)&#123;&#125;]</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">assertArgFn</span>(<span class="params">arg, name, acceptArrayAnnotation</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (acceptArrayAnnotation &amp;&amp; isArray(arg)) &#123;</span><br><span class="line">        arg = arg[arg.length - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    assertArg(isFunction(arg), name, <span class="string">'not a function, got '</span> +</span><br><span class="line">        (arg &amp;&amp; <span class="keyword">typeof</span> arg === <span class="string">'object'</span> ? arg.constructor.name || <span class="string">'Object'</span> : <span class="keyword">typeof</span> arg));</span><br><span class="line">    <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1151,7 +1149,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">183</span>
+                    <span class="site-state-item-count">186</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
