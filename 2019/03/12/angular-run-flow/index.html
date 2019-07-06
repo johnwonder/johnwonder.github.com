@@ -110,7 +110,7 @@ JQLitePrototype.ready
 JQLite.on此处涉及到expandoStore 的问题on里面主要是addHandler 放到eventFns里
 等到onload后 再调用
 angularInitbootstrapdoBootstrapcreateInjectorinjectionArgsinvoke -&amp;gt; $RootScopeProvid">
-<meta property="og:updated_time" content="2019-05-07T12:32:35.558Z">
+<meta property="og:updated_time" content="2019-07-06T06:32:02.850Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="angular源码分析之运行流程">
 <meta name="twitter:description" content="梳理下angular的运行流程：
@@ -381,7 +381,7 @@ angularInitbootstrapdoBootstrapcreateInjectorinjectionArgsinvoke -&amp;gt; $Root
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+                <time title="修改时间：2019-07-06 14:32:02" itemprop="dateModified" datetime="2019-07-06T14:32:02+08:00">2019-07-06</time>
               
             
           </span>
@@ -431,7 +431,7 @@ angularInitbootstrapdoBootstrapcreateInjectorinjectionArgsinvoke -&amp;gt; $Root
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scope.$watch(interpolateFn, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatchAction</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">             node[<span class="number">0</span>].nodeValue = value;</span><br><span class="line">           &#125;);</span><br></pre></td></tr></table></figure>
 <p>这里的interpolateFn 就是上面的function interpolationFn(context) 函数，</p>
 <p>因为带有watchDelegate,所以直接调用watchDelegate返回:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$watch: <span class="function"><span class="keyword">function</span>(<span class="params">watchExp, listener, objectEquality, prettyPrintExpression</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">get</span> = $parse(watchExp);//watchExp为函数时直接返回watchExp</span><br><span class="line"></span><br><span class="line">        if (<span class="keyword">get</span>.$$watchDelegate) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">get</span>.$$watchDelegate(this, listener, objectEquality, <span class="keyword">get</span>, watchExp);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果被解析过后的watch函数有watch的代理那就返回这个代理watch函数</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//会创建一个watcher</span></span><br><span class="line"><span class="comment">//watcher里放入listener(类似spring里的监听器)</span></span><br><span class="line"><span class="comment">//数据变化时会触发listener</span></span><br><span class="line">$watch: <span class="function"><span class="keyword">function</span>(<span class="params">watchExp, listener, objectEquality, prettyPrintExpression</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">get</span> = $parse(watchExp);//watchExp为函数时直接返回watchExp</span><br><span class="line"></span><br><span class="line">        if (<span class="keyword">get</span>.$$watchDelegate) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">get</span>.$$watchDelegate(this, listener, objectEquality, <span class="keyword">get</span>, watchExp);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
 <p>从而进入<br>scope.$watchGroup :</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$watchGroup</span>: <span class="title">function</span>(<span class="params">watchExpressions, listener</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (watchExpressions.length === <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="comment">// Special case size of one</span></span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">this</span>.$watch(watchExpressions[<span class="number">0</span>], <span class="function"><span class="keyword">function</span> <span class="title">watchGroupAction</span>(<span class="params">value, oldValue, scope</span>) </span>&#123;</span><br><span class="line">            newValues[<span class="number">0</span>] = value;</span><br><span class="line">            oldValues[<span class="number">0</span>] = oldValue;</span><br><span class="line">            listener(newValues, (value === oldValue) ? newValues : oldValues, scope);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>此时watchExpressions就是 parseFns ，那继续进入watch,那此时的watchDelegate就是</p>
@@ -546,7 +546,7 @@ angularInitbootstrapdoBootstrapcreateInjectorinjectionArgsinvoke -&amp;gt; $Root
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">186</span>
+                    <span class="site-state-item-count">195</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -631,7 +631,11 @@ angularInitbootstrapdoBootstrapcreateInjectorinjectionArgsinvoke -&amp;gt; $Root
                     
                       
                     
-                    <span class="site-state-item-count">33</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

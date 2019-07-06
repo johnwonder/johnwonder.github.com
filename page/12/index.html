@@ -309,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/19/angular-newRouter/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/26/angular-init-1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -329,7 +329,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/06/19/angular-newRouter/" class="post-title-link" itemprop="url">Angular路由组件newRouter</a>
+                <a href="/2017/07/26/angular-init-1/" class="post-title-link" itemprop="url">angular_源码分析之启动过程</a>
               
             
           </h2>
@@ -354,7 +354,7 @@
                 
               
 
-              <time title="创建时间：2017-06-19 21:57:20" itemprop="dateCreated datePublished" datetime="2017-06-19T21:57:20+08:00">2017-06-19</time>
+              <time title="创建时间：2017-07-26 12:41:02" itemprop="dateCreated datePublished" datetime="2017-07-26T12:41:02+08:00">2017-07-26</time>
             
 
             
@@ -371,7 +371,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-10 20:55:11" itemprop="dateModified" datetime="2019-05-10T20:55:11+08:00">2019-05-10</time>
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
               
             
           </span>
@@ -407,10 +407,14 @@
       
         
           
-            <h2 id="ngNewRouter"><a href="#ngNewRouter" class="headerlink" title="ngNewRouter"></a>ngNewRouter</h2><p>项目中使用<a href="https://github.com/angular/router" target="_blank" rel="external">ngNewRouter</a>,看它的源码时候发现了</p>
-<p><a href="https://github.com/sindresorhus/gulp-traceur" target="_blank" rel="external">gulp-traceur</a> 是由Sindre Sorhus开发的</p>
-<p>看网上说是<a href="https://w3ctech.com/topic/107" target="_blank" rel="external">国外23位知名JavaScript开发者</a>之一</p>
-<p>里面源码涉及到了angular injector中的factory函数</p>
+            <h2 id="启动过程"><a href="#启动过程" class="headerlink" title="启动过程"></a>启动过程</h2><p>在angular启动过程中会经历以下步骤：</p>
+<h3 id="publishExternalAPI"><a href="#publishExternalAPI" class="headerlink" title="publishExternalAPI"></a>publishExternalAPI</h3><p>函数中会加载扩展函数，定义<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### angularInit</span><br><span class="line"></span><br><span class="line">angularInit函数中会调用```bootstrap```,bootstrap中会调用```createInjector```方法完成依赖注入，然后调用```invoke```启动编译服务</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">////通过createInjector方法会调用注入时提供的ng模块中的configFn</span><br><span class="line">   //configFn中提供了$rootScope, $rootElement, $compile, $injector</span><br><span class="line">   //通过$provide.provider方法提供</span><br><span class="line">   //modules中首先就是ng模块</span><br><span class="line">var injector = createInjector(modules, config.strictDi);</span><br><span class="line">  //$rootScope,$rootElement,$compile,$injector都是在publishExternalAPI中</span><br><span class="line">   //注入ng模块时由$provide.provider提供的</span><br><span class="line">   //$rootElement在bootstrap中</span><br><span class="line">  //  modules.unshift([&apos;$provide&apos;, function($provide) &#123;</span><br><span class="line">  //     $provide.value(&apos;$rootElement&apos;, element);</span><br><span class="line">  //   &#125;]);</span><br><span class="line">   injector.invoke([&apos;$rootScope&apos;, &apos;$rootElement&apos;, &apos;$compile&apos;, &apos;$injector&apos;,</span><br><span class="line">      function bootstrapApply(scope, element, compile, injector) &#123;</span><br><span class="line">       scope.$apply(function() &#123; //rootScope</span><br><span class="line">         element.data(&apos;$injector&apos;, injector);</span><br><span class="line">         compile(element)(scope);</span><br><span class="line">       &#125;);</span><br><span class="line">     &#125;]</span><br><span class="line">   );</span><br></pre></td></tr></table></figure></p>
+<h3 id="createInjector"><a href="#createInjector" class="headerlink" title="createInjector"></a>createInjector</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> runBlocks = loadModules(modulesToLoad);</span><br></pre></td></tr></table></figure>
+<p>loadModules是createInjector内部方法,方法中会调用<figure class="highlight plain"><figcaption><span>= angularModule(module);```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">获取模块。  </span><br><span class="line"></span><br><span class="line">因为定义ng模块时是push到configBlocks中的，所以会直接调用runInvokeQueue</span><br><span class="line"></span><br><span class="line">### runInvokeQueue</span><br><span class="line">```js</span><br><span class="line">//queue就是在定义ng 模块时因为有configFn参数,然后调用config 函数（实际是通过invokeLater返回的函数)push到configBlocks中。</span><br><span class="line"> var config = invokeLater(&apos;$injector&apos;, &apos;invoke&apos;, &apos;push&apos;, configBlocks);//configBlocks此时为空</span><br><span class="line"></span><br><span class="line"> function invokeLater(provider, method, insertMethod, queue) &#123;</span><br><span class="line">          if (!queue) queue = invokeQueue;</span><br><span class="line">          return function() &#123;</span><br><span class="line">            queue[insertMethod || &apos;push&apos;]([provider, method, arguments]);</span><br><span class="line">            return moduleInstance;</span><br><span class="line">          &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//此时queue就是[&apos;$injector&apos;,&apos;invoke&apos;,[[&apos;$provide&apos;,function($provide)&#123;&#125;]]]</span><br><span class="line">function runInvokeQueue(queue) &#123;</span><br><span class="line">       var i, ii;</span><br><span class="line">       for (i = 0, ii = queue.length; i &lt; ii; i++) &#123;</span><br><span class="line">         var invokeArgs = queue[i],</span><br><span class="line"></span><br><span class="line">            //loadModules为内部方法所以能直接调用providerInjector</span><br><span class="line">            //get方法就是返回injector对象的getService方法</span><br><span class="line">             provider = providerInjector.get(invokeArgs[0]);</span><br><span class="line">          //实际就是调用$injector的invoke方法</span><br><span class="line">         provider[invokeArgs[1]].apply(provider, invokeArgs[2]);</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="invoke函数"><a href="#invoke函数" class="headerlink" title="invoke函数"></a>invoke函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//调用runInvokeQueue时,fn就是['$provide',function($provide)&#123;&#125;]</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invoke</span>(<span class="params">fn, self, locals, serviceName</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> locals === <span class="string">'string'</span>) &#123;</span><br><span class="line">        serviceName = locals;</span><br><span class="line">        locals = <span class="literal">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//注入参数</span></span><br><span class="line">      <span class="comment">//如果fn是数组那么会判断数组最后一个元素是否为函数</span></span><br><span class="line">      <span class="keyword">var</span> args = injectionArgs(fn, locals, serviceName);</span><br><span class="line">      <span class="keyword">if</span> (isArray(fn)) &#123; <span class="comment">//比如['$scope',function($scope)&#123;&#125;]</span></span><br><span class="line">        fn = fn[fn.length - <span class="number">1</span>];<span class="comment">//取数组的最后一个</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!isClass(fn)) &#123;</span><br><span class="line">        <span class="comment">// http://jsperf.com/angularjs-invoke-apply-vs-switch</span></span><br><span class="line">        <span class="comment">// #5388</span></span><br><span class="line">        <span class="comment">//比如 var injector = angular.injector(["myModule"]);</span></span><br><span class="line">        <span class="comment">//injector.invoke(function(myService)&#123;alert(myService.my);&#125;);</span></span><br><span class="line">        <span class="keyword">return</span> fn.apply(self, args);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        args.unshift(<span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> (<span class="built_in">Function</span>.prototype.bind.apply(fn, args))();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="providerCache"><a href="#providerCache" class="headerlink" title="providerCache"></a>providerCache</h3><p>$provide提供了provider方法,比如<figure class="highlight plain"><figcaption><span>$CompileProvider)```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">//providerInjector调用invoke函数时,getService</span><br><span class="line">//是从providerCache中获取的</span><br><span class="line">var providerCache = &#123;</span><br><span class="line">        $provide: &#123;</span><br><span class="line">            provider: supportObject(provider),</span><br><span class="line">            factory: supportObject(factory),</span><br><span class="line">            service: supportObject(service),</span><br><span class="line">            value: supportObject(value),</span><br><span class="line">            constant: supportObject(constant),</span><br><span class="line">            decorator: decorator</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;;</span><br></pre></td></tr></table></figure></p>
+<h3 id="provider"><a href="#provider" class="headerlink" title="provider"></a>provider</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//name $compile</span></span><br><span class="line"><span class="comment">//provider_  CompileProvider</span></span><br><span class="line"><span class="comment">//返回CompileProvider实例 并且放入providerCache中。</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">provider</span>(<span class="params">name, provider_</span>) </span>&#123;</span><br><span class="line">    assertNotHasOwnProperty(name, <span class="string">'service'</span>);</span><br><span class="line">    <span class="keyword">if</span> (isFunction(provider_) || isArray(provider_)) &#123;</span><br><span class="line">      provider_ = providerInjector.instantiate(provider_);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!provider_.$<span class="keyword">get</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> $injectorMinErr(<span class="string">'pget'</span>, <span class="string">"Provider '&#123;0&#125;' must define $get factory method."</span>, name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> providerCache[name + providerSuffix] = provider_;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>provider方法里其实调用了<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">```js</span><br><span class="line">//Type就可能是函数类型</span><br><span class="line">function instantiate(Type, locals, serviceName) &#123;</span><br><span class="line">     // Check if Type is annotated and use just the given function at n-1 as parameter</span><br><span class="line">     // e.g. someModule.factory(&apos;greeter&apos;, [&apos;$window&apos;, function(renamed$window) &#123;&#125;]);</span><br><span class="line">     var ctor = (isArray(Type) ? Type[Type.length - 1] : Type);</span><br><span class="line">     var args = injectionArgs(Type, locals, serviceName);</span><br><span class="line">     // Empty object at position 0 is ignored for invocation with `new`, but required.</span><br><span class="line">     args.unshift(null);</span><br><span class="line">     //这样构造。。返回函数本身的对象，然后就可以链式调用了。</span><br><span class="line">     return new (Function.prototype.bind.apply(ctor, args))();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -467,7 +471,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/19/uglifyjs-purefuncs/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/26/angular-reverseParams/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -487,7 +491,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/06/19/uglifyjs-purefuncs/" class="post-title-link" itemprop="url">uglifyjs_purefuncs</a>
+                <a href="/2017/07/26/angular-reverseParams/" class="post-title-link" itemprop="url">angular源码分析之reverseParams函数</a>
               
             
           </h2>
@@ -512,7 +516,7 @@
                 
               
 
-              <time title="创建时间：2017-06-19 11:30:17" itemprop="dateCreated datePublished" datetime="2017-06-19T11:30:17+08:00">2017-06-19</time>
+              <time title="创建时间：2017-07-26 11:32:03" itemprop="dateCreated datePublished" datetime="2017-07-26T11:32:03+08:00">2017-07-26</time>
             
 
             
@@ -565,18 +569,9 @@
       
         
           
-            <p>今天在看<a href="https://segmentfault.com/a/1190000002895976" target="_blank" rel="external">我推荐的一些前端开发工具</a></p>
-<p>这篇文章时，看到‘之后上线时，可以使用uglify压缩掉所有console的代码’ 这段话，</p>
-<p>我就琢磨uglify怎么把console去掉，然后就打开<a href="https://github.com/mishoo/UglifyJS2" target="_blank" rel="external">UglifyJS2</a></p>
-<p>看文档，有如下描述：</p>
-<p>pure_funcs – default null. You can pass an array of names and UglifyJS will assume that those functions do not produce side effects. DANGER: will not check if the name is redefined in scope. An example case here, for instance var q = Math.floor(a/b). If variable q is not used elsewhere, UglifyJS will drop it, but will still keep the Math.floor(a/b), not knowing what it does. You can pass pure_funcs: [ ‘Math.floor’ ] to let it know that this function won’t produce any side effect, in which case the whole statement would get discarded. The current implementation adds some overhead (compression will be slower).</p>
-<p>drop_console – default false. Pass true to discard calls to console.* functions. If you wish to drop a specific function call such as console.info and/or retain side effects from function arguments after dropping the function call then use pure_funcs instead.</p>
-<p>我就写了个例子测试下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"ss"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.info(test());</span><br></pre></td></tr></table></figure>
-<p>运行如下命令<figure class="highlight plain"><figcaption><span>test.js --compress pure_funcs=['console.info'] -o test.min.js ```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">会得到如下输出```function test()&#123;return&quot;ss&quot;&#125;test()</span><br></pre></td></tr></table></figure></p>
-<p>运行如下命令<figure class="highlight plain"><figcaption><span>test.js --compress pure_funcs=['console.info','test'] -o test.min.js ```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">会得到如下输出```function test()&#123;return&quot;ss&quot;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>运行如下命令<figure class="highlight plain"><figcaption><span>test.js --compress drop_console=true -o test.min.js```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">会得到如下输出```function test()&#123;return&quot;ss&quot;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>参考资料：<br><a href="https://segmentfault.com/a/1190000008995453" target="_blank" rel="external">UglifyJS中文文档</a><br><a href="http://www.zhangxinxu.com/wordpress/2013/01/uglifyjs-compress-js/" target="_blank" rel="external">小tip：我是如何初体验uglifyjs压缩JS的</a></p>
+            <h2 id="reverseParams方法"><a href="#reverseParams方法" class="headerlink" title="reverseParams方法"></a>reverseParams方法</h2><h3 id="出处"><a href="#出处" class="headerlink" title="出处"></a>出处</h3><p>在angular注册指令方法里，如果name是数组，那么会调用<code>forEach</code>方法来遍历注册</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">forEach(name, reverseParams(registerDirective));</span><br></pre></td></tr></table></figure>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">*因为forEach是value,key的顺序，但是key,value是最常用的。</span><br><span class="line">* when using forEach the params are value, key, but it is often useful to have key, value.</span><br><span class="line">* @param &#123;function(string, *)&#125; iteratorFn</span><br><span class="line">* @returns &#123;function(*, string)&#125;</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reverseParams</span>(<span class="params">iteratorFn</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">value, key</span>) </span>&#123;iteratorFn(key, value);&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -633,7 +628,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/17/node-cmd/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/20/typescript-declare/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -653,7 +648,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/06/17/node-cmd/" class="post-title-link" itemprop="url">nodejs的命令行是如何调用的</a>
+                <a href="/2017/07/20/typescript-declare/" class="post-title-link" itemprop="url">typescript声明</a>
               
             
           </h2>
@@ -678,7 +673,7 @@
                 
               
 
-              <time title="创建时间：2017-06-17 22:07:06" itemprop="dateCreated datePublished" datetime="2017-06-17T22:07:06+08:00">2017-06-17</time>
+              <time title="创建时间：2017-07-20 16:00:40" itemprop="dateCreated datePublished" datetime="2017-07-20T16:00:40+08:00">2017-07-20</time>
             
 
             
@@ -731,18 +726,18 @@
       
         
           
-            <h2 id="nodejs命令是从哪里调用的"><a href="#nodejs命令是从哪里调用的" class="headerlink" title="nodejs命令是从哪里调用的"></a>nodejs命令是从哪里调用的</h2><p>研究了下hexo的命令调用</p>
-<h3 id="npm-config"><a href="#npm-config" class="headerlink" title="npm config"></a>npm config</h3><p>运行了下 npn config list命令，输出如下:</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">; cli configs</span><br><span class="line">scope = <span class="string">""</span></span><br><span class="line">user-agent = <span class="string">"npm/4.2.0 node/v7.10.0 win32 x64"</span></span><br><span class="line"></span><br><span class="line">; userconfig C:\Users\Administrator\.npmrc</span><br><span class="line">cache = <span class="string">"D:\\npmcache"</span><span class="built_in"></span><br><span class="line">prefix </span>= <span class="string">"D:\\npmglobal"</span></span><br><span class="line">registry = <span class="string">"https://registry.npm.taobao.org/"</span></span><br><span class="line"></span><br><span class="line">; builtin<span class="built_in"> config </span>undefined</span><br><span class="line"></span><br><span class="line">; node bin location = D:\nodejs\node.exe</span><br><span class="line">; cwd = F:\code\blognew</span><br><span class="line">; HOME = C:\Users\Administrator</span><br><span class="line">; <span class="string">"npm config ls -l"</span> <span class="keyword">to</span> show all defaults.</span><br></pre></td></tr></table></figure>
-<p>prefix和cache是npm的全局路径，</p>
-<p>我们到该目录下发现有个hexo.cmd和hexo 文件，打开hexo.cmd，代码如下：</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@IF</span> EXIST <span class="string">"%~dp0\node.exe"</span> (</span><br><span class="line">  <span class="string">"%~dp0\node.exe"</span>  <span class="string">"%~dp0\node_modules\hexo-cli\bin\hexo"</span> %*</span><br><span class="line">) ELSE (</span><br><span class="line">  <span class="variable">@SETLOCAL</span></span><br><span class="line">  <span class="variable">@SET</span> PATHEXT=%<span class="attribute">PATHEXT</span>:;.JS;=;%</span><br><span class="line">  node  <span class="string">"%~dp0\node_modules\hexo-cli\bin\hexo"</span> %*</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>那我们就到当前目录的node_modules中看<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">#!/usr/bin/env node</span><br><span class="line"></span><br><span class="line">&apos;use strict&apos;;</span><br><span class="line"></span><br><span class="line">require(&apos;../lib/hexo&apos;)();</span><br><span class="line"></span><br><span class="line">console.log(&apos;hi&apos;);</span><br></pre></td></tr></table></figure></p>
-<p>在任意目录下执行hexo命令会输出</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hi</span><br><span class="line">Usage: hexo &lt;command&gt;</span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">help     Get help on a command.</span><br><span class="line">init     Create a <span class="keyword">new</span> Hexo folder.</span><br><span class="line">version  Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">--config  Specify config file instead <span class="keyword">of</span> using _config.yml</span><br><span class="line">--cwd     Specify the CWD</span><br><span class="line">--debug   Display all verbose messages <span class="keyword">in</span> the terminal</span><br><span class="line">--draft   Display draft posts</span><br><span class="line">--safe    Disable all plugins and scripts</span><br><span class="line">--silent  Hide output on <span class="built_in">console</span></span><br><span class="line"></span><br><span class="line">For more help, you can use <span class="string">'hexo help [command]'</span> <span class="keyword">for</span> the detailed information</span><br><span class="line">or you can check the docs: http:<span class="comment">//hexo.io/docs/</span></span><br></pre></td></tr></table></figure>
-<h3 id="DOS批处理"><a href="#DOS批处理" class="headerlink" title="DOS批处理"></a>DOS批处理</h3><p>DOS批处理命令：<br>%~dp0 代表当前目录</p>
-<p>SETLOCAL<br>开始批处理文件中环境改动的本地化操作。在执行 SETLOCAL 之后所做的环境改动只限于批处理文件。要还原原先的设置，必须执行 ENDLOCAL。 达到批处理文件结尾时，对于该批处理文件的每个尚未执行的 SETLOCAL 命令，都会有一个隐含的 ENDLOCAL 被执行。</p>
-<p>PathExt修改 让我们的Bat文件执行的优先级别在其他可执行文件之前就OK了<br><a href="http://blog.csdn.net/hncsl/article/details/59015497" target="_blank" rel="external">DOS批处理中%~dp0表示什么意思</a><br><a href="https://zhidao.baidu.com/question/117267593.html" target="_blank" rel="external">批处理，%~d0 cd %~dp0 代表什么意思</a><br><a href="http://www.jb51.net/article/36043.htm" target="_blank" rel="external">cmd SETLOCAL使用介绍</a><br><a href="http://tieba.baidu.com/p/73557959" target="_blank" rel="external">修改Pathext，让你的东东优先执行</a></p>
+            <p>今天在看<a href="https://mp.weixin.qq.com/s/LVoa3YnDaldiZroya_EN1A" target="_blank" rel="external">typescript 导入模块</a>的时候，看到这么一个导入法：</p>
+<p><code>import * as express from &#39;express&#39;</code></p>
+<p>文中提到了如下的问题</p>
+<p>最后一行export = express，并且上面分别定义了一个 function express() 和namespace express，这种写法是比较特殊的，我一时也没法解释清楚，反正多参照 DefinitelyTyped 上其他模块的写法即可。这个问题归根结底是 express 模块通过 import * as express from ‘express’ 引入的时候，express本身又是一个函数，这种写法在早期的 Node.js 版本的程序和 NPM 模块中是比较流行的。</p>
+<p>这个应该只和声明有关</p>
+<p>然后就看到<a href="https://segmentfault.com/q/1010000008316030" target="_blank" rel="external">这篇文章</a>,里面提到了用 tsc 编译成 commonjs</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span>;</span><br><span class="line"><span class="keyword">var</span> moment = <span class="built_in">require</span>(<span class="string">'./moment'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> moment)</span><br></pre></td></tr></table></figure>
+<p>然后我自己试了一下在target为es5的情况下确实是编译成了如下js:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>);</span><br><span class="line"><span class="keyword">var</span> app = express();</span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    res.end(<span class="string">'hello, world'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">app.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'server is listening'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>文中还提到了如何编写声明文件，然后我看了下express的声明文件：</p>
+<p>确实是像如下</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="function"><span class="keyword">function</span> <span class="title">e</span>(<span class="params"></span>): <span class="title">core</span>.<span class="title">Express</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">namespace</span> e &#123;</span><br><span class="line">     <span class="keyword">var</span> <span class="keyword">static</span>: <span class="keyword">typeof</span> serveStatic;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">Router</span>(<span class="params">options?: RouterOptions</span>): <span class="title">core</span>.<span class="title">Router</span></span>;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//内部接口 外部获取不到</span></span><br><span class="line">     <span class="keyword">interface</span> RouterOptions &#123;</span><br><span class="line"></span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> = e;</span><br></pre></td></tr></table></figure>
+<p>发现express可以定义Router，和内部的RouterOptions<br>参考资料<a href="http://www.expressjs.com.cn/4x/api.html#router" target="_blank" rel="external">Express 4.x API 中文手册</a></p>
 
           
         
@@ -799,7 +794,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/17/angular-injector5/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/10/jad-decompiler/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -819,7 +814,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/06/17/angular-injector5/" class="post-title-link" itemprop="url">angular_injector5</a>
+                <a href="/2017/07/10/jad-decompiler/" class="post-title-link" itemprop="url">jad_decompiler</a>
               
             
           </h2>
@@ -844,7 +839,7 @@
                 
               
 
-              <time title="创建时间：2017-06-17 16:57:01" itemprop="dateCreated datePublished" datetime="2017-06-17T16:57:01+08:00">2017-06-17</time>
+              <time title="创建时间：2017-07-10 10:49:12" itemprop="dateCreated datePublished" datetime="2017-07-10T10:49:12+08:00">2017-07-10</time>
             
 
             
@@ -897,20 +892,10 @@
       
         
           
-            <h2 id="angular-injector-剖析流程"><a href="#angular-injector-剖析流程" class="headerlink" title="angular injector 剖析流程"></a>angular injector 剖析流程</h2><p>angular中的注入器是承载angular整个运行的基石，如果想弄清楚angular的来龙去脉，那injector这块必须得熟悉。</p>
-<h3 id="createInjector"><a href="#createInjector" class="headerlink" title="createInjector"></a>createInjector</h3><p>createInjector方法是入口函数，方法参数是modulesToLoad和strictDi,</p>
-<p>我们主要关注modulesToLoad参数，字面含义就是待加载的模块。</p>
-<h4 id="providerCache"><a href="#providerCache" class="headerlink" title="providerCache"></a>providerCache</h4><p>函数一开始就定义了providerCache对象，顾名思义就是提供provider的缓存。</p>
-<p>providerCache内部又定义了$provide对象属性，暂且不管。</p>
-<h4 id="providerInjector"><a href="#providerInjector" class="headerlink" title="providerInjector"></a>providerInjector</h4><p>定义provider的注入器，同时也定义了providerCache.$injector.<br>最终是返回一个用于提供protoInstanceInjector查找instance的方法对象</p>
-<h4 id="publishExternalAPI"><a href="#publishExternalAPI" class="headerlink" title="publishExternalAPI"></a>publishExternalAPI</h4><p>通过setupModuleLoader 方法，顾名思义为设置模块加载器， 定义了 angularModule 对象为angular.module方法</p>
-<p>里面很重要的一个方法就是<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>随之定义了angular.module(‘ng’,[‘ngLocale’], [‘$provide’,function($provide){}])</p>
-<p>把ng模块放入了modules对象集合</p>
-<p>先是定义<figure class="highlight plain"><figcaption><span>config = invokeLater('$injector', 'invoke', 'push', configBlocks);```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### invokeLater</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">function invokeLater(provider, method, insertMethod, queue) &#123;</span><br><span class="line">          if (!queue) queue = invokeQueue;</span><br><span class="line">          return function() &#123;</span><br><span class="line">            queue[insertMethod || &apos;push&apos;]([provider, method, arguments]);</span><br><span class="line">            return moduleInstance;</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>通过以下方法把<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">if (configFn) &#123;</span><br><span class="line">          config(configFn);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>configBlocks一开始定义为空数组，然后push 了一个数组对象<code>[&#39;$injector&#39;,&#39;invoke&#39;,[&#39;$provide&#39;,function($provide){}]]</code></p>
-<p>  下篇文章继续分析push了以后是从哪调用的。</p>
+            <p>用jad来反编译scala代码，看看版本是否是老版本：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jad.exe -r -ff -d src -s java F:\<span class="class"><span class="keyword">class</span>\**\*.<span class="title">class</span></span></span><br></pre></td></tr></table></figure>
+<p>反编译的代码会在执行jad程序的目录src下</p>
+<p>参考文章：<br><a href="http://blog.csdn.net/jiajane/article/details/50947853" target="_blank" rel="external">Windows下利用jad批量反编译class文件</a><br><a href="http://blog.csdn.net/abeetle/article/details/1733407" target="_blank" rel="external">反编译jad的命令使用</a></p>
 
           
         
@@ -967,7 +952,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/16/java-servlet/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/06/scala-mongodb-driver1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -987,7 +972,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/06/16/java-servlet/" class="post-title-link" itemprop="url">java_servlet</a>
+                <a href="/2017/07/06/scala-mongodb-driver1/" class="post-title-link" itemprop="url">scala_mongodb-driver1</a>
               
             
           </h2>
@@ -1012,7 +997,7 @@
                 
               
 
-              <time title="创建时间：2017-06-16 22:24:15" itemprop="dateCreated datePublished" datetime="2017-06-16T22:24:15+08:00">2017-06-16</time>
+              <time title="创建时间：2017-07-06 21:23:21" itemprop="dateCreated datePublished" datetime="2017-07-06T21:23:21+08:00">2017-07-06</time>
             
 
             
@@ -1065,17 +1050,11 @@
       
         
           
-            <h2 id="scalatraServlet实现"><a href="#scalatraServlet实现" class="headerlink" title="scalatraServlet实现"></a>scalatraServlet实现</h2><p>前几天看了别人的面试题，提到了HttpServlet实现了哪几个接口，</p>
-<p>今天就抽空看了下scalatraServlet中的源码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpServlet</span> <span class="keyword">extends</span> <span class="title">GenericServlet</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericServlet</span></span><br><span class="line">  <span class="keyword">implements</span> <span class="title">Servlet</span>, <span class="title">ServletConfig</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h3><p>Defines methods that all servlets must implement.<br>就是说定义了所有servlets必须实现的方法。</p>
-<h3 id="ServletConfig"><a href="#ServletConfig" class="headerlink" title="ServletConfig"></a>ServletConfig</h3><ul>
-<li>A servlet configuration object used by a servlet container</li>
-<li>to pass information to a servlet during initialization.</li>
-</ul>
-<p>一个被servlet容器用来传递信息给servlet初始化的配置对象</p>
-<h3 id="java-io-Serializable"><a href="#java-io-Serializable" class="headerlink" title="java.io.Serializable"></a>java.io.Serializable</h3><p>java的序列化接口</p>
-<p>Serializability of a class is enabled by the class implementing the<br>java.io.Serializable interface. Classes that do not implement this<br> interface will not have any of their state serialized or<br>deserialized.  </p>
+            <p>前两天研究scala mongodb groupby的问题，又有了另外种解决方案：</p>
+<p>在看driver core源码的时候 发现传入的表达式在encode的时候有如下判断：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">BuildersHelper</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">  <span class="keyword">static</span> &lt;TItem&gt; <span class="function"><span class="keyword">void</span> <span class="title">encodeValue</span><span class="params">(<span class="keyword">final</span> BsonDocumentWriter writer, <span class="keyword">final</span> TItem value, <span class="keyword">final</span> CodecRegistry codecRegistry)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123;</span><br><span class="line">          writer.writeNull();</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value <span class="keyword">instanceof</span> Bson) &#123;</span><br><span class="line">          ((Encoder) codecRegistry.get(BsonDocument.class)).encode(writer,</span><br><span class="line">                                                                   ((Bson) value).toBsonDocument(BsonDocument.class, codecRegistry),</span><br><span class="line">                                                                   EncoderContext.builder().build());</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          ((Encoder) codecRegistry.get(value.getClass())).encode(writer, value, EncoderContext.builder().build());</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="title">BuildersHelper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发现会判断value是否为Bson，那么想到Filter也是Bson类型，所以有了如下表达式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Filters.and(Filters.all(<span class="string">"$code"</span>),Filters.all(<span class="string">"$userType"</span>))</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1121,7 +1100,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/39/">39</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1163,7 +1142,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">186</span>
+                    <span class="site-state-item-count">195</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1248,7 +1227,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">33</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

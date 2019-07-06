@@ -309,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/23/scala-caseClass1/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/22/scala-import-problem/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -329,7 +329,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/23/scala-caseClass1/" class="post-title-link" itemprop="url">scala之caseClass</a>
+                <a href="/2016/12/22/scala-import-problem/" class="post-title-link" itemprop="url">scala_import_problem</a>
               
             
           </h2>
@@ -354,7 +354,7 @@
                 
               
 
-              <time title="创建时间：2016-10-23 21:16:26" itemprop="dateCreated datePublished" datetime="2016-10-23T21:16:26+08:00">2016-10-23</time>
+              <time title="创建时间：2016-12-22 09:27:26" itemprop="dateCreated datePublished" datetime="2016-12-22T09:27:26+08:00">2016-12-22</time>
             
 
             
@@ -407,17 +407,17 @@
       
         
           
-            <h2 id="case-class"><a href="#case-class" class="headerlink" title="case class"></a>case class</h2><p>1 构造器中的参数如果不被声明为var的话，它默认的话是val类型的，但一般不推荐将构造器中的参数声明为var</p>
-<p>2 自动创建伴生对象，同时在里面给我们实现子apply方法，使得我们在使用的时候可以不直接显示地new对象</p>
-<p>3 伴生对象中同样会帮我们实现unapply方法，从而可以将case class应用于模式匹配</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//抽象类Person</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//case class Student</span></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params">name:<span class="type">String</span>,age:<span class="type">Int</span>,studentNo:<span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">Person</span></span></span><br><span class="line"><span class="comment">//case class Teacher</span></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>(<span class="params">name:<span class="type">String</span>,age:<span class="type">Int</span>,teacherNo:<span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">Person</span></span></span><br><span class="line"><span class="comment">//case class Nobody</span></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Nobody</span>(<span class="params">name:<span class="type">String</span></span>) <span class="keyword">extends</span> <span class="title">Person</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">CaseClassDemo</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">//case class 会自动生成apply方法，从而省去new操作</span></span><br><span class="line">    <span class="keyword">val</span> p:<span class="type">Person</span>=<span class="type">Student</span>(<span class="string">"john"</span>,<span class="number">18</span>,<span class="number">1024</span>)  </span><br><span class="line">    <span class="comment">//match case</span></span><br><span class="line">    p  <span class="keyword">match</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="type">Student</span>(name,age,studentNo)=&gt;println(name+<span class="string">":"</span>+age+<span class="string">":"</span>+studentNo)</span><br><span class="line">      <span class="keyword">case</span> <span class="type">Teacher</span>(name,age,teacherNo)=&gt;println(name+<span class="string">":"</span>+age+<span class="string">":"</span>+teacherNo)</span><br><span class="line">      <span class="keyword">case</span> <span class="type">Nobody</span>(name)=&gt;println(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>sbt中的Attributed就是个case class</p>
-<p>以下代码摘录自sbt/util仓库：</p>
-<p>位置：internal/util-collection/src/main/scala/sbt/internal/util/Attributes.scala</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Associates a `metadata` map with `data`. */</span></span><br><span class="line"><span class="comment">/*使一个metadata 映射 和data产生关系</span><br><span class="line">final case class Attributed[D](data: D)(val metadata: AttributeMap) &#123;</span><br><span class="line">  /** Retrieves the associated value of `key` from the metadata. */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">get</span></span>[<span class="type">T</span>](key: <span class="type">AttributeKey</span>[<span class="type">T</span>]): <span class="type">Option</span>[<span class="type">T</span>] = metadata.get(key)</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Defines a mapping `key -&gt; value` in the metadata. */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">put</span></span>[<span class="type">T</span>](key: <span class="type">AttributeKey</span>[<span class="type">T</span>], value: <span class="type">T</span>): <span class="type">Attributed</span>[<span class="type">D</span>] = <span class="type">Attributed</span>(data)(metadata.put(key, value))</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Transforms the data by applying `f`. */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">map</span></span>[<span class="type">T</span>](f: <span class="type">D</span> =&gt; <span class="type">T</span>): <span class="type">Attributed</span>[<span class="type">T</span>] = <span class="type">Attributed</span>(f(data))(metadata)</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Attributed</span> </span>&#123;</span><br><span class="line">  <span class="comment">/** Extracts the underlying data from the sequence `in`. */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">data</span></span>[<span class="type">T</span>](in: <span class="type">Seq</span>[<span class="type">Attributed</span>[<span class="type">T</span>]]): <span class="type">Seq</span>[<span class="type">T</span>] = in.map(_.data)</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Associates empty metadata maps with each entry of `in`.*/</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">blankSeq</span></span>[<span class="type">T</span>](in: <span class="type">Seq</span>[<span class="type">T</span>]): <span class="type">Seq</span>[<span class="type">Attributed</span>[<span class="type">T</span>]] = in map blank</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Associates an empty metadata map with `data`. */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">blank</span></span>[<span class="type">T</span>](data: <span class="type">T</span>): <span class="type">Attributed</span>[<span class="type">T</span>] = <span class="type">Attributed</span>(data)(<span class="type">AttributeMap</span>.empty)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>关于Attributed类参数有两个括号的问题参考：</p>
-<p><a href="http://www.tuicool.com/articles/6zymymu" target="_blank" rel="external">scala函数编程的柯里化</a><br><a href="https://wizardforcel.gitbooks.io/w3school-scala/content/10-9.html" target="_blank" rel="external">Scala 函数柯里化(Currying)</a></p>
-<p><a href="https://www.iteblog.com/archives/1508" target="_blank" rel="external">Scala class和case class的区别</a><br><a href="http://www.bkjia.com/yjs/1041692.html" target="_blank" rel="external">Scala入门到精通</a><br><a href="http://blog.csdn.net/yyywyr/article/details/50194005" target="_blank" rel="external">Scala单例对象、伴生类以及伴生对象、apply介绍 </a></p>
+            <h2 id="scala文件导入java包"><a href="#scala文件导入java包" class="headerlink" title="scala文件导入java包"></a>scala文件导入java包</h2><p>定义一个stringTest.java文件如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">stringTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">queryVehicleNum</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="string">"ss"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用javac命令编译此文件，在目录下会生成stringTest.class<br>此时我们并没有定义它的package,如果在同级目录下新建javaStringTest.scala文件如下：</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">object</span> testIm<span class="keyword">port</span> &#123;</span><br><span class="line"></span><br><span class="line">   def main(args: <span class="type">Array</span>[<span class="type">String</span>])&#123;</span><br><span class="line"></span><br><span class="line">     println(stringTest.queryVehicleNum())</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，此时可以直接引入stringTest类不会报错，用scala命令运行此文件会输出ss</p>
+<p>如果在目录下新建com目录，在com目录下新建test目录,把stringTest文件放入test目录，那么再执行scala testImport.scala文件就会报如下错误：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">java<span class="selector-class">.lang</span><span class="selector-class">.ClassNotFoundException</span>: stringTest</span><br><span class="line">at java<span class="selector-class">.net</span><span class="selector-class">.URLClassLoader</span><span class="selector-class">.findClass</span>(URLClassLoader<span class="selector-class">.java</span>:<span class="number">381</span>)</span><br><span class="line">at java<span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.loadClass</span>(ClassLoader<span class="selector-class">.java</span>:<span class="number">424</span>)</span><br><span class="line">at java<span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.loadClass</span>(ClassLoader<span class="selector-class">.java</span>:<span class="number">357</span>)</span><br><span class="line">at Main$.main(javaStringTest<span class="selector-class">.scala</span>:<span class="number">9</span>)</span><br><span class="line">at Main.main(javaStringTest.scala)</span><br><span class="line">at sun<span class="selector-class">.reflect</span><span class="selector-class">.NativeMethodAccessorImpl</span><span class="selector-class">.invoke0</span>(Native Method)</span><br><span class="line">at sun<span class="selector-class">.reflect</span><span class="selector-class">.NativeMethodAccessorImpl</span><span class="selector-class">.invoke</span>(NativeMethodAccessorImpl<span class="selector-class">.java</span>:<span class="number">62</span>)</span><br></pre></td></tr></table></figure>
+<p>所以此时我们要在testImport类中引入stringTest包<figure class="highlight plain"><figcaption><span>com.test.stringTest```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">但是这样我们必须先编译scala文件,```scalac javaStringTest.scala</span><br></pre></td></tr></table></figure></p>
+<p>然后我们用java命令调用生成的testImportObj <code>java -classpath .;scala-library.jar testImportObj</code></p>
+<p>或者我们也可以用<code>scala -i testImportObj.java</code>命令引入scala REPL</p>
+<p>然后我们在scala命令行输入<code>testImportObj.main(new Array[String](3))</code>也会输出ss字符串</p>
 
           
         
@@ -474,7 +474,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/23/code-algorithm/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/19/scala-implicit/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -494,7 +494,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/23/code-algorithm/" class="post-title-link" itemprop="url">千里码算法第一题</a>
+                <a href="/2016/11/19/scala-implicit/" class="post-title-link" itemprop="url">scala_implicit</a>
               
             
           </h2>
@@ -519,7 +519,7 @@
                 
               
 
-              <time title="创建时间：2016-10-23 20:27:53" itemprop="dateCreated datePublished" datetime="2016-10-23T20:27:53+08:00">2016-10-23</time>
+              <time title="创建时间：2016-11-19 21:06:25" itemprop="dateCreated datePublished" datetime="2016-11-19T21:06:25+08:00">2016-11-19</time>
             
 
             
@@ -572,12 +572,16 @@
       
         
           
-            <h2 id="码之初"><a href="#码之初" class="headerlink" title="码之初"></a>码之初</h2><p>1.第2333个能被2或者被3整除的正整数是多少?</p>
-<p>被2或者被3整除的正整数依次是：2,3,4,6,8,9,10,12,14,15,16,18…。</p>
-<p>可以考虑第N个 N为偶数的情况，推理可以得到为n+ n/2，也就是2333+ 2332/2 +2 = 3500。</p>
-<p>也可以考虑四个为一组的情况,比如2,3,4,6 一组;8,9,10,12为一组;14,15,16,18为一组。</p>
-<p>那么就为2332/4 = 583 <em>4 = 2332 + 2</em>(583)=1166   第2333个 再 +2 = 3500</p>
-<p><a href="http://www.qlcoder.com/task/751e" target="_blank" rel="external">码之初 </a></p>
+            <h2 id="implicit"><a href="#implicit" class="headerlink" title="implicit"></a>implicit</h2><h3 id="转换成预期的数据类型"><a href="#转换成预期的数据类型" class="headerlink" title="转换成预期的数据类型"></a>转换成预期的数据类型</h3><p>比如你有一个方法参数类型是IndexedSeq[Char]，在你传入String时，编译器发现类型不匹配，就检查当前作用域是否有从String到IndexedSeq隐式转换。</p>
+<p>Scala在需要時會自動把整數轉換成雙精度實數，這是因為在Scala.Predef對象中定義了一個</p>
+<p>implicit def int2double(x:Int) :Double = x.toDouble</p>
+<p>而Scala.Predef是自動引入到當前作用域的，因此編譯器在需要時會自動把整數轉換成Double類型。</p>
+<h3 id="转换selection的receiver"><a href="#转换selection的receiver" class="headerlink" title="转换selection的receiver"></a>转换selection的receiver</h3><p>转换selection的receiver允许你适应某些方法调用，比如 “abc”.exist ，”abc”类型为String，本身没有定义exist方法，这时编辑器就检查当前作用域内String的隐式转换后的类型是否有exist方法，发现stringWrapper转换后成IndexedSeq类型后，可以有exist方法，这个和C# 静态扩展方法功能类似。</p>
+<h3 id="隐含参数"><a href="#隐含参数" class="headerlink" title="隐含参数"></a>隐含参数</h3><p>隐含参数有点类似是缺省参数，如果在调用方法时没有提供某个参数，编译器会查找当前作用域是否有符合条件的implicit对象作为参数传入（有点类似dependency injection)</p>
+<h3 id="隐式变换也可以转换调用方法的对象"><a href="#隐式变换也可以转换调用方法的对象" class="headerlink" title="隐式变换也可以转换调用方法的对象"></a>隐式变换也可以转换调用方法的对象</h3><p>编译器看到X.method,而类型X没有定义method（包括基类)方法，那么编译器就查找作用域内定义的从X到其它对象的类型转换，比如Y，而类型Y定义了method方法，编译器就首先使用隐含类型转换把X转换成Y，然后调用Y的method。</p>
+<p>隐式转换可以用来扩展Scala语言，定义新的语法结构，比如我们在定义一个Map对象时可以使用如下语法：</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map(<span class="number">1</span> -&gt; <span class="string">"One"</span>, <span class="number">2</span>-&gt;<span class="string">"Two"</span>,<span class="number">3</span>-&gt;<span class="string">"Three"</span>)</span><br></pre></td></tr></table></figure>
+<p>你有没有想过-&gt;内部是如何实现的，-&gt;不是scala本身的语法，而是类型ArrowAssoc的一个方法。这个类型定义在包Scala.Predef对象中。Scala.Predef自动引入到当前作用域，在这个对象中，同时定义了一个从类型Any到ArrowAssoc的隐含转换。因此当使用1 -&gt; “One”时，编译器自动插入从1转换到ArrowAssoc转换。</p>
 
           
         
@@ -634,7 +638,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/22/sbt-settings/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/07/read-book1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -654,7 +658,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/22/sbt-settings/" class="post-title-link" itemprop="url">sbt-settings</a>
+                <a href="/2016/11/07/read-book1/" class="post-title-link" itemprop="url">读书品1</a>
               
             
           </h2>
@@ -679,7 +683,7 @@
                 
               
 
-              <time title="创建时间：2016-10-22 21:32:02" itemprop="dateCreated datePublished" datetime="2016-10-22T21:32:02+08:00">2016-10-22</time>
+              <time title="创建时间：2016-11-07 21:57:05" itemprop="dateCreated datePublished" datetime="2016-11-07T21:57:05+08:00">2016-11-07</time>
             
 
             
@@ -732,20 +736,8 @@
       
         
           
-            <h2 id="sbt-Settings"><a href="#sbt-Settings" class="headerlink" title="sbt Settings"></a>sbt Settings</h2><p>Remember, a build definition creates a list of Setting, which is then used to transform sbt’s description of the build (which is a map of key-value pairs). A Setting is a transformation with sbt’s earlier map as input and a new map as output. The new map becomes sbt’s new state.</p>
-<p>build定义会创建setting列表，用于转变build的描述，是key-value pairs.<br>一个setting是之前映射的会输出新的映射。新的映射是sbt新的状态。</p>
-<p>Different settings transform the map in different ways. Earlier, you read about the := method.</p>
-<p>不同的settings通过不同的方式改变映射。比如:=。</p>
-<p>The Setting which := creates puts a fixed, constant value in the new, transformed map. For example, if you transform a map with the setting name := “hello” the new map has the string “hello” stored under the key name. </p>
-<p>:= 创建了新的常量，如果你设置了 name := “Hello” ,那么就存储了key 为name值为hello的map.<br>在build.sbt里面并非key := value, 而是key := expression. 文件里的每一行其实是一句scala语句</p>
-<p><a href="http://www.scala-sbt.org/0.13/docs/More-About-Settings.html" target="_blank" rel="external">More-About-Settings</a></p>
-<p><a href="http://beike.iteye.com/blog/1575296" target="_blank" rel="external">sbt从入门到半熟</a></p>
-<h3 id="sbt"><a href="#sbt" class="headerlink" title="sbt +="></a>sbt +=</h3><p>+=，将值添加进现有值里，适用于集合类型的key，比如libraryDependencies<br>如果是<code>version := &quot;0.1&quot;</code>,再用version += “0.2”，那么在交互模式里show version，会变成0.10.2</p>
-<h3 id="sbt-Attributed"><a href="#sbt-Attributed" class="headerlink" title="sbt.Attributed"></a>sbt.Attributed</h3><p>sbt.Attributed[java.io.File]</p>
-<p>Retrieves the associated value of key from the metadata.</p>
-<p>顾名思义，是获取java.io.File类型的Attributed[D]</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">put</span></span>[<span class="type">T</span>](key: <span class="type">AttributeKey</span>[<span class="type">T</span>], value: <span class="type">T</span>): <span class="type">Attributed</span>[<span class="type">D</span>]</span><br><span class="line"></span><br><span class="line"><span class="type">Defines</span> a mapping key -&gt; value in the metadata.</span><br></pre></td></tr></table></figure>
-<p><a href="http://www.scala-sbt.org/release/api/index.html#sbt.Attributed" target="_blank" rel="external">final case class Attributed<a href="data: D" target="_blank" rel="external">D</a></a></p>
+            <h2 id="张伯淳"><a href="#张伯淳" class="headerlink" title="张伯淳"></a>张伯淳</h2><p>张伯淳(1242—1302)，字师道，号养蒙，崇德(今浙江桐乡)人。祖父张汝昌，官至迪功郎，与石门酒官张子修为邻，两家并有池馆园林之胜，号东西园，结社觞咏，时称东西二张。父张琥，南宋嘉定十三年(1220)进士，累官朝议大夫、崇德开国男。与赵孟頫为中表，人物相望。张伯淳9岁举童子科，以父荫铨迪功郎、淮阴尉，改扬州司户参军</p>
+<p>（元）张伯淳&lt;&lt;送刘东崖赴建昌总管序&gt;&gt;云：“以翰林学士南康刘公为建昌路总管……其笔词源浩荡橫逸，人多称之。（养蒙文集）卷二</p>
 
           
         
@@ -802,7 +794,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/22/sbt-command/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/06/scala-collection/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -822,7 +814,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/22/sbt-command/" class="post-title-link" itemprop="url">sbt_command</a>
+                <a href="/2016/11/06/scala-collection/" class="post-title-link" itemprop="url">scala_collection</a>
               
             
           </h2>
@@ -847,7 +839,7 @@
                 
               
 
-              <time title="创建时间：2016-10-22 14:17:42" itemprop="dateCreated datePublished" datetime="2016-10-22T14:17:42+08:00">2016-10-22</time>
+              <time title="创建时间：2016-11-06 20:39:04" itemprop="dateCreated datePublished" datetime="2016-11-06T20:39:04+08:00">2016-11-06</time>
             
 
             
@@ -900,11 +892,10 @@
       
         
           
-            <h2 id="sbt-命令解释"><a href="#sbt-命令解释" class="headerlink" title="sbt 命令解释"></a>sbt 命令解释</h2><h3 id="run-command"><a href="#run-command" class="headerlink" title="run command"></a>run command</h3><p><a href="http://www.scala-sbt.org/0.13/docs/Command-Line-Reference.html" target="_blank" rel="external">run <argument>*</argument></a>Runs a main class, passing along arguments provided on the command line.</p>
-<p>运行一个主类，如果在文件内部定义变量或者直接调用函数，那么会提示如下：</p>
-<figure class="highlight plain"><figcaption><span>class or object definition```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">因为会先编译这个文件。</span><br><span class="line"></span><br><span class="line">文件内部必须包含main方法的类：</span><br><span class="line"></span><br><span class="line">```scala</span><br><span class="line">	object HelloWorld&#123;</span><br><span class="line">	  def main(args: Array[String]) &#123;</span><br><span class="line">	   println(ChecksumAccumulator.calculate(&quot;We&quot;))</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="package-command"><a href="#package-command" class="headerlink" title="package command"></a>package command</h3><p>在sbt交互模式下输入package，会把当前目录下的project打包，然后运行run命令，如果当前能找到object对象并且有main函数，那么就会执行它。</p>
-<h3 id="exit-command"><a href="#exit-command" class="headerlink" title="exit command"></a>exit command</h3><p>输入exit命令退出sbt交互模式。</p>
+            <h2 id="映射"><a href="#映射" class="headerlink" title="映射"></a>映射</h2><p>映射（Map）是一种可迭代的键值对结构（也称映射或关联）。Scala的Predef类提供了隐式转换，允许使用另一种语法：key -&gt; value，来代替(key, value)。如：Map(“x” -&gt; 24, “y” -&gt; 25, “z” -&gt; 26)等同于Map((“x”, 24), (“y”, 25), (“z”, 26))，却更易于阅读。</p>
+<p><a href="http://docs.scala-lang.org/zh-cn/overviews/collections/maps" target="_blank" rel="external">collections</a></p>
+<h2 id="colon-equals"><a href="#colon-equals" class="headerlink" title="colon-equals"></a>colon-equals</h2><p>It’s very likely you := in a SBT build file. See github.com/harrah/xsbt/wiki/Settings for all of SBT’s assignmenty operators. </p>
+<p>IMHO : In My Humble Opinion 恕我直言<br><a href="http://stackoverflow.com/questions/7749530/what-is-the-difference-between-and-in-scala" target="_blank" rel="external">What is the difference between = and := in Scala?</a></p>
 
           
         
@@ -961,7 +952,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/22/REPL-import-scala/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/03/scala-def/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -981,7 +972,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/22/REPL-import-scala/" class="post-title-link" itemprop="url">scala命令行引入scala文件</a>
+                <a href="/2016/11/03/scala-def/" class="post-title-link" itemprop="url">scala_def定义函数</a>
               
             
           </h2>
@@ -1006,7 +997,7 @@
                 
               
 
-              <time title="创建时间：2016-10-22 13:26:13" itemprop="dateCreated datePublished" datetime="2016-10-22T13:26:13+08:00">2016-10-22</time>
+              <time title="创建时间：2016-11-03 21:21:47" itemprop="dateCreated datePublished" datetime="2016-11-03T21:21:47+08:00">2016-11-03</time>
             
 
             
@@ -1059,11 +1050,11 @@
       
         
           
-            <h2 id="scala命令行引入scala文件"><a href="#scala命令行引入scala文件" class="headerlink" title="scala命令行引入scala文件"></a>scala命令行引入scala文件</h2><h3 id="scala-REPL"><a href="#scala-REPL" class="headerlink" title="scala REPL"></a>scala REPL</h3><p>The Scala Interpreter (often called a REPL for Read-Evaluate-Print Loop).</p>
-<p>Scala解释器读到一个表达式，对它进行求值，将它打印出来，接着再继续读下一个表达式。这个过程被称做读取–求值–打印–循环，即：REPL。<br>从技术上讲，scala程序并不是一个解释器。实际发生的是，你输入的内容被快速地编译成字节码，然后这段字节码交由Java虚拟机执行。正因为如此，大多数scala程序员更倾向于将它称做“REPL”<br><a href="https://my.oschina.net/fhd/blog/273965" target="_blank" rel="external">scala入门之REPL</a></p>
-<h3 id="scala-i"><a href="#scala-i" class="headerlink" title="scala -i"></a>scala -i</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scala -i extractors.scala</span><br></pre></td></tr></table></figure>
-<p>运行 scala -help 可以看到如下提示：</p>
-<figure class="highlight plain"><figcaption><span><file>    preload <file> before starting the repl```</file></file></span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在启动repl之前预先加载file。</span><br><span class="line"></span><br><span class="line">按照这种方式引入的话，如果碰到companion对象,那么会报如下警告：</span><br><span class="line"></span><br><span class="line">warning: previously defined class FreeUser is not a companion to object FreeUser</span><br><span class="line">.</span><br><span class="line">Companions must be defined together; you may wish to use :paste mode for this.</span><br><span class="line">defined object PreminumUser</span><br><span class="line"></span><br><span class="line">希望你用:paste模式。</span><br><span class="line"></span><br><span class="line">### :paste file</span><br><span class="line"></span><br><span class="line">先进入REPL，然后运行如下命令:</span><br><span class="line"></span><br><span class="line">```:paste file</span><br></pre></td></tr></table></figure>
+            <h2 id="scala-def-定义函数的区别"><a href="#scala-def-定义函数的区别" class="headerlink" title="scala def 定义函数的区别"></a>scala def 定义函数的区别</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span> </span>= &#123;<span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>A function which should return a non-Unit value must be declared with the = notation (although of course the compiler can infer the return-type from the expression’s type).</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span> </span>&#123;<span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>返回类型为Unit<br> In Scala if a method declaration does not have an equal sign before its body, the compiler infers that the result type will be Unit</p>
+<p> 参考<br> <a href="http://stackoverflow.com/questions/1661817/scala-def-foo-1-vs-def-foo-1" target="_blank" rel="external">scala: ‘def foo = {1}’ vs ‘def foo {1}’</a></p>
 
           
         
@@ -1109,7 +1100,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/26/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><span class="page-number current">27</span><a class="page-number" href="/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="extend next" rel="next" href="/page/28/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/26/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><span class="page-number current">27</span><a class="page-number" href="/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/page/39/">39</a><a class="extend next" rel="next" href="/page/28/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1151,7 +1142,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">186</span>
+                    <span class="site-state-item-count">195</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1236,7 +1227,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">33</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

@@ -309,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/14/html-base/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/19/uglifyjs-purefuncs/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -329,7 +329,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/06/14/html-base/" class="post-title-link" itemprop="url">html的base节点</a>
+                <a href="/2017/06/19/uglifyjs-purefuncs/" class="post-title-link" itemprop="url">uglifyjs_purefuncs</a>
               
             
           </h2>
@@ -354,7 +354,7 @@
                 
               
 
-              <time title="创建时间：2017-06-14 17:24:42" itemprop="dateCreated datePublished" datetime="2017-06-14T17:24:42+08:00">2017-06-14</time>
+              <time title="创建时间：2017-06-19 11:30:17" itemprop="dateCreated datePublished" datetime="2017-06-19T11:30:17+08:00">2017-06-19</time>
             
 
             
@@ -407,15 +407,18 @@
       
         
           
-            <p>这可是高科技了。举个例子。<br>假如你这个页面的a标签是这样写的；<br><a href="xxx.html">text link</a><br>默认就是本页面打开；<br>但是你加了</p>
-<base target="_blank">
-
-<p>那这个链接就是新页面打开</p>
-<p>再比如：你的a标签还是这么写的</p>
-<p><a href="xxx.html">text link</a></p>
-<p>默认打开的网址就是现在的相对路径下的xxx.html<br>假如你加了</p>
-<p><base href="http://www.baidu.com"><br>那你刚才的那个链接打开的地址就是<br><a href="http://www.baidu.com/xxx.html" target="_blank" rel="external">http://www.baidu.com/xxx.html</a><br>base这个东西有点编程语言里的全局变量；<br>如果你要改变这个也是可以的。就是在你要改变的A标签里重写它定义的属性，比如刚才的链接你写成这样<a href="xxx.html" target="_self">text link</a><br>即使你定义了<base target="_blank"> 这个加了target的A链接依然是当前页面打开；</p>
-<p>转载自：<br><a href="https://zhidao.baidu.com/question/495713634816948284.html" target="_blank" rel="external">在html中base的作用是什么</a></p>
+            <p>今天在看<a href="https://segmentfault.com/a/1190000002895976" target="_blank" rel="external">我推荐的一些前端开发工具</a></p>
+<p>这篇文章时，看到‘之后上线时，可以使用uglify压缩掉所有console的代码’ 这段话，</p>
+<p>我就琢磨uglify怎么把console去掉，然后就打开<a href="https://github.com/mishoo/UglifyJS2" target="_blank" rel="external">UglifyJS2</a></p>
+<p>看文档，有如下描述：</p>
+<p>pure_funcs – default null. You can pass an array of names and UglifyJS will assume that those functions do not produce side effects. DANGER: will not check if the name is redefined in scope. An example case here, for instance var q = Math.floor(a/b). If variable q is not used elsewhere, UglifyJS will drop it, but will still keep the Math.floor(a/b), not knowing what it does. You can pass pure_funcs: [ ‘Math.floor’ ] to let it know that this function won’t produce any side effect, in which case the whole statement would get discarded. The current implementation adds some overhead (compression will be slower).</p>
+<p>drop_console – default false. Pass true to discard calls to console.* functions. If you wish to drop a specific function call such as console.info and/or retain side effects from function arguments after dropping the function call then use pure_funcs instead.</p>
+<p>我就写了个例子测试下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"ss"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.info(test());</span><br></pre></td></tr></table></figure>
+<p>运行如下命令<figure class="highlight plain"><figcaption><span>test.js --compress pure_funcs=['console.info'] -o test.min.js ```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">会得到如下输出```function test()&#123;return&quot;ss&quot;&#125;test()</span><br></pre></td></tr></table></figure></p>
+<p>运行如下命令<figure class="highlight plain"><figcaption><span>test.js --compress pure_funcs=['console.info','test'] -o test.min.js ```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">会得到如下输出```function test()&#123;return&quot;ss&quot;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行如下命令<figure class="highlight plain"><figcaption><span>test.js --compress drop_console=true -o test.min.js```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">会得到如下输出```function test()&#123;return&quot;ss&quot;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>参考资料：<br><a href="https://segmentfault.com/a/1190000008995453" target="_blank" rel="external">UglifyJS中文文档</a><br><a href="http://www.zhangxinxu.com/wordpress/2013/01/uglifyjs-compress-js/" target="_blank" rel="external">小tip：我是如何初体验uglifyjs压缩JS的</a></p>
 
           
         
@@ -472,7 +475,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/13/scala-either/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/17/node-cmd/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -492,7 +495,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/06/13/scala-either/" class="post-title-link" itemprop="url">scala的Either类型</a>
+                <a href="/2017/06/17/node-cmd/" class="post-title-link" itemprop="url">nodejs的命令行是如何调用的</a>
               
             
           </h2>
@@ -517,7 +520,7 @@
                 
               
 
-              <time title="创建时间：2017-06-13 21:48:44" itemprop="dateCreated datePublished" datetime="2017-06-13T21:48:44+08:00">2017-06-13</time>
+              <time title="创建时间：2017-06-17 22:07:06" itemprop="dateCreated datePublished" datetime="2017-06-17T22:07:06+08:00">2017-06-17</time>
             
 
             
@@ -570,9 +573,18 @@
       
         
           
-            <p>这一段要弄清楚：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">averageLineCountWontCompile</span><span class="params">(url1: URL, url2: URL)</span>:</span> Either[String, Int] =</span><br><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">  source1 &lt;- getContent(url1).right</span><br><span class="line">  source2 &lt;- getContent(url2).right</span><br><span class="line">  lines1 = source1.getLines().size</span><br><span class="line">  lines2 = source2.getLines().size</span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">yield</span> (lines1 + lines2) / <span class="number">2</span></span><br></pre></td></tr></table></figure>
-<p>参考博文：<br><a href="http://udn.yyuap.com/doc/guides-to-scala-book/chp7-the-either-type.html" target="_blank" rel="external">类型 Either</a></p>
+            <h2 id="nodejs命令是从哪里调用的"><a href="#nodejs命令是从哪里调用的" class="headerlink" title="nodejs命令是从哪里调用的"></a>nodejs命令是从哪里调用的</h2><p>研究了下hexo的命令调用</p>
+<h3 id="npm-config"><a href="#npm-config" class="headerlink" title="npm config"></a>npm config</h3><p>运行了下 npn config list命令，输出如下:</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">; cli configs</span><br><span class="line">scope = <span class="string">""</span></span><br><span class="line">user-agent = <span class="string">"npm/4.2.0 node/v7.10.0 win32 x64"</span></span><br><span class="line"></span><br><span class="line">; userconfig C:\Users\Administrator\.npmrc</span><br><span class="line">cache = <span class="string">"D:\\npmcache"</span><span class="built_in"></span><br><span class="line">prefix </span>= <span class="string">"D:\\npmglobal"</span></span><br><span class="line">registry = <span class="string">"https://registry.npm.taobao.org/"</span></span><br><span class="line"></span><br><span class="line">; builtin<span class="built_in"> config </span>undefined</span><br><span class="line"></span><br><span class="line">; node bin location = D:\nodejs\node.exe</span><br><span class="line">; cwd = F:\code\blognew</span><br><span class="line">; HOME = C:\Users\Administrator</span><br><span class="line">; <span class="string">"npm config ls -l"</span> <span class="keyword">to</span> show all defaults.</span><br></pre></td></tr></table></figure>
+<p>prefix和cache是npm的全局路径，</p>
+<p>我们到该目录下发现有个hexo.cmd和hexo 文件，打开hexo.cmd，代码如下：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@IF</span> EXIST <span class="string">"%~dp0\node.exe"</span> (</span><br><span class="line">  <span class="string">"%~dp0\node.exe"</span>  <span class="string">"%~dp0\node_modules\hexo-cli\bin\hexo"</span> %*</span><br><span class="line">) ELSE (</span><br><span class="line">  <span class="variable">@SETLOCAL</span></span><br><span class="line">  <span class="variable">@SET</span> PATHEXT=%<span class="attribute">PATHEXT</span>:;.JS;=;%</span><br><span class="line">  node  <span class="string">"%~dp0\node_modules\hexo-cli\bin\hexo"</span> %*</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>那我们就到当前目录的node_modules中看<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">#!/usr/bin/env node</span><br><span class="line"></span><br><span class="line">&apos;use strict&apos;;</span><br><span class="line"></span><br><span class="line">require(&apos;../lib/hexo&apos;)();</span><br><span class="line"></span><br><span class="line">console.log(&apos;hi&apos;);</span><br></pre></td></tr></table></figure></p>
+<p>在任意目录下执行hexo命令会输出</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hi</span><br><span class="line">Usage: hexo &lt;command&gt;</span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">help     Get help on a command.</span><br><span class="line">init     Create a <span class="keyword">new</span> Hexo folder.</span><br><span class="line">version  Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">--config  Specify config file instead <span class="keyword">of</span> using _config.yml</span><br><span class="line">--cwd     Specify the CWD</span><br><span class="line">--debug   Display all verbose messages <span class="keyword">in</span> the terminal</span><br><span class="line">--draft   Display draft posts</span><br><span class="line">--safe    Disable all plugins and scripts</span><br><span class="line">--silent  Hide output on <span class="built_in">console</span></span><br><span class="line"></span><br><span class="line">For more help, you can use <span class="string">'hexo help [command]'</span> <span class="keyword">for</span> the detailed information</span><br><span class="line">or you can check the docs: http:<span class="comment">//hexo.io/docs/</span></span><br></pre></td></tr></table></figure>
+<h3 id="DOS批处理"><a href="#DOS批处理" class="headerlink" title="DOS批处理"></a>DOS批处理</h3><p>DOS批处理命令：<br>%~dp0 代表当前目录</p>
+<p>SETLOCAL<br>开始批处理文件中环境改动的本地化操作。在执行 SETLOCAL 之后所做的环境改动只限于批处理文件。要还原原先的设置，必须执行 ENDLOCAL。 达到批处理文件结尾时，对于该批处理文件的每个尚未执行的 SETLOCAL 命令，都会有一个隐含的 ENDLOCAL 被执行。</p>
+<p>PathExt修改 让我们的Bat文件执行的优先级别在其他可执行文件之前就OK了<br><a href="http://blog.csdn.net/hncsl/article/details/59015497" target="_blank" rel="external">DOS批处理中%~dp0表示什么意思</a><br><a href="https://zhidao.baidu.com/question/117267593.html" target="_blank" rel="external">批处理，%~d0 cd %~dp0 代表什么意思</a><br><a href="http://www.jb51.net/article/36043.htm" target="_blank" rel="external">cmd SETLOCAL使用介绍</a><br><a href="http://tieba.baidu.com/p/73557959" target="_blank" rel="external">修改Pathext，让你的东东优先执行</a></p>
 
           
         
@@ -629,7 +641,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/07/javascript-promise/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/17/angular-injector5/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -649,7 +661,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/06/07/javascript-promise/" class="post-title-link" itemprop="url">javascript_promise</a>
+                <a href="/2017/06/17/angular-injector5/" class="post-title-link" itemprop="url">angular_injector5</a>
               
             
           </h2>
@@ -674,7 +686,7 @@
                 
               
 
-              <time title="创建时间：2017-06-07 10:32:28" itemprop="dateCreated datePublished" datetime="2017-06-07T10:32:28+08:00">2017-06-07</time>
+              <time title="创建时间：2017-06-17 16:57:01" itemprop="dateCreated datePublished" datetime="2017-06-17T16:57:01+08:00">2017-06-17</time>
             
 
             
@@ -727,14 +739,20 @@
       
         
           
-            <h2 id="前端面试1"><a href="#前端面试1" class="headerlink" title="前端面试1"></a>前端面试1</h2><h3 id="promise"><a href="#promise" class="headerlink" title="promise"></a>promise</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> <span class="title">executor</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">for</span>( <span class="keyword">var</span> i=<span class="number">0</span> ; i&lt;<span class="number">10000</span> ; i++ ) &#123;</span><br><span class="line">  i == <span class="number">9999</span> &amp;&amp; resolve();</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">4</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">5</span>);</span><br></pre></td></tr></table></figure>
-<p>首先先碰到一个 setTimeout，于是会先设置一个定时，在定时结束后将传递这个函数放到任务队列里面，因此开始肯定不会输出 1 。</p>
-<p>然后是一个 Promise，里面的函数是直接执行的，因此应该直接输出 2 3 。</p>
-<p>然后，Promise 的 then 应当会放到当前 tick 的最后，但是还是在当前 tick 中。</p>
-<p>因此，应当先输出 5，然后再输出 4 。</p>
-<p>最后在到下一个 tick，就是 1 。</p>
-<p>“2 3 5 4 1”</p>
-<p>参考资料：<br><a href="https://zhuanlan.zhihu.com/p/25407758?refer=ElemeFE" target="_blank" rel="external">Excuse me？这个前端面试在搞事！</a></p>
+            <h2 id="angular-injector-剖析流程"><a href="#angular-injector-剖析流程" class="headerlink" title="angular injector 剖析流程"></a>angular injector 剖析流程</h2><p>angular中的注入器是承载angular整个运行的基石，如果想弄清楚angular的来龙去脉，那injector这块必须得熟悉。</p>
+<h3 id="createInjector"><a href="#createInjector" class="headerlink" title="createInjector"></a>createInjector</h3><p>createInjector方法是入口函数，方法参数是modulesToLoad和strictDi,</p>
+<p>我们主要关注modulesToLoad参数，字面含义就是待加载的模块。</p>
+<h4 id="providerCache"><a href="#providerCache" class="headerlink" title="providerCache"></a>providerCache</h4><p>函数一开始就定义了providerCache对象，顾名思义就是提供provider的缓存。</p>
+<p>providerCache内部又定义了$provide对象属性，暂且不管。</p>
+<h4 id="providerInjector"><a href="#providerInjector" class="headerlink" title="providerInjector"></a>providerInjector</h4><p>定义provider的注入器，同时也定义了providerCache.$injector.<br>最终是返回一个用于提供protoInstanceInjector查找instance的方法对象</p>
+<h4 id="publishExternalAPI"><a href="#publishExternalAPI" class="headerlink" title="publishExternalAPI"></a>publishExternalAPI</h4><p>通过setupModuleLoader 方法，顾名思义为设置模块加载器， 定义了 angularModule 对象为angular.module方法</p>
+<p>里面很重要的一个方法就是<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>随之定义了angular.module(‘ng’,[‘ngLocale’], [‘$provide’,function($provide){}])</p>
+<p>把ng模块放入了modules对象集合</p>
+<p>先是定义<figure class="highlight plain"><figcaption><span>config = invokeLater('$injector', 'invoke', 'push', configBlocks);```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### invokeLater</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">function invokeLater(provider, method, insertMethod, queue) &#123;</span><br><span class="line">          if (!queue) queue = invokeQueue;</span><br><span class="line">          return function() &#123;</span><br><span class="line">            queue[insertMethod || &apos;push&apos;]([provider, method, arguments]);</span><br><span class="line">            return moduleInstance;</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过以下方法把<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">if (configFn) &#123;</span><br><span class="line">          config(configFn);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>configBlocks一开始定义为空数组，然后push 了一个数组对象<code>[&#39;$injector&#39;,&#39;invoke&#39;,[&#39;$provide&#39;,function($provide){}]]</code></p>
+<p>  下篇文章继续分析push了以后是从哪调用的。</p>
 
           
         
@@ -791,7 +809,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/06/angular-api/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/16/java-servlet/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -811,7 +829,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/06/06/angular-api/" class="post-title-link" itemprop="url">angular_api</a>
+                <a href="/2017/06/16/java-servlet/" class="post-title-link" itemprop="url">java_servlet</a>
               
             
           </h2>
@@ -836,7 +854,7 @@
                 
               
 
-              <time title="创建时间：2017-06-06 21:49:46" itemprop="dateCreated datePublished" datetime="2017-06-06T21:49:46+08:00">2017-06-06</time>
+              <time title="创建时间：2017-06-16 22:24:15" itemprop="dateCreated datePublished" datetime="2017-06-16T22:24:15+08:00">2017-06-16</time>
             
 
             
@@ -889,10 +907,17 @@
       
         
           
-            <h2 id="angular-基础api介绍"><a href="#angular-基础api介绍" class="headerlink" title="angular 基础api介绍"></a>angular 基础api介绍</h2><h3 id="angular-isString"><a href="#angular-isString" class="headerlink" title="angular.isString"></a>angular.isString</h3><p>angular.isString判断输入参数是否是字符串,源码如下:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">* @ngdoc function</span><br><span class="line">* @name angular.isString</span><br><span class="line">* @module ng</span><br><span class="line">* @kind function 函数</span><br><span class="line">*</span><br><span class="line">* @description</span><br><span class="line">* Determines if a reference is a `String`.</span><br><span class="line">*</span><br><span class="line">* @param &#123;*&#125; value Reference to check. 参数</span><br><span class="line">* @returns &#123;boolean&#125; True if `value` is a `String`. 返回</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isString</span>(<span class="params">value</span>) </span>&#123;<span class="keyword">return</span> <span class="keyword">typeof</span> value === <span class="string">'string'</span>;&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="angular-isObject"><a href="#angular-isObject" class="headerlink" title="angular.isObject"></a>angular.isObject</h3><p>angular.isObject 判断输入参数是否是Object类型<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">* @ngdoc function</span><br><span class="line">* @name angular.isObject</span><br><span class="line">* @module ng</span><br><span class="line">* @kind function</span><br><span class="line">*</span><br><span class="line">* @description</span><br><span class="line">* Determines if a reference is an `Object`. Unlike `typeof` in JavaScript, `null`s are not</span><br><span class="line">* considered to be objects. Note that JavaScript arrays are objects.</span><br><span class="line">在angular中null是不被考虑为object的。  JavaScript的array是object</span><br><span class="line">*</span><br><span class="line">* @param &#123;*&#125; value Reference to check.</span><br><span class="line">* @returns &#123;boolean&#125; True if `value` is an `Object` but not `null`.</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isObject</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line"><span class="comment">// http://jsperf.com/isobject4</span></span><br><span class="line"><span class="keyword">return</span> value !== <span class="literal">null</span> &amp;&amp; <span class="keyword">typeof</span> value === <span class="string">'object'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="angular-isNullObject"><a href="#angular-isNullObject" class="headerlink" title="angular.isNullObject"></a>angular.isNullObject</h3><p>判断引用参数是否是带空原型链的对象<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">* Determine if a value is an object with a null prototype</span><br><span class="line"></span><br><span class="line">*</span><br><span class="line">* @returns &#123;boolean&#125; True if `value` is an `Object` with a null prototype</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isBlankObject</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line"><span class="comment">//var getPrototypeOf  = Object.getPrototypeOf,</span></span><br><span class="line"><span class="keyword">return</span> value !== <span class="literal">null</span> &amp;&amp; <span class="keyword">typeof</span> value === <span class="string">'object'</span> &amp;&amp; !getPrototypeOf(value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="isArrayLike"><a href="#isArrayLike" class="headerlink" title="isArrayLike"></a>isArrayLike</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">* @private</span><br><span class="line">* @param &#123;*&#125; obj</span><br><span class="line">* @return &#123;boolean&#125; Returns true if `obj` is an array or array-like object (NodeList, Arguments,</span><br><span class="line">*                   String ...)</span><br><span class="line">如果obj参数是数组或者类似数组的对象(节点列表,参数,字符串)</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isArrayLike</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//null undefined window 不是array-like</span></span><br><span class="line"><span class="comment">// `null`, `undefined` and `window` are not array-like</span></span><br><span class="line"><span class="keyword">if</span> (obj == <span class="literal">null</span> || isWindow(obj)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// arrays, strings and jQuery/jqLite objects are array like</span></span><br><span class="line"><span class="comment">// * jqLite is either the jQuery or jqLite constructor function</span></span><br><span class="line"><span class="comment">// * we have to check the existence of jqLite first as this method is called</span></span><br><span class="line"><span class="comment">//必须先检测jqLite是否存在</span></span><br><span class="line"><span class="comment">//因为当jqLite实例化时forEach调用了这个方法 </span></span><br><span class="line"><span class="comment">//   via the forEach method when constructing the jqLite object in the first place</span></span><br><span class="line"><span class="keyword">if</span> (isArray(obj) || isString(obj) || (jqLite &amp;&amp; obj <span class="keyword">instanceof</span> jqLite)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Support: iOS 8.2 (not reproducible in simulator)</span></span><br><span class="line"><span class="comment">// "length" in obj used to prevent JIT error (gh-11508)</span></span><br><span class="line"><span class="keyword">var</span> length = <span class="string">"length"</span> <span class="keyword">in</span> <span class="built_in">Object</span>(obj) &amp;&amp; obj.length;</span><br><span class="line"></span><br><span class="line"><span class="comment">// NodeList objects (with `item` method) and</span></span><br><span class="line"><span class="comment">// other objects with suitable length characteristics are array-like</span></span><br><span class="line"><span class="keyword">return</span> isNumber(length) &amp;&amp;</span><br><span class="line">  (length &gt;= <span class="number">0</span> &amp;&amp; ((length - <span class="number">1</span>) <span class="keyword">in</span> obj || obj <span class="keyword">instanceof</span> <span class="built_in">Array</span>) || <span class="keyword">typeof</span> obj.item == <span class="string">'function'</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h2 id="scalatraServlet实现"><a href="#scalatraServlet实现" class="headerlink" title="scalatraServlet实现"></a>scalatraServlet实现</h2><p>前几天看了别人的面试题，提到了HttpServlet实现了哪几个接口，</p>
+<p>今天就抽空看了下scalatraServlet中的源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpServlet</span> <span class="keyword">extends</span> <span class="title">GenericServlet</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericServlet</span></span><br><span class="line">  <span class="keyword">implements</span> <span class="title">Servlet</span>, <span class="title">ServletConfig</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h3><p>Defines methods that all servlets must implement.<br>就是说定义了所有servlets必须实现的方法。</p>
+<h3 id="ServletConfig"><a href="#ServletConfig" class="headerlink" title="ServletConfig"></a>ServletConfig</h3><ul>
+<li>A servlet configuration object used by a servlet container</li>
+<li>to pass information to a servlet during initialization.</li>
+</ul>
+<p>一个被servlet容器用来传递信息给servlet初始化的配置对象</p>
+<h3 id="java-io-Serializable"><a href="#java-io-Serializable" class="headerlink" title="java.io.Serializable"></a>java.io.Serializable</h3><p>java的序列化接口</p>
+<p>Serializability of a class is enabled by the class implementing the<br>java.io.Serializable interface. Classes that do not implement this<br> interface will not have any of their state serialized or<br>deserialized.  </p>
 
           
         
@@ -949,7 +974,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/06/linux-ls/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/16/angular-api1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -969,7 +994,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/06/06/linux-ls/" class="post-title-link" itemprop="url">linux下ls命令学习资料</a>
+                <a href="/2017/06/16/angular-api1/" class="post-title-link" itemprop="url">angular_api1</a>
               
             
           </h2>
@@ -994,7 +1019,7 @@
                 
               
 
-              <time title="创建时间：2017-06-06 16:58:38" itemprop="dateCreated datePublished" datetime="2017-06-06T16:58:38+08:00">2017-06-06</time>
+              <time title="创建时间：2017-06-16 21:57:07" itemprop="dateCreated datePublished" datetime="2017-06-16T21:57:07+08:00">2017-06-16</time>
             
 
             
@@ -1011,7 +1036,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-18 11:07:30" itemprop="dateModified" datetime="2019-05-18T11:07:30+08:00">2019-05-18</time>
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
               
             
           </span>
@@ -1047,19 +1072,9 @@
       
         
           
-            <h2 id="linux-ls命令"><a href="#linux-ls命令" class="headerlink" title="linux ls命令"></a>linux ls命令</h2><p>###　ls -l</p>
-<p>可以显示文件大小<br>total 44092　文件总数<br>dr-xr-xr-x.   2 root root    40960 Apr 27 03:37 bin<br>drwxr-xr-x.   2 root root     4096 Sep 23  2011 etc<br>drwxr-xr-x.   2 root root     4096 Sep 23  2011 games</p>
-<h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h3><h3 id="2-gt-dev-null"><a href="#2-gt-dev-null" class="headerlink" title="2&gt;/dev/null"></a>2&gt;/dev/null</h3><p>参考资料：</p>
-<ol>
-<li><a href="http://blog.csdn.net/jenminzhang/article/details/9816853" target="_blank" rel="external">Linux “ls -l”文件列表权限详解</a></li>
-<li><a href="https://linux.cn/article-2535-1.html" target="_blank" rel="external">ls命令的20个实用范例</a></li>
-<li><a href="http://blog.chinaunix.net/uid-14735472-id-3359580.html?_t=t" target="_blank" rel="external">ls -l 权限后面有个点</a></li>
-<li><a href="https://www.cnblogs.com/stephen-liu74/archive/2011/12/26/2272814.html" target="_blank" rel="external">Linux Shell高级技巧(二)</a></li>
-<li><a href="https://blog.csdn.net/junge1545/article/details/80838554" target="_blank" rel="external">linux 中 &gt;跟 &gt;&gt; 区别 ，2&gt;&amp;1 是什么 ？</a></li>
-<li><a href="https://blog.csdn.net/gramdog/article/details/80374119" target="_blank" rel="external">Shell中 2&gt;/dev/null</a></li>
-<li><a href="https://jingyan.baidu.com/article/5553fa8286897a65a23934ed.html" target="_blank" rel="external">如何运用LINUX下ls的星号和问号通配符</a></li>
-<li><a href="https://blog.csdn.net/xiang_shao344/article/details/82222348" target="_blank" rel="external">ls命令详解+通配符</a></li>
-</ol>
+            <h2 id="angular基础api"><a href="#angular基础api" class="headerlink" title="angular基础api"></a>angular基础api</h2><h3 id="angular-isNumber"><a href="#angular-isNumber" class="headerlink" title="angular.isNumber"></a>angular.isNumber</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * @ngdoc function</span><br><span class="line"> * @name angular.isNumber</span><br><span class="line"> * @module ng</span><br><span class="line"> * @kind function</span><br><span class="line"> *</span><br><span class="line"> * @description</span><br><span class="line"> * Determines if a reference is a `Number`.</span><br><span class="line"> *判断一个引用是否是数字</span><br><span class="line"> * This includes the "special" numbers `NaN`, `+Infinity` and `-Infinity`.</span><br><span class="line"> *包含特殊number NaN `+Infinity` and `-Infinity`.</span><br><span class="line"> * If you wish to exclude these then you can use the native</span><br><span class="line"> * [`isFinite'](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isFinite)</span><br><span class="line"> * method.</span><br><span class="line"> *</span><br><span class="line"> * @param &#123;*&#125; value Reference to check.</span><br><span class="line"> * @returns &#123;boolean&#125; True if `value` is a `Number`.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isNumber</span>(<span class="params">value</span>) </span>&#123;<span class="keyword">return</span> <span class="keyword">typeof</span> value === <span class="string">'number'</span>;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="nextUid"><a href="#nextUid" class="headerlink" title="nextUid"></a>nextUid</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * A consistent(一致的) way of creating unique IDs in angular.</span><br><span class="line"> *</span><br><span class="line"> * Using simple numbers allows us to generate 28.6 million unique ids per second for 10 years before</span><br><span class="line"> * we hit number precision issues in JavaScript.</span><br><span class="line"> *</span><br><span class="line"> * Math.pow(2,53) 2的53次幂/ 60 / 60 / 24 / 365 / 10 = 28.6M</span><br><span class="line"> *</span><br><span class="line"> * @returns &#123;number&#125; an unique alpha-numeric string</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">nextUid</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> ++uid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>10年内每秒可以生成 28.6 million的唯一标识<br><a href="http://blog.csdn.net/zhaokuner/article/details/23246795" target="_blank" rel="external"> js的精确整数最大为:Math.pow(2,53)-1 =9007199254740991.</a></p>
 
           
         
@@ -1105,7 +1120,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/39/">39</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1147,7 +1162,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">186</span>
+                    <span class="site-state-item-count">195</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1232,7 +1247,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">33</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
