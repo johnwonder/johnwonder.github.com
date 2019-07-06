@@ -309,6 +309,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/14/html-base/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/14/html-base/" class="post-title-link" itemprop="url">html的base节点</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-14 17:24:42" itemprop="dateCreated datePublished" datetime="2017-06-14T17:24:42+08:00">2017-06-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这可是高科技了。举个例子。<br>假如你这个页面的a标签是这样写的；<br><a href="xxx.html">text link</a><br>默认就是本页面打开；<br>但是你加了</p>
+<base target="_blank">
+
+<p>那这个链接就是新页面打开</p>
+<p>再比如：你的a标签还是这么写的</p>
+<p><a href="xxx.html">text link</a></p>
+<p>默认打开的网址就是现在的相对路径下的xxx.html<br>假如你加了</p>
+<p><base href="http://www.baidu.com"><br>那你刚才的那个链接打开的地址就是<br><a href="http://www.baidu.com/xxx.html" target="_blank" rel="external">http://www.baidu.com/xxx.html</a><br>base这个东西有点编程语言里的全局变量；<br>如果你要改变这个也是可以的。就是在你要改变的A标签里重写它定义的属性，比如刚才的链接你写成这样<a href="xxx.html" target="_self">text link</a><br>即使你定义了<base target="_blank"> 这个加了target的A链接依然是当前页面打开；</p>
+<p>转载自：<br><a href="https://zhidao.baidu.com/question/495713634816948284.html" target="_blank" rel="external">在html中base的作用是什么</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/13/scala-either/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -938,168 +1101,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/06/interview-arrange/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/06/06/interview-arrange/" class="post-title-link" itemprop="url">面试题收集</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-06-06 14:11:52" itemprop="dateCreated datePublished" datetime="2017-06-06T14:11:52+08:00">2017-06-06</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:01:33" itemprop="dateModified" datetime="2019-05-09T20:01:33+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="面试题收集"><a href="#面试题收集" class="headerlink" title="面试题收集"></a>面试题收集</h2><p>1.结合金融业务，实现转账过程，从账户A转到账户B，注意金额不能为负数<br>2.回文数问题<br>3.统计句子中每个单词出现的次数。比如如下句子中<br>Java this is a Java Hello World Thank you<br>4.将阿拉伯字母转为汉字。比如123转为一百二十三</p>
-<p>集合框架了解么？HashMap和Hashtable的区别？<br>HashMap实现原理？Hashtable线程安全是怎么现实的？<br>能讲讲HashMap的put()操作过程么？<br>Spring中Bean的生命周期<br>Spring如何管理事务的？<br>Service层是单例还是多例的？是线程安全的么？如果要做成多例的如何实现？<br>事务的传播性，数据库的隔离级别？<br>static可以被继承么？static在哪里地方会用到？<br>ArrayList和LinkedList的区别，为什么说ArrayList是线程安全的？<br>如何配置服务器（tomcat）的内存大小？<br>说一说Servlet实现的接口？<br>项目中常用的设计模式有哪些？写一个单例模式</p>
-<p>参考资料：<br><a href="http://www.cnblogs.com/shizongger/p/6947313.html" target="_blank" rel="external">人人网面试经历</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/39/">39</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1141,7 +1147,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">195</span>
+                    <span class="site-state-item-count">196</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

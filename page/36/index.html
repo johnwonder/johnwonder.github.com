@@ -309,6 +309,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/28/hexo-cli_hexojs/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/08/28/hexo-cli_hexojs/" class="post-title-link" itemprop="url">hexo-cli源码分析之入口文件hexo.js</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-08-28 10:40:21" itemprop="dateCreated datePublished" datetime="2016-08-28T10:40:21+08:00">2016-08-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="hexo-cli-1-0-2源码解读"><a href="#hexo-cli-1-0-2源码解读" class="headerlink" title="hexo-cli 1.0.2源码解读"></a>hexo-cli 1.0.2源码解读</h2><h3 id="hexo入口函数"><a href="#hexo入口函数" class="headerlink" title="hexo入口函数"></a>hexo入口函数</h3><p>package.json中定义了<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"bin"</span>: &#123;</span><br><span class="line">  <span class="string">"hexo"</span>: <span class="string">"./bin/hexo"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>所以到bin目录下的hexo<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br><span class="line"><span class="meta"></span><br><span class="line">'use strict'</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>(<span class="string">'../lib/hexo'</span>)();</span><br></pre></td></tr></table></figure></p>
+<p>再到lib目录下的hexo.js，发现定义了module.exports= entry,那么找到entry方法</p>
+<p>在没有找到hexo模块的情况下什么命令都不起作用<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">entry</span>(<span class="params">cwd, args</span>) </span>&#123;</span><br><span class="line">  cwd = cwd || process.cwd();</span><br><span class="line">  <span class="comment">//如果没有输入cwd那么就获取运行当前脚本的工作目录的路径</span></span><br><span class="line">  <span class="comment">//ChangeWorkingDirectory cwd</span></span><br><span class="line">  <span class="comment">//比如 hexo n 那么就是&#123; _: [ 'n' ] &#125;</span></span><br><span class="line">  <span class="comment">//hexo n --cwd e:\ss 就是&#123; _: [ 'help' ], cwd: 'e:\\ss' &#125;</span></span><br><span class="line">  args = camelCaseKeys(args || minimist(process.argv.slice(<span class="number">2</span>)));</span><br><span class="line"></span><br><span class="line">  <span class="comment">//Context中注册了EventEmitter</span></span><br><span class="line">  <span class="keyword">var</span> hexo = <span class="keyword">new</span> Context(cwd, args);</span><br><span class="line">  <span class="keyword">var</span> log = hexo.log;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Change the title in console</span></span><br><span class="line">  process.title = <span class="string">'hexo'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handleError</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">    log.fatal(err);</span><br><span class="line">    process.exit(<span class="number">2</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//findPkg其实就是检查package.json中是否有hexo</span></span><br><span class="line">  <span class="comment">//并加载node_modules中的hexo 模块</span></span><br><span class="line">  <span class="keyword">return</span> findPkg(cwd, args).then(<span class="function"><span class="keyword">function</span>(<span class="params">path</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!path) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    hexo.base_dir = path;</span><br><span class="line">    <span class="comment">//加载node_modules中的hexo模块</span></span><br><span class="line">    <span class="keyword">return</span> loadModule(path, args).catch(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      log.error(<span class="string">'Local hexo not found in %s'</span>, chalk.magenta(tildify(path)));</span><br><span class="line">      log.error(<span class="string">'Try running: \'npm install hexo --save\''</span>);</span><br><span class="line">      process.exit(<span class="number">2</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">mod</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mod) hexo = mod;</span><br><span class="line">    log = hexo.log;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">require</span>(<span class="string">'./console'</span>)(hexo);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> hexo.init();</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> cmd = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!args.h &amp;&amp; !args.help) &#123;</span><br><span class="line">      cmd = args._.shift();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (cmd) &#123;</span><br><span class="line">        <span class="keyword">var</span> c = hexo.extend.console.get(cmd);</span><br><span class="line">        <span class="keyword">if</span> (!c) cmd = <span class="string">'help'</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cmd = <span class="string">'help'</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      cmd = <span class="string">'help'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    watchSignal(hexo);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> hexo.call(cmd, args).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> hexo.exit();</span><br><span class="line">    &#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> hexo.exit(err).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        handleError(err);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;).catch(handleError);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://www.css88.com/archives/4548" target="_blank" rel="external">process</a><br><a href="http://biyeah.iteye.com/blog/1308954" target="_blank" rel="external">NodeJs中的EventEmitter</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/27/jquery_staticfilter/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -917,166 +1076,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/25/comeback/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/08/25/comeback/" class="post-title-link" itemprop="url">i come back</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-08-25 22:35:01" itemprop="dateCreated datePublished" datetime="2016-08-25T22:35:01+08:00">2016-08-25</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>**将近一年没写博客了，这次回来希望能坚持下去。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/35/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/page/39/">39</a><a class="extend next" rel="next" href="/page/37/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/35/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/37/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1118,7 +1122,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">195</span>
+                    <span class="site-state-item-count">196</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

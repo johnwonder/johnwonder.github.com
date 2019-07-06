@@ -309,6 +309,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/29/slf4j_log4j/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/12/29/slf4j_log4j/" class="post-title-link" itemprop="url">log4j_cannot_log_in_tomcat</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-12-29 14:05:34" itemprop="dateCreated datePublished" datetime="2016-12-29T14:05:34+08:00">2016-12-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:37:34" itemprop="dateModified" datetime="2019-05-09T20:37:34+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="slf4j-日志配置"><a href="#slf4j-日志配置" class="headerlink" title="slf4j 日志配置"></a>slf4j 日志配置</h2><p>前几天遇到了一个奇怪的问题，log4j在程序调试时是可以输出到日志文件中的，但是放到tomcat下却只生成到了tomcat自带的日志文件stdout中</p>
+<p>log4j 配置如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开发</span></span><br><span class="line">  log4j.<span class="attribute">rootLogger</span>=ALL,CONSOLE,FILE,OUT,FILEERROR,FILEWARN</span><br><span class="line">  #正式</span><br><span class="line">  #log4j.<span class="attribute">rootLogger</span>=CONSOLE,FILE,OUT,FILEERROR,FILEWARN</span><br><span class="line">  log4j.logger.com.mchange.v2.log.<span class="attribute">MLog</span>=ALL</span><br><span class="line">  og4j.logger.<span class="attribute">slick</span>=WARN,ERROR</span><br><span class="line">  log4j.logger.com.<span class="attribute">ht</span>=ALL</span><br><span class="line">  log4j.logger.akka.<span class="attribute">http</span>=WARN,ERROR</span><br><span class="line">  log4j.logger.org.<span class="attribute">reflections</span>=ERROR</span><br><span class="line">  log4j.logger.<span class="attribute">kafka</span>=ERROR,WARN</span><br><span class="line">  log4j.logger.org.apache.<span class="attribute">zookeeper</span>=ERROR,WARN</span><br><span class="line">  log4j.logger.org.I0Itec.<span class="attribute">zkclient</span>=ERROR,WARN</span><br><span class="line"></span><br><span class="line">  log4j.appender.<span class="attribute">CONSOLE</span>=org.apache.log4j.ConsoleAppender</span><br><span class="line">  log4j.appender.CONSOLE.<span class="attribute">Target</span>=System.out</span><br><span class="line">  log4j.appender.CONSOLE.<span class="attribute">layout</span>=org.apache.log4j.PatternLayout</span><br><span class="line">  log4j.appender.CONSOLE.layout.<span class="attribute">ConversionPattern</span>=%d %-5p [%F(%L)] %m%n</span><br><span class="line"></span><br><span class="line">  log4j.appender.<span class="attribute">FILE</span>=org.apache.log4j.RollingFileAppender  </span><br><span class="line">  log4j.appender.FILE.<span class="attribute">File</span>=./logs/db.log</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">Append</span>=<span class="literal">true</span></span><br><span class="line">  log4j.appender.FILE.<span class="attribute">DatePattern</span>=<span class="string">'.'</span>yyyy-MM-dd'.log'</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">layout</span>=org.apache.log4j.PatternLayout</span><br><span class="line">  log4j.appender.FILE.layout.<span class="attribute">ConversionPattern</span>=%d %-5p [%c(%L)] %m%n</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">MaxFileSize</span>=10240KB</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">MaxBackupIndex</span>=1000</span><br><span class="line">  log4j.appender.FILE.Threshold = DEBUG</span><br></pre></td></tr></table></figure>
+<p>于是排查了几天，期间也参照tomcat官方的说法把tomcat打日志的方式改成log4j，但是后来发现这只是把tomcat的日志按照log4j的形式输出而已，<br>根本的问题还是没有解决，就是在上述配置的db.log或者out.log中都没有程序中输出的日志。</p>
+<p>当看到stackoverflow上得这个<a href="http://stackoverflow.com/questions/24356319/log4j-creates-log-file-but-does-not-write-to-it" target="_blank" rel="external">问题</a>后，似乎有了一点眉头：</p>
+<p>The output seems to be of the default format that Java’s standard logging framework (JUL) would emit.<br>So, there are two possibilities (that come to mind):<br>Your code imports java.util.logging.Logger, rather than org.apache.log4j.Logger.<br>There exists a library of some sort, in your classpath, that intercepts Log4J calls and converts them to JUL calls.</p>
+<p>最后一句话引起了我的注意，因为我的lib中还引入了logback-classic-1.1.3.jar,logback-core-1.1.3.jar两个包。</p>
+<p>死马当活马医，我把这两个包删除，然后再重启tomcat,结果DEBUG信息就正常写入了db.log中。</p>
+<p>参考的资料有：<br><a href="http://www.tuicool.com/articles/VF32uye" target="_blank" rel="external">log4j和logback的冲突导致日志输出异常</a><br><a href="http://phl.iteye.com/blog/2021461" target="_blank" rel="external">JAVA日志组件系列(三)log4j+logback+slf4j的关系与调试</a><br><a href="http://www.cnblogs.com/yongze103/archive/2012/05/05/2484753.html" target="_blank" rel="external">Logback浅析</a></p>
+<p>第二篇文章提到了这点：<br>只有logback配置文件即可，因为log4j的输出已经委托给了slf4j（通过log4j-over-slf4j），而slf4j的默认实现是logback。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/22/scala-import-problem/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -937,170 +1101,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/03/scala-def/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/11/03/scala-def/" class="post-title-link" itemprop="url">scala_def定义函数</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-11-03 21:21:47" itemprop="dateCreated datePublished" datetime="2016-11-03T21:21:47+08:00">2016-11-03</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="scala-def-定义函数的区别"><a href="#scala-def-定义函数的区别" class="headerlink" title="scala def 定义函数的区别"></a>scala def 定义函数的区别</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span> </span>= &#123;<span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
-<p>A function which should return a non-Unit value must be declared with the = notation (although of course the compiler can infer the return-type from the expression’s type).</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span> </span>&#123;<span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
-<p>返回类型为Unit<br> In Scala if a method declaration does not have an equal sign before its body, the compiler infers that the result type will be Unit</p>
-<p> 参考<br> <a href="http://stackoverflow.com/questions/1661817/scala-def-foo-1-vs-def-foo-1" target="_blank" rel="external">scala: ‘def foo = {1}’ vs ‘def foo {1}’</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/26/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><span class="page-number current">27</span><a class="page-number" href="/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/page/39/">39</a><a class="extend next" rel="next" href="/page/28/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/26/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><span class="page-number current">27</span><a class="page-number" href="/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/28/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1142,7 +1147,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">195</span>
+                    <span class="site-state-item-count">196</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
