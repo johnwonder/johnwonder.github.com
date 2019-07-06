@@ -354,7 +354,7 @@
                 
               
 
-              <time title="创建时间：2019-07-06 17:42:36 / 修改时间：20:39:26" itemprop="dateCreated datePublished" datetime="2019-07-06T17:42:36+08:00">2019-07-06</time>
+              <time title="创建时间：2019-07-06 17:42:36 / 修改时间：22:59:16" itemprop="dateCreated datePublished" datetime="2019-07-06T17:42:36+08:00">2019-07-06</time>
             
 
             
@@ -395,23 +395,24 @@
       
         
           
-            <h2 id="Import定义"><a href="#Import定义" class="headerlink" title="@Import定义"></a>@Import定义</h2><p>Indicates one or more {@link Configuration @Configuration} classes to import.</p>
+            <h2 id="Import定义"><a href="#Import定义" class="headerlink" title="@Import定义"></a>@Import定义</h2><p>Indicates one or more @Configuration classes to import.</p>
 <p>表示一个或多个类会被导入，参考@Configuration.</p>
-<p>Provides functionality equivalent to the {@code <import>} element in Spring XML.</import></p>
+<p>Provides functionality equivalent to the <import> element in Spring XML.</import></p>
 <p>提供在xml中<import>标签相同的功能.</import></p>
-<p>Allows for importing {@code @Configuration} classes, {@link ImportSelector} and {@link ImportBeanDefinitionRegistrar} implementations,as well as regular component classes (as of 4.2; analogous to {@link AnnotationConfigApplicationContext#register}).</p>
+<p>Allows for importing   @Configuration classes, ImportSelector and  ImportBeanDefinitionRegistrar implementations,as well as regular component classes (as of 4.2; analogous to  AnnotationConfigApplicationContext#register).</p>
 <p>允许加上导入类，ImportSelector和ImportBeanDefinitionRegistrar的实现,等同于正常的组件类(4.2开始;类似于AnnotationConfigApplicationContext.register).</p>
 <p>AnnotationConfigRegistry接口是从4.1开始的</p>
-<p>{@code @Bean} definitions declared in imported {@code @Configuration} classes should be accessed by using {@link org.springframework.beans.factory.annotation.Autowired @Autowired} injection. Either the bean itself can be autowired, or the configuration class instance declaring the bean can be autowired. The latter approach allows for explicit, IDE-friendly navigation between {@code @Configuration} class methods.</p>
-<p>在导入类里定义的Bean应该可以被Autowired注入访问。bean自身或者定义bean的配置类都能被autowired。后者能在类方法之间被显式的导航.</p>
+<p>@Bean definitions declared in imported @Configuration classes should be accessed by using org.springframework.beans.factory.annotation.Autowired @Autowired injection. Either the bean itself can be autowired, or the configuration class instance declaring the bean can be autowired. The latter approach allows for explicit, IDE-friendly navigation between @Configuration class methods.</p>
+<p>在导入类里定义的Bean应该可以被Autowired注入访问。bean自身或者定义bean的配置类都能被autowired。后者能在类方法之间被显式的导航. 这个我们在之后使用示例中会展示。</p>
 <p>May be declared at the class level or as a meta-annotation.</p>
 <p>在class层级定义或者当做一个meta-annotation。</p>
-<p>If XML or other non-{@code @Configuration} bean definition resources need to be imported, use the {@link ImportResource @ImportResource} annotation instead.</p>
+<p>If XML or other non-@Configuration bean definition resources need to be imported, use the @ImportResource annotation instead.</p>
 <p>如果xml或者其他没有@Configuration的bean资源需要被导入，那就使用@ImportResource注解来替代。</p>
 <p>参考资料：</p>
 <ol>
 <li><a href="https://www.jianshu.com/p/7eb0c2b214a7" target="_blank" rel="external">Spring Import 三种用法与源码解读</a></li>
 <li><a href="https://blog.csdn.net/pange1991/article/details/81356594" target="_blank" rel="external">Spring @Import注解 —— 导入资源</a></li>
+<li><a href="https://blog.csdn.net/horacehe16/article/details/79811763" target="_blank" rel="external">@Autowired用法详解</a></li>
 </ol>
 
           
