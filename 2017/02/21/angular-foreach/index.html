@@ -98,13 +98,13 @@
 
   <meta name="description" content="angular1.5.8 foreach 源码分析123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960/* * @param &amp;#123;Object|Array&amp;#125; obj Object to iterate over.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="angular_foreach">
+<meta property="og:title" content="angular源码分析之foreach函数">
 <meta property="og:url" content="http://yoursite.com/2017/02/21/angular-foreach/index.html">
 <meta property="og:site_name" content="john's tech blog">
 <meta property="og:description" content="angular1.5.8 foreach 源码分析123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960/* * @param &amp;#123;Object|Array&amp;#125; obj Object to iterate over.">
-<meta property="og:updated_time" content="2019-05-07T12:32:35.553Z">
+<meta property="og:updated_time" content="2019-07-07T03:28:48.788Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="angular_foreach">
+<meta name="twitter:title" content="angular源码分析之foreach函数">
 <meta name="twitter:description" content="angular1.5.8 foreach 源码分析123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960/* * @param &amp;#123;Object|Array&amp;#125; obj Object to iterate over.">
 
 
@@ -123,7 +123,7 @@
   };
 </script>
 
-  <title>angular_foreach | john's tech blog</title>
+  <title>angular源码分析之foreach函数 | john's tech blog</title>
   
 
 
@@ -326,7 +326,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">angular_foreach
+          <h2 class="post-title" itemprop="name headline">angular源码分析之foreach函数
 
               
             
@@ -369,7 +369,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+                <time title="修改时间：2019-07-07 11:28:48" itemprop="dateModified" datetime="2019-07-07T11:28:48+08:00">2019-07-07</time>
               
             
           </span>
@@ -378,6 +378,19 @@
 
           
             
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2017/02/21/angular-foreach/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/02/21/angular-foreach/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -475,6 +488,14 @@
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display: none"></div>
+      
+    </div>
 
   
 
@@ -804,6 +825,44 @@
 
   
 
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css"/>
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: window.location.pathname,
+      owner: 'johnwonder',
+      repo: 'https://github.com/johnwonder/johnwonder.github.com.git',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        client_secret: 'e478ee10ea59da96df115930f1e120b6c66f7e0e',
+      
+        client_id: '5e5ac1108f5771d9a770'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    function showGitment() {
+      document.getElementById('gitment-display-button').style.display = 'none';
+      document.getElementById('gitment-container').style.display = 'block';
+      renderGitment();
+    }
+  
+</script>
 
   
 
