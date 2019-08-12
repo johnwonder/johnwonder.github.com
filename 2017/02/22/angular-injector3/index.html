@@ -103,22 +103,19 @@
 
 
 
-  <meta name="description" content="angular1.5.8源码分析###setupModuleLoader
-模仿setupModuleLoader方法看看如何angular是如何构造angular.module的
-1234567891011121314151617181920212223242526272829303132333435function setupModuleLoader(window) &amp;#123;function">
+  <meta name="description" content="angular1.5.8源码分析setupModuleLoader方法模仿setupModuleLoader方法看看如何angular是如何构造angular.module的
+1234567891011121314151617181920212223242526272829303132333435363738function setupModuleLoader(window) &amp;#123;//函数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="angular_injector3">
+<meta property="og:title" content="angular源码剖析之模块加载器">
 <meta property="og:url" content="http://yoursite.com/2017/02/22/angular-injector3/index.html">
 <meta property="og:site_name" content="john's tech blog">
-<meta property="og:description" content="angular1.5.8源码分析###setupModuleLoader
-模仿setupModuleLoader方法看看如何angular是如何构造angular.module的
-1234567891011121314151617181920212223242526272829303132333435function setupModuleLoader(window) &amp;#123;function">
-<meta property="og:updated_time" content="2019-05-07T12:32:35.555Z">
+<meta property="og:description" content="angular1.5.8源码分析setupModuleLoader方法模仿setupModuleLoader方法看看如何angular是如何构造angular.module的
+1234567891011121314151617181920212223242526272829303132333435363738function setupModuleLoader(window) &amp;#123;//函数">
+<meta property="og:updated_time" content="2019-07-16T14:21:20.068Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="angular_injector3">
-<meta name="twitter:description" content="angular1.5.8源码分析###setupModuleLoader
-模仿setupModuleLoader方法看看如何angular是如何构造angular.module的
-1234567891011121314151617181920212223242526272829303132333435function setupModuleLoader(window) &amp;#123;function">
+<meta name="twitter:title" content="angular源码剖析之模块加载器">
+<meta name="twitter:description" content="angular1.5.8源码分析setupModuleLoader方法模仿setupModuleLoader方法看看如何angular是如何构造angular.module的
+1234567891011121314151617181920212223242526272829303132333435363738function setupModuleLoader(window) &amp;#123;//函数">
 
 
 
@@ -136,7 +133,7 @@
   };
 </script>
 
-  <title>angular_injector3 | john's tech blog</title>
+  <title>angular源码剖析之模块加载器 | john's tech blog</title>
   
 
 
@@ -341,7 +338,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">angular_injector3
+          <h2 class="post-title" itemprop="name headline">angular源码剖析之模块加载器
 
               
             
@@ -384,7 +381,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+                <time title="修改时间：2019-07-16 22:21:20" itemprop="dateModified" datetime="2019-07-16T22:21:20+08:00">2019-07-16</time>
               
             
           </span>
@@ -439,9 +436,8 @@
       
 
       
-        <h2 id="angular1-5-8源码分析"><a href="#angular1-5-8源码分析" class="headerlink" title="angular1.5.8源码分析"></a>angular1.5.8源码分析</h2><p>###setupModuleLoader</p>
-<p>模仿setupModuleLoader方法看看如何angular是如何构造angular.module的</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setupModuleLoader</span>(<span class="params">window</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> angular = ensure(<span class="built_in">window</span>, <span class="string">'angular'</span>, <span class="built_in">Object</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> ensure(angular, <span class="string">'module'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> modules = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">module</span>(<span class="params">name, requires, configFn</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">return</span> ensure(modules, name, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">                  <span class="attr">hello</span> : <span class="string">'hello angular'</span></span><br><span class="line">               &#125;;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">return</span> moduleInstance;</span><br><span class="line">          &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> <span class="built_in">window</span> = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">angularModule = setupModuleLoader(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line">angularModule(<span class="string">'ng'</span>, [<span class="string">'ngLocale'</span>], [<span class="string">'$provide'</span>, <span class="function"><span class="keyword">function</span> <span class="title">ngModule</span>(<span class="params">$provide</span>) </span>&#123;&#125;]);</span><br><span class="line"></span><br><span class="line"><span class="comment">//已经存在ng这个module</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.angular.module(<span class="string">'ng'</span>).hello)</span><br></pre></td></tr></table></figure>
+        <h2 id="angular1-5-8源码分析"><a href="#angular1-5-8源码分析" class="headerlink" title="angular1.5.8源码分析"></a>angular1.5.8源码分析</h2><h3 id="setupModuleLoader方法"><a href="#setupModuleLoader方法" class="headerlink" title="setupModuleLoader方法"></a>setupModuleLoader方法</h3><p>模仿setupModuleLoader方法看看如何angular是如何构造angular.module的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setupModuleLoader</span>(<span class="params">window</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数内部声明函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义全局angular变量</span></span><br><span class="line"><span class="keyword">var</span> angular = ensure(<span class="built_in">window</span>, <span class="string">'angular'</span>, <span class="built_in">Object</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回angular.module变量</span></span><br><span class="line"><span class="keyword">return</span> ensure(angular, <span class="string">'module'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> modules = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">module</span>(<span class="params">name, requires, configFn</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">return</span> ensure(modules, name, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">                  <span class="attr">hello</span> : <span class="string">'hello angular'</span></span><br><span class="line">               &#125;;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">return</span> moduleInstance;</span><br><span class="line">          &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> <span class="built_in">window</span> = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">angularModule = setupModuleLoader(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line">angularModule(<span class="string">'ng'</span>, [<span class="string">'ngLocale'</span>], [<span class="string">'$provide'</span>, <span class="function"><span class="keyword">function</span> <span class="title">ngModule</span>(<span class="params">$provide</span>) </span>&#123;&#125;]);</span><br><span class="line"></span><br><span class="line"><span class="comment">//已经存在ng这个module</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.angular.module(<span class="string">'ng'</span>).hello)</span><br></pre></td></tr></table></figure>
 <p>控制台输出hello angular</p>
 
       
@@ -670,6 +666,32 @@
           
 
           
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/johnwonder" title="GitHub &rarr; https://github.com/johnwonder" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/johnfuck19" title="Twitter &rarr; https://twitter.com/johnfuck19" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            </div>
+          
 
           
 
@@ -695,7 +717,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#angular1-5-8源码分析"><span class="nav-number">1.</span> <span class="nav-text">angular1.5.8源码分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#angular1-5-8源码分析"><span class="nav-number">1.</span> <span class="nav-text">angular1.5.8源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setupModuleLoader方法"><span class="nav-number">1.1.</span> <span class="nav-text">setupModuleLoader方法</span></a></li></ol></li></ol></div>
             
 
           </div>
