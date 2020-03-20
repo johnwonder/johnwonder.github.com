@@ -316,6 +316,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/29/spring-source-AbstractAutowireCapableBeanFactory/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/29/spring-source-AbstractAutowireCapableBeanFactory/" class="post-title-link" itemprop="url">spring5.1.1源码剖析之AbstractAutowireCapableBeanFactory</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-29 13:44:40" itemprop="dateCreated datePublished" datetime="2019-05-29T13:44:40+08:00">2019-05-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-09 22:31:32" itemprop="dateModified" datetime="2019-07-09T22:31:32+08:00">2019-07-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="关于AbstractAutowireCapableBeanFactory"><a href="#关于AbstractAutowireCapableBeanFactory" class="headerlink" title="关于AbstractAutowireCapableBeanFactory"></a>关于AbstractAutowireCapableBeanFactory</h2><p>源码文档中是这么说的：</p>
+<p>Abstract bean factory superclass that implements default bean creation,<br>with the full capabilities specified by the {@link RootBeanDefinition} class.<br>Implements the {@link org.springframework.beans.factory.config.AutowireCapableBeanFactory}<br>interface in addition to AbstractBeanFactory’s {@link #createBean} method.</p>
+<p>org.springframework.beans.factory.support.DefaultListableBeanFactory 这个很重要的类继承自<br>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory</p>
+<p>简单点说这个beanfactory做了三样事情</p>
+<ol>
+<li>实现默认bean创建，bean拥有RootBeanDefinition类指定的所有能力</li>
+<li>实现了AutowireCapableBeanFactory接口。</li>
+<li>实现了AbstractBeanFactory的createBean方法。</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/25/javascript-bind/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -929,156 +1092,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/15/kafka-knownpoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/15/kafka-knownpoints/" class="post-title-link" itemprop="url">kafka学习资料整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-15 22:17:31 / 修改时间：22:37:27" itemprop="dateCreated datePublished" datetime="2019-05-15T22:17:31+08:00">2019-05-15</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><a href="https://www.oschina.net/question/196281_248633?sort=time" target="_blank" rel="external">kafka配置了多个消费者，只有一个消费者收到信息</a></li>
-<li><a href="https://www.cnblogs.com/liuwei6/p/6900686.html" target="_blank" rel="external">kafka partition（分区）与 group</a></li>
-<li><a href="https://scala.cool/2018/03/learning-kafka-1/" target="_blank" rel="external">Kafka 学习笔记（一） ：为什么需要 Kafka？</a></li>
-<li><a href="https://www.cnblogs.com/sa-dan/p/8080197.html" target="_blank" rel="external">kafka中partition和消费者对应关系</a></li>
-<li><a href="https://blog.csdn.net/nankiao/article/details/78553635" target="_blank" rel="external">kafka与zookeeper间的关联</a></li>
-<li><a href="https://mp.weixin.qq.com/s/6mZRCyVlxRxyEIrhfB9gjg" target="_blank" rel="external">被视为代替Kafka的消息队列：Apache Pulsar设计简介</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1125,7 +1138,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">196</span>
+                    <span class="site-state-item-count">197</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

@@ -316,6 +316,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/18/hexo-postname/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/09/18/hexo-postname/" class="post-title-link" itemprop="url">hexo_postname</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-18 22:34:11" itemprop="dateCreated datePublished" datetime="2016-09-18T22:34:11+08:00">2016-09-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="new-post-path-js"><a href="#new-post-path-js" class="headerlink" title="new_post_path.js"></a>new_post_path.js</h2><p>hexo的文章生成名称经过newPostFilter这个过滤器来生成的：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ctx.execFilter(<span class="string">'new_post_path'</span>, data, &#123;</span><br><span class="line">     <span class="attr">args</span>: [replace],</span><br><span class="line">     <span class="attr">context</span>: ctx</span><br><span class="line">   &#125;)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newPostPathFilter</span>(<span class="params">data, replace</span>)</span>&#123;</span><br><span class="line">  <span class="comment">/* jshint validthis: true */</span></span><br><span class="line">  data = data || &#123;&#125;;<span class="comment">//data里带有文章标题</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> sourceDir = <span class="keyword">this</span>.source_dir;<span class="comment">//this指向hexo实例</span></span><br><span class="line">  <span class="comment">//this.source_dir = pathFn.join(base, 'source') + sep; hexo/index.js</span></span><br><span class="line">  <span class="keyword">var</span> draftDir = pathFn.join(sourceDir, <span class="string">'_drafts'</span>);</span><br><span class="line">  <span class="keyword">var</span> postDir = pathFn.join(sourceDir, <span class="string">'_posts'</span>);</span><br><span class="line">  <span class="keyword">var</span> config = <span class="keyword">this</span>.config;</span><br><span class="line">  <span class="keyword">var</span> newPostName = config.new_post_name;<span class="comment">//默认为:title.md</span></span><br><span class="line">  <span class="keyword">var</span> permalinkDefaults = config.permalink_defaults;</span><br><span class="line">  <span class="keyword">var</span> path = data.path;<span class="comment">//默认为空</span></span><br><span class="line">  <span class="keyword">var</span> layout = data.layout;<span class="comment">//默认为空</span></span><br><span class="line">  <span class="keyword">var</span> slug = data.slug;<span class="comment">//文章标题</span></span><br><span class="line">  <span class="keyword">var</span> target = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!permalink || permalink.rule !== newPostName)&#123;</span><br><span class="line">    permalink = <span class="keyword">new</span> Permalink(newPostName); <span class="comment">//固定链接 :title.md</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (path)&#123;</span><br><span class="line">    <span class="keyword">switch</span> (layout)&#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">'page'</span>:</span><br><span class="line">        target = pathFn.join(sourceDir, path);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">case</span> <span class="string">'draft'</span>:</span><br><span class="line">        target = pathFn.join(draftDir, path);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        target = pathFn.join(postDir, path);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (slug)&#123;</span><br><span class="line">    <span class="keyword">switch</span> (layout)&#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">'page'</span>:</span><br><span class="line">        target = pathFn.join(sourceDir, slug, <span class="string">'index'</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">case</span> <span class="string">'draft'</span>:</span><br><span class="line">        target = pathFn.join(draftDir, slug);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">var</span> date = moment(data.date || <span class="built_in">Date</span>.now());<span class="comment">//moment库</span></span><br><span class="line">        <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(data);</span><br><span class="line">        <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> filenameData = &#123;</span><br><span class="line">          <span class="attr">year</span>: date.format(<span class="string">'YYYY'</span>),</span><br><span class="line">          <span class="attr">month</span>: date.format(<span class="string">'MM'</span>),</span><br><span class="line">          <span class="attr">i_month</span>: date.format(<span class="string">'M'</span>),</span><br><span class="line">          <span class="attr">day</span>: date.format(<span class="string">'DD'</span>),</span><br><span class="line">          <span class="attr">i_day</span>: date.format(<span class="string">'D'</span>),</span><br><span class="line">          <span class="attr">title</span>: slug</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">          key = keys[i];</span><br><span class="line">          <span class="keyword">if</span> (!reservedKeys[key]) filenameData[key] = data[key];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//console.log('defaults:'+ _.defaults(filenameData, permalinkDefaults).title);</span></span><br><span class="line">        <span class="comment">//console.log('postDir:'+postDir);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//permalink.stringify 正则替换把permalink中的title替换为filenamedata中的titile，就是文章标题</span></span><br><span class="line">        <span class="comment">//_.defaults lodash库</span></span><br><span class="line">        <span class="comment">//Assigns own enumerable properties of source object(s) to the destination object for all destination properties that resolve to undefined. Once a property is set, additional values of the same property are ignored.</span></span><br><span class="line"></span><br><span class="line">        target = pathFn.join(postDir, permalink.stringify(</span><br><span class="line">          _.defaults(filenameData, permalinkDefaults)));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(<span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Either data.path or data.slug is required!'</span>));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!pathFn.extname(target))&#123;</span><br><span class="line">    target += pathFn.extname(newPostName) || <span class="string">'.md'</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (replace)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(target);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> fs.ensurePath(target);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="hexo-fs-lib-fs-js"><a href="#hexo-fs-lib-fs-js" class="headerlink" title="hexo-fs/lib/fs.js"></a>hexo-fs/lib/fs.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensurePath</span>(<span class="params">path, callback</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!path) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'path is required!'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> exists(path).then(<span class="function"><span class="keyword">function</span>(<span class="params">exist</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!exist) <span class="keyword">return</span> path;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> readdirAsync(dirname(path)).then(<span class="function"><span class="keyword">function</span>(<span class="params">files</span>)</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> _findUnusedPath(path, files);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;).nodeify(callback);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">exists</span>(<span class="params">path, callback</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!path) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'path is required!'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">    fs.exists(path, <span class="function"><span class="keyword">function</span>(<span class="params">exist</span>)</span>&#123;</span><br><span class="line">      resolve(exist);</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> callback === <span class="string">'function'</span>) callback(exist);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最终文件名的秘密就在这里,相同的文件名就自动加上数字</p>
+<h3 id="findUnusedPath"><a href="#findUnusedPath" class="headerlink" title="_findUnusedPath"></a>_findUnusedPath</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_findUnusedPath</span>(<span class="params">path, files</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> extname = pathFn.extname(path);</span><br><span class="line">  <span class="keyword">var</span> basename = pathFn.basename(path, extname);</span><br><span class="line">  <span class="keyword">var</span> regex = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'^'</span> + escapeRegExp(basename) + <span class="string">'(?:-(\\d+))?'</span> + escapeRegExp(extname) + <span class="string">'$'</span>);</span><br><span class="line">  <span class="keyword">var</span> item = <span class="string">''</span>;</span><br><span class="line">  <span class="keyword">var</span> num = <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">var</span> match, matchNum;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = files.length; i &lt; len; i++)&#123;</span><br><span class="line">    item = files[i];</span><br><span class="line">    <span class="keyword">if</span> (!regex.test(item)) <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">    match = item.match(regex);</span><br><span class="line">    matchNum = match[<span class="number">1</span>] ? <span class="built_in">parseInt</span>(match[<span class="number">1</span>], <span class="number">10</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (matchNum &gt; num)&#123;</span><br><span class="line">      num = matchNum;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> join(dirname(path), basename + <span class="string">'-'</span> + (num + <span class="number">1</span>) + extname);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/15/hexo-util-1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -934,166 +1094,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/11/hexo-call/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/09/11/hexo-call/" class="post-title-link" itemprop="url">hexo 命令call是如何调用的</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-09-11 20:03:17" itemprop="dateCreated datePublished" datetime="2016-09-11T20:03:17+08:00">2016-09-11</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="hexo-call"><a href="#hexo-call" class="headerlink" title="hexo.call"></a>hexo.call</h2><p>首先调用hexo对象中的call方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> hexo.call(cmd, args).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> hexo.exit();</span><br><span class="line">   &#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> hexo.exit(err).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">       handleError(err);</span><br><span class="line">     &#125;);</span><br><span class="line">   &#125;);</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Hexo.prototype.call = <span class="function"><span class="keyword">function</span>(<span class="params">name, args, callback</span>)</span>&#123;</span><br><span class="line">	  <span class="keyword">if</span> (!callback &amp;&amp; <span class="keyword">typeof</span> args === <span class="string">'function'</span>)&#123;</span><br><span class="line">	    callback = args;</span><br><span class="line">	    args = &#123;&#125;;</span><br><span class="line">	  &#125;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">	    <span class="keyword">var</span> c = self.extend.console.get(name);</span><br><span class="line"></span><br><span class="line">	    <span class="keyword">if</span> (c)&#123;</span><br><span class="line">	      c.call(self, args).then(resolve, reject);</span><br><span class="line">	    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Console `'</span> + name + <span class="string">'` has not been registered yet!'</span>));</span><br><span class="line">	    &#125;</span><br><span class="line">	  &#125;).nodeify(callback);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>注意到，通过<code>self.extend.console.get(name)</code>获取到的其实是个函数function，所以<code>c.call(self,args)</code>其实是调用的js自带的call函数。因为console.register的时候是放入的函数，注意<code>var c = this.store[name.toLowerCase()] = fn;</code>这句代码，关于注册命令的分析，我们已经在(hexo new命令解析)[<a href="https://johnwonder.github.io/2016/09/09/hexo-new/]中分析过。" target="_blank" rel="external">https://johnwonder.github.io/2016/09/09/hexo-new/]中分析过。</a></p>
-<p>所以这里的call就是调用的每个命令js文件中定义的函数，如plugins/console/new.js中定义的：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newConsole</span>(<span class="params">args</span>)</span>&#123;</span><br><span class="line">  <span class="comment">/* jshint validthis: true */</span></span><br><span class="line">  <span class="comment">// Display help message if user didn't input any arguments</span></span><br><span class="line">  <span class="comment">//console.log('参数是：'+args._);</span></span><br><span class="line">  <span class="keyword">if</span> (!args._.length)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.call(<span class="string">'help'</span>, &#123;<span class="attr">_</span>: [<span class="string">'new'</span>]&#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> data = &#123;</span><br><span class="line">    <span class="attr">title</span>: args._.pop(),<span class="comment">//标题</span></span><br><span class="line">    <span class="comment">//这里layout就是可以通过 hexo n  title layout获取</span></span><br><span class="line">    layout: args._.length ? args._[<span class="number">0</span>] : <span class="keyword">this</span>.config.default_layout,</span><br><span class="line">    <span class="attr">slug</span>: args.s || args.slug,</span><br><span class="line">    <span class="attr">path</span>: args.p || args.path</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(args);</span><br><span class="line">  <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">    key = keys[i];</span><br><span class="line">    <span class="keyword">if</span> (!reservedKeys[key]) data[key] = args[key];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.post.create(data, args.r || args.replace).then(<span class="function"><span class="keyword">function</span>(<span class="params">post</span>)</span>&#123;</span><br><span class="line">    self.log.info(<span class="string">'Created: %s'</span>, chalk.magenta(tildify(post.path)));</span><br><span class="line">  &#125;);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>这里的this对象就是hexo本身，所以this.post就是hexo对象中定义的post变量：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">Post.prototype.create = <span class="function"><span class="keyword">function</span>(<span class="params">data, replace, callback</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!callback &amp;&amp; <span class="keyword">typeof</span> replace === <span class="string">'function'</span>)&#123;</span><br><span class="line">    callback = replace;</span><br><span class="line">    replace = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> ctx = <span class="keyword">this</span>.context;</span><br><span class="line">  <span class="keyword">var</span> config = ctx.config;</span><br><span class="line"></span><br><span class="line">  data.slug = slugize((data.slug || data.title).toString(), &#123;<span class="attr">transform</span>: config.filename_case&#125;);</span><br><span class="line">  data.layout = (data.layout || config.default_layout).toLowerCase();</span><br><span class="line">  data.date = data.date ? moment(data.date) : moment();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Promise</span>.all([</span><br><span class="line">    <span class="comment">// Get the post path</span></span><br><span class="line">    ctx.execFilter(<span class="string">'new_post_path'</span>, data, &#123;</span><br><span class="line">      <span class="attr">args</span>: [replace],</span><br><span class="line">      <span class="attr">context</span>: ctx</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// Get the scaffold</span></span><br><span class="line">    <span class="keyword">this</span>._getScaffold(data.layout)</span><br><span class="line">  ]).spread(<span class="function"><span class="keyword">function</span>(<span class="params">path, scaffold</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// Split data part from the raw scaffold</span></span><br><span class="line">    <span class="keyword">var</span> split = yfm.split(scaffold);</span><br><span class="line">    <span class="keyword">var</span> separator = split.separator || <span class="string">'---'</span>;</span><br><span class="line">    <span class="keyword">var</span> jsonMode = separator[<span class="number">0</span>] === <span class="string">';'</span>;</span><br><span class="line">    <span class="keyword">var</span> frontMatter = prepareFrontMatter(_.clone(data));</span><br><span class="line">    <span class="keyword">var</span> content = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Compile front-matter with data</span></span><br><span class="line">    <span class="keyword">var</span> renderedData = swig.compile(split.data)(frontMatter);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Parse front-matter</span></span><br><span class="line">    <span class="keyword">var</span> compiled;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (jsonMode)&#123;</span><br><span class="line">      compiled = <span class="built_in">JSON</span>.parse(<span class="string">'&#123;'</span> + renderedData + <span class="string">'&#125;'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      compiled = yaml.load(renderedData);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Add data which are not in the front-matter</span></span><br><span class="line">    <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(data);</span><br><span class="line">    <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">var</span> obj = compiled;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">      key = keys[i];</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!preservedKeys[key] &amp;&amp; obj[key] == <span class="literal">null</span>)&#123;</span><br><span class="line">        obj[key] = data[key];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Prepend the separator</span></span><br><span class="line">    <span class="keyword">if</span> (split.prefixSeparator) content += separator + <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">    content += yfm.stringify(obj, &#123;</span><br><span class="line">      <span class="attr">mode</span>: jsonMode ? <span class="string">'json'</span> : <span class="string">''</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Concat content</span></span><br><span class="line">    content += split.content;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (data.content)&#123;</span><br><span class="line">      content += <span class="string">'\n'</span> + data.content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> result = &#123;</span><br><span class="line">      <span class="attr">path</span>: path,</span><br><span class="line">      <span class="attr">content</span>: content</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.all([</span><br><span class="line">      <span class="comment">// Write content to file</span></span><br><span class="line">      fs.writeFile(path, content),</span><br><span class="line">      <span class="comment">// Create asset folder</span></span><br><span class="line">      createAssetFolder(path, config.post_asset_folder)</span><br><span class="line">    ]).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      ctx.emit(<span class="string">'new'</span>, result);</span><br><span class="line">    &#125;).thenReturn(result);</span><br><span class="line">  &#125;).nodeify(callback);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1140,7 +1140,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">196</span>
+                    <span class="site-state-item-count">197</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

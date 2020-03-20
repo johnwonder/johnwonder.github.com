@@ -316,6 +316,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/26/entityframework-first/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/08/26/entityframework-first/" class="post-title-link" itemprop="url">entityframework_随想</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-08-26 13:51:05" itemprop="dateCreated datePublished" datetime="2016-08-26T13:51:05+08:00">2016-08-26</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:27:51" itemprop="dateModified" datetime="2019-05-09T20:27:51+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="EntityFramework之DbContext"><a href="#EntityFramework之DbContext" class="headerlink" title="EntityFramework之DbContext"></a>EntityFramework之DbContext</h2><h3 id="1-IdentityDbContext-貌似在AutomaticMigrationsEnabled-false时仍然可以生成数据库。DbContext貌似就不可以。"><a href="#1-IdentityDbContext-貌似在AutomaticMigrationsEnabled-false时仍然可以生成数据库。DbContext貌似就不可以。" class="headerlink" title="1. IdentityDbContext 貌似在AutomaticMigrationsEnabled=false时仍然可以生成数据库。DbContext貌似就不可以。"></a>1. IdentityDbContext 貌似在AutomaticMigrationsEnabled=false时仍然可以生成数据库。DbContext貌似就不可以。</h3><h3 id="2-AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data-loss之类的错误，可能跟-MigrationHistory表有关。"><a href="#2-AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data-loss之类的错误，可能跟-MigrationHistory表有关。" class="headerlink" title="2. AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data loss之类的错误，可能跟_MigrationHistory表有关。"></a>2. AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data loss之类的错误，可能跟_MigrationHistory表有关。</h3><h3 id="3-把-Migration表清空后，如果对象新增属性，会报数据库中已存在名为-‘’-的对象的错误-。"><a href="#3-把-Migration表清空后，如果对象新增属性，会报数据库中已存在名为-‘’-的对象的错误-。" class="headerlink" title="3. 把_Migration表清空后，如果对象新增属性，会报数据库中已存在名为 ‘’ 的对象的错误 。"></a>3. 把_Migration表清空后，如果对象新增属性，会报数据库中已存在名为 ‘’ 的对象的错误 。</h3><p>一开始如果没有用AutomaticMigration生成数据库，之后新增对象属性，如果配置了Database.SetInitializer 那么会报已存在””的对象。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/25/comeback/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -926,163 +1081,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/30/csharp-classinitorder/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2015/10/30/csharp-classinitorder/" class="post-title-link" itemprop="url">csharp-classinitorder</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2015-10-30 15:01:30" itemprop="dateCreated datePublished" datetime="2015-10-30T15:01:30+08:00">2015-10-30</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:26:44" itemprop="dateModified" datetime="2019-05-09T20:26:44+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>读了<a href="http://www.jianshu.com/p/cdc5adb40bb7#" target="_blank" rel="external">Java重写方法与初始化的隐患</a>这篇文章，带着对C#初始化的疑问，在C#里做了如下测试：</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BaseClass</span></span><br><span class="line">  &#123;</span><br><span class="line">  	 <span class="comment">//4</span></span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">int</span> mSuperX = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//3</span></span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> ms = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//5</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">BaseClass</span>(<span class="params"></span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">       		<span class="comment">//调用了子类setX</span></span><br><span class="line">              setX(<span class="number">99</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setX</span>(<span class="params"><span class="keyword">int</span> x</span>)</span> &#123;</span><br><span class="line">          mSuperX = x;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SubClass</span> : <span class="title">BaseClass</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//2</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> mSubX = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//1</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> m = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//6</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">SubClass</span>(<span class="params"></span>)</span></span><br><span class="line">  &#123;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">setX</span>(<span class="params"><span class="keyword">int</span> x</span>)</span> &#123;</span><br><span class="line">      <span class="keyword">base</span>.setX(x);</span><br><span class="line">      mSubX = x;</span><br><span class="line">      Console.WriteLine(<span class="string">"SubX is assigned "</span> + x);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printX</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      Console.WriteLine(<span class="string">"SubX = "</span> + mSubX);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>so,C#里面 子类static成员 -&gt; 子类普通成员初始化和初始化块 -&gt;父类static成员 -&gt; 父类static成员 -&gt; 父类普通成员初始化和初始化块 -&gt; 父类构造方法 -&gt;子类构造方法。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1129,7 +1127,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">196</span>
+                    <span class="site-state-item-count">197</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

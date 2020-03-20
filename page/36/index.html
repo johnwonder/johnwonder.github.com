@@ -316,6 +316,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/28/hexo-cli_contextjs/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/08/28/hexo-cli_contextjs/" class="post-title-link" itemprop="url">hexo-cli源码分析之context.js</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-08-28 21:55:04" itemprop="dateCreated datePublished" datetime="2016-08-28T21:55:04+08:00">2016-08-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="hexo-cli-1-0-2源码解读"><a href="#hexo-cli-1-0-2源码解读" class="headerlink" title="hexo-cli 1.0.2源码解读"></a>hexo-cli 1.0.2源码解读</h2><h3 id="hexo入口函数中的Context"><a href="#hexo入口函数中的Context" class="headerlink" title="hexo入口函数中的Context"></a>hexo入口函数中的Context</h3><p>hexo.js中定义了context.js，用来实例化hexo对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Context</span>(<span class="params">base, args</span>) </span>&#123;</span><br><span class="line">  base = base || process.cwd();</span><br><span class="line">  args = args || &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  EventEmitter.call(<span class="keyword">this</span>);<span class="comment">//用到了nodejs的EventEmitter</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.base_dir = base;</span><br><span class="line">  <span class="keyword">this</span>.log = logger(args);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.extend = &#123;</span><br><span class="line">    <span class="attr">console</span>: <span class="keyword">new</span> ConsoleExtend()</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>(<span class="string">'util'</span>).inherits(Context, EventEmitter);</span><br><span class="line"></span><br><span class="line">Context.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Do nothing</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Context.prototype.call = <span class="function"><span class="keyword">function</span>(<span class="params">name, args, callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!callback &amp;&amp; <span class="keyword">typeof</span> args === <span class="string">'function'</span>) &#123;<span class="comment">//如果没有callback且args为函数</span></span><br><span class="line">    callback = args;</span><br><span class="line">    args = &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//用了bluebird的Promise</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> c = self.extend.console.get(name);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (c) &#123;</span><br><span class="line">      c.call(self, args).then(resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Console `'</span> + name + <span class="string">'` has not been registered yet!'</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;).asCallback(callback);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Context.prototype.exit = <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (err) &#123;</span><br><span class="line">    <span class="keyword">this</span>.log.fatal(</span><br><span class="line">      &#123;<span class="attr">err</span>: err&#125;,</span><br><span class="line">      <span class="string">'Something\'s wrong. Maybe you can find the solution here: %s'</span>,</span><br><span class="line">      chalk.underline(<span class="string">'http://hexo.io/docs/troubleshooting.html'</span>)</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Context.prototype.unwatch = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Do nothing</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = Context;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/28/hexo-cli_hexojs/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -928,161 +1084,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/26/entityframework-first/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/08/26/entityframework-first/" class="post-title-link" itemprop="url">entityframework_随想</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-08-26 13:51:05" itemprop="dateCreated datePublished" datetime="2016-08-26T13:51:05+08:00">2016-08-26</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:27:51" itemprop="dateModified" datetime="2019-05-09T20:27:51+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="EntityFramework之DbContext"><a href="#EntityFramework之DbContext" class="headerlink" title="EntityFramework之DbContext"></a>EntityFramework之DbContext</h2><h3 id="1-IdentityDbContext-貌似在AutomaticMigrationsEnabled-false时仍然可以生成数据库。DbContext貌似就不可以。"><a href="#1-IdentityDbContext-貌似在AutomaticMigrationsEnabled-false时仍然可以生成数据库。DbContext貌似就不可以。" class="headerlink" title="1. IdentityDbContext 貌似在AutomaticMigrationsEnabled=false时仍然可以生成数据库。DbContext貌似就不可以。"></a>1. IdentityDbContext 貌似在AutomaticMigrationsEnabled=false时仍然可以生成数据库。DbContext貌似就不可以。</h3><h3 id="2-AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data-loss之类的错误，可能跟-MigrationHistory表有关。"><a href="#2-AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data-loss之类的错误，可能跟-MigrationHistory表有关。" class="headerlink" title="2. AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data loss之类的错误，可能跟_MigrationHistory表有关。"></a>2. AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data loss之类的错误，可能跟_MigrationHistory表有关。</h3><h3 id="3-把-Migration表清空后，如果对象新增属性，会报数据库中已存在名为-‘’-的对象的错误-。"><a href="#3-把-Migration表清空后，如果对象新增属性，会报数据库中已存在名为-‘’-的对象的错误-。" class="headerlink" title="3. 把_Migration表清空后，如果对象新增属性，会报数据库中已存在名为 ‘’ 的对象的错误 。"></a>3. 把_Migration表清空后，如果对象新增属性，会报数据库中已存在名为 ‘’ 的对象的错误 。</h3><p>一开始如果没有用AutomaticMigration生成数据库，之后新增对象属性，如果配置了Database.SetInitializer 那么会报已存在””的对象。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1129,7 +1130,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">196</span>
+                    <span class="site-state-item-count">197</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

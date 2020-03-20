@@ -316,6 +316,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/29/angularjs-minError/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/12/29/angularjs-minError/" class="post-title-link" itemprop="url">angularjs源码剖析之minErr函数</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-12-29 16:09:25" itemprop="dateCreated datePublished" datetime="2016-12-29T16:09:25+08:00">2016-12-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-07 11:05:57" itemprop="dateModified" datetime="2019-07-07T11:05:57+08:00">2019-07-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular1-5-8-minErr函数"><a href="#angular1-5-8-minErr函数" class="headerlink" title="angular1.5.8 minErr函数"></a>angular1.5.8 minErr函数</h2><p>minErr函数名字起的很有创意,我们可以理解为错误函数最小化包装,angularjs内部变量的命名都很规范，<br>这已经是是值得我们借鉴的地方。</p>
+<p>在运行过程中如果angularjs脚本出现错误,那么在浏览器控制台我们可以看到自定义的错误信息，<br>这些信息就是通过这个函数输出的。</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>angular.js内部代码有如下用法：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ng参数代表返回的新的minErr实例使用的命名空间</span></span><br><span class="line"><span class="comment">//也可以当作是模块。</span></span><br><span class="line">ngMinErr  = minErr(<span class="string">'ng'</span>) <span class="comment">//代表是ng模块的错误</span></span><br></pre></td></tr></table></figure>
+<h3 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a>函数定义</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">* @description  描述</span><br><span class="line">* 这个对象提供一个用于angular创建富错误信息的能力</span><br><span class="line">* This object provides a utility for producing rich Error messages within</span><br><span class="line">* Angular. It can be called as follows:</span><br><span class="line">*</span><br><span class="line">* 使用方法</span><br><span class="line">* var exampleMinErr = minErr('example');</span><br><span class="line">* throw exampleMinErr('one', 'This &#123;0&#125; is &#123;1&#125;', foo, bar);</span><br><span class="line">*</span><br><span class="line">* The above creates an instance of minErr in the example namespace. The</span><br><span class="line">* resulting error will have a namespaced error code of example.one.  The</span><br><span class="line">* resulting error will replace &#123;0&#125; with the value of foo, and &#123;1&#125; with the</span><br><span class="line">* value of bar. The object is not restricted in the number of arguments it can</span><br><span class="line">* take.</span><br><span class="line">*</span><br><span class="line">*如果传入比需要少点的参数，那么多出来的参数会保存起来</span><br><span class="line">* If fewer arguments are specified than necessary for interpolation, the extra</span><br><span class="line">* interpolation markers will be preserved in the final string.</span><br><span class="line">*由于数据在生成过程中会被静态解析,在minErr实例创建和调用的过程中一些约束被适当的应用。</span><br><span class="line">* Since data will be parsed statically during a build step, some restrictions</span><br><span class="line">* are applied with respect to how minErr instances are created and called.</span><br><span class="line">* Instances should have names of the form namespaceMinErr for a minErr created</span><br><span class="line">* using minErr('namespace') .</span><br><span class="line">* 错误代码，命名空间和模板字符串都应该是静态字符串，不能是变量和生成的表达式</span><br><span class="line">* Error codes, namespaces and template strings</span><br><span class="line">* should all be static strings, not variables or general expressions.</span><br><span class="line">*</span><br><span class="line">* @param &#123;string&#125; module The namespace to use for the new minErr instance.</span><br><span class="line"></span><br><span class="line">*在angular.js 16314行 定义了一个如下Err 其中就传入了TypeError 对象</span><br><span class="line">* var $qMinErr = minErr('$q', TypeError);</span><br><span class="line"></span><br><span class="line">* line 16413</span><br><span class="line">*$qMinErr(</span><br><span class="line">*        'qcycle',</span><br><span class="line">*        "Expected promise to be resolved with value other than itself '&#123;0&#125;'",</span><br><span class="line">*        val)</span><br><span class="line"></span><br><span class="line">* Promise解读</span><br><span class="line">* 相关链接 http://lib.csdn.net/article/angularjs/33116</span><br><span class="line">* @param &#123;function&#125; ErrorConstructor Custom error constructor to be instantiated when returning</span><br><span class="line">*   error from returned function, for cases when a particular type of error is useful.</span><br><span class="line">* @returns &#123;function(code:string, template:string, ...templateArgs): Error&#125; minErr instance</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">minErr</span>(<span class="params">module, ErrorConstructor</span>) </span>&#123;</span><br><span class="line">    ErrorConstructor = ErrorConstructor || <span class="built_in">Error</span>;<span class="comment">//如果没有提供Error构造函数，就用默认的Error</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回真正可以使用的函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> SKIP_INDEXES = <span class="number">2</span>;<span class="comment">//跳过的索引</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">var</span> templateArgs = <span class="built_in">arguments</span>,<span class="comment">//函数传入的参数</span></span><br><span class="line">        code = templateArgs[<span class="number">0</span>],<span class="comment">//第一个参数：错误代码</span></span><br><span class="line">        message = <span class="string">'['</span> + (<span class="built_in">module</span> ? <span class="built_in">module</span> + <span class="string">':'</span> : <span class="string">''</span>) + code + <span class="string">'] '</span>,<span class="comment">//初始化错误消息</span></span><br><span class="line">        template = templateArgs[<span class="number">1</span>],<span class="comment">//第二个参数：模板</span></span><br><span class="line">        paramPrefix, i;</span><br><span class="line"></span><br><span class="line">      message += template.replace(<span class="regexp">/\&#123;\d+\&#125;/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">match</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//slice &#123;0&#125; 就提取出0</span></span><br><span class="line">        <span class="comment">//slice &#123;1&#125; 就提取出1</span></span><br><span class="line">        <span class="comment">//比如 "Unknown provider: &#123;0&#125;"就提取出&#123;0&#125;</span></span><br><span class="line">        <span class="keyword">var</span> index = +match.slice(<span class="number">1</span>, <span class="number">-1</span>),<span class="comment">//相当于把&#123;&#125;去掉</span></span><br><span class="line">          shiftedIndex = index + SKIP_INDEXES;<span class="comment">//根据参数顺序要跳过2个</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (shiftedIndex &lt; templateArgs.length) &#123;</span><br><span class="line">          <span class="comment">// shiftedIndex 是 从 SKIP_INDEXES 开始计算的</span></span><br><span class="line">          <span class="comment">// 因为第一个参数为 错误代码 ，第二个参数为 模板</span></span><br><span class="line">          <span class="comment">//相当于格式化参数</span></span><br><span class="line">          <span class="keyword">return</span> toDebugString(templateArgs[shiftedIndex]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> match;</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      message += <span class="string">'\nhttp://errors.angularjs.org/1.5.8/'</span> +</span><br><span class="line">        (<span class="built_in">module</span> ? <span class="built_in">module</span> + <span class="string">'/'</span> : <span class="string">''</span>) + code;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">for</span> (i = SKIP_INDEXES, paramPrefix = <span class="string">'?'</span>; i &lt; templateArgs.length; i++, paramPrefix = <span class="string">'&amp;'</span>) &#123;</span><br><span class="line">        message += paramPrefix + <span class="string">'p'</span> + (i - SKIP_INDEXES) + <span class="string">'='</span> +</span><br><span class="line">          <span class="built_in">encodeURIComponent</span>(toDebugString(templateArgs[i]));</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> ErrorConstructor(message);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="关联函数-toDebugString"><a href="#关联函数-toDebugString" class="headerlink" title="关联函数 toDebugString"></a>关联函数 toDebugString</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//输出调试信息</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">toDebugString</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//用===来判断</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> obj === <span class="string">'function'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.toString().replace(<span class="regexp">/ \&#123;[\s\S]*$/</span>, <span class="string">''</span>);<span class="comment">//把函数体去掉</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isUndefined(obj)) &#123;</span><br><span class="line">    <span class="comment">//调用isUndefined函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'undefined'</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> obj !== <span class="string">'string'</span>) &#123;</span><br><span class="line">    <span class="comment">//不是字符串就调用serializeObject函数</span></span><br><span class="line">    <span class="keyword">return</span> serializeObject(obj);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//如果是字符串</span></span><br><span class="line">  <span class="comment">//就返回obj参数</span></span><br><span class="line">  <span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="关联函数-serializeObject"><a href="#关联函数-serializeObject" class="headerlink" title="关联函数 serializeObject"></a>关联函数 serializeObject</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* global toDebugString: true */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">serializeObject</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> seen = [];</span><br><span class="line"></span><br><span class="line">  <span class="comment">//关于JSON.stringify</span></span><br><span class="line">  <span class="comment">//https://developer.mozilla.org/zh-CN/docs/Using_native_JSON</span></span><br><span class="line">  <span class="comment">//该参数可以是多种类型,如果是一个函数,则它可以改变一个javascript对象在字符串化过程中的行为,</span></span><br><span class="line">  <span class="comment">//如果是一个包含 String 和 Number 对象的数组,则它将作为一个白名单.</span></span><br><span class="line">  <span class="comment">//只有那些键存在域该白名单中的键值对才会被包含进最终生成的JSON字符串中.如果该参数值为null或者被省略,则所有的键值对都会被包含进最终生成的JSON字符串中.</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">JSON</span>.stringify(obj, <span class="function"><span class="keyword">function</span>(<span class="params">key, val</span>) </span>&#123;</span><br><span class="line">    val = toJsonReplacer(key, val);</span><br><span class="line">    <span class="keyword">if</span> (isObject(val)) &#123;</span><br><span class="line">      <span class="comment">//如果seen中已经存在该值</span></span><br><span class="line">      <span class="keyword">if</span> (seen.indexOf(val) &gt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="string">'...'</span>;<span class="comment">//变成省略号</span></span><br><span class="line"></span><br><span class="line">      seen.push(val);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> val;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从这个函数中我们可以学到以下几点</p>
+<blockquote>
+<p>函数内部返回函数</p>
+</blockquote>
+<blockquote>
+<p>javascript slice的用法</p>
+</blockquote>
+<blockquote>
+<p>javascript replace 加正则的用法</p>
+</blockquote>
+<blockquote>
+<p>函数的包装</p>
+</blockquote>
+<blockquote>
+<p>对象的序列化 通过JSON.stringify</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/29/slf4j_log4j/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -950,164 +1127,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/06/scala-collection/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/11/06/scala-collection/" class="post-title-link" itemprop="url">scala_collection</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-11-06 20:39:04" itemprop="dateCreated datePublished" datetime="2016-11-06T20:39:04+08:00">2016-11-06</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="映射"><a href="#映射" class="headerlink" title="映射"></a>映射</h2><p>映射（Map）是一种可迭代的键值对结构（也称映射或关联）。Scala的Predef类提供了隐式转换，允许使用另一种语法：key -&gt; value，来代替(key, value)。如：Map(“x” -&gt; 24, “y” -&gt; 25, “z” -&gt; 26)等同于Map((“x”, 24), (“y”, 25), (“z”, 26))，却更易于阅读。</p>
-<p><a href="http://docs.scala-lang.org/zh-cn/overviews/collections/maps" target="_blank" rel="external">collections</a></p>
-<h2 id="colon-equals"><a href="#colon-equals" class="headerlink" title="colon-equals"></a>colon-equals</h2><p>It’s very likely you := in a SBT build file. See github.com/harrah/xsbt/wiki/Settings for all of SBT’s assignmenty operators. </p>
-<p>IMHO : In My Humble Opinion 恕我直言<br><a href="http://stackoverflow.com/questions/7749530/what-is-the-difference-between-and-in-scala" target="_blank" rel="external">What is the difference between = and := in Scala?</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1154,7 +1173,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">196</span>
+                    <span class="site-state-item-count">197</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

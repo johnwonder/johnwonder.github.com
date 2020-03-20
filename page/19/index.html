@@ -316,6 +316,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/21/javascript-replace/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/04/21/javascript-replace/" class="post-title-link" itemprop="url">javascript_replace</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-04-21 11:34:17" itemprop="dateCreated datePublished" datetime="2017-04-21T11:34:17+08:00">2017-04-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="javascript-replace"><a href="#javascript-replace" class="headerlink" title="javascript replace"></a>javascript replace</h2><p>在看angular源码时 有这么一个方法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//. 匹配除“\r\n”之外的任何单个字符。要匹配包括“\r\n”在内的任何字符，请使用像“[\s\S]”的模式</span></span><br><span class="line"><span class="keyword">var</span> SPECIAL_CHARS_REGEXP = <span class="regexp">/([\:\-\_]+(.))/g</span>;</span><br><span class="line"><span class="comment">//感觉应该是/([\:\-\_])+(.)/g;</span></span><br><span class="line"><span class="keyword">var</span> MOZ_HACK_REGEXP = <span class="regexp">/^moz([A-Z])/</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">camelCase</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> name.</span><br><span class="line">    replace(SPECIAL_CHARS_REGEXP, <span class="function"><span class="keyword">function</span>(<span class="params">_, separator, letter, offset,all</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> offset ? letter.toUpperCase() : letter;</span><br><span class="line">      <span class="comment">//all 为字符串本身</span></span><br><span class="line">    &#125;).</span><br><span class="line">    replace(MOZ_HACK_REGEXP, <span class="string">'Moz$1'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>怎么使用呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> PREFIX_REGEXP = <span class="regexp">/^((?:x|data)[\:\-_])/i</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result = <span class="string">'ng-app'</span>.replace(PREFIX_REGEXP, <span class="string">''</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(camelCase(result));</span><br><span class="line"><span class="comment">//输出ngApp</span></span><br></pre></td></tr></table></figure>
+<p>第二个参数为函数：</p>
+<p>在ECMAScript3推荐使用函数方式，实现于JavaScript1.2.当replace方法执行的时候每次都会调用该函数，返回值作为替换的新值。</p>
+<p> 函数参数的规定：</p>
+<p>第一个参数为每次匹配的全文本（$&amp;）。<br>中间参数为子表达式匹配字符串，个数不限.( $i (i:1-99))<br>倒数第二个参数为匹配文本字符串的匹配下标位置。<br>最后一个参数表示字符串本身。</p>
+<p>参考资料：<br><a href="https://segmentfault.com/q/1010000003949349" target="_blank" rel="external">js的replace函数入参为function时的疑问</a><br><a href="http://www.cnblogs.com/whitewolf/archive/2013/03/14/2958720.html" target="_blank" rel="external">JavaScript 函数replace揭秘</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/21/scala-bytestring/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -943,168 +1105,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/11/linux-vi1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/04/11/linux-vi1/" class="post-title-link" itemprop="url">linux_vi1</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-04-11 16:08:09" itemprop="dateCreated datePublished" datetime="2017-04-11T16:08:09+08:00">2017-04-11</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="linux-vi学习笔记1"><a href="#linux-vi学习笔记1" class="headerlink" title="linux vi学习笔记1"></a>linux vi学习笔记1</h2><p>:wq 保存文件并退出vi</p>
-<p>:w 保存文件但不退出vi</p>
-<p>:q 不保存文件，退出vi</p>
-<p>:$ 跳到文件最后一行</p>
-<p>1 按大写的G 跳到最后一行。 然后按小写的O键，增加一行。</p>
-<p>2 也可以：<br>搜索<br>:set nu (设置行号)<br>:14 （这里只是示例，是指的最后一行的行号）<br>o</p>
-<p>3 输入 $ 然后按大写的O键 向上增加一行<br>:$<br>O</p>
-<p>参考资料：<br><a href="https://zhidao.baidu.com/question/583768034414660125.html" target="_blank" rel="external">linux vi 在最后一行增加一行</a><br><a href="http://blog.163.com/chen_dawn/blog/static/112506320111145955649/" target="_blank" rel="external">vi/vim 删除：一行, 一个字符, 单词, 每行第一个字符 命令  </a><br><a href="http://www.cnblogs.com/MenAngel/p/5586677.html" target="_blank" rel="external">每天一个Linux命令（48）ping命令</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1151,7 +1151,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">196</span>
+                    <span class="site-state-item-count">197</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
