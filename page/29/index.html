@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/24/scala-partialFunction/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/29/slf4j_log4j/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -336,7 +336,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/24/scala-partialFunction/" class="post-title-link" itemprop="url">scala_partialFunction</a>
+                <a href="/2016/12/29/slf4j_log4j/" class="post-title-link" itemprop="url">log4j_cannot_log_in_tomcat</a>
               
             
           </h2>
@@ -361,7 +361,7 @@
                 
               
 
-              <time title="创建时间：2016-10-24 21:59:42" itemprop="dateCreated datePublished" datetime="2016-10-24T21:59:42+08:00">2016-10-24</time>
+              <time title="创建时间：2016-12-29 14:05:34" itemprop="dateCreated datePublished" datetime="2016-12-29T14:05:34+08:00">2016-12-29</time>
             
 
             
@@ -378,7 +378,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+                <time title="修改时间：2019-05-09 20:37:34" itemprop="dateModified" datetime="2019-05-09T20:37:34+08:00">2019-05-09</time>
               
             
           </span>
@@ -414,15 +414,16 @@
       
         
           
-            <h2 id="偏函数"><a href="#偏函数" class="headerlink" title="偏函数"></a>偏函数</h2><h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> pf: <span class="type">PartialFunction</span>[<span class="type">Int</span>, <span class="type">String</span>] = &#123;</span><br><span class="line">  		<span class="keyword">case</span> i <span class="keyword">if</span> i%<span class="number">2</span> == <span class="number">0</span> =&gt; <span class="string">"even"</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>也可以由orElse组成：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> tf: (<span class="type">Int</span> =&gt; <span class="type">String</span>) = pf orElse &#123; <span class="keyword">case</span> _ =&gt; <span class="string">"odd"</span>&#125;</span><br><span class="line"></span><br><span class="line">tf(<span class="number">1</span>) == <span class="string">"odd"</span></span><br><span class="line">tf(<span class="number">2</span>) == <span class="string">"even"</span></span><br></pre></td></tr></table></figure></p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">trait</span> <span class="title">Publisher</span>[<span class="type">T</span>] </span>&#123;</span><br><span class="line">  		<span class="function"><span class="keyword">def</span> <span class="title">subscribe</span></span>(f: <span class="type">PartialFunction</span>[<span class="type">T</span>, <span class="type">Unit</span>])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">val</span> publisher: <span class="type">Publisher</span>[<span class="type">Int</span>] = ..</span><br><span class="line"> <span class="comment">//定义subscribe函数</span></span><br><span class="line"> publisher.subscribe &#123;</span><br><span class="line">   <span class="keyword">case</span> i <span class="keyword">if</span> isPrime(i) =&gt; println(<span class="string">"found prime"</span>, i)</span><br><span class="line">   <span class="keyword">case</span> i <span class="keyword">if</span> i%<span class="number">2</span> == <span class="number">0</span> =&gt; count += <span class="number">2</span></span><br><span class="line">   </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="偏应用函数"><a href="#偏应用函数" class="headerlink" title="偏应用函数"></a>偏应用函数</h2><p>偏应用函数（Partial Applied Function)是缺少部分参数的函数，是一个逻辑上概念</p>
-<h3 id="语法和示例"><a href="#语法和示例" class="headerlink" title="语法和示例"></a>语法和示例</h3><p>Scala里，当你调用函数，传入任何需要的参数，你就是在把函数应用到参数上。如，给定下列函数：</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">sum</span></span>(a: <span class="type">Int</span>, b: <span class="type">Int</span>, c: <span class="type">Int</span>) = a + b + c</span><br><span class="line">sum: (<span class="type">Int</span>,<span class="type">Int</span>,<span class="type">Int</span>)<span class="type">Int</span></span><br></pre></td></tr></table></figure>
-<p>偏应用函数是一种表达式，你不需要提供函数需要的所有参数。代之以仅提供部分，或不提供所需参数</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> a = sum _</span><br><span class="line">a: (<span class="type">Int</span>, <span class="type">Int</span>, <span class="type">Int</span>) =&gt; <span class="type">Int</span> = &lt; function&gt;</span><br></pre></td></tr></table></figure>
-<p><a href="http://www.aiuxian.com/article/p-1741977.html" target="_blank" rel="external">Scala: 偏函数(PartialFunction) &amp;&amp; 偏应用函数(Partial Applied Function</a></p>
+            <h2 id="slf4j-日志配置"><a href="#slf4j-日志配置" class="headerlink" title="slf4j 日志配置"></a>slf4j 日志配置</h2><p>前几天遇到了一个奇怪的问题，log4j在程序调试时是可以输出到日志文件中的，但是放到tomcat下却只生成到了tomcat自带的日志文件stdout中</p>
+<p>log4j 配置如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开发</span></span><br><span class="line">  log4j.<span class="attribute">rootLogger</span>=ALL,CONSOLE,FILE,OUT,FILEERROR,FILEWARN</span><br><span class="line">  #正式</span><br><span class="line">  #log4j.<span class="attribute">rootLogger</span>=CONSOLE,FILE,OUT,FILEERROR,FILEWARN</span><br><span class="line">  log4j.logger.com.mchange.v2.log.<span class="attribute">MLog</span>=ALL</span><br><span class="line">  og4j.logger.<span class="attribute">slick</span>=WARN,ERROR</span><br><span class="line">  log4j.logger.com.<span class="attribute">ht</span>=ALL</span><br><span class="line">  log4j.logger.akka.<span class="attribute">http</span>=WARN,ERROR</span><br><span class="line">  log4j.logger.org.<span class="attribute">reflections</span>=ERROR</span><br><span class="line">  log4j.logger.<span class="attribute">kafka</span>=ERROR,WARN</span><br><span class="line">  log4j.logger.org.apache.<span class="attribute">zookeeper</span>=ERROR,WARN</span><br><span class="line">  log4j.logger.org.I0Itec.<span class="attribute">zkclient</span>=ERROR,WARN</span><br><span class="line"></span><br><span class="line">  log4j.appender.<span class="attribute">CONSOLE</span>=org.apache.log4j.ConsoleAppender</span><br><span class="line">  log4j.appender.CONSOLE.<span class="attribute">Target</span>=System.out</span><br><span class="line">  log4j.appender.CONSOLE.<span class="attribute">layout</span>=org.apache.log4j.PatternLayout</span><br><span class="line">  log4j.appender.CONSOLE.layout.<span class="attribute">ConversionPattern</span>=%d %-5p [%F(%L)] %m%n</span><br><span class="line"></span><br><span class="line">  log4j.appender.<span class="attribute">FILE</span>=org.apache.log4j.RollingFileAppender  </span><br><span class="line">  log4j.appender.FILE.<span class="attribute">File</span>=./logs/db.log</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">Append</span>=<span class="literal">true</span></span><br><span class="line">  log4j.appender.FILE.<span class="attribute">DatePattern</span>=<span class="string">'.'</span>yyyy-MM-dd'.log'</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">layout</span>=org.apache.log4j.PatternLayout</span><br><span class="line">  log4j.appender.FILE.layout.<span class="attribute">ConversionPattern</span>=%d %-5p [%c(%L)] %m%n</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">MaxFileSize</span>=10240KB</span><br><span class="line">  log4j.appender.FILE.<span class="attribute">MaxBackupIndex</span>=1000</span><br><span class="line">  log4j.appender.FILE.Threshold = DEBUG</span><br></pre></td></tr></table></figure>
+<p>于是排查了几天，期间也参照tomcat官方的说法把tomcat打日志的方式改成log4j，但是后来发现这只是把tomcat的日志按照log4j的形式输出而已，<br>根本的问题还是没有解决，就是在上述配置的db.log或者out.log中都没有程序中输出的日志。</p>
+<p>当看到stackoverflow上得这个<a href="http://stackoverflow.com/questions/24356319/log4j-creates-log-file-but-does-not-write-to-it" target="_blank" rel="external">问题</a>后，似乎有了一点眉头：</p>
+<p>The output seems to be of the default format that Java’s standard logging framework (JUL) would emit.<br>So, there are two possibilities (that come to mind):<br>Your code imports java.util.logging.Logger, rather than org.apache.log4j.Logger.<br>There exists a library of some sort, in your classpath, that intercepts Log4J calls and converts them to JUL calls.</p>
+<p>最后一句话引起了我的注意，因为我的lib中还引入了logback-classic-1.1.3.jar,logback-core-1.1.3.jar两个包。</p>
+<p>死马当活马医，我把这两个包删除，然后再重启tomcat,结果DEBUG信息就正常写入了db.log中。</p>
+<p>参考的资料有：<br><a href="http://www.tuicool.com/articles/VF32uye" target="_blank" rel="external">log4j和logback的冲突导致日志输出异常</a><br><a href="http://phl.iteye.com/blog/2021461" target="_blank" rel="external">JAVA日志组件系列(三)log4j+logback+slf4j的关系与调试</a><br><a href="http://www.cnblogs.com/yongze103/archive/2012/05/05/2484753.html" target="_blank" rel="external">Logback浅析</a></p>
+<p>第二篇文章提到了这点：<br>只有logback配置文件即可，因为log4j的输出已经委托给了slf4j（通过log4j-over-slf4j），而slf4j的默认实现是logback。</p>
 
           
         
@@ -479,7 +480,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/23/scala-caseClass1/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/22/scala-import-problem/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -499,7 +500,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/23/scala-caseClass1/" class="post-title-link" itemprop="url">scala之caseClass</a>
+                <a href="/2016/12/22/scala-import-problem/" class="post-title-link" itemprop="url">scala_import_problem</a>
               
             
           </h2>
@@ -524,7 +525,7 @@
                 
               
 
-              <time title="创建时间：2016-10-23 21:16:26" itemprop="dateCreated datePublished" datetime="2016-10-23T21:16:26+08:00">2016-10-23</time>
+              <time title="创建时间：2016-12-22 09:27:26" itemprop="dateCreated datePublished" datetime="2016-12-22T09:27:26+08:00">2016-12-22</time>
             
 
             
@@ -577,17 +578,17 @@
       
         
           
-            <h2 id="case-class"><a href="#case-class" class="headerlink" title="case class"></a>case class</h2><p>1 构造器中的参数如果不被声明为var的话，它默认的话是val类型的，但一般不推荐将构造器中的参数声明为var</p>
-<p>2 自动创建伴生对象，同时在里面给我们实现子apply方法，使得我们在使用的时候可以不直接显示地new对象</p>
-<p>3 伴生对象中同样会帮我们实现unapply方法，从而可以将case class应用于模式匹配</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//抽象类Person</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//case class Student</span></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params">name:<span class="type">String</span>,age:<span class="type">Int</span>,studentNo:<span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">Person</span></span></span><br><span class="line"><span class="comment">//case class Teacher</span></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>(<span class="params">name:<span class="type">String</span>,age:<span class="type">Int</span>,teacherNo:<span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">Person</span></span></span><br><span class="line"><span class="comment">//case class Nobody</span></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Nobody</span>(<span class="params">name:<span class="type">String</span></span>) <span class="keyword">extends</span> <span class="title">Person</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">CaseClassDemo</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">//case class 会自动生成apply方法，从而省去new操作</span></span><br><span class="line">    <span class="keyword">val</span> p:<span class="type">Person</span>=<span class="type">Student</span>(<span class="string">"john"</span>,<span class="number">18</span>,<span class="number">1024</span>)  </span><br><span class="line">    <span class="comment">//match case</span></span><br><span class="line">    p  <span class="keyword">match</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="type">Student</span>(name,age,studentNo)=&gt;println(name+<span class="string">":"</span>+age+<span class="string">":"</span>+studentNo)</span><br><span class="line">      <span class="keyword">case</span> <span class="type">Teacher</span>(name,age,teacherNo)=&gt;println(name+<span class="string">":"</span>+age+<span class="string">":"</span>+teacherNo)</span><br><span class="line">      <span class="keyword">case</span> <span class="type">Nobody</span>(name)=&gt;println(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>sbt中的Attributed就是个case class</p>
-<p>以下代码摘录自sbt/util仓库：</p>
-<p>位置：internal/util-collection/src/main/scala/sbt/internal/util/Attributes.scala</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Associates a `metadata` map with `data`. */</span></span><br><span class="line"><span class="comment">/*使一个metadata 映射 和data产生关系</span><br><span class="line">final case class Attributed[D](data: D)(val metadata: AttributeMap) &#123;</span><br><span class="line">  /** Retrieves the associated value of `key` from the metadata. */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">get</span></span>[<span class="type">T</span>](key: <span class="type">AttributeKey</span>[<span class="type">T</span>]): <span class="type">Option</span>[<span class="type">T</span>] = metadata.get(key)</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Defines a mapping `key -&gt; value` in the metadata. */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">put</span></span>[<span class="type">T</span>](key: <span class="type">AttributeKey</span>[<span class="type">T</span>], value: <span class="type">T</span>): <span class="type">Attributed</span>[<span class="type">D</span>] = <span class="type">Attributed</span>(data)(metadata.put(key, value))</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Transforms the data by applying `f`. */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">map</span></span>[<span class="type">T</span>](f: <span class="type">D</span> =&gt; <span class="type">T</span>): <span class="type">Attributed</span>[<span class="type">T</span>] = <span class="type">Attributed</span>(f(data))(metadata)</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Attributed</span> </span>&#123;</span><br><span class="line">  <span class="comment">/** Extracts the underlying data from the sequence `in`. */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">data</span></span>[<span class="type">T</span>](in: <span class="type">Seq</span>[<span class="type">Attributed</span>[<span class="type">T</span>]]): <span class="type">Seq</span>[<span class="type">T</span>] = in.map(_.data)</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Associates empty metadata maps with each entry of `in`.*/</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">blankSeq</span></span>[<span class="type">T</span>](in: <span class="type">Seq</span>[<span class="type">T</span>]): <span class="type">Seq</span>[<span class="type">Attributed</span>[<span class="type">T</span>]] = in map blank</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Associates an empty metadata map with `data`. */</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">blank</span></span>[<span class="type">T</span>](data: <span class="type">T</span>): <span class="type">Attributed</span>[<span class="type">T</span>] = <span class="type">Attributed</span>(data)(<span class="type">AttributeMap</span>.empty)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>关于Attributed类参数有两个括号的问题参考：</p>
-<p><a href="http://www.tuicool.com/articles/6zymymu" target="_blank" rel="external">scala函数编程的柯里化</a><br><a href="https://wizardforcel.gitbooks.io/w3school-scala/content/10-9.html" target="_blank" rel="external">Scala 函数柯里化(Currying)</a></p>
-<p><a href="https://www.iteblog.com/archives/1508" target="_blank" rel="external">Scala class和case class的区别</a><br><a href="http://www.bkjia.com/yjs/1041692.html" target="_blank" rel="external">Scala入门到精通</a><br><a href="http://blog.csdn.net/yyywyr/article/details/50194005" target="_blank" rel="external">Scala单例对象、伴生类以及伴生对象、apply介绍 </a></p>
+            <h2 id="scala文件导入java包"><a href="#scala文件导入java包" class="headerlink" title="scala文件导入java包"></a>scala文件导入java包</h2><p>定义一个stringTest.java文件如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">stringTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">queryVehicleNum</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="string">"ss"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用javac命令编译此文件，在目录下会生成stringTest.class<br>此时我们并没有定义它的package,如果在同级目录下新建javaStringTest.scala文件如下：</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">object</span> testIm<span class="keyword">port</span> &#123;</span><br><span class="line"></span><br><span class="line">   def main(args: <span class="type">Array</span>[<span class="type">String</span>])&#123;</span><br><span class="line"></span><br><span class="line">     println(stringTest.queryVehicleNum())</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，此时可以直接引入stringTest类不会报错，用scala命令运行此文件会输出ss</p>
+<p>如果在目录下新建com目录，在com目录下新建test目录,把stringTest文件放入test目录，那么再执行scala testImport.scala文件就会报如下错误：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">java<span class="selector-class">.lang</span><span class="selector-class">.ClassNotFoundException</span>: stringTest</span><br><span class="line">at java<span class="selector-class">.net</span><span class="selector-class">.URLClassLoader</span><span class="selector-class">.findClass</span>(URLClassLoader<span class="selector-class">.java</span>:<span class="number">381</span>)</span><br><span class="line">at java<span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.loadClass</span>(ClassLoader<span class="selector-class">.java</span>:<span class="number">424</span>)</span><br><span class="line">at java<span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.loadClass</span>(ClassLoader<span class="selector-class">.java</span>:<span class="number">357</span>)</span><br><span class="line">at Main$.main(javaStringTest<span class="selector-class">.scala</span>:<span class="number">9</span>)</span><br><span class="line">at Main.main(javaStringTest.scala)</span><br><span class="line">at sun<span class="selector-class">.reflect</span><span class="selector-class">.NativeMethodAccessorImpl</span><span class="selector-class">.invoke0</span>(Native Method)</span><br><span class="line">at sun<span class="selector-class">.reflect</span><span class="selector-class">.NativeMethodAccessorImpl</span><span class="selector-class">.invoke</span>(NativeMethodAccessorImpl<span class="selector-class">.java</span>:<span class="number">62</span>)</span><br></pre></td></tr></table></figure>
+<p>所以此时我们要在testImport类中引入stringTest包<figure class="highlight plain"><figcaption><span>com.test.stringTest```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">但是这样我们必须先编译scala文件,```scalac javaStringTest.scala</span><br></pre></td></tr></table></figure></p>
+<p>然后我们用java命令调用生成的testImportObj <code>java -classpath .;scala-library.jar testImportObj</code></p>
+<p>或者我们也可以用<code>scala -i testImportObj.java</code>命令引入scala REPL</p>
+<p>然后我们在scala命令行输入<code>testImportObj.main(new Array[String](3))</code>也会输出ss字符串</p>
 
           
         
@@ -644,7 +645,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/23/code-algorithm/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/19/scala-implicit/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -664,7 +665,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/23/code-algorithm/" class="post-title-link" itemprop="url">千里码算法第一题</a>
+                <a href="/2016/11/19/scala-implicit/" class="post-title-link" itemprop="url">scala_implicit</a>
               
             
           </h2>
@@ -689,7 +690,7 @@
                 
               
 
-              <time title="创建时间：2016-10-23 20:27:53" itemprop="dateCreated datePublished" datetime="2016-10-23T20:27:53+08:00">2016-10-23</time>
+              <time title="创建时间：2016-11-19 21:06:25" itemprop="dateCreated datePublished" datetime="2016-11-19T21:06:25+08:00">2016-11-19</time>
             
 
             
@@ -742,12 +743,16 @@
       
         
           
-            <h2 id="码之初"><a href="#码之初" class="headerlink" title="码之初"></a>码之初</h2><p>1.第2333个能被2或者被3整除的正整数是多少?</p>
-<p>被2或者被3整除的正整数依次是：2,3,4,6,8,9,10,12,14,15,16,18…。</p>
-<p>可以考虑第N个 N为偶数的情况，推理可以得到为n+ n/2，也就是2333+ 2332/2 +2 = 3500。</p>
-<p>也可以考虑四个为一组的情况,比如2,3,4,6 一组;8,9,10,12为一组;14,15,16,18为一组。</p>
-<p>那么就为2332/4 = 583 <em>4 = 2332 + 2</em>(583)=1166   第2333个 再 +2 = 3500</p>
-<p><a href="http://www.qlcoder.com/task/751e" target="_blank" rel="external">码之初 </a></p>
+            <h2 id="implicit"><a href="#implicit" class="headerlink" title="implicit"></a>implicit</h2><h3 id="转换成预期的数据类型"><a href="#转换成预期的数据类型" class="headerlink" title="转换成预期的数据类型"></a>转换成预期的数据类型</h3><p>比如你有一个方法参数类型是IndexedSeq[Char]，在你传入String时，编译器发现类型不匹配，就检查当前作用域是否有从String到IndexedSeq隐式转换。</p>
+<p>Scala在需要時會自動把整數轉換成雙精度實數，這是因為在Scala.Predef對象中定義了一個</p>
+<p>implicit def int2double(x:Int) :Double = x.toDouble</p>
+<p>而Scala.Predef是自動引入到當前作用域的，因此編譯器在需要時會自動把整數轉換成Double類型。</p>
+<h3 id="转换selection的receiver"><a href="#转换selection的receiver" class="headerlink" title="转换selection的receiver"></a>转换selection的receiver</h3><p>转换selection的receiver允许你适应某些方法调用，比如 “abc”.exist ，”abc”类型为String，本身没有定义exist方法，这时编辑器就检查当前作用域内String的隐式转换后的类型是否有exist方法，发现stringWrapper转换后成IndexedSeq类型后，可以有exist方法，这个和C# 静态扩展方法功能类似。</p>
+<h3 id="隐含参数"><a href="#隐含参数" class="headerlink" title="隐含参数"></a>隐含参数</h3><p>隐含参数有点类似是缺省参数，如果在调用方法时没有提供某个参数，编译器会查找当前作用域是否有符合条件的implicit对象作为参数传入（有点类似dependency injection)</p>
+<h3 id="隐式变换也可以转换调用方法的对象"><a href="#隐式变换也可以转换调用方法的对象" class="headerlink" title="隐式变换也可以转换调用方法的对象"></a>隐式变换也可以转换调用方法的对象</h3><p>编译器看到X.method,而类型X没有定义method（包括基类)方法，那么编译器就查找作用域内定义的从X到其它对象的类型转换，比如Y，而类型Y定义了method方法，编译器就首先使用隐含类型转换把X转换成Y，然后调用Y的method。</p>
+<p>隐式转换可以用来扩展Scala语言，定义新的语法结构，比如我们在定义一个Map对象时可以使用如下语法：</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map(<span class="number">1</span> -&gt; <span class="string">"One"</span>, <span class="number">2</span>-&gt;<span class="string">"Two"</span>,<span class="number">3</span>-&gt;<span class="string">"Three"</span>)</span><br></pre></td></tr></table></figure>
+<p>你有没有想过-&gt;内部是如何实现的，-&gt;不是scala本身的语法，而是类型ArrowAssoc的一个方法。这个类型定义在包Scala.Predef对象中。Scala.Predef自动引入到当前作用域，在这个对象中，同时定义了一个从类型Any到ArrowAssoc的隐含转换。因此当使用1 -&gt; “One”时，编译器自动插入从1转换到ArrowAssoc转换。</p>
 
           
         
@@ -804,7 +809,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/22/sbt-settings/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/07/read-book1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -824,7 +829,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/22/sbt-settings/" class="post-title-link" itemprop="url">sbt-settings</a>
+                <a href="/2016/11/07/read-book1/" class="post-title-link" itemprop="url">读书品1</a>
               
             
           </h2>
@@ -849,7 +854,7 @@
                 
               
 
-              <time title="创建时间：2016-10-22 21:32:02" itemprop="dateCreated datePublished" datetime="2016-10-22T21:32:02+08:00">2016-10-22</time>
+              <time title="创建时间：2016-11-07 21:57:05" itemprop="dateCreated datePublished" datetime="2016-11-07T21:57:05+08:00">2016-11-07</time>
             
 
             
@@ -902,20 +907,8 @@
       
         
           
-            <h2 id="sbt-Settings"><a href="#sbt-Settings" class="headerlink" title="sbt Settings"></a>sbt Settings</h2><p>Remember, a build definition creates a list of Setting, which is then used to transform sbt’s description of the build (which is a map of key-value pairs). A Setting is a transformation with sbt’s earlier map as input and a new map as output. The new map becomes sbt’s new state.</p>
-<p>build定义会创建setting列表，用于转变build的描述，是key-value pairs.<br>一个setting是之前映射的会输出新的映射。新的映射是sbt新的状态。</p>
-<p>Different settings transform the map in different ways. Earlier, you read about the := method.</p>
-<p>不同的settings通过不同的方式改变映射。比如:=。</p>
-<p>The Setting which := creates puts a fixed, constant value in the new, transformed map. For example, if you transform a map with the setting name := “hello” the new map has the string “hello” stored under the key name. </p>
-<p>:= 创建了新的常量，如果你设置了 name := “Hello” ,那么就存储了key 为name值为hello的map.<br>在build.sbt里面并非key := value, 而是key := expression. 文件里的每一行其实是一句scala语句</p>
-<p><a href="http://www.scala-sbt.org/0.13/docs/More-About-Settings.html" target="_blank" rel="external">More-About-Settings</a></p>
-<p><a href="http://beike.iteye.com/blog/1575296" target="_blank" rel="external">sbt从入门到半熟</a></p>
-<h3 id="sbt"><a href="#sbt" class="headerlink" title="sbt +="></a>sbt +=</h3><p>+=，将值添加进现有值里，适用于集合类型的key，比如libraryDependencies<br>如果是<code>version := &quot;0.1&quot;</code>,再用version += “0.2”，那么在交互模式里show version，会变成0.10.2</p>
-<h3 id="sbt-Attributed"><a href="#sbt-Attributed" class="headerlink" title="sbt.Attributed"></a>sbt.Attributed</h3><p>sbt.Attributed[java.io.File]</p>
-<p>Retrieves the associated value of key from the metadata.</p>
-<p>顾名思义，是获取java.io.File类型的Attributed[D]</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">put</span></span>[<span class="type">T</span>](key: <span class="type">AttributeKey</span>[<span class="type">T</span>], value: <span class="type">T</span>): <span class="type">Attributed</span>[<span class="type">D</span>]</span><br><span class="line"></span><br><span class="line"><span class="type">Defines</span> a mapping key -&gt; value in the metadata.</span><br></pre></td></tr></table></figure>
-<p><a href="http://www.scala-sbt.org/release/api/index.html#sbt.Attributed" target="_blank" rel="external">final case class Attributed<a href="data: D" target="_blank" rel="external">D</a></a></p>
+            <h2 id="张伯淳"><a href="#张伯淳" class="headerlink" title="张伯淳"></a>张伯淳</h2><p>张伯淳(1242—1302)，字师道，号养蒙，崇德(今浙江桐乡)人。祖父张汝昌，官至迪功郎，与石门酒官张子修为邻，两家并有池馆园林之胜，号东西园，结社觞咏，时称东西二张。父张琥，南宋嘉定十三年(1220)进士，累官朝议大夫、崇德开国男。与赵孟頫为中表，人物相望。张伯淳9岁举童子科，以父荫铨迪功郎、淮阴尉，改扬州司户参军</p>
+<p>（元）张伯淳&lt;&lt;送刘东崖赴建昌总管序&gt;&gt;云：“以翰林学士南康刘公为建昌路总管……其笔词源浩荡橫逸，人多称之。（养蒙文集）卷二</p>
 
           
         
@@ -972,7 +965,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/22/sbt-command/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/06/scala-collection/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -992,7 +985,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2016/10/22/sbt-command/" class="post-title-link" itemprop="url">sbt_command</a>
+                <a href="/2016/11/06/scala-collection/" class="post-title-link" itemprop="url">scala_collection</a>
               
             
           </h2>
@@ -1017,7 +1010,7 @@
                 
               
 
-              <time title="创建时间：2016-10-22 14:17:42" itemprop="dateCreated datePublished" datetime="2016-10-22T14:17:42+08:00">2016-10-22</time>
+              <time title="创建时间：2016-11-06 20:39:04" itemprop="dateCreated datePublished" datetime="2016-11-06T20:39:04+08:00">2016-11-06</time>
             
 
             
@@ -1070,11 +1063,10 @@
       
         
           
-            <h2 id="sbt-命令解释"><a href="#sbt-命令解释" class="headerlink" title="sbt 命令解释"></a>sbt 命令解释</h2><h3 id="run-command"><a href="#run-command" class="headerlink" title="run command"></a>run command</h3><p><a href="http://www.scala-sbt.org/0.13/docs/Command-Line-Reference.html" target="_blank" rel="external">run <argument>*</argument></a>Runs a main class, passing along arguments provided on the command line.</p>
-<p>运行一个主类，如果在文件内部定义变量或者直接调用函数，那么会提示如下：</p>
-<figure class="highlight plain"><figcaption><span>class or object definition```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">因为会先编译这个文件。</span><br><span class="line"></span><br><span class="line">文件内部必须包含main方法的类：</span><br><span class="line"></span><br><span class="line">```scala</span><br><span class="line">	object HelloWorld&#123;</span><br><span class="line">	  def main(args: Array[String]) &#123;</span><br><span class="line">	   println(ChecksumAccumulator.calculate(&quot;We&quot;))</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="package-command"><a href="#package-command" class="headerlink" title="package command"></a>package command</h3><p>在sbt交互模式下输入package，会把当前目录下的project打包，然后运行run命令，如果当前能找到object对象并且有main函数，那么就会执行它。</p>
-<h3 id="exit-command"><a href="#exit-command" class="headerlink" title="exit command"></a>exit command</h3><p>输入exit命令退出sbt交互模式。</p>
+            <h2 id="映射"><a href="#映射" class="headerlink" title="映射"></a>映射</h2><p>映射（Map）是一种可迭代的键值对结构（也称映射或关联）。Scala的Predef类提供了隐式转换，允许使用另一种语法：key -&gt; value，来代替(key, value)。如：Map(“x” -&gt; 24, “y” -&gt; 25, “z” -&gt; 26)等同于Map((“x”, 24), (“y”, 25), (“z”, 26))，却更易于阅读。</p>
+<p><a href="http://docs.scala-lang.org/zh-cn/overviews/collections/maps" target="_blank" rel="external">collections</a></p>
+<h2 id="colon-equals"><a href="#colon-equals" class="headerlink" title="colon-equals"></a>colon-equals</h2><p>It’s very likely you := in a SBT build file. See github.com/harrah/xsbt/wiki/Settings for all of SBT’s assignmenty operators. </p>
+<p>IMHO : In My Humble Opinion 恕我直言<br><a href="http://stackoverflow.com/questions/7749530/what-is-the-difference-between-and-in-scala" target="_blank" rel="external">What is the difference between = and := in Scala?</a></p>
 
           
         
@@ -1120,7 +1112,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/28/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/30/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/28/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><span class="space">&hellip;</span><a class="page-number" href="/page/42/">42</a><a class="extend next" rel="next" href="/page/30/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1162,7 +1154,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">197</span>
+                    <span class="site-state-item-count">206</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

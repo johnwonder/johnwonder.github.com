@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/spring-classpathxmlApplicationContext/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/05/springboot-tomcat-session/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -336,7 +336,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2020/03/20/spring-classpathxmlApplicationContext/" class="post-title-link" itemprop="url">Spring源码分析之ClassPathXmlApplicationContext</a>
+                <a href="/2020/04/05/springboot-tomcat-session/" class="post-title-link" itemprop="url">springboot应用在同IP下Session冲突该怎么解决</a>
               
             
           </h2>
@@ -361,7 +361,7 @@
                 
               
 
-              <time title="创建时间：2020-03-20 13:45:00 / 修改时间：14:47:45" itemprop="dateCreated datePublished" datetime="2020-03-20T13:45:00+08:00">2020-03-20</time>
+              <time title="创建时间：2020-04-05 18:08:14 / 修改时间：18:43:11" itemprop="dateCreated datePublished" datetime="2020-04-05T18:08:14+08:00">2020-04-05</time>
             
 
             
@@ -402,180 +402,18 @@
       
         
           
-            <p>我们在分析Spring源码时，通常会自己创建一个独立的应用上下文，比如本文说的ClassPathXmlApplicationContext。我们在实际开发过程中一般框架内部会初始化一个应用程序上下文，比如springmvc中的XmlWebApplicationContext还有springboot中的AnnotationConfigServletWebServerApplicationContext。</p>
-<h2 id="ClassPathXmlApplicationContext-简介"><a href="#ClassPathXmlApplicationContext-简介" class="headerlink" title="ClassPathXmlApplicationContext 简介"></a>ClassPathXmlApplicationContext 简介</h2><p>官方文档是这么说的：</p>
-<p>Standalone XML application context, taking the context definition files from the class path,<br>interpreting plain paths as class path resource names that include the package path<br>(e.g. “mypackage/myresource.txt”). Useful for test harnesses(测试框架) as well as<br>for application contexts embedded within JARs.</p>
-<p>也就是说它可以创建独立应用程序上下文，获取上下文的定义文件等等。它的主要功能如下：</p>
-<ol>
-<li><p>定义了很多构造函数，只是参数不同，不同的参数具体会影响配置资源的定义和spring应用上下文的刷新(refresh函数)。</p>
-</li>
-<li><p>配置资源路径的不同，获取方式的不同。如果设置configLocations参数，那么会通过该类的父类也就是抽象类AbstractRefreshableConfigApplicationContext的resolvePath函数来解析。如果使用带有class参数的构造函数，那么会使用ClassPathResource来获取资源。</p>
-</li>
-</ol>
-<h3 id="AbstractEnvironment"><a href="#AbstractEnvironment" class="headerlink" title="AbstractEnvironment"></a>AbstractEnvironment</h3><p>resolvePath函数内部其实是调用AbstractEnvironment的resolveRequiredPlaceholders方法，方法内部会调用propertyResolver它的父类AbstractPropertyResolver的resolveRequiredPlaceholders方法。 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ConfigurablePropertyResolver propertyResolver =</span><br><span class="line">			<span class="keyword">new</span> PropertySourcesPropertyResolver(<span class="keyword">this</span>.propertySources);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">resolveRequiredPlaceholders</span><span class="params">(String text)</span> <span class="keyword">throws</span> IllegalArgumentException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.propertyResolver.resolveRequiredPlaceholders(text);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>参考资料：</p>
-<p><a href="https://baijiahao.baidu.com/s?id=1655259813981508769&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">SpringMVC加载流程</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/06/spring-import-annotation/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/07/06/spring-import-annotation/" class="post-title-link" itemprop="url">spring源码分析之@Import注解</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-07-06 17:42:36 / 修改时间：23:03:36" itemprop="dateCreated datePublished" datetime="2019-07-06T17:42:36+08:00">2019-07-06</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Import定义"><a href="#Import定义" class="headerlink" title="@Import定义"></a>@Import定义</h2><p>Indicates one or more @Configuration classes to import.</p>
-<p>表示一个或多个类会被导入，参考@Configuration.</p>
-<p>Provides functionality equivalent to the <import> element in Spring XML.</import></p>
-<p>提供在xml中<import>标签相同的功能.</import></p>
-<p>Allows for importing   @Configuration classes, ImportSelector and  ImportBeanDefinitionRegistrar implementations,as well as regular component classes (as of 4.2; analogous to  AnnotationConfigApplicationContext#register).</p>
-<p>允许导入@Configuration类，ImportSelector和ImportBeanDefinitionRegistrar的实现类,等同于正常的组件类(4.2开始;类似于AnnotationConfigApplicationContext.register).</p>
-<p>不过我从spring文档中看到AnnotationConfigRegistry接口是从4.1版本开始的</p>
-<p>@Bean definitions declared in imported @Configuration classes should be accessed by using org.springframework.beans.factory.annotation.Autowired @Autowired injection. Either the bean itself can be autowired, or the configuration class instance declaring the bean can be autowired. The latter approach allows for explicit, IDE-friendly navigation between @Configuration class methods.</p>
-<p>在导入类里定义的Bean应该可以被Autowired注入访问。bean自身或者定义bean的配置类都能被autowired。后者能在类方法之间被显式的导航. 这个我们在之后使用示例中会展示。</p>
-<p>May be declared at the class level or as a meta-annotation.</p>
-<p>在class层级定义或者当做一个meta-annotation。</p>
-<p>If XML or other non-@Configuration bean definition resources need to be imported, use the @ImportResource annotation instead.</p>
-<p>如果xml或者其他没有@Configuration的bean资源需要被导入，那就使用@ImportResource注解来替代。</p>
+            <p>昨天晚上想解决一个springboot应用中session失效的问题，源于公司生产环境目前是一台服务器部署两个<br>tomcat，应用通过同一个ip访问的时候session会互相冲突。我在网上找了几个解决方案，要么是在tomcat<br>中<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">server配置上添加servlet.sesssion.cookie.name属性，但是这两个我修改后都不见效，最后还把tomcat源码</span><br><span class="line">下载了下来，看它里面的代码是这么写的</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">private static String getConfiguredSessionCookieName(Context context) &#123;</span><br><span class="line"></span><br><span class="line">  // Priority is:</span><br><span class="line">  // 1. Cookie name defined in context</span><br><span class="line">  // 2. Cookie name configured for app</span><br><span class="line">  // 3. Default defined by spec</span><br><span class="line">  if (context != null) &#123;</span><br><span class="line">      String cookieName = context.getSessionCookieName();</span><br><span class="line">      if (cookieName != null &amp;&amp; cookieName.length() &gt; 0) &#123;</span><br><span class="line">          return cookieName;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      SessionCookieConfig scc =</span><br><span class="line">          context.getServletContext().getSessionCookieConfig();</span><br><span class="line">      cookieName = scc.getName();</span><br><span class="line">      if (cookieName != null &amp;&amp; cookieName.length() &gt; 0) &#123;</span><br><span class="line">          return cookieName;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>先从context获取sessionCookieName,如果没有那么再从应用的servletContext中获取sessionCookieConfig,看来我们的思路貌似是<br>没问题的，但是为什么就不生效呢？在浏览器里看cookieName还是<figure class="highlight plain"><figcaption><span>一时半会找不到答案。但是想想解决思路应该是对的，</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">最终目的要把cookie名称给修改掉。</span><br><span class="line"></span><br><span class="line">今早醒来突然想到我们的springboot应用里是根据shiro框架来实现权限和会话管理的，会不会跟这个有关系呢？脑子里突然想到这个应该是个</span><br><span class="line">正确的解决方向，于是乎爬起来看了下工程代码，不看不知道，一看就知道应该就是这边的问题，我们看到shiro框架里的```DefaultWebSessionManager</span><br></pre></td></tr></table></figure></p>
+<p>是这么写的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">DefaultWebSessionManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Cookie cookie = <span class="keyword">new</span> SimpleCookie(<span class="string">"JSESSIONID"</span>);</span><br><span class="line">  cookie.setHttpOnly(<span class="keyword">true</span>);</span><br><span class="line">  <span class="keyword">this</span>.sessionIdCookie = cookie;</span><br><span class="line">  <span class="keyword">this</span>.sessionIdCookieEnabled = <span class="keyword">true</span>;</span><br><span class="line">  <span class="keyword">this</span>.sessionIdUrlRewritingEnabled = <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到这里就明白了，为啥我们改了tomcat也改了springboot本身的配置不起效果，就是因为我们是通过shiro来控制用户会话和权限控制的，<br>所以相当于是shiro把tomcat还有spring内部的cookie给替代了，那么我们只要定义一个bean继承自shiro的cookie注入然后放入shiro不就行了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"shiro.cookie"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShiroCookie</span> <span class="keyword">extends</span> <span class="title">SimpleCookie</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>问题到这就迎刃而解了，所以我们解决问题的时候也不能在一个方向钻牛角尖，有时候答案可能就在眼前，需要我们转变思路，<br>换个角度思考有可能就豁然开朗了，另外看源码确实可以一定程度上提高我们解决问题的效率。</p>
 <p>参考资料：</p>
 <ol>
-<li><a href="https://www.jianshu.com/p/7eb0c2b214a7" target="_blank" rel="external">Spring Import 三种用法与源码解读</a></li>
-<li><a href="https://blog.csdn.net/pange1991/article/details/81356594" target="_blank" rel="external">Spring @Import注解 —— 导入资源</a></li>
-<li><a href="https://blog.csdn.net/horacehe16/article/details/79811763" target="_blank" rel="external">@Autowired用法详解</a></li>
+<li><a href="https://www.iteye.com/blog/flym-830658" target="_blank" rel="external">在Intellij idea下为tomcat7设置sessionCookieName</a></li>
+<li><a href="https://www.cnblogs.com/zhenmingliu/archive/2012/12/06/2805353.html" target="_blank" rel="external">tomcat修改jsessionid在cookie中的名称</a></li>
+<li><a href="https://www.cnblogs.com/lick468/p/11108709.html" target="_blank" rel="external">Spring boot 去除URL 里的 JSESSIONID</a></li>
 </ol>
 
           
@@ -633,7 +471,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/26/spring-harvest/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/03/spring-customizePropertySources/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -653,7 +491,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/06/26/spring-harvest/" class="post-title-link" itemprop="url">spring框架知识点收获整理</a>
+                <a href="/2020/04/03/spring-customizePropertySources/" class="post-title-link" itemprop="url">spring5.x源码分析之自定义PropertySources</a>
               
             
           </h2>
@@ -678,24 +516,12 @@
                 
               
 
-              <time title="创建时间：2019-06-26 22:02:32" itemprop="dateCreated datePublished" datetime="2019-06-26T22:02:32+08:00">2019-06-26</time>
+              <time title="创建时间：2020-04-03 21:51:33 / 修改时间：22:13:05" itemprop="dateCreated datePublished" datetime="2020-04-03T21:51:33+08:00">2020-04-03</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-07-06 14:34:42" itemprop="dateModified" datetime="2019-07-06T14:34:42+08:00">2019-07-06</time>
               
             
           </span>
@@ -731,35 +557,15 @@
       
         
           
-            <h2 id="static-静态代码块"><a href="#static-静态代码块" class="headerlink" title="static 静态代码块"></a>static 静态代码块</h2><p><code>org.springframework.util.ClassUtils</code>  抽象类里包含了static静态代码初始化块。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">  primitiveWrapperTypeMap.put(Boolean.class, <span class="keyword">boolean</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Byte.class, <span class="keyword">byte</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Character.class, <span class="keyword">char</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Double.class, <span class="keyword">double</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Float.class, <span class="keyword">float</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Integer.class, <span class="keyword">int</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Long.class, <span class="keyword">long</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Short.class, <span class="keyword">short</span>.class);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Java编程思想p96页5.7.3节提到了java的显式静态初始化。</p>
-<h2 id="Ljava-lang-String-的含义"><a href="#Ljava-lang-String-的含义" class="headerlink" title="[Ljava/lang/String; 的含义"></a>[Ljava/lang/String; 的含义</h2><p>“([Ljava/lang/String;)V” 它是一种对函数返回值和参数的编码。这种编码叫做JNI字段描述符（JavaNative Interface FieldDescriptors)。一个数组int[]，就需要表示为这样”[I”。如果多个数组double[][][]就需要表示为这样 “[[[D”。也就是说每一个方括号开始，就表示一个数组维数。多个方框后面，就是数组 的类型。<br>如果以一个L开头的描述符，就是类描述符，它后紧跟着类的字符串，然后分号“；”结束。</p>
-<p>比如”Ljava/lang/String;”就是表示类型String；</p>
-<p>“[I”就是表示int[];</p>
-<p>“[Ljava/lang/Object;”就是表示Object[]。</p>
-<p>JNI方法描述符，主要就是在括号里放置参数，在括号后面放置返回类型，如下：</p>
-<p>（参数描述符）返回类型</p>
-<p>当一个函数不需要返回参数类型时，就使用”V”来表示。</p>
-<p>比如”()Ljava/lang/String;”就是表示String f();</p>
-<p>“(ILjava/lang/Class;)J”就是表示long f(int i, Class c);</p>
-<p>“([B)V”就是表示void String(byte[] bytes);</p>
-<p>Java类型 符号<br>Boolean  Z,<br>Byte     B,<br>Char C,<br>Short S,<br>Int I,<br>Long J,<br>Float F,<br>Double D,<br>Void V;<br>objects对象以”L”开头，以”;”结尾，中间是用”/“ 隔开的包及类名。比如：Ljava/lang/String;如果是嵌套类，则用$来表示嵌套。例如 “(Ljava/lang/String;Landroid/os/FileUtils$FileStatus;)Z”</p>
-<p>另外数组类型的简写,则用”[“加上如表A所示的对应类型的简写形式进行表示就可以了，</p>
-<p>比如：[I 表示 int [];[L/java/lang/objects;表示Objects[],另外。引用类型（除基本类型的数组外）的标示最后都有个”;”</p>
-<p>例如：</p>
-<p>“()V” 就表示void Func();</p>
-<p>“(II)V” 表示 void Func(int, int);</p>
-<p>“(Ljava/lang/String;Ljava/lang/String;)I”.表示 int Func(String,String)</p>
-<h2 id="Array-newInstance"><a href="#Array-newInstance" class="headerlink" title="Array.newInstance"></a>Array.newInstance</h2><p>动态创建数组</p>
+            <p>这两天太忙了没时间更新，上一期我们聊到spring在解析资源配置文件的时候会去获取当前上下文环境，<br>如果环境变量<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```Java</span><br><span class="line">   /**</span><br><span class="line">	 * Create and return a new &#123;@link StandardEnvironment&#125;.</span><br><span class="line">	 * &lt;p&gt;Subclasses may override this method in order to supply</span><br><span class="line">	 * a custom &#123;@link ConfigurableEnvironment&#125; implementation.</span><br><span class="line">	 */</span><br><span class="line">	protected ConfigurableEnvironment createEnvironment() &#123;</span><br><span class="line">		//StandardEnvironment 构造函数 会 使他的抽象父类 也执行构造函数</span><br><span class="line">		return new StandardEnvironment();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注释写的很清晰，作用就是创建一个<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">那我们再来看看StandardEnvironment内部做了什么，它继承自```AbstractEnvironment```,</span><br><span class="line">然后有两个私有静态final变量:</span><br><span class="line"></span><br><span class="line">```Java</span><br><span class="line">  /** System environment property source name: &#123;@value&#125;. */</span><br><span class="line">	public static final String SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME = &quot;systemEnvironment&quot;;</span><br><span class="line"></span><br><span class="line">	/** JVM system properties property source name: &#123;@value&#125;. */</span><br><span class="line">	public static final String SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME = &quot;systemProperties&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>这两个变量 一个是 操作系统环境变量，另一个是JVM系统环境变量，他们干嘛用呢，我们看到StandardEnvironment<br>还定义了一个方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```Java</span><br><span class="line">    /**</span><br><span class="line">    * Customize the set of property sources with those appropriate for any standard（适用于任何标准的）</span><br><span class="line">    * Java environment:</span><br><span class="line">    * &lt;ul&gt;</span><br><span class="line">    * &lt;li&gt;&#123;@value #SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME&#125;</span><br><span class="line">    * &lt;li&gt;&#123;@value #SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME&#125;</span><br><span class="line">    * &lt;/ul&gt;</span><br><span class="line">    * &lt;p&gt;Properties present in &#123;@value #SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME&#125; will</span><br><span class="line">    * take precedence over those in &#123;@value #SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME&#125;.</span><br><span class="line">    * @see AbstractEnvironment#customizePropertySources(MutablePropertySources)</span><br><span class="line">    * @see #getSystemProperties()</span><br><span class="line">    * @see #getSystemEnvironment()</span><br><span class="line">    */</span><br><span class="line">    @Override</span><br><span class="line">    protected void customizePropertySources(MutablePropertySources propertySources) &#123;</span><br><span class="line"></span><br><span class="line">    //https://blog.csdn.net/rtuujnncc/article/details/78248733</span><br><span class="line">    //addLast最低优先级</span><br><span class="line">    //https://www.cnblogs.com/Baronboy/p/6030443.html</span><br><span class="line">    propertySources.addLast(new MapPropertySource(SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, getSystemProperties()));</span><br><span class="line">    propertySources.addLast(new SystemEnvironmentPropertySource(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, getSystemEnvironment()));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <ol>
-<li><a href="https://uule.iteye.com/blog/2236322" target="_blank" rel="external">java.lang.reflect.Array.newInstance与list.toArray</a></li>
+<li>MapPropertySource 是 System.getProperties()</li>
+<li>SystemEnvironmentPropertySource 是System.getenv()</li>
 </ol>
-<h2 id="ClassLoader-loadClass"><a href="#ClassLoader-loadClass" class="headerlink" title="ClassLoader.loadClass"></a>ClassLoader.loadClass</h2><ol>
-<li><a href="https://www.iteye.com/problems/4054" target="_blank" rel="external">类加载器URLClassLoader.loadClass(className)后, 无法卸载Jar</a></li>
-<li><a href="http://ifeve.com/classloader/" target="_blank" rel="external">深入浅出ClassLoader</a></li>
-<li><a href="https://blog.mythsman.com/2017/12/17/1/" target="_blank" rel="external">Java类加载原理与ClassLoader使用总结</a></li>
-</ol>
+<p>这个方法是继承自它的抽象类<figure class="highlight plain"><figcaption><span>StandardEnvironment```的时候</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">会先调用```AbstractEnvironment```的构造函数，函数内部会调用customizePropertySources方法，并且会把</span><br><span class="line">propertySources参数传入。</span><br><span class="line"></span><br><span class="line">```Java</span><br><span class="line">  //可变的属性源集合</span><br><span class="line">	private final MutablePropertySources propertySources = new MutablePropertySources();</span><br><span class="line">	//把propertySources放入 Resolver中</span><br><span class="line">	private final ConfigurablePropertyResolver propertyResolver =</span><br><span class="line">			new PropertySourcesPropertyResolver(this.propertySources);</span><br><span class="line"></span><br><span class="line">      /**</span><br><span class="line">	 * Create a new &#123;@code Environment&#125; instance, calling back to</span><br><span class="line">	 * &#123;@link #customizePropertySources(MutablePropertySources)&#125; during construction to</span><br><span class="line">	 * allow subclasses to contribute or manipulate(操作) &#123;@link PropertySource&#125; instances as</span><br><span class="line">	 * appropriate.</span><br><span class="line">	 * @see #customizePropertySources(MutablePropertySources)</span><br><span class="line">	 */</span><br><span class="line">	//调用 子类的customizePropertySources</span><br><span class="line">	public AbstractEnvironment() &#123;</span><br><span class="line">		customizePropertySources(this.propertySources);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>customizePropertySources也允许子类去重写，这样就允许子类去操作这个propertySources变量了，在<br>Spring中我们看到很多这样的设计，包括接口和抽象类的运用到处都是。关于这个自定义propertySources有什么用<br>我们下回再解！</p>
 
           
         
@@ -816,7 +622,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/26/spring-aop-knownpoints/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/31/spring-envrionment/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -836,7 +642,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/06/26/spring-aop-knownpoints/" class="post-title-link" itemprop="url">spring aop学习资料整理</a>
+                <a href="/2020/03/31/spring-envrionment/" class="post-title-link" itemprop="url">spring5.x源码解析之加载bean过程前奏--Environment</a>
               
             
           </h2>
@@ -861,7 +667,7 @@
                 
               
 
-              <time title="创建时间：2019-06-26 16:07:31 / 修改时间：21:55:42" itemprop="dateCreated datePublished" datetime="2019-06-26T16:07:31+08:00">2019-06-26</time>
+              <time title="创建时间：2020-03-31 20:43:05 / 修改时间：21:20:04" itemprop="dateCreated datePublished" datetime="2020-03-31T20:43:05+08:00">2020-03-31</time>
             
 
             
@@ -902,15 +708,16 @@
       
         
           
-            <ol>
-<li><a href="https://segmentfault.com/a/1190000007469968#articleHeader4" target="_blank" rel="external">彻底征服 Spring AOP 之 理论篇</a></li>
-<li><a href="https://www.jianshu.com/p/994027425b44" target="_blank" rel="external">Spring(4)——面向切面编程（AOP模块）</a></li>
-<li><a href="https://www.cnblogs.com/xiaoxi/p/5981514.html" target="_blank" rel="external">Spring系列之AOP实现的两种方式</a></li>
-<li><a href="https://blog.csdn.net/shuimuniao/article/details/80805308" target="_blank" rel="external">Unable to locate Spring NamespaceHandler for XML schema产生的原因及解决方法</a></li>
-<li><a href="http://www.tianxiaobo.com/" target="_blank" rel="external">Dubbo 源码分析</a></li>
-<li><a href="https://www.imooc.com/article/43380" target="_blank" rel="external">Spring AOP 源码分析 - 拦截器链的执行过程</a></li>
-<li><a href="https://www.cnblogs.com/latteyan/articles/7065130.html#top" target="_blank" rel="external">Spring IOC和AOP 原理彻底搞懂</a></li>
-</ol>
+            <p>上篇文章里最后我们提到了spring会获取当前所处环境后调用它的resolveRequiredPlaceholders<br>方法，也就是解析我们传递路径参数中的占位符，那么它是如何确定当前处于什么环境的呢？</p>
+<p>AbstractRefreshableConfigApplicationContext类会调用它的抽象父类AbstractApplicationContext<br>类中的getEnvironment方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">* Return the &#123;<span class="doctag">@code</span> Environment&#125; for this application context in configurable</span><br><span class="line">* form, allowing for further customization.</span><br><span class="line">* &lt;p&gt;If none specified, a default environment will be initialized via</span><br><span class="line">* &#123;<span class="doctag">@link</span> #createEnvironment()&#125;.</span><br><span class="line">*/</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ConfigurableEnvironment <span class="title">getEnvironment</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.environment == <span class="keyword">null</span>) &#123;</span><br><span class="line">  <span class="keyword">this</span>.environment = createEnvironment();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">this</span>.environment;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法的注释很清晰，意思就是以可配置的格式返回当前应用程序上下文的环境对象。我们看到这个方法<br>已经重写了，它的定义其实是在<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">是干嘛的呢？我们看官方文档：</span><br><span class="line"></span><br><span class="line">Interface indicating a component that contains and exposes an &#123;@link Environment&#125; reference.</span><br><span class="line">是一个接口，它可以用来表明一个组件包含并暴露Environment的引用。我们看它的定义就知道了：</span><br><span class="line"></span><br><span class="line">```Java</span><br><span class="line">  public interface EnvironmentCapable &#123;</span><br><span class="line">  	/**</span><br><span class="line">  	 * Return the &#123;@link Environment&#125; associated with this component.</span><br><span class="line">  	 */</span><br><span class="line">     //返回跟这个组件关联的环境</span><br><span class="line">  	Environment getEnvironment();</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>All Spring application contexts are EnvironmentCapable, and the interface is used primarily<br>for performing {@code instanceof} checks in framework methods that accept BeanFactory<br>instances that may or may not actually be ApplicationContext instances in order to interact<br>with the environment if indeed it is available.</p>
+<p>所有的Spring应用上下文都是带EnvironmentCapable接口的(可装配Environment)，而且接口主要用于在框架方法中执行<code>instanceof</code>检查，<br>这些方法接受BeanFactory实例，实例可能是ApplicationContext实例，也可能不是，如果是带EnvironmentCapable那么就可以访问Environment了。</p>
+<p>As mentioned, {@link org.springframework.context.ApplicationContext ApplicationContext}<br>extends EnvironmentCapable, and thus exposes a {@link #getEnvironment()} method; however,<br>{@link org.springframework.context.ConfigurableApplicationContext ConfigurableApplicationContext}<br>redefines {@link org.springframework.context.ConfigurableApplicationContext#getEnvironment<br>getEnvironment()} and narrows the signature to return a {@link ConfigurableEnvironment}.<br>The effect is that an Environment object is ‘read-only’ until it is being accessed from<br> a ConfigurableApplicationContext, at which point it too may be configured。</p>
+<p> 总体意思就是ApplicationContext继承了EnvironmentCapable接口，但是ConfigurableApplicationContext重新定义了getEnvironment方法，<br> 而且返回了一个ConfigurableEnvironment，影响就是Environment对象变只读了，除非从ConfigurableApplicationContext访问，<br>这个时候它就是可配置的了。</p>
+<p>我们在文章一开始就看到AbstractApplicationContext类实现了ConfigurableApplicationContext接口，所以我们看到在getEnvironment方法<br>中我们可以自己配置environment变量了。那么这个createEnvironment内部到底做了些什么呢？</p>
+<p>下回再分解！</p>
 
           
         
@@ -967,7 +774,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/26/spring-source-BeanFactory/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/30/spring-refreshBeanFactory/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -987,7 +794,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/06/26/spring-source-BeanFactory/" class="post-title-link" itemprop="url">spring5.1.1源码剖析之BeanFactory接口</a>
+                <a href="/2020/03/30/spring-refreshBeanFactory/" class="post-title-link" itemprop="url">spring5源码解析之加载bean过程前奏</a>
               
             
           </h2>
@@ -1012,7 +819,7 @@
                 
               
 
-              <time title="创建时间：2019-06-26 13:42:54 / 修改时间：21:55:42" itemprop="dateCreated datePublished" datetime="2019-06-26T13:42:54+08:00">2019-06-26</time>
+              <time title="创建时间：2020-03-30 20:48:01 / 修改时间：21:57:20" itemprop="dateCreated datePublished" datetime="2020-03-30T20:48:01+08:00">2020-03-30</time>
             
 
             
@@ -1053,33 +860,172 @@
       
         
           
-            <h2 id="关于BeanFactory接口"><a href="#关于BeanFactory接口" class="headerlink" title="关于BeanFactory接口"></a>关于BeanFactory接口</h2><p>The org.springframework.beans and org.springframework.context packages are the basis for Spring Framework’s IoC container. The BeanFactory interface provides an advanced configuration mechanism capable of managing any type of object. ApplicationContext is a sub-interface of BeanFactory。</p>
-<p><code>org.springframework.beans</code> 和 <code>org.springframework.context</code> 两个包是Spring框架IoC<br>容器的基础。BeanFactory接口为任何类型提供了高级配置能力。ApplicationContext是BeanFactory的子接口,它提供了以下功能：</p>
+            <p>Java生态圈里的Spring框架众所周知，研究它源码的大神也多如牛毛，小弟不才，也对它的源码很感兴趣，<br>不光是要一窥框架设计之精妙，也要在平时的开发过程中能借鉴其中的设计思想。今天这篇文章我们就来<br>聊聊它加载bean的过程中有什么值得学习的地方。</p>
+<p>首先我们可以写个简单的demo,来一步步调试和窥探：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">      String XMLPath = <span class="string">"spring-config.xml"</span>;</span><br><span class="line">      <span class="comment">//</span></span><br><span class="line">      ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"spring-config.xml"</span>);</span><br><span class="line">      Landlord landlord = (Landlord) applicationContext.getBean(<span class="string">"landlord"</span>, Landlord.class);</span><br><span class="line">      landlord.service();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>spring-config.xml配置文件中我们就定义了一个简单的bean元素，那么我们先自己简单地想下Spring内部要解决哪些<br>问题它才能获取到这个实例，我们要带着问题去阅读源码才会有所收获。我首先想到的就是如下这些：</p>
 <ol>
-<li><p>Easier integration with Spring’s AOP features<br>(与Spring AOP特性的简单集成)</p>
-</li>
-<li><p>Message resource handling (for use in internationalization) (处理Message resource,用于国际化)</p>
-</li>
-<li><p>Event publication (事件发布)</p>
-</li>
-<li><p>Application-layer specific contexts such as the WebApplicationContext for use in web applications. (应用层指定上下文,比如Web应用的WebApplicationContext)</p>
-</li>
+<li>它是如何定位xml配置文件并读取的</li>
+<li>如何解析xml配置文件中的bean元素和属性</li>
+<li>解析完了以后这些配置放到哪里呢</li>
+<li>getBean的时候又是去哪获取的呢</li>
 </ol>
-<p>为啥这么说呢？我们来看AppplicationContext接口：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationContext</span> <span class="keyword">extends</span> <span class="title">EnvironmentCapable</span>, <span class="title">ListableBeanFactory</span>, <span class="title">HierarchicalBeanFactory</span>,</span><br><span class="line">  <span class="title">MessageSource</span>, <span class="title">ApplicationEventPublisher</span>, <span class="title">ResourcePatternResolver</span> </span>&#123;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>ApplicationEventPublisher跟Event publication相关</li>
-<li>MessageSource跟Message resource handling相关</li>
-</ol>
-<p>In short, the BeanFactory provides the configuration framework and basic functionality, and the ApplicationContext adds more enterprise-specific functionality. The ApplicationContext is a complete superset of the BeanFactory and is used exclusively in this chapter in descriptions of Spring’s IoC container.</p>
-<p>大致意思如下：</p>
-<p>简单的说，BeanFactory提供配置框架和基础的函数，子接口ApplicationContext加入了针对商业特定的方法。<br>ApplicationContext是BeanFactory完整的超集，在这个Spring IoC容器章节描述中会专门使用。</p>
-<p>In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called beans. A bean is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container. Otherwise, a bean is simply one of many objects in your application. Beans, and the dependencies among them, are reflected in the configuration metadata used by a container.</p>
-<p>在Spring世界里，构成应用程序主干和被IoC容器管理的对象称之为beans。一个bean要么实例化，组装，要么被容器管理。除此以外，一个bean就是你应用里许多对象中的一个。<br>Beans和他们的依赖是在容器使用的配置元数据里反射的。</p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html" target="_blank" rel="external"> Introduction to the Spring IoC Container and Beans</a></li>
-</ol>
+<h2 id="定位xml配置文件"><a href="#定位xml配置文件" class="headerlink" title="定位xml配置文件"></a>定位xml配置文件</h2><p>我们在把一个文件名放入ClassPathXmlApplicationContext构造函数的时候，它内部就开始了定位逻辑，</p>
+<p>因为它支持多个配置文件路径，所以我们传入一个路径的时候它会new一个String数组，调用其他构造函数，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(String configLocation)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>(<span class="keyword">new</span> String[] &#123;configLocation&#125;, <span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//这里我们学到了可变参数的用途</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(String... configLocations)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>(configLocations, <span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(</span><br><span class="line">  String[] configLocations, <span class="keyword">boolean</span> refresh, @Nullable ApplicationContext parent)</span></span><br><span class="line">  <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">  <span class="comment">//省略部分代码</span></span><br><span class="line">  <span class="comment">//AbstractRefreshableConfigApplicationContext的setConfigLocations方法</span></span><br><span class="line">  setConfigLocations(configLocations);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后就调用了<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">我们可以在ClassPathXmlApplicationContext类中自己实现，这就是一个很好的设计之处。</span><br><span class="line">AbstractRefreshableApplicationContext的setConfigLocations方法如下：</span><br><span class="line">```Java</span><br><span class="line">  /**</span><br><span class="line">	 * Set the config locations for this application context.</span><br><span class="line">	 * &lt;p&gt;If not set, the implementation may use a default as appropriate.</span><br><span class="line">	 */</span><br><span class="line">	public void setConfigLocations(@Nullable String... locations) &#123;</span><br><span class="line">  if (locations != null) &#123;</span><br><span class="line"></span><br><span class="line">      this.configLocations = new String[locations.length];</span><br><span class="line">      for (int i = 0; i &lt; locations.length; i++) &#123;</span><br><span class="line">        this.configLocations[i] = resolvePath(locations[i]).trim();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      this.configLocations = null;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>它的注释说的很明白，如果我们不调用setConfigLocations,那它就会根据情况用一个默认路径了，后果不看设想。。<br>显然我们要重点关注的是<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```Java</span><br><span class="line">  /**</span><br><span class="line">  	 * Resolve the given path, replacing placeholders with corresponding</span><br><span class="line">  	 * environment property values if necessary. Applied to config locations.</span><br><span class="line">  	 * @param path the original file path</span><br><span class="line">  	 * @return the resolved file path</span><br><span class="line">  	 * @see org.springframework.core.env.Environment#resolveRequiredPlaceholders(String)</span><br><span class="line">  	 */</span><br><span class="line">    protected String resolvePath(String path) &#123;</span><br><span class="line">  		return getEnvironment().resolveRequiredPlaceholders(path);</span><br><span class="line">  	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们又要看它的注释了，很清楚，根据给定的path路径字符串，如果必要的话会用环境变量替换它里面占位符，然后赋给配置路径，<br>比如我们把<code>spring-config.xml</code> 换成${java.version}spring-config.xml传入，那么它会把${java.version}用我们环境变量替换掉<br>具体要看<code>org.springframework.core.env.Environment#resolveRequiredPlaceholders(String)</code>里面的代码了。</p>
+<p>我们下回再解！</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/29/angularjs-provide-value/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/29/angularjs-provide-value/" class="post-title-link" itemprop="url">angularjs1.5.8源码解析之value服务</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-29 09:20:04 / 修改时间：09:58:35" itemprop="dateCreated datePublished" datetime="2020-03-29T09:20:04+08:00">2020-03-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>angularjs中模块的value()方法可以对模块数据模型进行扩展,使得不同controller可以进行通信,<br>充当全局变量的作用。使用示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> app=angular.module(<span class="string">'app'</span>,[]);</span><br><span class="line">app.value(<span class="string">'val'</span>,&#123;&#125;);</span><br><span class="line"></span><br><span class="line">app.controller(<span class="string">'con'</span>,[<span class="string">'$scope'</span>,<span class="string">'val'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,ssr</span>)</span>&#123;</span><br><span class="line">	$scope.msg=<span class="string">''</span>;</span><br><span class="line">	$scope.submit=<span class="function"><span class="keyword">function</span>(<span class="params">temp</span>)</span><br><span class="line">	</span>&#123;</span><br><span class="line">		<span class="comment">//向全局变量存入msg</span></span><br><span class="line">		ssr.save=temp;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;])</span><br><span class="line"></span><br><span class="line">app.controller(<span class="string">'con2'</span>,[<span class="string">'$scope'</span>,<span class="string">'val'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,ssr</span>)</span>&#123;</span><br><span class="line">		$scope.showMsg=<span class="string">''</span>;</span><br><span class="line">		$scope.download=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span><br><span class="line">		</span>&#123;</span><br><span class="line">       <span class="comment">//获取全局变量</span></span><br><span class="line">			$scope.showMsg=val.save;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">&#125;])</span><br></pre></td></tr></table></figure>
+<p>跟我们之前分析过的decorator一样，value方法内部实际上也是调用$provide.value函数，我们先看看<br>moduleInstance的value方法:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">    <span class="attr">value</span>: invokeLater(<span class="string">'$provide'</span>, <span class="string">'value'</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeLater</span>(<span class="params">provider, method, insertMethod, queue</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (!queue) queue = invokeQueue;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        queue[insertMethod || <span class="string">'push'</span>]([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">        <span class="keyword">return</span> moduleInstance;</span><br><span class="line">      &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>可以清楚的看到，调用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">loadModules的时候再调用$provide.value方法</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  //用个valueFn包装下，返回内部带有val的方法valueRef</span><br><span class="line">  function value(name, val) &#123; return factory(name, valueFn(val), false); &#125;</span><br><span class="line"></span><br><span class="line">  function valueFn(value) &#123;return function valueRef() &#123;return value;&#125;;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>factory方法我们之前分析过，内部会把<figure class="highlight plain"><figcaption><span>provider, undefined, serviceName);```的时候实际上就会调用```valueRef```函数把存放的对象取出来。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">我们有时候会调用```$rootElement```这个对象，那找遍了angular内部并没有显示的声明$rootElementProvider方法，那么它到底存储在哪呢？</span><br><span class="line">它就是在angular启动的时候调用```doBootstrap```的时候压入modules数组顶部然后调用的$provide.value把找到的ng-app元素用jqLite包装成jqLite对象，</span><br><span class="line">然后放入全局变量$rootElement中，代码如下：</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  //传入的modules 比如html中定义的ng-app=&quot;myApp&quot;</span><br><span class="line">  //那么为[&quot;myApp&quot;]</span><br><span class="line">  //正常的话 这时 modules已经初始化</span><br><span class="line">  modules = modules || [];</span><br><span class="line">  //unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span><br><span class="line">  modules.unshift([&apos;$provide&apos;, function($provide) &#123;</span><br><span class="line">   //调用$provide方法</span><br><span class="line">   //设置$rootElement</span><br><span class="line">   $provide.value(&apos;$rootElement&apos;, element);</span><br><span class="line">  &#125;]);</span><br></pre></td></tr></table></figure></p>
+<p>下篇我们分析下angular的启动函数doBootStrap或者jqLite对象中的扩展方法或者一些常用函数。</p>
 
           
         
@@ -1125,7 +1071,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/42/">42</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1167,7 +1113,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">197</span>
+                    <span class="site-state-item-count">206</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

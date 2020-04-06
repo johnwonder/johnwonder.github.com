@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/18/spring-cloud-zuul/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/28/angularjs-extend/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -336,7 +336,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/06/18/spring-cloud-zuul/" class="post-title-link" itemprop="url">Spring Cloud zuul知识点和问题整理</a>
+                <a href="/2020/03/28/angularjs-extend/" class="post-title-link" itemprop="url">angularjs1.5.8源码解析之extend函数</a>
               
             
           </h2>
@@ -361,24 +361,12 @@
                 
               
 
-              <time title="创建时间：2019-06-18 15:45:51" itemprop="dateCreated datePublished" datetime="2019-06-18T15:45:51+08:00">2019-06-18</time>
+              <time title="创建时间：2020-03-28 21:33:56 / 修改时间：21:52:15" itemprop="dateCreated datePublished" datetime="2020-03-28T21:33:56+08:00">2020-03-28</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
               
             
           </span>
@@ -414,13 +402,356 @@
       
         
           
-            <ol>
-<li><a href="https://www.cnblogs.com/lexiaofei/p/7080257.html" target="_blank" rel="external">zuul入门（1）zuul 的概念和原理</a></li>
-<li><a href="https://www.liangzl.com/get-article-detail-20957.html" target="_blank" rel="external">白话SpringCloud | 第九章：路由网关(Zuul)的使用</a></li>
-<li><a href="https://www.cnblogs.com/hellxz/p/9282756.html" target="_blank" rel="external">Spring Cloud (十三) Zuul：静态路由、静态过滤器与动态路由的实现</a></li>
-<li><a href="https://blog.csdn.net/forezp/article/details/69934399" target="_blank" rel="external">史上最简单的SpringCloud教程 | 第四篇:断路器（Hystrix）</a></li>
-<li><a href="http://blog.didispace.com/spring-cloud-tips-ribbon-eager/" target="_blank" rel="external">Spring Cloud实战小贴士：Ribbon的饥饿加载(eager-load)模式</a></li>
-<li><a href="https://blog.csdn.net/lidew521/article/details/84661158" target="_blank" rel="external">SpringCloud工作笔记069—The Hystrix timeout of 60000ms for the command sc-auth is set lower than the</a></li>
+            <p>angularjs中很多常用函数在我们平时的js开发中很有帮助，可以极大的帮助我们提高开发效率，<br>今天我们继续来学习下它里面的一个频繁使用的函数extend.</p>
+<h2 id="extend函数"><a href="#extend函数" class="headerlink" title="extend函数"></a>extend函数</h2><p>文档中是这样描述的：Extends the destination object <code>dst</code> by copying own enumerable properties from the <code>src</code> object(s) to <code>dst</code>。<br>翻译下就是通过拷贝src对象的枚举属性到dst对象来实现扩展dst对象。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">extend</span>(<span class="params">dst</span>) </span>&#123;</span><br><span class="line"><span class="comment">//slice 返回一个新的数组，包含从 start 到 end （如果指定end，不包括该元素）的 arrayObject 中的元素。</span></span><br><span class="line"><span class="comment">//end 可选。规定从何处结束选取。该参数是数组片断结束处的数组下标。</span></span><br><span class="line"><span class="comment">//如果没有指定该参数，那么切分的数组包含从 start 到数组结束的所有元素。如果这个参数是负数，那么它规定的是从数组尾部开始算起的元素。</span></span><br><span class="line"><span class="keyword">return</span> baseExtend(dst, slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>), <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其实该函数的核心是内部baseExtend函数：</p>
+<h2 id="baseExtend函数"><a href="#baseExtend函数" class="headerlink" title="baseExtend函数"></a>baseExtend函数</h2><p>deep参数为true代表是深拷贝，深拷贝简单点说就是通过递归拷贝把所有内部对象克隆复制。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">baseExtend</span>(<span class="params">dst, objs, deep</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> h = dst.$$hashKey;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, ii = objs.length; i &lt; ii; ++i) &#123;</span><br><span class="line">    <span class="keyword">var</span> obj = objs[i];</span><br><span class="line">     <span class="comment">//obj 不是对象 且不是函数 那就跳过</span></span><br><span class="line">    <span class="keyword">if</span> (!isObject(obj) &amp;&amp; !isFunction(obj)) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(obj);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>, jj = keys.length; j &lt; jj; j++) &#123;</span><br><span class="line">      <span class="keyword">var</span> key = keys[j];</span><br><span class="line">      <span class="keyword">var</span> src = obj[key];</span><br><span class="line"></span><br><span class="line">      <span class="comment">//如果深拷贝 且当前对象是object类型</span></span><br><span class="line">      <span class="keyword">if</span> (deep &amp;&amp; isObject(src)) &#123;</span><br><span class="line">        <span class="comment">//如果是日期</span></span><br><span class="line">        <span class="keyword">if</span> (isDate(src)) &#123;</span><br><span class="line">          dst[key] = <span class="keyword">new</span> <span class="built_in">Date</span>(src.valueOf());</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isRegExp(src)) &#123;</span><br><span class="line">          <span class="comment">//如果是正则</span></span><br><span class="line">          dst[key] = <span class="keyword">new</span> <span class="built_in">RegExp</span>(src);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (src.nodeName) &#123;</span><br><span class="line">          <span class="comment">//如果是dom节点</span></span><br><span class="line">          dst[key] = src.cloneNode(<span class="literal">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isElement(src)) &#123;</span><br><span class="line">          <span class="comment">//如果是dom元素或者 jQuery对象</span></span><br><span class="line">          dst[key] = src.clone();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">//先把dst[key]赋空对象或空数组</span></span><br><span class="line">          <span class="keyword">if</span> (!isObject(dst[key])) dst[key] = isArray(src) ? [] : &#123;&#125;;</span><br><span class="line">          <span class="comment">//递归调用</span></span><br><span class="line">          baseExtend(dst[key], [src], <span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        dst[key] = src;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> dst;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>angularjs另外一个根extend对应的merge函数就是baseExtend深拷贝的实现。</p>
+<h2 id="merge函数"><a href="#merge函数" class="headerlink" title="merge函数"></a>merge函数</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">merge</span>(<span class="params">dst</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> baseExtend(dst, slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>), <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/26/angular-jqLiteBuildFragment/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/26/angular-jqLiteBuildFragment/" class="post-title-link" itemprop="url">angular1.5.8源码解析之jqLiteBuildFragment函数</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-26 21:26:01" itemprop="dateCreated datePublished" datetime="2020-03-26T21:26:01+08:00">2020-03-26</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-27 08:54:50" itemprop="dateModified" datetime="2020-03-27T08:54:50+08:00">2020-03-27</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这次我们继续分析上篇中提到的jqLiteBuildFragment函数，顾名思义，它主要的作用就是根据我们传入的html字符串创建相应的html片段。</p>
+<h2 id="jqLiteBuildFragment"><a href="#jqLiteBuildFragment" class="headerlink" title="jqLiteBuildFragment"></a>jqLiteBuildFragment</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jqLiteBuildFragment</span>(<span class="params">html, context</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">var</span> tmp, tag, wrap,</span><br><span class="line">       fragment = context.createDocumentFragment(),</span><br><span class="line">       nodes = [], i;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> (jqLiteIsTextNode(html)) &#123;</span><br><span class="line">     <span class="comment">// Convert non-html into a text node</span></span><br><span class="line">     <span class="comment">//如果是文本那就创建文本</span></span><br><span class="line">     nodes.push(context.createTextNode(html));</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="comment">// Convert html into DOM nodes</span></span><br><span class="line">     tmp = fragment.appendChild(context.createElement(<span class="string">"div"</span>));</span><br><span class="line">     tag = (TAG_NAME_REGEXP.exec(html) || [<span class="string">""</span>, <span class="string">""</span>])[<span class="number">1</span>].toLowerCase();</span><br><span class="line">     wrap = wrapMap[tag] || wrapMap._default;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//不是属于xhtml标记的 像&lt;div/&gt; 的就变成&lt;div&gt;&lt;/div&gt;</span></span><br><span class="line">     tmp.innerHTML = wrap[<span class="number">1</span>] + html.replace(XHTML_TAG_REGEXP, <span class="string">"&lt;$1&gt;&lt;/$2&gt;"</span>) + wrap[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">     <span class="comment">// Descend through wrappers to the right content</span></span><br><span class="line">     <span class="comment">//下降包装器到正确的内容</span></span><br><span class="line">     i = wrap[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">while</span> (i--) &#123;</span><br><span class="line">       tmp = tmp.lastChild;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//</span></span><br><span class="line">     nodes = concat(nodes, tmp.childNodes);</span><br><span class="line"></span><br><span class="line">     tmp = fragment.firstChild;</span><br><span class="line">     tmp.textContent = <span class="string">""</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// Remove wrapper from fragment</span></span><br><span class="line">   <span class="comment">//移除包装器</span></span><br><span class="line">   fragment.textContent = <span class="string">""</span>;</span><br><span class="line">   fragment.innerHTML = <span class="string">""</span>; <span class="comment">// Clear inner HTML</span></span><br><span class="line">   <span class="comment">//遍历nodes</span></span><br><span class="line">   forEach(nodes, <span class="function"><span class="keyword">function</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">     fragment.appendChild(node);</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> fragment;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>首先angularjs是如何判断它是文本节点呢？</p>
+<h2 id="jqLiteIsTextNode"><a href="#jqLiteIsTextNode" class="headerlink" title="jqLiteIsTextNode"></a>jqLiteIsTextNode</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> HTML_REGEXP = <span class="regexp">/&lt;|&amp;#?\w+;/</span>;</span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">jqLiteIsTextNode</span>(<span class="params">html</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> !HTML_REGEXP.test(html);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过一个HTML_REGEXP正则表达式，就判断是不是文本节点了，正则意思就是没有&lt;或者且不带&amp;#或&amp;标记的就是文本标记了,&ss;和&#ss;都属于html</p>
+<p>接下来如果获取标记名称呢？通过一个TAG_NAME_REGEXP正则<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> TAG_NAME_REGEXP = <span class="regexp">/&lt;([\w:-]+)/</span>;</span><br></pre></td></tr></table></figure></p>
+<p>意思就是带有如&lt;div这样的标记就取出div来。然后通过预先定义好的包装映射集合获取到包装器</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wrapMap = &#123;</span><br><span class="line"> <span class="string">'option'</span>: [<span class="number">1</span>, <span class="string">'&lt;select multiple="multiple"&gt;'</span>, <span class="string">'&lt;/select&gt;'</span>],</span><br><span class="line"></span><br><span class="line"> <span class="string">'thead'</span>: [<span class="number">1</span>, <span class="string">'&lt;table&gt;'</span>, <span class="string">'&lt;/table&gt;'</span>],</span><br><span class="line"> <span class="string">'col'</span>: [<span class="number">2</span>, <span class="string">'&lt;table&gt;&lt;colgroup&gt;'</span>, <span class="string">'&lt;/colgroup&gt;&lt;/table&gt;'</span>],</span><br><span class="line"> <span class="string">'tr'</span>: [<span class="number">2</span>, <span class="string">'&lt;table&gt;&lt;tbody&gt;'</span>, <span class="string">'&lt;/tbody&gt;&lt;/table&gt;'</span>],</span><br><span class="line"> <span class="string">'td'</span>: [<span class="number">3</span>, <span class="string">'&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;'</span>, <span class="string">'&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;'</span>],</span><br><span class="line"> <span class="string">'_default'</span>: [<span class="number">0</span>, <span class="string">""</span>, <span class="string">""</span>]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这个wrap其实都是应该有父节点的html元素,接下来就个重要的XHTML_TAG_REGEXP正则，可以把我们的<br>xhtml标记给替换掉<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> XHTML_TAG_REGEXP = <span class="regexp">/&lt;(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:-]+)[^&gt;]*)\/&gt;/gi</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> _rh = html.replace(XHTML_TAG_REGEXP, <span class="string">"&lt;$1&gt;&lt;/$2&gt;"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>可以把类似<td><div></div></td> 替换为<td><div></div></td>这个样子。</p>
+<p>最后就是通过包装器预先设置好的层级获取到最后我们传入的html节点，然后遍历节点列表，append到fragment上</p>
+<p>这里也巧妙的封装了contact和slice函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> slice = [].slice; <span class="comment">//数组的slice函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">concat</span>(<span class="params">array1, array2, index</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> array1.concat(slice.call(array2, index));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们从这里可以学到平时在js里怎么创建自己的html片段了。下篇我们来分析下jqLite的扩展函数。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/22/spring-configlocation-resolve/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/22/spring-configlocation-resolve/" class="post-title-link" itemprop="url">ClassPathXmlApplicationContext中针对configLocation配置路径的解析</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-22 20:58:00" itemprop="dateCreated datePublished" datetime="2020-03-22T20:58:00+08:00">2020-03-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-24 14:50:34" itemprop="dateModified" datetime="2020-03-24T14:50:34+08:00">2020-03-24</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在使用ClassPathXmlApplicationContext 传入配置文件时，解析配置文件的流程如下：</p>
+<ol>
+<li><p>AbstractRefreshableConfigApplicationContext.resolvePath</p>
+</li>
+<li><p>getEnvironment() -&gt; createEnvironment() -&gt; StandardEnvironment</p>
+</li>
+<li><p>实例化StandardEnvironment 时 调用customizePropertySources函数</p>
+</li>
+<li><p>customizePropertySources时加入MapPropertySource ，SystemEnvironmentPropertySource</p>
+</li>
+<li><p>调用StandardEnvironment父类AbstractEnvironment.resolveRequiredPlaceholders</p>
+</li>
+<li><p>内部调用PropertySourcesPropertyResolver父类AbstractPropertyResolver的<br>resolveRequiredPlaceholders，此时propertySources传入PropertySourcesPropertyResolver</p>
+</li>
+<li><p>调用doResolvePlaceholders 传入this::getPropertyAsRawString，实际就是<br>，PropertySourcesPropertyResolver的getProperty方法作为函数式接口PlaceholderResolver的 参数</p>
+</li>
+</ol>
+<p>阅读随记：</p>
+<ol>
+<li>CopyOnWriteArrayList 内部indexOf是根据传入的对象的equals方法来比较</li>
+<li>PropertySource.named返回的ComparisonPropertySource 只会比较两个对象的name</li>
+<li>jdk里AbstractCollection的toString方法</li>
 </ol>
 
           
@@ -478,7 +809,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/18/spring-cloud-eureka/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/angular-injector-service/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -498,7 +829,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/06/18/spring-cloud-eureka/" class="post-title-link" itemprop="url">Spring Cloud eureka知识点和问题整理</a>
+                <a href="/2020/03/21/angular-injector-service/" class="post-title-link" itemprop="url">angularjs源码分析--创建service</a>
               
             
           </h2>
@@ -523,7 +854,7 @@
                 
               
 
-              <time title="创建时间：2019-06-18 12:52:05" itemprop="dateCreated datePublished" datetime="2019-06-18T12:52:05+08:00">2019-06-18</time>
+              <time title="创建时间：2020-03-21 19:57:09" itemprop="dateCreated datePublished" datetime="2020-03-21T19:57:09+08:00">2020-03-21</time>
             
 
             
@@ -540,7 +871,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
+                <time title="修改时间：2020-03-23 21:07:39" itemprop="dateModified" datetime="2020-03-23T21:07:39+08:00">2020-03-23</time>
               
             
           </span>
@@ -576,9 +907,17 @@
       
         
           
-            <h3 id="cannot-excute-request-on-any-known-Server"><a href="#cannot-excute-request-on-any-known-Server" class="headerlink" title="cannot excute request  on any known Server"></a>cannot excute request  on any known Server</h3><ol>
-<li><a href="https://blog.csdn.net/weixin_42465125/article/details/88337698" target="_blank" rel="external">新版Eureka Server 加上Spring Security安全认证之后，客户端无法注册和客户端启动Up后就Down的问题</a></li>
-</ol>
+            <p>angular中的service服务方法很多地方都会可以用到，内部其实也是依赖angularjs强大的依赖注入能力。<br>我们先看昨天文章<a href="https://mp.weixin.qq.com/s/2F0Zs9cRiY5AjEC0Ez0oOw" target="_blank" rel="external">模块创建</a>使用的案例：</p>
+<h2 id="angular-module"><a href="#angular-module" class="headerlink" title="angular.module"></a>angular.module</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建myModule模块</span></span><br><span class="line"><span class="keyword">var</span> myModule = angular.module(<span class="string">'myModule'</span>, []);</span><br><span class="line">myModule.service(<span class="string">'myService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.my = <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//创建注入器，把service放入providerCache</span></span><br><span class="line"><span class="keyword">var</span> injector = angular.injector([<span class="string">"myModule"</span>]);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">explicit</span>(<span class="params">serviceA</span>) </span>&#123;alert(serviceA.my);&#125;;</span><br><span class="line">explicit.$inject = [<span class="string">'myService'</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取providerCache，调用构造函数，弹出0.</span></span><br><span class="line">injector.invoke(explicit);</span><br></pre></td></tr></table></figure>
+<h2 id="service"><a href="#service" class="headerlink" title="service"></a>service</h2><p>关于angular模块的创建，我们上一篇文章已经讲过，我们就看下模块的service方法,在新建模块后这个模块<br>实例就拥有了service函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> invokeQueue = [];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">  <span class="attr">_invokeQueue</span>: invokeQueue,</span><br><span class="line">  <span class="attr">service</span>: invokeLaterAndSetModuleName(<span class="string">'$provide'</span>, <span class="string">'service'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeLaterAndSetModuleName</span>(<span class="params">provider, method</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//实际的service方法 ，通过闭包把$provide 和service 放入返回函数中</span></span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">recipeName, factoryFunction</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (factoryFunction &amp;&amp; isFunction(factoryFunction)) factoryFunction.$$moduleName = name;</span><br><span class="line">        invokeQueue.push([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">        <span class="comment">//比如service 就是 provider= $provide  method = service</span></span><br><span class="line">        <span class="keyword">return</span> moduleInstance;</span><br><span class="line">      &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>那么我们就可以知道在调用service的方法其实就是把$provide,service,还有参数(这边就是arguments)放入invokeQueue中，<br>从名字看出来这是个调用队列，那就有个疑问了，这个invokeQueue是干啥的呢？ 什么时候会调用这个invokeQueue呢？<br>那就是createInjector函数中的loadModules函数。</p>
+<h3 id="loadModules"><a href="#loadModules" class="headerlink" title="loadModules"></a>loadModules</h3><p>loadModules函数会在createInjector的时候去调用，看看它对service起的作用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createInjector</span>(<span class="params">modulesToLoad</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> runBlocks = loadModules(modulesToLoad);</span><br><span class="line"></span><br><span class="line">   <span class="comment">//模块加载</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">loadModules</span>(<span class="params">modulesToLoad</span>) </span>&#123;</span><br><span class="line">    assertArg(isUndefined(modulesToLoad) || isArray(modulesToLoad), <span class="string">'modulesToLoad'</span>, <span class="string">'not an array'</span>);</span><br><span class="line">    <span class="keyword">var</span> runBlocks = [], moduleFn;</span><br><span class="line">    <span class="comment">//遍历modulesToLoad数组</span></span><br><span class="line">    forEach(modulesToLoad, <span class="function"><span class="keyword">function</span>(<span class="params">module</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (loadedModules.get(<span class="built_in">module</span>)) <span class="keyword">return</span>;</span><br><span class="line">      loadedModules.put(<span class="built_in">module</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//调用invokeQueue</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">runInvokeQueue</span>(<span class="params">queue</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> i, ii;</span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>, ii = queue.length; i &lt; ii; i++) &#123;</span><br><span class="line">          <span class="keyword">var</span> invokeArgs = queue[i], <span class="comment">//invokeArgs也是个数组</span></span><br><span class="line">              <span class="comment">//获取provider</span></span><br><span class="line">          provider = providerInjector.get(invokeArgs[<span class="number">0</span>]);</span><br><span class="line">          <span class="comment">//调用provider中的方法  </span></span><br><span class="line">          <span class="comment">//比如injectorProvider  调用invoke方法 传入函数</span></span><br><span class="line">          <span class="comment">//函数的参数可以注入</span></span><br><span class="line">          provider[invokeArgs[<span class="number">1</span>]].apply(provider, invokeArgs[<span class="number">2</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (isString(<span class="built_in">module</span>)) &#123;</span><br><span class="line">          <span class="comment">//获取module</span></span><br><span class="line">          <span class="comment">//moduleFn就是 moduleInstance</span></span><br><span class="line">          moduleFn = angularModule(<span class="built_in">module</span>);</span><br><span class="line">          <span class="comment">//moduleFn.requires 比如['ngLocale']</span></span><br><span class="line">          runBlocks = runBlocks.concat(loadModules(moduleFn.requires)).concat(moduleFn._runBlocks);</span><br><span class="line">          runInvokeQueue(moduleFn._invokeQueue);</span><br><span class="line">          <span class="comment">//像module.service时加入的service ，那么需要把这些service加入prividerCache</span></span><br><span class="line">          runInvokeQueue(moduleFn._configBlocks);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isFunction(<span class="built_in">module</span>)) &#123;</span><br><span class="line">            runBlocks.push(providerInjector.invoke(<span class="built_in">module</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isArray(<span class="built_in">module</span>)) &#123;</span><br><span class="line">            runBlocks.push(providerInjector.invoke(<span class="built_in">module</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          assertArgFn(<span class="built_in">module</span>, <span class="string">'module'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (isArray(<span class="built_in">module</span>)) &#123;</span><br><span class="line">          <span class="built_in">module</span> = <span class="built_in">module</span>[<span class="built_in">module</span>.length - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> $injectorMinErr(<span class="string">'modulerr'</span>, <span class="string">"Failed to instantiate module &#123;0&#125; due to:\n&#123;1&#125;"</span>,</span><br><span class="line">                  <span class="built_in">module</span>, e.stack || e.message || e);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> runBlocks;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看到关键一句代码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">传入我们创建service时push进去的数组元素，最关键的就是这两句代码.</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  function runInvokeQueue()&#123;</span><br><span class="line">    provider = providerInjector.get(invokeArgs[0]);</span><br><span class="line">    //调用provider中的方法  </span><br><span class="line">    //比如injectorProvider  调用invoke方法 传入函数</span><br><span class="line">    //函数的参数可以注入</span><br><span class="line">    provider[invokeArgs[1]].apply(provider, invokeArgs[2]);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>invokeArgs[0]就是$provide,invokeArgs[1]就是service,那么实际调用的就是$provide.service函数，参数就是<code>[&#39;myService&#39;, function() {
+            this.my = 0;
+}]</code>,关于$provide.service函数我们下篇文章再分析。</p>
 
           
         
@@ -635,7 +974,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/17/maven-knownpoints/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/spring-classpathxmlApplicationContext/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -655,7 +994,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/06/17/maven-knownpoints/" class="post-title-link" itemprop="url">maven_knownpoints</a>
+                <a href="/2020/03/20/spring-classpathxmlApplicationContext/" class="post-title-link" itemprop="url">Spring源码分析之ClassPathXmlApplicationContext</a>
               
             
           </h2>
@@ -680,24 +1019,12 @@
                 
               
 
-              <time title="创建时间：2019-06-17 15:29:51" itemprop="dateCreated datePublished" datetime="2019-06-17T15:29:51+08:00">2019-06-17</time>
+              <time title="创建时间：2020-03-20 13:45:00 / 修改时间：14:49:46" itemprop="dateCreated datePublished" datetime="2020-03-20T13:45:00+08:00">2020-03-20</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
               
             
           </span>
@@ -733,336 +1060,20 @@
       
         
           
-            <h3 id="Maven中的BOM概念"><a href="#Maven中的BOM概念" class="headerlink" title="Maven中的BOM概念"></a>Maven中的BOM概念</h3><p>BOM stands for Bill Of Materials. A BOM is a special kind of POM that is used to control the versions of a project’s dependencies and provide a central place to define and update those versions.</p>
-<p>BOM provides the flexibility to add a dependency to our module without worrying about the version that we should depend on.</p>
+            <p>我们在分析Spring源码时，通常会自己创建一个独立的应用上下文，比如本文说的ClassPathXmlApplicationContext。我们在实际开发过程中一般框架内部会初始化一个应用程序上下文，比如springmvc中的XmlWebApplicationContext还有springboot中的AnnotationConfigServletWebServerApplicationContext。</p>
+<h2 id="ClassPathXmlApplicationContext-简介"><a href="#ClassPathXmlApplicationContext-简介" class="headerlink" title="ClassPathXmlApplicationContext 简介"></a>ClassPathXmlApplicationContext 简介</h2><p>官方文档是这么说的：</p>
+<p>Standalone XML application context, taking the context definition files from the class path,<br>interpreting plain paths as class path resource names that include the package path<br>(e.g. “mypackage/myresource.txt”). Useful for test harnesses(测试框架) as well as<br>for application contexts embedded within JARs.</p>
+<p>也就是说它可以创建独立应用程序上下文，获取上下文的定义文件等等。它的主要功能如下：</p>
+<ol>
+<li><p>定义了很多构造函数，只是参数不同，不同的参数具体会影响配置资源的定义和spring应用上下文的刷新(refresh函数)。</p>
+</li>
+<li><p>配置资源路径的不同，获取方式的不同。如果设置configLocations参数，那么会通过该类的父类也就是抽象类AbstractRefreshableConfigApplicationContext的resolvePath函数来解析。如果使用带有class参数的构造函数，那么会使用ClassPathResource来获取资源。</p>
+</li>
+</ol>
+<h3 id="AbstractEnvironment"><a href="#AbstractEnvironment" class="headerlink" title="AbstractEnvironment"></a>AbstractEnvironment</h3><p>resolvePath函数内部其实是调用AbstractEnvironment的resolveRequiredPlaceholders方法，方法内部会调用propertyResolver它的父类AbstractPropertyResolver的resolveRequiredPlaceholders方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ConfigurablePropertyResolver propertyResolver =</span><br><span class="line">			<span class="keyword">new</span> PropertySourcesPropertyResolver(<span class="keyword">this</span>.propertySources);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">resolveRequiredPlaceholders</span><span class="params">(String text)</span> <span class="keyword">throws</span> IllegalArgumentException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.propertyResolver.resolveRequiredPlaceholders(text);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
 <p>参考资料：</p>
-<ol>
-<li><a href="http://www.bubuko.com/infodetail-2801304.html" target="_blank" rel="external">Maven中的BOM概念</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/14/gradle-knownpoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/06/14/gradle-knownpoints/" class="post-title-link" itemprop="url">gradle知识点整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-14 17:52:34" itemprop="dateCreated datePublished" datetime="2019-06-14T17:52:34+08:00">2019-06-14</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="buildscript"><a href="#buildscript" class="headerlink" title="buildscript"></a>buildscript</h2><p>buildscript中的声明是gradle脚本自身需要使用的资源。可以声明的资源包括依赖项、第三方插件、maven仓库地址等。<br>而在build.gradle文件中直接声明的依赖项、仓库地址等信息是项目自身需要的资源。</p>
-<ol>
-<li><a href="https://www.cnblogs.com/qiangxia/p/4826532.html#top" target="_blank" rel="external">Gradle中的buildScript代码块</a></li>
-</ol>
-<h2 id="subprojects"><a href="#subprojects" class="headerlink" title="subprojects"></a>subprojects</h2><p>allprojects是对所有project的配置，包括Root Project。而subprojects是对所有Child Project的配置</p>
-<p>1.<a href="https://www.jianshu.com/p/84ac62747e59" target="_blank" rel="external">Gradle配置中subprojects 和 allprojects 的区别</a></p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.cnblogs.com/davenkin/p/gradle-learning-8.html" target="_blank" rel="external">Gradle学习系列之八——构建多个Project</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/14/linux-tar/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/06/14/linux-tar/" class="post-title-link" itemprop="url">linux下tar命令</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-14 10:52:17" itemprop="dateCreated datePublished" datetime="2019-06-14T10:52:17+08:00">2019-06-14</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="tar-解压tar包"><a href="#tar-解压tar包" class="headerlink" title="tar 解压tar包"></a>tar 解压tar包</h3><p><code>tar -xvf /usr/local/eureka-server-1.0-SNAPSHOT.tar</code></p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.jianshu.com/p/81802f7086d5" target="_blank" rel="external">Linux中tar解压缩命令详解</a></li>
-<li><a href="https://www.jb51.net/LINUXjishu/43356.html" target="_blank" rel="external">linux下tar.gz、tar、bz2、zip等解压缩、压缩命令小结</a></li>
-</ol>
+<p><a href="https://blog.csdn.net/qq_37960603/article/details/82709660" target="_blank" rel="external">Spring 中 ClassPathXmlApplicationContext 类的简单使用</a><br><a href="https://blog.csdn.net/zhangshk_/article/details/82704010" target="_blank" rel="external">彻底搞懂Class.getResource和ClassLoader.getResource的区别和底层原理</a><br><a href="https://baijiahao.baidu.com/s?id=1655259813981508769&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">SpringMVC加载流程</a></p>
 
           
         
@@ -1108,7 +1119,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/42/">42</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1150,7 +1161,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">197</span>
+                    <span class="site-state-item-count">206</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/11/linux-vi1/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/12/tomcat-errorpage/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -336,7 +336,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/04/11/linux-vi1/" class="post-title-link" itemprop="url">linux_vi1</a>
+                <a href="/2017/05/12/tomcat-errorpage/" class="post-title-link" itemprop="url">tomcat_errorpage</a>
               
             
           </h2>
@@ -361,7 +361,7 @@
                 
               
 
-              <time title="创建时间：2017-04-11 16:08:09" itemprop="dateCreated datePublished" datetime="2017-04-11T16:08:09+08:00">2017-04-11</time>
+              <time title="创建时间：2017-05-12 10:02:07" itemprop="dateCreated datePublished" datetime="2017-05-12T10:02:07+08:00">2017-05-12</time>
             
 
             
@@ -414,14 +414,20 @@
       
         
           
-            <h2 id="linux-vi学习笔记1"><a href="#linux-vi学习笔记1" class="headerlink" title="linux vi学习笔记1"></a>linux vi学习笔记1</h2><p>:wq 保存文件并退出vi</p>
-<p>:w 保存文件但不退出vi</p>
-<p>:q 不保存文件，退出vi</p>
-<p>:$ 跳到文件最后一行</p>
-<p>1 按大写的G 跳到最后一行。 然后按小写的O键，增加一行。</p>
-<p>2 也可以：<br>搜索<br>:set nu (设置行号)<br>:14 （这里只是示例，是指的最后一行的行号）<br>o</p>
-<p>3 输入 $ 然后按大写的O键 向上增加一行<br>:$<br>O</p>
-<p>参考资料：<br><a href="https://zhidao.baidu.com/question/583768034414660125.html" target="_blank" rel="external">linux vi 在最后一行增加一行</a><br><a href="http://blog.163.com/chen_dawn/blog/static/112506320111145955649/" target="_blank" rel="external">vi/vim 删除：一行, 一个字符, 单词, 每行第一个字符 命令  </a><br><a href="http://www.cnblogs.com/MenAngel/p/5586677.html" target="_blank" rel="external">每天一个Linux命令（48）ping命令</a></p>
+            <h2 id="scalatra-自定义404文件"><a href="#scalatra-自定义404文件" class="headerlink" title="scalatra 自定义404文件"></a>scalatra 自定义404文件</h2><p>在scalatra中，如果访问servlet不存在的路由时，默认为返回<br><code>Requesting &quot;%s %s&quot; on servlet &quot;%s&quot; but only have: %s</code></p>
+<p>那么我就去源码看了看，发现如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">var</span> doNotFound: Action = () =&gt; &#123;</span><br><span class="line">    serveStaticResource() <span class="function">getOrElse <span class="title">resourceNotFound</span><span class="params">()</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Attempts to find a static resource matching the request path.  Override</span><br><span class="line">   * to return None to stop this.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="keyword">protected</span> def <span class="title">serveStaticResource</span><span class="params">()</span>: Option[Any] </span>=</span><br><span class="line">    servletContext.resource(request) map &#123; _ =&gt;</span><br><span class="line">      servletContext.getNamedDispatcher(<span class="string">"default"</span>).forward(request, response)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Called by default notFound if no routes matched and no static resource</span><br><span class="line">   * could be found.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> def <span class="title">resourceNotFound</span><span class="params">()</span>: Any </span>= &#123;</span><br><span class="line">    response.setStatus(<span class="number">404</span>)</span><br><span class="line">    <span class="keyword">if</span> (isDevelopmentMode) &#123;</span><br><span class="line">      val error = <span class="string">"Requesting \"%s %s\" on servlet \"%s\" but only have: %s"</span></span><br><span class="line">      response.getWriter println error.format(</span><br><span class="line">        request.getMethod,</span><br><span class="line">        Option(request.getPathInfo) getOrElse <span class="string">"/"</span>,</span><br><span class="line">        request.getServletPath,</span><br><span class="line">        routes.entryPoints.mkString(<span class="string">"&lt;ul&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;/ul&gt;"</span>))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;<span class="keyword">protected</span> <span class="keyword">var</span> doNotFound: Action = () =&gt; &#123;</span><br><span class="line">    serveStaticResource() <span class="function">getOrElse <span class="title">resourceNotFound</span><span class="params">()</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Attempts to find a static resource matching the request path.  Override</span><br><span class="line">   * to return None to stop this.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="keyword">protected</span> def <span class="title">serveStaticResource</span><span class="params">()</span>: Option[Any] </span>=</span><br><span class="line">    servletContext.resource(request) map &#123; _ =&gt;</span><br><span class="line">      servletContext.getNamedDispatcher(<span class="string">"default"</span>).forward(request, response)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Called by default notFound if no routes matched and no static resource</span><br><span class="line">   * could be found.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> def <span class="title">resourceNotFound</span><span class="params">()</span>: Any </span>= &#123;</span><br><span class="line">    response.setStatus(<span class="number">404</span>)</span><br><span class="line">    <span class="keyword">if</span> (isDevelopmentMode) &#123;</span><br><span class="line">      val error = <span class="string">"Requesting \"%s %s\" on servlet \"%s\" but only have: %s"</span></span><br><span class="line">      response.getWriter println error.format(</span><br><span class="line">        request.getMethod,</span><br><span class="line">        Option(request.getPathInfo) getOrElse <span class="string">"/"</span>,</span><br><span class="line">        request.getServletPath,</span><br><span class="line">        routes.entryPoints.mkString(<span class="string">"&lt;ul&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;/ul&gt;"</span>))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>发现它如果没找到路由时，会尝试通过defaultServlet找静态资源，如果还找不到那么就会进入resourceNotFound方法，</p>
+<p>如果是开发模式下，那么就会返回一开始提到的内容。。</p>
+<p>如果我们通过在web.xml中配置：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>org.scalatra.environment<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>production<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>就不会显示配置的404页面，那是怎么回事呢？</p>
+<p>我们来看看response.setStatus(404)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">     * Sets the status code for this response.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;This method is used to set the return status code when there is</span><br><span class="line">     * no error (for example, for the SC_OK or SC_MOVED_TEMPORARILY status</span><br><span class="line">     * codes).</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;If this method is used to set an error code, then the container's</span><br><span class="line">     * error page mechanism will not be triggered. If there is an error and</span><br><span class="line">     * the caller wishes to invoke an error page defined in the web</span><br><span class="line">     * application, then &#123;<span class="doctag">@link</span> #sendError&#125; must be used instead.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;This method preserves any cookies and other response headers.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;Valid status codes are those in the 2XX, 3XX, 4XX, and 5XX ranges.</span><br><span class="line">     * Other status codes are treated as container specific.</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span>	sc	the status code</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@see</span> #sendError</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStatus</span><span class="params">(<span class="keyword">int</span> sc)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>有这么段话：<br>If this method is used to set an error code, then the container’s</p>
+<ul>
+<li>error page mechanism（机制） will not be triggered.</li>
+</ul>
+<p>参考资料：<br><a href="http://tomcat.apache.org/tomcat-4.1-doc/catalina/funcspecs/fs-default.html" target="_blank" rel="external">Default Servlet</a><br><a href="http://stackoverflow.com/questions/32337999/tomcat-use-defaultservlet-for-static-content-in-external-directory" target="_blank" rel="external">Tomcat use DefaultServlet for static content in external directory</a><br><a href="http://blog.csdn.net/husan_3/article/details/23792517" target="_blank" rel="external">Tomcat处理静态文件DefaultServlet分析 </a><br><a href="http://scalatra.org/guides/2.3/deployment/configuration.html" target="_blank" rel="external">Configuration</a><br><a href="https://docs.oracle.com/cd/E13222_01/wls/docs81/webapp/components.html" target="_blank" rel="external">Configuring Web Application Components</a></p>
 
           
         
@@ -478,7 +484,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/06/angular-jqlite/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/05/angular-interpolate/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -498,7 +504,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/04/06/angular-jqlite/" class="post-title-link" itemprop="url">angular_jqlite</a>
+                <a href="/2017/05/05/angular-interpolate/" class="post-title-link" itemprop="url">angular_interpolate</a>
               
             
           </h2>
@@ -523,7 +529,7 @@
                 
               
 
-              <time title="创建时间：2017-04-06 14:01:55" itemprop="dateCreated datePublished" datetime="2017-04-06T14:01:55+08:00">2017-04-06</time>
+              <time title="创建时间：2017-05-05 22:44:06" itemprop="dateCreated datePublished" datetime="2017-05-05T22:44:06+08:00">2017-05-05</time>
             
 
             
@@ -576,10 +582,11 @@
       
         
           
-            <h2 id="angular-1-5-8-angular-element"><a href="#angular-1-5-8-angular-element" class="headerlink" title="angular 1.5.8 angular.element"></a>angular 1.5.8 angular.element</h2><p>angular.element 不支持不带html格式的字符串传入，定义如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">JQLite</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (element <span class="keyword">instanceof</span> JQLite) &#123;</span><br><span class="line">    <span class="keyword">return</span> element;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> argIsString;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isString(element)) &#123;</span><br><span class="line">    element = trim(element);</span><br><span class="line">    argIsString = <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//this 有可能就是window</span></span><br><span class="line">  <span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> JQLite)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (argIsString &amp;&amp; element.charAt(<span class="number">0</span>) != <span class="string">'&lt;'</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> jqLiteMinErr(<span class="string">'nosel'</span>, <span class="string">'Looking up elements via selectors is not supported by jqLite! See: http://docs.angularjs.org/api/angular.element'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> JQLite(element);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (argIsString) &#123;</span><br><span class="line">    jqLiteAddNodes(<span class="keyword">this</span>, jqLiteParseHTML(element));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    jqLiteAddNodes(<span class="keyword">this</span>, element);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在bindJquery方法中调用 line 31764:  </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//try to bind to jquery now so that one can write jqLite(document).ready()</span></span><br><span class="line"><span class="comment">//but we will rebind on bootstrap again.</span></span><br><span class="line">bindJQuery();</span><br><span class="line"></span><br><span class="line">publishExternalAPI(angular);</span><br><span class="line"><span class="string">``</span><span class="string">`  </span><br><span class="line"></span><br><span class="line">`</span><span class="string">``</span>js</span><br><span class="line"><span class="keyword">var</span> bindJQueryFired = <span class="literal">false</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bindJQuery</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="keyword">var</span> originalCleanData;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (bindJQueryFired) &#123;</span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//http://div.io/topic/1154</span></span><br><span class="line"><span class="comment">// bind to jQuery if present;</span></span><br><span class="line"><span class="keyword">var</span> jqName = jq(); <span class="comment">// 调用jq方法</span></span><br><span class="line">jQuery = isUndefined(jqName) ? <span class="built_in">window</span>.jQuery :   <span class="comment">// use jQuery (if present)</span></span><br><span class="line">         !jqName             ? <span class="literal">undefined</span>     :   <span class="comment">// use jqLite</span></span><br><span class="line">                               <span class="built_in">window</span>[jqName];   <span class="comment">// use jQuery specified by `ngJq`</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Use jQuery if it exists with proper functionality, otherwise default to us.</span></span><br><span class="line"><span class="comment">// Angular 1.2+ requires jQuery 1.7+ for on()/off() support.</span></span><br><span class="line"><span class="comment">// Angular 1.3+ technically requires at least jQuery 2.1+ but it may work with older</span></span><br><span class="line"><span class="comment">// versions. It will not work for sure with jQuery &lt;1.7, though.</span></span><br><span class="line"><span class="keyword">if</span> (jQuery &amp;&amp; jQuery.fn.on) &#123;</span><br><span class="line">  jqLite = jQuery;</span><br><span class="line">  extend(jQuery.fn, &#123;</span><br><span class="line">    <span class="attr">scope</span>: JQLitePrototype.scope,</span><br><span class="line">    <span class="attr">isolateScope</span>: JQLitePrototype.isolateScope,</span><br><span class="line">    <span class="attr">controller</span>: JQLitePrototype.controller,</span><br><span class="line">    <span class="attr">injector</span>: JQLitePrototype.injector,</span><br><span class="line">    <span class="attr">inheritedData</span>: JQLitePrototype.inheritedData</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// All nodes removed from the DOM via various jQuery APIs like .remove()</span></span><br><span class="line">  <span class="comment">// are passed through jQuery.cleanData. Monkey-patch this method to fire</span></span><br><span class="line">  <span class="comment">// the $destroy event on all removed nodes.</span></span><br><span class="line">  originalCleanData = jQuery.cleanData;</span><br><span class="line">  jQuery.cleanData = <span class="function"><span class="keyword">function</span>(<span class="params">elems</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> events;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, elem; (elem = elems[i]) != <span class="literal">null</span>; i++) &#123;</span><br><span class="line">      events = jQuery._data(elem, <span class="string">"events"</span>);</span><br><span class="line">      <span class="keyword">if</span> (events &amp;&amp; events.$destroy) &#123;</span><br><span class="line">        jQuery(elem).triggerHandler(<span class="string">'$destroy'</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    originalCleanData(elems);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  jqLite = JQLite;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">angular.element = jqLite;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Prevent double-proxying.</span></span><br><span class="line">bindJQueryFired = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h2 id="angular-插值"><a href="#angular-插值" class="headerlink" title="angular 插值"></a>angular 插值</h2><h3 id="angular-interpolate"><a href="#angular-interpolate" class="headerlink" title="angular interpolate"></a>angular interpolate</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Concatenating(连接) expressions makes it hard to reason about whether some combination of</span></span><br><span class="line"><span class="comment">// concatenated values are unsafe to use and could easily lead to XSS.  By requiring that a</span></span><br><span class="line"><span class="comment">// single expression be used for iframe[src], object[src], etc., we ensure that the value</span></span><br><span class="line"><span class="comment">// that's used is assigned or constructed by some JS code somewhere that is more testable or</span></span><br><span class="line"><span class="comment">// make it obvious that you bound the value to some user controlled value.  This helps reduce</span></span><br><span class="line"><span class="comment">// the load when auditing for XSS issues.</span></span><br><span class="line"><span class="keyword">if</span> (trustedContext &amp;&amp; concat.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    $interpolateMinErr.throwNoconcat(text);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>什么时候报错呢？</p>
+<p>像ng-src=”img/“就会报错了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> $interpolateMinErr = angular.$interpolateMinErr = minErr(<span class="string">'$interpolate'</span>);</span><br><span class="line"><span class="comment">//https://segmentfault.com/q/1010000007677889?_ea=1423254</span></span><br><span class="line">$interpolateMinErr.throwNoconcat = <span class="function"><span class="keyword">function</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line"><span class="keyword">throw</span> $interpolateMinErr(<span class="string">'noconcat'</span>,</span><br><span class="line">    <span class="string">"Error while interpolating: &#123;0&#125;\nStrict Contextual Escaping disallows "</span> +</span><br><span class="line">    <span class="string">"interpolations that concatenate multiple expressions when a trusted value is "</span> +</span><br><span class="line">    <span class="string">"required.  See http://docs.angularjs.org/api/ng.$sce"</span>, text);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">$interpolateMinErr.interr = <span class="function"><span class="keyword">function</span>(<span class="params">text, err</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> $interpolateMinErr(<span class="string">'interr'</span>, <span class="string">"Can't interpolate: &#123;0&#125;\n&#123;1&#125;"</span>, text, err.toString());</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>参考资料：<br><a href="https://segmentfault.com/q/1010000007677889?_ea=1423254" target="_blank" rel="external">AugularJS通过服务器请求图片时总是报错 $interpolate:noconcat</a><br><a href="https://segmentfault.com/a/1190000002753321" target="_blank" rel="external">浅谈AngularJS的$interpolate服务 1</a></p>
 
           
         
@@ -636,7 +643,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/scala-package/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/02/javascript-base1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -656,7 +663,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/03/31/scala-package/" class="post-title-link" itemprop="url">scala_package</a>
+                <a href="/2017/05/02/javascript-base1/" class="post-title-link" itemprop="url">javascript_base1</a>
               
             
           </h2>
@@ -681,7 +688,7 @@
                 
               
 
-              <time title="创建时间：2017-03-31 15:29:23" itemprop="dateCreated datePublished" datetime="2017-03-31T15:29:23+08:00">2017-03-31</time>
+              <time title="创建时间：2017-05-02 09:22:56" itemprop="dateCreated datePublished" datetime="2017-05-02T09:22:56+08:00">2017-05-02</time>
             
 
             
@@ -734,10 +741,8 @@
       
         
           
-            <h2 id="scala-打包子项目"><a href="#scala-打包子项目" class="headerlink" title="scala 打包子项目"></a>scala 打包子项目</h2><p>在idea中有多个项目时，我想单独打包子项目，搜了几篇文章受到了启发，  </p>
-<p>只要在命令行中执行<code>sbt module-a/clean module-a/test</code>命令即可.  </p>
-<p>其中 module-a 为定义在根项目中的变量.<br>比如：<br>lazy val <code>api</code> = (project in file(“api”)).settings(javadocSettings: _*).dependsOn(<code>common</code>, <code>bigdata</code>).aggregate(<code>common</code>, <code>bigdata</code>)</p>
-<p><a href="http://stackoverflow.com/questions/18075820/how-to-execute-package-for-one-submodule-only-on-jenkins" target="_blank" rel="external">How to execute package for one submodule only on Jenkins?</a></p>
+            <h2 id="javascript基础"><a href="#javascript基础" class="headerlink" title="javascript基础"></a>javascript基础</h2><h3 id="行内元素-onclick-和-jquery-绑定的-onclick-有什么区别？"><a href="#行内元素-onclick-和-jquery-绑定的-onclick-有什么区别？" class="headerlink" title="行内元素 onclick 和 jquery 绑定的 onclick 有什么区别？"></a>行内元素 onclick 和 jquery 绑定的 onclick 有什么区别？</h3><p>HTML或原生js是单一对应绑定的，绑多了只留最后一个。jQuery是追加绑定的，绑多少执行多少。</p>
+<p>参考资料：<br>在javascript或者jQuery中绑定按钮点击事件，和在HTML 标签中直接调用onclick属性有什么区别？](<a href="https://segmentfault.com/q/1010000000332625" target="_blank" rel="external">https://segmentfault.com/q/1010000000332625</a>)<br><a href="http://www.cnblogs.com/shi0090/p/6793341.html" target="_blank" rel="external">从国企到阿里的面试经历（一）</a></p>
 
           
         
@@ -794,7 +799,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/scala-mock/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/24/angular-directive1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -814,7 +819,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/03/31/scala-mock/" class="post-title-link" itemprop="url">scala_mock</a>
+                <a href="/2017/04/24/angular-directive1/" class="post-title-link" itemprop="url">angular_directive1</a>
               
             
           </h2>
@@ -839,7 +844,7 @@
                 
               
 
-              <time title="创建时间：2017-03-31 14:04:04" itemprop="dateCreated datePublished" datetime="2017-03-31T14:04:04+08:00">2017-03-31</time>
+              <time title="创建时间：2017-04-24 16:07:56" itemprop="dateCreated datePublished" datetime="2017-04-24T16:07:56+08:00">2017-04-24</time>
             
 
             
@@ -892,12 +897,10 @@
       
         
           
-            <h2 id="scala-mock"><a href="#scala-mock" class="headerlink" title="scala mock"></a>scala mock</h2><p>读了这篇文章( Mock Objects for Scala and Android)[<a href="https://www.artima.com/scalazine/articles/borachio_mock_objects_for_scala.html],对scala" target="_blank" rel="external">https://www.artima.com/scalazine/articles/borachio_mock_objects_for_scala.html],对scala</a> mock有点了解了。  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">trait Turtle &#123;</span><br><span class="line">  <span class="function">def <span class="title">penUp</span><span class="params">()</span></span><br><span class="line">  def <span class="title">penDown</span><span class="params">()</span></span><br><span class="line">  def <span class="title">forward</span><span class="params">(distance: Double)</span></span><br><span class="line">  def <span class="title">turn</span><span class="params">(angle: Double)</span></span><br><span class="line">  def getAngle: Double</span><br><span class="line">  def getPosition: <span class="params">(Double, Double)</span></span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>This API is not very convenient. We have no way to move to a specific position, instead we need to work out how to get from where we are now to where we want to get by calculating angles and distances. The diagram below, for example, demonstrates the movements a turtle starting at the origin (0, 0) would need to make to draw a line from (1, 1) to (2, 1).</p>
-<p>Turtle diagram</p>
-<p>You can see an example of code that performs these calculations here. This isn’t trivial, so we want to test to make sure that it’s doing the right thing. Here’s a test (written with ScalaTest) that creates a mock turtle that pretends to start at the origin (0, 0) and verifies that if we ask the code we’ve just written to draw a line from (1, 1) to (2, 1) it performs the correct sequence of turns and movements:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class MockFunctionTest extends Suite with MockFactory &#123;</span><br><span class="line"></span><br><span class="line">  val mockTurtle = mock[Turtle]</span><br><span class="line">  val controller = new Controller(mockTurtle)</span><br><span class="line"></span><br><span class="line">  def testDrawLine() &#123;</span><br><span class="line">    inSequence &#123;</span><br><span class="line">      mockTurtle expects 'getPosition returning (0.0, 0.0)</span><br><span class="line">      mockTurtle expects 'getAngle returning 0.0</span><br><span class="line">      mockTurtle expects 'penUp</span><br><span class="line">      mockTurtle expects 'turn withArgs (~(Pi / 4))</span><br><span class="line">      mockTurtle expects 'forward withArgs (~sqrt(2.0))</span><br><span class="line">      mockTurtle expects 'getAngle returning Pi / 4</span><br><span class="line">      mockTurtle expects 'turn withArgs (~(-Pi / 4))</span><br><span class="line">      mockTurtle expects 'penDown</span><br><span class="line">      mockTurtle expects 'forward withArgs (1.0)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    controller.drawLine((1.0, 1.0), (2.0, 1.0))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h2 id="angular-指令多个元素multiElement"><a href="#angular-指令多个元素multiElement" class="headerlink" title="angular 指令多个元素multiElement"></a>angular 指令多个元素multiElement</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// iterate over the attributes</span></span><br><span class="line">       <span class="comment">//遍历所有属性 比如ng-app ng-controller</span></span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">var</span> attr, name, nName, ngAttrName, value, isNgAttr, nAttrs = node.attributes,</span><br><span class="line">                j = <span class="number">0</span>, jj = nAttrs &amp;&amp; nAttrs.length; j &lt; jj; j++) &#123;</span><br><span class="line">         <span class="keyword">var</span> attrStartName = <span class="literal">false</span>;</span><br><span class="line">         <span class="keyword">var</span> attrEndName = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">         attr = nAttrs[j];<span class="comment">//</span></span><br><span class="line">         name = attr.name;</span><br><span class="line">         value = trim(attr.value);</span><br><span class="line"></span><br><span class="line">         <span class="comment">// support ngAttr attribute binding</span></span><br><span class="line">         <span class="comment">//转换成ngController 这种</span></span><br><span class="line">         ngAttrName = directiveNormalize(name);</span><br><span class="line">         <span class="comment">//ng-attr</span></span><br><span class="line">         <span class="keyword">if</span> (isNgAttr = NG_ATTR_BINDING.test(ngAttrName)) &#123;</span><br><span class="line">           <span class="comment">//ng-attr-</span></span><br><span class="line">           name = name.replace(PREFIX_REGEXP, <span class="string">''</span>)</span><br><span class="line">             .substr(<span class="number">8</span>).replace(<span class="regexp">/_(.)/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">match, letter</span>) </span>&#123;</span><br><span class="line">               <span class="keyword">return</span> letter.toUpperCase();</span><br><span class="line">             &#125;);</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">var</span> multiElementMatch = ngAttrName.match(MULTI_ELEMENT_DIR_RE);</span><br><span class="line">         <span class="comment">//判断是否支持multiElement</span></span><br><span class="line">         <span class="keyword">if</span> (multiElementMatch &amp;&amp; directiveIsMultiElement(multiElementMatch[<span class="number">1</span>])) &#123;</span><br><span class="line">           attrStartName = name;</span><br><span class="line">           attrEndName = name.substr(<span class="number">0</span>, name.length - <span class="number">5</span>) + <span class="string">'end'</span>;</span><br><span class="line">           name = name.substr(<span class="number">0</span>, name.length - <span class="number">6</span>); <span class="comment">//去掉-start</span></span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">         nName = directiveNormalize(name.toLowerCase());</span><br><span class="line">         attrsMap[nName] = name;</span><br><span class="line">         <span class="keyword">if</span> (isNgAttr || !attrs.hasOwnProperty(nName)) &#123;</span><br><span class="line">             attrs[nName] = value;</span><br><span class="line">             <span class="keyword">if</span> (getBooleanAttrName(node, nName)) &#123;</span><br><span class="line">               attrs[nName] = <span class="literal">true</span>; <span class="comment">// presence means true</span></span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         addAttrInterpolateDirective(node, directives, value, nName, isNgAttr);</span><br><span class="line">         addDirective(directives, nName, <span class="string">'A'</span>, maxPriority, ignoreDirective, attrStartName,</span><br><span class="line">                       attrEndName);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>注意到这一段代码<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> multiElementMatch = ngAttrName.match(MULTI_ELEMENT_DIR_RE);</span><br><span class="line"><span class="comment">//判断是否支持multiElement</span></span><br><span class="line"><span class="keyword">if</span> (multiElementMatch &amp;&amp; directiveIsMultiElement(multiElementMatch[<span class="number">1</span>])) &#123;</span><br><span class="line">  attrStartName = name;</span><br><span class="line">  attrEndName = name.substr(<span class="number">0</span>, name.length - <span class="number">5</span>) + <span class="string">'end'</span>;</span><br><span class="line">  name = name.substr(<span class="number">0</span>, name.length - <span class="number">6</span>); <span class="comment">//去掉-start</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>就是判断有无ng-show-start这种指令的</p>
+<p>参考资料：<br><a href="http://stackoverflow.com/questions/25254084/angularjs-multi-element-directive" target="_blank" rel="external">AngularJS multi-element directive</a><br><a href="http://stackoverflow.com/questions/30301554/ngattr-with-angular-for-conditional-attribute" target="_blank" rel="external">ngAttr with Angular for conditional attribute</a><br><a href="http://www.cnblogs.com/HeJason/p/5514690.html" target="_blank" rel="external">angularJs关于指令的一些冷门属性</a></p>
 
           
         
@@ -954,7 +957,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/scala-abstract-override2/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/21/javascript-replace/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -974,7 +977,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/03/31/scala-abstract-override2/" class="post-title-link" itemprop="url">scala_abstract_override2</a>
+                <a href="/2017/04/21/javascript-replace/" class="post-title-link" itemprop="url">javascript_replace</a>
               
             
           </h2>
@@ -999,7 +1002,7 @@
                 
               
 
-              <time title="创建时间：2017-03-31 10:21:25" itemprop="dateCreated datePublished" datetime="2017-03-31T10:21:25+08:00">2017-03-31</time>
+              <time title="创建时间：2017-04-21 11:34:17" itemprop="dateCreated datePublished" datetime="2017-04-21T11:34:17+08:00">2017-04-21</time>
             
 
             
@@ -1052,31 +1055,14 @@
       
         
           
-            <h2 id="scala-abstract-override"><a href="#scala-abstract-override" class="headerlink" title="scala abstract override"></a>scala abstract override</h2><p>看到了<a href="http://www.artima.com/scalazine/articles/stackable_trait_pattern.html" target="_blank" rel="external">Scala’s Stackable Trait Pattern</a>这篇文章， 继续研究scala abstract override：</p>
-<pre><code class="java">trait Base {
-def foo
-}
-
-trait StackingTrait extends Base {
-<span class="keyword">abstract</span> override def foo { println (<span class="string">"aa"</span>)}
-}
-
-<span class="class"><span class="keyword">class</span> <span class="title">ImplHelper</span> <span class="keyword">extends</span> <span class="title">Base</span> </span>{
-def foo {}
-}
-
-<span class="class"><span class="keyword">class</span> <span class="title">Impl</span>   <span class="keyword">extends</span> <span class="title">Base</span></span>{
-  def foo {
-        println(<span class="string">"ss"</span>)
-  }
-}
-
-val implInstance = <span class="keyword">new</span> Impl with StackingTrait
-
-implInstance.foo
-</code></pre>
-<p>打印出来了aa  </p>
-<p>This arrangement is frequently needed with traits that implement stackable modifications. To tell the compiler you are doing this on purpose, you must mark such methods as abstract override. This combination of modifiers is only allowed for members of traits, not classes, and it means that the trait must be mixed into some class that has a concrete definition of the method in question. </p>
+            <h2 id="javascript-replace"><a href="#javascript-replace" class="headerlink" title="javascript replace"></a>javascript replace</h2><p>在看angular源码时 有这么一个方法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//. 匹配除“\r\n”之外的任何单个字符。要匹配包括“\r\n”在内的任何字符，请使用像“[\s\S]”的模式</span></span><br><span class="line"><span class="keyword">var</span> SPECIAL_CHARS_REGEXP = <span class="regexp">/([\:\-\_]+(.))/g</span>;</span><br><span class="line"><span class="comment">//感觉应该是/([\:\-\_])+(.)/g;</span></span><br><span class="line"><span class="keyword">var</span> MOZ_HACK_REGEXP = <span class="regexp">/^moz([A-Z])/</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">camelCase</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> name.</span><br><span class="line">    replace(SPECIAL_CHARS_REGEXP, <span class="function"><span class="keyword">function</span>(<span class="params">_, separator, letter, offset,all</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> offset ? letter.toUpperCase() : letter;</span><br><span class="line">      <span class="comment">//all 为字符串本身</span></span><br><span class="line">    &#125;).</span><br><span class="line">    replace(MOZ_HACK_REGEXP, <span class="string">'Moz$1'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>怎么使用呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> PREFIX_REGEXP = <span class="regexp">/^((?:x|data)[\:\-_])/i</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result = <span class="string">'ng-app'</span>.replace(PREFIX_REGEXP, <span class="string">''</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(camelCase(result));</span><br><span class="line"><span class="comment">//输出ngApp</span></span><br></pre></td></tr></table></figure>
+<p>第二个参数为函数：</p>
+<p>在ECMAScript3推荐使用函数方式，实现于JavaScript1.2.当replace方法执行的时候每次都会调用该函数，返回值作为替换的新值。</p>
+<p> 函数参数的规定：</p>
+<p>第一个参数为每次匹配的全文本（$&amp;）。<br>中间参数为子表达式匹配字符串，个数不限.( $i (i:1-99))<br>倒数第二个参数为匹配文本字符串的匹配下标位置。<br>最后一个参数表示字符串本身。</p>
+<p>参考资料：<br><a href="https://segmentfault.com/q/1010000003949349" target="_blank" rel="external">js的replace函数入参为function时的疑问</a><br><a href="http://www.cnblogs.com/whitewolf/archive/2013/03/14/2958720.html" target="_blank" rel="external">JavaScript 函数replace揭秘</a></p>
 
           
         
@@ -1122,7 +1108,7 @@ implInstance.foo
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/42/">42</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1164,7 +1150,7 @@ implInstance.foo
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">197</span>
+                    <span class="site-state-item-count">206</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/08/spring-cloud-alibaba/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/java-concurrent-knownpoints/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -336,7 +336,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/05/08/spring-cloud-alibaba/" class="post-title-link" itemprop="url">Spring Cloud Alibaba 知识点</a>
+                <a href="/2019/05/11/java-concurrent-knownpoints/" class="post-title-link" itemprop="url">java并发知识点整理</a>
               
             
           </h2>
@@ -361,446 +361,7 @@
                 
               
 
-              <time title="创建时间：2019-05-08 17:43:12 / 修改时间：22:37:18" itemprop="dateCreated datePublished" datetime="2019-05-08T17:43:12+08:00">2019-05-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>组件<br>Sentinel：把流量作为切入点，从流量控制、熔断降级、系统负载保护等多个维度保护服务的稳定性。<br>Nacos：一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。<br>RocketMQ：一款开源的分布式消息系统，基于高可用分布式集群技术，提供低延时的、高可靠的消息发布与订阅服务。<br>Dubbo：Apache Dubbo™ (incubating) 是一款高性能 Java RPC 框架。<br>Seata：阿里巴巴开源产品，一个易于使用的高性能微服务分布式事务解决方案。<br>Alibaba Cloud ACM：一款在分布式架构环境中对应用配置进行集中管理和推送的应用配置中心产品。<br>Alibaba Cloud OSS: 阿里云对象存储服务（Object Storage Service，简称 OSS），是阿里云提供的海量、安全、低成本、高可靠的云存储服务。您可以在任何应用、任何时间、任何地点存储和访问任意类型的数据。<br>Alibaba Cloud SchedulerX: 阿里中间件团队开发的一款分布式任务调度产品，提供秒级、精准、高可靠、高可用的定时（基于 Cron 表达式）任务调度服务。<br>Alibaba Cloud SMS: 覆盖全球的短信服务，友好、高效、智能的互联化通讯能力，帮助企业迅速搭建客户触达通道</p>
-<p><a href="https://www.cnblogs.com/zuoxiaolong/p/sca1.html#top" target="_blank" rel="external">微服务领域是不是要变天了？Spring Cloud Alibaba正式入驻Spring Cloud官方孵化器</a><br><a href="https://github.com/spring-cloud-incubator/spring-cloud-alibaba/blob/master/README-zh.md" target="_blank" rel="external">spring-cloud-alibaba</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/08/cache-knownpoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/08/cache-knownpoints/" class="post-title-link" itemprop="url">缓存知识点整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-08 16:50:16 / 修改时间：20:26:59" itemprop="dateCreated datePublished" datetime="2019-05-08T16:50:16+08:00">2019-05-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>缓存穿透</p>
-<p>一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。一些恶意的请求会故意查询不存在的key,请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。</p>
-<p>如何避免？<br>1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。<br>2：对一定不存在的key进行过滤。可以把所有的可能存在的key放到一个大的Bitmap中，查询时通过该bitmap过滤。</p>
-<p>缓存雪崩<br>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，会给后端系统带来很大压力。导致系统崩溃。</p>
-<p>如何避免？<br>1：在缓存失效后，通过加锁或者队列来控制读数据库写缓存的线程数量。比如对某个key只允许一个线程查询数据和写缓存，其他线程等待。<br>2：做二级缓存，A1为原始缓存，A2为拷贝缓存，A1失效时，可以访问A2，A1缓存失效时间设置为短期，A2设置为长期<br>3：不同的key，设置不同的过期时间，让缓存失效的时间点尽量均匀。</p>
-<p><a href="https://www.cnblogs.com/jasontec/p/9699242.html" target="_blank" rel="external">Redis常见面试题</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/08/redis-knownpoints1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/08/redis-knownpoints1/" class="post-title-link" itemprop="url">redis知识点整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-08 16:41:52 / 修改时间：20:26:59" itemprop="dateCreated datePublished" datetime="2019-05-08T16:41:52+08:00">2019-05-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1、Redis如何做内存优化？尽可能使用散列表（hashes），散列表（是说散列表里面存储的数少）使用的内存非常小，所以你应该尽可能的将你的数据模型抽象到一个散列表里面。比如你的web系统中有一个用户对象，不要为这个用户的名称，姓氏，邮箱，密码设置单独的key,而是应该把这个用户的所有信息存储到一张散列表里面。</p>
-<p>2.mySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据</p>
-<p>相关知识：redis 内存数据集大小上升到一定大小的时候，就会施行数据淘汰策略。</p>
-<p>redis 提供 6种数据淘汰策略：<br>voltile-lru：从已设置过期时间的数据集（server.db[i].expires）中挑选最近最少使用的数据淘汰<br>volatile-ttl：从已设置过期时间的数据集（server.db[i].expires）中挑选将要过期的数据淘汰<br>volatile-random：从已设置过期时间的数据集（server.db[i].expires）中任意选择数据淘汰<br>allkeys-lru：从数据集（server.db[i].dict）中挑选最近最少使用的数据淘汰<br>allkeys-random：从数据集（server.db[i].dict）中任意选择数据淘汰<br>no-enviction（驱逐）：禁止驱逐数据</p>
-<p><a href="https://www.jianshu.com/p/36a646cef11a" target="_blank" rel="external">30道Redis面试题，面试官能问的都被我找到了</a><br><a href="https://www.cnblogs.com/jasontec/p/9699242.html" target="_blank" rel="external">Redis常见面试题</a>)</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/08/spring-security-1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/08/spring-security-1/" class="post-title-link" itemprop="url">spring security框架基础知识点</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-08 15:43:02" itemprop="dateCreated datePublished" datetime="2019-05-08T15:43:02+08:00">2019-05-08</time>
+              <time title="创建时间：2019-05-11 14:28:58" itemprop="dateCreated datePublished" datetime="2019-05-11T14:28:58+08:00">2019-05-11</time>
             
 
             
@@ -817,7 +378,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
+                <time title="修改时间：2019-05-30 20:43:17" itemprop="dateModified" datetime="2019-05-30T20:43:17+08:00">2019-05-30</time>
               
             
           </span>
@@ -853,12 +414,22 @@
       
         
           
-            <p>1、引入包spring-boot-starter-security<br>2.@EnableWebSecurity 注解<br>3.WebSecurityConfigurerAdapter适配器</p>
-<p>参考资料：<br><a href="https://www.jianshu.com/p/0c54788c94f3" target="_blank" rel="external">Spring Security原理篇(一) 启动原理</a></p>
-<ol>
-<li><a href="https://cloud.tencent.com/developer/article/1353426" target="_blank" rel="external">SpringCloud组件：你的Eureka服务注册中心安全吗？</a></li>
-<li><a href="https://blog.csdn.net/FangX_u/article/details/82589727" target="_blank" rel="external">spring cloud-给Eureka Server加上安全的用户认证</a></li>
-<li><a href="https://blog.csdn.net/weixin_42465125/article/details/88337698" target="_blank" rel="external">新版Eureka Server 加上Spring Security安全认证之后，客户端无法注册和客户端启动Up后就Down的问题</a></li>
+            <ol>
+<li><a href="https://blog.csdn.net/dm_vincent/article/details/79604716" target="_blank" rel="external">为什么volatile++不是原子性的？</a></li>
+<li><a href="https://mp.weixin.qq.com/s/wvBziVsRNS7pXyknAHEYKg" target="_blank" rel="external">分享一道阿里Java并发面试题 (详细分析篇)</a></li>
+<li><a href="https://www.cnblogs.com/dancser/p/4450963.html#top" target="_blank" rel="external">不错的TOMCAT监控好工具probe</a></li>
+<li><a href="http://www.linkedkeeper.com/detail/blog.action?bid=1453&amp;hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">JDK1.8应用启动出现fullgc问题解决方案</a></li>
+<li><a href="https://mp.weixin.qq.com/s/TeDvhjZoldoJs4VZNS26tg" target="_blank" rel="external">阿里Sentinel整合Zuul网关详解</a></li>
+<li><a href="https://mp.weixin.qq.com/s/uDwX0iq9RWs1sK1ct0tiCg" target="_blank" rel="external">干货 | 浅谈Node.js在携程的应用</a></li>
+<li><a href="https://mp.weixin.qq.com/s/qeYRAcDm2ZNmYgcPndAZjQ" target="_blank" rel="external">Kubernetes 原生 CI/CD 系统 Prow 简介</a></li>
+<li><a href="https://www.jb51.net/article/114900.htm" target="_blank" rel="external">java 使用ConcurrentHashMap和计数器实现锁</a></li>
+<li><a href="https://mp.weixin.qq.com/s/5I6a2ab7dkO4XOnJ5Q3x4w" target="_blank" rel="external">为什么ConcurrentHashMap的读操作不需要加锁？</a></li>
+<li><a href="https://blog.csdn.net/zqz_zqz/article/details/80408035" target="_blank" rel="external">通过ConcurrentHashMap的putIfAbsent方法实现对象锁</a></li>
+<li><a href="https://www.jianshu.com/p/b8073a6ce1c0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation" target="_blank" rel="external">阿里面试题，Java中wait()方法为什么要放在同步块中</a></li>
+<li><a href="https://www.zhihu.com/question/26350691/answer/42692522?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">阿里巴巴、美团等各大互联网公司的 Java 类校招对本科生的要求是什么</a></li>
+<li><a href="https://github.com/wosyingjun" target="_blank" rel="external">优雅的SSM（Spring+SpringMVC+Mybatis）框架</a></li>
+<li><a href="http://calvin1978.blogcn.com/articles/javaguide4.html" target="_blank" rel="external">《唯品会Java开发手册》－与阿里手册的比较文学</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/66807833?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">知乎千万级高性能长连接网关揭秘</a></li>
 </ol>
 
           
@@ -916,7 +487,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/05/KnowPoints/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/Algorithm-knownpoints/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -936,7 +507,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/05/05/KnowPoints/" class="post-title-link" itemprop="url">知识点整理</a>
+                <a href="/2019/05/11/Algorithm-knownpoints/" class="post-title-link" itemprop="url">算法学习资料整理</a>
               
             
           </h2>
@@ -961,24 +532,12 @@
                 
               
 
-              <time title="创建时间：2019-05-05 10:09:15" itemprop="dateCreated datePublished" datetime="2019-05-05T10:09:15+08:00">2019-05-05</time>
+              <time title="创建时间：2019-05-11 10:05:49 / 修改时间：10:07:30" itemprop="dateCreated datePublished" datetime="2019-05-11T10:05:49+08:00">2019-05-11</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-08 22:37:04" itemprop="dateModified" datetime="2019-05-08T22:37:04+08:00">2019-05-08</time>
               
             
           </span>
@@ -1014,23 +573,535 @@
       
         
           
-            <p>1.常用设计模式<br>2.spring cloud ribbon 熟悉<br>3.springboot 和 spring cloud 的区别 spring cloud 依赖于springboot<br>4.springboot 必须的配置 – 端口<br>5.算法– 100以内素数的数组<br>6.算法– 斐波数列的函数表达式<br>7.jvm gc相关 //<a href="https://www.cnblogs.com/wjtaigwh/p/6635484.html" target="_blank" rel="external">https://www.cnblogs.com/wjtaigwh/p/6635484.html</a><br>8.jvm为什么能跨平台 //不能编译成机器语言，因为那样就与平台相关了，编译为中间语言，再由解释器二次编译，解释执行。//<a href="https://www.cnblogs.com/roger-yu/p/5827452.html" target="_blank" rel="external">https://www.cnblogs.com/roger-yu/p/5827452.html</a><br>9.scala和java的区别<br>10.tcp三次握手<br>11.restful接口<br>12.mysql innodb 和maridb的区别 //<a href="https://blog.csdn.net/qq_27607965/article/details/79925288" target="_blank" rel="external">https://blog.csdn.net/qq_27607965/article/details/79925288</a></p>
-<p>13.string stringbuffer 和 stringbuilder的区别 //<a href="https://www.cnblogs.com/su-feng/p/6659064.html" target="_blank" rel="external">https://www.cnblogs.com/su-feng/p/6659064.html</a></p>
-<p>14.java反射常用类 classloader //<a href="https://www.cnblogs.com/jimoer/p/9185662.html" target="_blank" rel="external">https://www.cnblogs.com/jimoer/p/9185662.html</a><br>//<a href="http://blog.itpub.net/31561269/viewspace-2222522/" target="_blank" rel="external">http://blog.itpub.net/31561269/viewspace-2222522/</a><br>//<a href="https://www.cnblogs.com/doit8791/p/5820037.html" target="_blank" rel="external">https://www.cnblogs.com/doit8791/p/5820037.html</a><br>//<a href="https://www.cnblogs.com/sun1993/p/7828535.html" target="_blank" rel="external">https://www.cnblogs.com/sun1993/p/7828535.html</a><br>//<a href="https://www.cnblogs.com/zabulon/p/5826610.html" target="_blank" rel="external">https://www.cnblogs.com/zabulon/p/5826610.html</a></p>
-<p>15.spring mvc 路由机制</p>
-<p>16.Aop<br><a href="https://blog.csdn.net/dadiyang/article/details/82920139" target="_blank" rel="external">https://blog.csdn.net/dadiyang/article/details/82920139</a></p>
-<p>17.Spring Security<br><a href="https://blog.csdn.net/liushangzaibeijing/article/details/81220610#%C2%A0%202%E3%80%81WebSecurityConfiguration%E7%B1%BB" target="_blank" rel="external">https://blog.csdn.net/liushangzaibeijing/article/details/81220610#%C2%A0%202%E3%80%81WebSecurityConfiguration%E7%B1%BB</a></p>
-<p><a href="https://www.liangzl.com/get-article-detail-7915.html" target="_blank" rel="external">https://www.liangzl.com/get-article-detail-7915.html</a><br><a href="https://www.jianshu.com/nb/29347401" target="_blank" rel="external">https://www.jianshu.com/nb/29347401</a></p>
-<p>18.MQ</p>
-<p>19.除了ip白名单，还有其他拦截机制吗<br>20.分布式任务调度<br>21.缓存穿透和缓存雪崩<br><a href="https://www.cnblogs.com/jasontec/p/9699242.html" target="_blank" rel="external">https://www.cnblogs.com/jasontec/p/9699242.html</a></p>
-<p>22.dubbo 没有注册中心 也可以访问吗<br><a href="https://blog.csdn.net/weixin_43170586/article/details/83244562" target="_blank" rel="external">https://blog.csdn.net/weixin_43170586/article/details/83244562</a><br><a href="https://blog.csdn.net/xy3233/article/details/85759649" target="_blank" rel="external">https://blog.csdn.net/xy3233/article/details/85759649</a><br><a href="https://blog.csdn.net/sosozha/article/details/86712478" target="_blank" rel="external">https://blog.csdn.net/sosozha/article/details/86712478</a></p>
-<p>23、Dubbo与注册中心Zookeeper的交互过程<br><a href="https://blog.csdn.net/qq_27529917/article/details/80632078" target="_blank" rel="external">https://blog.csdn.net/qq_27529917/article/details/80632078</a></p>
-<p>24.Spring cloud Feign<br><a href="https://www.cnblogs.com/liferecord/p/6893786.html" target="_blank" rel="external">https://www.cnblogs.com/liferecord/p/6893786.html</a><br><a href="https://blog.csdn.net/q_0718/article/details/80269864" target="_blank" rel="external">https://blog.csdn.net/q_0718/article/details/80269864</a></p>
-<p>25.jdk 1.8 的主要特性<br><a href="https://blog.csdn.net/qq_29411737/article/details/80835658" target="_blank" rel="external">https://blog.csdn.net/qq_29411737/article/details/80835658</a></p>
-<p>26.幂等性<br>//<a href="https://www.cnblogs.com/javalyy/p/8882144.html" target="_blank" rel="external">https://www.cnblogs.com/javalyy/p/8882144.html</a><br>27.spring事务 参数<br>28.redis锁<br>29.jvm调优 为什么设置256m就够了<br>//<a href="https://blog.csdn.net/tpasta/article/details/82120974" target="_blank" rel="external">https://blog.csdn.net/tpasta/article/details/82120974</a><br>JVM参数中添加GC日志，GC日志中会记录每次FullGC之后各代的内存大小，观察老年代GC之后的空间大小。可观察一段时间内（比如2天）的FullGC之后的内存情况，根据多次的FullGC之后的老年代的空间大小数据来预估FullGC之后老年代的存活对象大小（可根据多次FullGC之后的内存大小取平均值）</p>
-<p>30.策略模式是怎样的<br>//<a href="http://baijiahao.baidu.com/s?id=1601547440739500969&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">http://baijiahao.baidu.com/s?id=1601547440739500969&amp;wfr=spider&amp;for=pc</a><br>封装变化的概念。<br>编程中使用接口，而不是使用的是具体的实现类(面向接口编程)。</p>
-<p>31.什么情况下会出现内存溢出<br>//<a href="https://www.cnblogs.com/panxuejun/p/5883044.html" target="_blank" rel="external">https://www.cnblogs.com/panxuejun/p/5883044.html</a><br>32.乐观锁和悲观锁 //乐观锁与悲观锁不是指具体的什么类型的锁，而是指看待并发同步的角度。<br>//<a href="https://www.cnblogs.com/lxmyhappy/p/7380073.html" target="_blank" rel="external">https://www.cnblogs.com/lxmyhappy/p/7380073.html</a><br>33.如何保证一致性<br>//<a href="https://blog.csdn.net/hxpjava1/article/details/79409459" target="_blank" rel="external">https://blog.csdn.net/hxpjava1/article/details/79409459</a><br>//<a href="https://blog.csdn.net/qq_41568597/article/details/82501738" target="_blank" rel="external">https://blog.csdn.net/qq_41568597/article/details/82501738</a><br>34.java有哪些锁<br>//<a href="https://www.cnblogs.com/lxmyhappy/p/7380073.html" target="_blank" rel="external">https://www.cnblogs.com/lxmyhappy/p/7380073.html</a></p>
-<p>35.spring ioc bean 的生命周期<br>//<a href="https://www.cnblogs.com/goodcheap/p/6491490.html" target="_blank" rel="external">https://www.cnblogs.com/goodcheap/p/6491490.html</a><br>36.代码规范<br>37.消耗cpu的操作<br>//<a href="https://www.cnblogs.com/duanxz/p/4159963.html" target="_blank" rel="external">https://www.cnblogs.com/duanxz/p/4159963.html</a><br>//<a href="https://www.cnblogs.com/paul8339/p/7464206.html" target="_blank" rel="external">https://www.cnblogs.com/paul8339/p/7464206.html</a></p>
+            <ol>
+<li><a href="https://blog.csdn.net/dennis_wu_/article/category/6977094/2?" target="_blank" rel="external">剑指offer</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/flutter-knownpoints/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/10/flutter-knownpoints/" class="post-title-link" itemprop="url">flutter跨平台开发资料整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-10 10:02:17" itemprop="dateCreated datePublished" datetime="2019-05-10T10:02:17+08:00">2019-05-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-18 09:22:52" itemprop="dateModified" datetime="2019-05-18T09:22:52+08:00">2019-05-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><a href="https://blog.csdn.net/ddwhan0123" target="_blank" rel="external">Flutter学写个NIO APP</a></li>
+<li><a href="https://github.com/Sky24n" target="_blank" rel="external">基于Google Flutter的WanAndroid客户端</a></li>
+<li><a href="https://github.com/pedromassango/my_flutter_challenges" target="_blank" rel="external">My Flutter Challenges</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/react-knownpoints/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/10/react-knownpoints/" class="post-title-link" itemprop="url">react学习资料整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-10 10:00:35" itemprop="dateCreated datePublished" datetime="2019-05-10T10:00:35+08:00">2019-05-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-16 21:09:53" itemprop="dateModified" datetime="2019-05-16T21:09:53+08:00">2019-05-16</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><a href="https://blog.csdn.net/ddwhan0123/article/details/79487071" target="_blank" rel="external">使用create-react-app或者antd创建一个React项目</a></li>
+<li><a href="https://www.jianshu.com/p/c6040430b18d" target="_blank" rel="external">react脚手架create-react-app使用</a></li>
+<li><a href="https://github.com/umijs/umi" target="_blank" rel="external">阿里开源的react企业级框架umijs</a></li>
+<li><a href="https://segmentfault.com/a/1190000012921279" target="_blank" rel="external">React入门看这篇就够了</a></li>
+<li><a href="https://segmentfault.com/a/1190000015553237" target="_blank" rel="external">react全家桶快餐进食指南</a></li>
+<li><a href="https://segmentfault.com/a/1190000015343869" target="_blank" rel="external">React源码学习-解密setState（3）</a></li>
+<li><a href="https://segmentfault.com/a/1190000015699401" target="_blank" rel="external">React 回忆录（四）React 中的状态管理</a></li>
+<li><a href="https://segmentfault.com/a/1190000011946730" target="_blank" rel="external">React.js 小书 Lesson12 - state vs props</a></li>
+<li><a href="https://segmentfault.com/a/1190000016259872" target="_blank" rel="external">react性能优化</a></li>
+<li><a href="https://github.com/petehunt/react-howto" target="_blank" rel="external">Your guide to the (sometimes overwhelming!) React ecosystem</a></li>
+<li><a href="https://juejin.im/post/5cad39b3f265da03502b1c0a" target="_blank" rel="external">【React深入】从Mixin到HOC再到Hook</a></li>
+</ol>
+<h3 id="react路由"><a href="#react路由" class="headerlink" title="react路由"></a>react路由</h3><ol>
+<li><a href="https://segmentfault.com/a/1190000014294604" target="_blank" rel="external">React Router 中文文档（一）</a></li>
+<li><a href="https://www.jianshu.com/p/548674270455" target="_blank" rel="external">React-router v4教程</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/05/react_router.html" target="_blank" rel="external">React Router 使用教程</a></li>
+<li><a href="https://www.jianshu.com/p/bf6b45ce5bcc" target="_blank" rel="external">React Router 4：痛过之后的豁然开朗</a></li>
+<li><a href="https://css-tricks.com/react-router-4/" target="_blank" rel="external">All About React </a></li>
+<li><a href="https://www.cnblogs.com/YZH-chengdu/p/6855237.html" target="_blank" rel="external">react-router 4.0 下服务器如何配合BrowserRouter</a></li>
+</ol>
+<h3 id="react模板"><a href="#react模板" class="headerlink" title="react模板"></a>react模板</h3><ol>
+<li><a href="https://github.com/zhoulujun/wepack4-react-project-template" target="_blank" rel="external">webpack4 react sass 标准工程模板</a></li>
+<li><a href="https://github.com/react-boilerplate/react-boilerplate" target="_blank" rel="external">A highly scalable, offline-first foundation with the best developer experience and a focus on performance and best practices.</a></li>
+<li><a href="https://github.com/VulcanJS/Vulcan" target="_blank" rel="external">A toolkit to quickly build apps with React, GraphQL &amp; Meteor</a></li>
+</ol>
+<h3 id="redux源码"><a href="#redux源码" class="headerlink" title="redux源码"></a>redux源码</h3><ol>
+<li><a href="https://www.cnblogs.com/Ruth92/p/7421697.html#top" target="_blank" rel="external">redux源码图解：createStore 和 applyMiddleware</a></li>
+<li><a href="https://glumes.com/post/android/understand-state-machine/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">理解状态机</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/git-knownpoints/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/10/git-knownpoints/" class="post-title-link" itemprop="url">常用知识整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-10 09:29:03" itemprop="dateCreated datePublished" datetime="2019-05-10T09:29:03+08:00">2019-05-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-25 21:01:32" itemprop="dateModified" datetime="2019-06-25T21:01:32+08:00">2019-06-25</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="有没有什么好用的文件对比工具-能直接对比出文字差异？"><a href="#有没有什么好用的文件对比工具-能直接对比出文字差异？" class="headerlink" title="有没有什么好用的文件对比工具,能直接对比出文字差异？"></a>有没有什么好用的文件对比工具,能直接对比出文字差异？</h4><ol>
+<li>WinMerge</li>
+<li>git bash diff</li>
+<li>Linux下可以用diff命令</li>
+</ol>
+<h4 id="git-fetch-和git-pull-的差别"><a href="#git-fetch-和git-pull-的差别" class="headerlink" title="git fetch 和git pull 的差别"></a>git fetch 和git pull 的差别</h4><p>git fetch 相当于是从远程获取最新到本地，不会自动merge</p>
+<ol>
+<li><a href="https://www.cnblogs.com/qiu-Ann/p/7902855.html" target="_blank" rel="external">git fetch 和git pull 的差别</a></li>
+</ol>
+<h4 id="git删除本地分支并获取tag代码"><a href="#git删除本地分支并获取tag代码" class="headerlink" title="git删除本地分支并获取tag代码"></a>git删除本地分支并获取tag代码</h4><ol>
+<li><a href="https://blog.csdn.net/benben_2015/article/details/79782202" target="_blank" rel="external">git删除本地分支出现错误</a></li>
+<li><a href="https://blog.csdn.net/xiaozhaorui/article/details/78798689" target="_blank" rel="external">git 如何获取指定 tag 代码</a></li>
+<li><a href="https://blog.csdn.net/DinnerHowe/article/details/79082769" target="_blank" rel="external">git切换到某个tag</a></li>
+</ol>
+<h4 id="git分支问题"><a href="#git分支问题" class="headerlink" title="git分支问题"></a>git分支问题</h4><ol>
+<li><a href="https://blog.csdn.net/qq_21004057/article/details/52928211" target="_blank" rel="external">git 上传至github出现error:your local changes to the following files would to be overwritten解决办法</a></li>
+<li><a href="https://www.cnblogs.com/yw0219/p/6020878.html" target="_blank" rel="external">error:your local changes to the following files would to be overwritten</a></li>
+<li><a href="https://blog.csdn.net/arkblue/article/details/9790129" target="_blank" rel="external">git 把远程分支拿到本地，并建立关联关系track</a></li>
+</ol>
+<h4 id="git-add-问题"><a href="#git-add-问题" class="headerlink" title="git add 问题"></a>git add 问题</h4><ol>
+<li><a href="https://www.cnblogs.com/qianqiannian/p/5998054.html" target="_blank" rel="external">Git add 常见用法</a></li>
+</ol>
+<h4 id="git-撤销修改"><a href="#git-撤销修改" class="headerlink" title="git 撤销修改"></a>git 撤销修改</h4><ol>
+<li><p><a href="http://gitbook.liuhui998.com/4_9.html" target="_blank" rel="external">Git的撤消操作 - 重置, 签出 和 撤消</a></p>
+<h4 id="mac常用工具整理"><a href="#mac常用工具整理" class="headerlink" title="mac常用工具整理"></a>mac常用工具整理</h4></li>
+<li><p><a href="https://github.com/sorrycc/blog/issues/83" target="_blank" rel="external">装了啥 2019 版</a></p>
+</li>
+</ol>
+<h4 id="git-常用知识总结"><a href="#git-常用知识总结" class="headerlink" title="git 常用知识总结"></a>git 常用知识总结</h4><p>1.<a href="https://monkeywie.github.io/2019/05/07/git-summary/" target="_blank" rel="external">git常用功能总结</a></p>
 
           
         
@@ -1076,7 +1147,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/42/">42</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1118,7 +1189,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">197</span>
+                    <span class="site-state-item-count">206</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/29/spring-source-AbstractAutowireCapableBeanFactory/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/06/spring-import-annotation/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -336,7 +336,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/05/29/spring-source-AbstractAutowireCapableBeanFactory/" class="post-title-link" itemprop="url">spring5.1.1源码剖析之AbstractAutowireCapableBeanFactory</a>
+                <a href="/2019/07/06/spring-import-annotation/" class="post-title-link" itemprop="url">spring源码分析之@Import注解</a>
               
             
           </h2>
@@ -361,170 +361,7 @@
                 
               
 
-              <time title="创建时间：2019-05-29 13:44:40" itemprop="dateCreated datePublished" datetime="2019-05-29T13:44:40+08:00">2019-05-29</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-07-09 22:31:32" itemprop="dateModified" datetime="2019-07-09T22:31:32+08:00">2019-07-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="关于AbstractAutowireCapableBeanFactory"><a href="#关于AbstractAutowireCapableBeanFactory" class="headerlink" title="关于AbstractAutowireCapableBeanFactory"></a>关于AbstractAutowireCapableBeanFactory</h2><p>源码文档中是这么说的：</p>
-<p>Abstract bean factory superclass that implements default bean creation,<br>with the full capabilities specified by the {@link RootBeanDefinition} class.<br>Implements the {@link org.springframework.beans.factory.config.AutowireCapableBeanFactory}<br>interface in addition to AbstractBeanFactory’s {@link #createBean} method.</p>
-<p>org.springframework.beans.factory.support.DefaultListableBeanFactory 这个很重要的类继承自<br>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory</p>
-<p>简单点说这个beanfactory做了三样事情</p>
-<ol>
-<li>实现默认bean创建，bean拥有RootBeanDefinition类指定的所有能力</li>
-<li>实现了AutowireCapableBeanFactory接口。</li>
-<li>实现了AbstractBeanFactory的createBean方法。</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/25/javascript-bind/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/25/javascript-bind/" class="post-title-link" itemprop="url">javascript基础知识之bind</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-25 13:19:16 / 修改时间：13:37:10" itemprop="dateCreated datePublished" datetime="2019-05-25T13:19:16+08:00">2019-05-25</time>
+              <time title="创建时间：2019-07-06 17:42:36 / 修改时间：23:03:36" itemprop="dateCreated datePublished" datetime="2019-07-06T17:42:36+08:00">2019-07-06</time>
             
 
             
@@ -565,18 +402,24 @@
       
         
           
-            <h2 id="JavaScript-bind方法使用"><a href="#JavaScript-bind方法使用" class="headerlink" title="JavaScript bind方法使用"></a>JavaScript bind方法使用</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">myFun</span>:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> db = &#123;</span><br><span class="line">   <span class="attr">name</span> :<span class="string">"john"</span></span><br><span class="line">&#125;</span><br><span class="line">　  obj.myFun.bind(db)();　　　<span class="comment">//john</span></span><br></pre></td></tr></table></figure>
-<p>以上出了bind 方法后面多了个 () 外 ，结果返回都一致！<br>由此得出结论，bind 返回的是一个新的函数，你必须调用它才会被执行</p>
-<h2 id="JavaScript-bind多次绑定"><a href="#JavaScript-bind多次绑定" class="headerlink" title="JavaScript bind多次绑定"></a>JavaScript bind多次绑定</h2><p>昨天看到掘金小册 <a href="https://juejin.im/book/5bdc715fe51d454e755f75ef/section/5bdc715f6fb9a049c15ea4e0" target="_blank" rel="external">前端面试之道</a>时 看到bind的特殊用法，之前不知道有这么一回事，所以在此记录下.<br>下面转载自原文。</p>
-<p>如果对一个函数进行多次 bind，那么上下文会是什么呢？</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = &#123;&#125;</span><br><span class="line"><span class="keyword">let</span> fn = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="keyword">this</span>) &#125;</span><br><span class="line">fn.bind().bind(a)() <span class="comment">// =&gt; ?</span></span><br></pre></td></tr></table></figure>
-<p>如果你认为输出结果是 a，那么你就错了，其实我们可以把上述代码转换成另一种形式</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fn.bind().bind(a) 等于</span></span><br><span class="line"><span class="keyword">let</span> fn2 = <span class="function"><span class="keyword">function</span> <span class="title">fn1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> fn.apply()</span><br><span class="line">&#125;.apply(a)</span><br><span class="line">&#125;</span><br><span class="line">fn2()</span><br></pre></td></tr></table></figure>
-<p>可以从上述代码中发现，不管我们给函数 bind 几次，fn 中的 this 永远由第一次 bind 决定，所以结果永远是 window。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = &#123; <span class="attr">name</span>: <span class="string">'yck'</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">foo.bind(a)() <span class="comment">// =&gt; 'yck'</span></span><br></pre></td></tr></table></figure>
+            <h2 id="Import定义"><a href="#Import定义" class="headerlink" title="@Import定义"></a>@Import定义</h2><p>Indicates one or more @Configuration classes to import.</p>
+<p>表示一个或多个类会被导入，参考@Configuration.</p>
+<p>Provides functionality equivalent to the <import> element in Spring XML.</import></p>
+<p>提供在xml中<import>标签相同的功能.</import></p>
+<p>Allows for importing   @Configuration classes, ImportSelector and  ImportBeanDefinitionRegistrar implementations,as well as regular component classes (as of 4.2; analogous to  AnnotationConfigApplicationContext#register).</p>
+<p>允许导入@Configuration类，ImportSelector和ImportBeanDefinitionRegistrar的实现类,等同于正常的组件类(4.2开始;类似于AnnotationConfigApplicationContext.register).</p>
+<p>不过我从spring文档中看到AnnotationConfigRegistry接口是从4.1版本开始的</p>
+<p>@Bean definitions declared in imported @Configuration classes should be accessed by using org.springframework.beans.factory.annotation.Autowired @Autowired injection. Either the bean itself can be autowired, or the configuration class instance declaring the bean can be autowired. The latter approach allows for explicit, IDE-friendly navigation between @Configuration class methods.</p>
+<p>在导入类里定义的Bean应该可以被Autowired注入访问。bean自身或者定义bean的配置类都能被autowired。后者能在类方法之间被显式的导航. 这个我们在之后使用示例中会展示。</p>
+<p>May be declared at the class level or as a meta-annotation.</p>
+<p>在class层级定义或者当做一个meta-annotation。</p>
+<p>If XML or other non-@Configuration bean definition resources need to be imported, use the @ImportResource annotation instead.</p>
+<p>如果xml或者其他没有@Configuration的bean资源需要被导入，那就使用@ImportResource注解来替代。</p>
 <p>参考资料：</p>
 <ol>
-<li><a href="https://juejin.im/book/5bdc715fe51d454e755f75ef/section/5bdc715f6fb9a049c15ea4e0" target="_blank" rel="external">前端面试之道</a></li>
+<li><a href="https://www.jianshu.com/p/7eb0c2b214a7" target="_blank" rel="external">Spring Import 三种用法与源码解读</a></li>
+<li><a href="https://blog.csdn.net/pange1991/article/details/81356594" target="_blank" rel="external">Spring @Import注解 —— 导入资源</a></li>
+<li><a href="https://blog.csdn.net/horacehe16/article/details/79811763" target="_blank" rel="external">@Autowired用法详解</a></li>
 </ol>
 
           
@@ -634,7 +477,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/22/angular-provider-httpprovider/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/26/spring-harvest/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -654,7 +497,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/05/22/angular-provider-httpprovider/" class="post-title-link" itemprop="url">angular源码剖析之Provider系列-$http</a>
+                <a href="/2019/06/26/spring-harvest/" class="post-title-link" itemprop="url">spring框架知识点收获整理</a>
               
             
           </h2>
@@ -679,7 +522,7 @@
                 
               
 
-              <time title="创建时间：2019-05-22 22:21:52" itemprop="dateCreated datePublished" datetime="2019-05-22T22:21:52+08:00">2019-05-22</time>
+              <time title="创建时间：2019-06-26 22:02:32" itemprop="dateCreated datePublished" datetime="2019-06-26T22:02:32+08:00">2019-06-26</time>
             
 
             
@@ -696,7 +539,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-24 20:26:02" itemprop="dateModified" datetime="2019-05-24T20:26:02+08:00">2019-05-24</time>
+                <time title="修改时间：2019-07-06 14:34:42" itemprop="dateModified" datetime="2019-07-06T14:34:42+08:00">2019-07-06</time>
               
             
           </span>
@@ -732,13 +575,35 @@
       
         
           
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>虽然现在angular.js已经不怎么流行，也逐渐被react,vue等主流框架取代，但是angular.js中的一些<br>设计我觉得非常值得学习，我们不仅仅要跟随潮流，也得了解曾经优秀流行的框架是怎么设计的，为什么要这么<br>设计，这样我觉得学习新技术才会思路更清晰，才能更快上手。<br>我们在工作中为了尽快完成领导交给我们的任务不得不去熟悉使用现有框架提供给我们的福利，<br>却忽略了基础知识或者说底层技术的掌握，框架就是把各种基础函数和技术封装好让软件开发的效率提升，所以现在我们的很多开发人员只停留在使用层面却<br>不去想这个功能建立在哪些基础知识点上，</p>
-<h2 id="http简介"><a href="#http简介" class="headerlink" title="$http简介"></a>$http简介</h2><p>先来看官方文档的简介:<br>The $http service is a core AngularJS service that facilitates communication with<br> the remote HTTP servers via the browser’s XMLHttpRequest object or via JSONP.</p>
-<p> $http服务是AngularJs的核心服务，是通过浏览器的XMLHttpRequest对象或者JSONP来跟远程http服务<br> 进行通信的.也就是说$http内部必然是通过封装的ajax来完成他的设计的。<br> $http是基于$q服务暴露出来的deferred/promise api,所以要知道$http的高级使用得熟悉这些api.</p>
-<h2 id="http核心"><a href="#http核心" class="headerlink" title="$http核心"></a>$http核心</h2><p>1.扩展配置<br>2.把请求拦截器和响应拦截器放入promise链<br>3.把核心方法serverRequest放入promise链</p>
-<p>核心方法里最终返回了promise对象<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$http</span>(<span class="params">requestConfig</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//忽略部分代码</span></span><br><span class="line">      <span class="comment">//扩展了requestConfig</span></span><br><span class="line">      <span class="keyword">var</span> config = extend(&#123;</span><br><span class="line">        <span class="attr">method</span>: <span class="string">'get'</span>,</span><br><span class="line">        <span class="attr">transformRequest</span>: defaults.transformRequest,</span><br><span class="line">        <span class="attr">transformResponse</span>: defaults.transformResponse,</span><br><span class="line">        <span class="attr">paramSerializer</span>: defaults.paramSerializer</span><br><span class="line">      &#125;, requestConfig);</span><br><span class="line"></span><br><span class="line">      config.headers = mergeHeaders(requestConfig);</span><br><span class="line">      config.method = uppercase(config.method);</span><br><span class="line">      config.paramSerializer = isString(config.paramSerializer) ?</span><br><span class="line">          $injector.get(config.paramSerializer) : config.paramSerializer;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//请求拦截器</span></span><br><span class="line">      <span class="keyword">var</span> requestInterceptors = [];</span><br><span class="line">      <span class="comment">//响应拦截器</span></span><br><span class="line">      <span class="keyword">var</span> responseInterceptors = [];</span><br><span class="line">      <span class="comment">//调用$q的静态方法when</span></span><br><span class="line">      <span class="keyword">var</span> promise = $q.when(config);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// apply interceptors</span></span><br><span class="line">      <span class="comment">//加入拦截器</span></span><br><span class="line">      forEach(reversedInterceptors, <span class="function"><span class="keyword">function</span>(<span class="params">interceptor</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (interceptor.request || interceptor.requestError) &#123;</span><br><span class="line">          <span class="comment">//unshift在顶部插入</span></span><br><span class="line">          <span class="comment">//unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span></span><br><span class="line">          <span class="comment">//随后在chain的时候一次取出两个元素</span></span><br><span class="line">          requestInterceptors.unshift(interceptor.request, interceptor.requestError);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (interceptor.response || interceptor.responseError) &#123;</span><br><span class="line">          <span class="comment">//push在尾部插入</span></span><br><span class="line">          <span class="comment">//push() 方法可向数组的末尾添加一个或多个元素，并返回新的长度。</span></span><br><span class="line">          responseInterceptors.push(interceptor.response, interceptor.responseError);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      promise = chainInterceptors(promise, requestInterceptors);</span><br><span class="line">      <span class="comment">//核心请求放入promise链</span></span><br><span class="line">      promise = promise.then(serverRequest);</span><br><span class="line">      promise = chainInterceptors(promise, responseInterceptors);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//忽略部分代码</span></span><br><span class="line">      <span class="keyword">return</span> promise;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="serverRequest方法"><a href="#serverRequest方法" class="headerlink" title="serverRequest方法"></a>serverRequest方法</h2><p>serverRequest调用sendReq方法发送请求。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//放在promise里</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">serverRequest</span>(<span class="params">config</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//配置的请求头</span></span><br><span class="line">      <span class="keyword">var</span> headers = config.headers;</span><br><span class="line">      <span class="comment">//转换请求数据</span></span><br><span class="line">      <span class="keyword">var</span> reqData = transformData(config.data, headersGetter(headers), <span class="literal">undefined</span>, config.transformRequest);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// strip content-type if data is undefined</span></span><br><span class="line">      <span class="keyword">if</span> (isUndefined(reqData)) &#123;</span><br><span class="line">        forEach(headers, <span class="function"><span class="keyword">function</span>(<span class="params">value, header</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (lowercase(header) === <span class="string">'content-type'</span>) &#123;</span><br><span class="line">            <span class="keyword">delete</span> headers[header];</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (isUndefined(config.withCredentials) &amp;&amp; !isUndefined(defaults.withCredentials)) &#123;</span><br><span class="line">        config.withCredentials = defaults.withCredentials;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//关键的步骤 发送请求</span></span><br><span class="line">      <span class="comment">// send request</span></span><br><span class="line">      <span class="comment">//返回新的promise供外部调用</span></span><br><span class="line">      <span class="keyword">return</span> sendReq(config, reqData).then(transformResponse, transformResponse);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sendReq</span>(<span class="params">config, reqData</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//创建defrred对象</span></span><br><span class="line">      <span class="keyword">var</span> deferred = $q.defer(),</span><br><span class="line">          promise = deferred.promise,</span><br><span class="line">          cache,</span><br><span class="line">          cachedResp,</span><br><span class="line">          reqHeaders = config.headers,</span><br><span class="line">          <span class="comment">//构造请求url</span></span><br><span class="line">          url = buildUrl(config.url, config.paramSerializer(config.params));</span><br><span class="line"></span><br><span class="line">      <span class="comment">//</span></span><br><span class="line">      $http.pendingRequests.push(config);</span><br><span class="line">      promise.then(removePendingReq, removePendingReq);</span><br><span class="line">      <span class="comment">//配置了cache属性且是get 方法时</span></span><br><span class="line">      <span class="keyword">if</span> ((config.cache || defaults.cache) &amp;&amp; config.cache !== <span class="literal">false</span> &amp;&amp;</span><br><span class="line">          (config.method === <span class="string">'GET'</span> || config.method === <span class="string">'JSONP'</span>)) &#123;</span><br><span class="line">        cache = isObject(config.cache) ? config.cache</span><br><span class="line">              : isObject(defaults.cache) ? defaults.cache</span><br><span class="line">              : defaultCache;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (cache) &#123;</span><br><span class="line">        <span class="comment">//cachedResp是个promise对象</span></span><br><span class="line">        cachedResp = cache.get(url);</span><br><span class="line">        <span class="comment">//如果存在缓存那么就存缓存中获取响应结果</span></span><br><span class="line">        <span class="keyword">if</span> (isDefined(cachedResp)) &#123;</span><br><span class="line">          <span class="keyword">if</span> (isPromiseLike(cachedResp)) &#123;</span><br><span class="line">            <span class="comment">// cached request has already been sent, but there is no response yet</span></span><br><span class="line">            cachedResp.then(resolvePromiseWithResult, resolvePromiseWithResult);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// serving from cache</span></span><br><span class="line">            <span class="keyword">if</span> (isArray(cachedResp)) &#123;</span><br><span class="line">              resolvePromise(cachedResp[<span class="number">1</span>], cachedResp[<span class="number">0</span>], shallowCopy(cachedResp[<span class="number">2</span>]), cachedResp[<span class="number">3</span>]);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              resolvePromise(cachedResp, <span class="number">200</span>, &#123;&#125;, <span class="string">'OK'</span>);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// put the promise for the non-transformed response into cache as a placeholder</span></span><br><span class="line">          cache.put(url, promise);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// if we won't have the response in cache, set the xsrf headers and</span></span><br><span class="line">      <span class="comment">// send the request to the backend</span></span><br><span class="line">      <span class="keyword">if</span> (isUndefined(cachedResp)) &#123;</span><br><span class="line">        <span class="keyword">var</span> xsrfValue = urlIsSameOrigin(config.url)</span><br><span class="line">            ? $$cookieReader()[config.xsrfCookieName || defaults.xsrfCookieName]</span><br><span class="line">            : <span class="literal">undefined</span>;</span><br><span class="line">        <span class="keyword">if</span> (xsrfValue) &#123;</span><br><span class="line">          reqHeaders[(config.xsrfHeaderName || defaults.xsrfHeaderName)] = xsrfValue;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//done函数里调用了promise</span></span><br><span class="line">        <span class="comment">//调用httpBackend</span></span><br><span class="line">        <span class="comment">//事件处理器</span></span><br><span class="line">        <span class="comment">//上传事件处理器</span></span><br><span class="line">        <span class="comment">//done方法在httpBackend中回调</span></span><br><span class="line">        $httpBackend(config.method, url, reqData, done, reqHeaders, config.timeout,</span><br><span class="line">            config.withCredentials, config.responseType,</span><br><span class="line">            createApplyHandlers(config.eventHandlers),</span><br><span class="line">            createApplyHandlers(config.uploadEventHandlers));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//返回promise函数</span></span><br><span class="line">      <span class="keyword">return</span> promise;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">createApplyHandlers</span>(<span class="params">eventHandlers</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (eventHandlers) &#123;</span><br><span class="line">          <span class="keyword">var</span> applyHandlers = &#123;&#125;;</span><br><span class="line">          forEach(eventHandlers, <span class="function"><span class="keyword">function</span>(<span class="params">eventHandler, key</span>) </span>&#123;</span><br><span class="line">            applyHandlers[key] = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">if</span> (useApplyAsync) &#123;</span><br><span class="line">                $rootScope.$applyAsync(callEventHandler);</span><br><span class="line">              &#125; <span class="keyword">else</span> <span class="keyword">if</span> ($rootScope.$$phase) &#123;</span><br><span class="line">                callEventHandler();</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                $rootScope.$apply(callEventHandler);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="function"><span class="keyword">function</span> <span class="title">callEventHandler</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                eventHandler(event);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">          &#125;);</span><br><span class="line">          <span class="keyword">return</span> applyHandlers;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//重要的一步</span></span><br><span class="line">      <span class="comment">//注册到$httpBackend()方法</span></span><br><span class="line">      <span class="comment">//缓存响应</span></span><br><span class="line">      <span class="comment">//处理原始$http promise</span></span><br><span class="line">      <span class="comment">//调用$apply</span></span><br><span class="line">      <span class="comment">/**</span><br><span class="line">       * Callback registered to $httpBackend():</span><br><span class="line">       *  - caches the response if desired</span><br><span class="line">       *  - resolves the raw $http promise</span><br><span class="line">       *  - calls $apply</span><br><span class="line">       */</span></span><br><span class="line">       <span class="comment">//status 响应状态 response 响应对象  </span></span><br><span class="line">       <span class="comment">//headersString 响应头</span></span><br><span class="line">       <span class="comment">//statusText 状态文本</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">done</span>(<span class="params">status, response, headersString, statusText</span>) </span>&#123;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+            <h2 id="static-静态代码块"><a href="#static-静态代码块" class="headerlink" title="static 静态代码块"></a>static 静态代码块</h2><p><code>org.springframework.util.ClassUtils</code>  抽象类里包含了static静态代码初始化块。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">  primitiveWrapperTypeMap.put(Boolean.class, <span class="keyword">boolean</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Byte.class, <span class="keyword">byte</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Character.class, <span class="keyword">char</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Double.class, <span class="keyword">double</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Float.class, <span class="keyword">float</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Integer.class, <span class="keyword">int</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Long.class, <span class="keyword">long</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Short.class, <span class="keyword">short</span>.class);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Java编程思想p96页5.7.3节提到了java的显式静态初始化。</p>
+<h2 id="Ljava-lang-String-的含义"><a href="#Ljava-lang-String-的含义" class="headerlink" title="[Ljava/lang/String; 的含义"></a>[Ljava/lang/String; 的含义</h2><p>“([Ljava/lang/String;)V” 它是一种对函数返回值和参数的编码。这种编码叫做JNI字段描述符（JavaNative Interface FieldDescriptors)。一个数组int[]，就需要表示为这样”[I”。如果多个数组double[][][]就需要表示为这样 “[[[D”。也就是说每一个方括号开始，就表示一个数组维数。多个方框后面，就是数组 的类型。<br>如果以一个L开头的描述符，就是类描述符，它后紧跟着类的字符串，然后分号“；”结束。</p>
+<p>比如”Ljava/lang/String;”就是表示类型String；</p>
+<p>“[I”就是表示int[];</p>
+<p>“[Ljava/lang/Object;”就是表示Object[]。</p>
+<p>JNI方法描述符，主要就是在括号里放置参数，在括号后面放置返回类型，如下：</p>
+<p>（参数描述符）返回类型</p>
+<p>当一个函数不需要返回参数类型时，就使用”V”来表示。</p>
+<p>比如”()Ljava/lang/String;”就是表示String f();</p>
+<p>“(ILjava/lang/Class;)J”就是表示long f(int i, Class c);</p>
+<p>“([B)V”就是表示void String(byte[] bytes);</p>
+<p>Java类型 符号<br>Boolean  Z,<br>Byte     B,<br>Char C,<br>Short S,<br>Int I,<br>Long J,<br>Float F,<br>Double D,<br>Void V;<br>objects对象以”L”开头，以”;”结尾，中间是用”/“ 隔开的包及类名。比如：Ljava/lang/String;如果是嵌套类，则用$来表示嵌套。例如 “(Ljava/lang/String;Landroid/os/FileUtils$FileStatus;)Z”</p>
+<p>另外数组类型的简写,则用”[“加上如表A所示的对应类型的简写形式进行表示就可以了，</p>
+<p>比如：[I 表示 int [];[L/java/lang/objects;表示Objects[],另外。引用类型（除基本类型的数组外）的标示最后都有个”;”</p>
+<p>例如：</p>
+<p>“()V” 就表示void Func();</p>
+<p>“(II)V” 表示 void Func(int, int);</p>
+<p>“(Ljava/lang/String;Ljava/lang/String;)I”.表示 int Func(String,String)</p>
+<h2 id="Array-newInstance"><a href="#Array-newInstance" class="headerlink" title="Array.newInstance"></a>Array.newInstance</h2><p>动态创建数组</p>
+<ol>
+<li><a href="https://uule.iteye.com/blog/2236322" target="_blank" rel="external">java.lang.reflect.Array.newInstance与list.toArray</a></li>
+</ol>
+<h2 id="ClassLoader-loadClass"><a href="#ClassLoader-loadClass" class="headerlink" title="ClassLoader.loadClass"></a>ClassLoader.loadClass</h2><ol>
+<li><a href="https://www.iteye.com/problems/4054" target="_blank" rel="external">类加载器URLClassLoader.loadClass(className)后, 无法卸载Jar</a></li>
+<li><a href="http://ifeve.com/classloader/" target="_blank" rel="external">深入浅出ClassLoader</a></li>
+<li><a href="https://blog.mythsman.com/2017/12/17/1/" target="_blank" rel="external">Java类加载原理与ClassLoader使用总结</a></li>
+</ol>
 
           
         
@@ -795,7 +660,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/20/angular-init-flow/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/26/spring-aop-knownpoints/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -815,7 +680,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/05/20/angular-init-flow/" class="post-title-link" itemprop="url">angular源码剖析之启动流程图</a>
+                <a href="/2019/06/26/spring-aop-knownpoints/" class="post-title-link" itemprop="url">spring aop学习资料整理</a>
               
             
           </h2>
@@ -840,167 +705,12 @@
                 
               
 
-              <time title="创建时间：2019-05-20 17:06:40 / 修改时间：21:03:57" itemprop="dateCreated datePublished" datetime="2019-05-20T17:06:40+08:00">2019-05-20</time>
+              <time title="创建时间：2019-06-26 16:07:31 / 修改时间：21:55:42" itemprop="dateCreated datePublished" datetime="2019-06-26T16:07:31+08:00">2019-06-26</time>
             
 
             
               
 
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="angularInit.png" alt></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/16/nodejs-knownpoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/16/nodejs-knownpoints/" class="post-title-link" itemprop="url">nodejs知识点整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-16 11:25:09" itemprop="dateCreated datePublished" datetime="2019-05-16T11:25:09+08:00">2019-05-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-30 20:43:17" itemprop="dateModified" datetime="2019-05-30T20:43:17+08:00">2019-05-30</time>
               
             
           </span>
@@ -1037,19 +747,344 @@
         
           
             <ol>
-<li><a href="https://mp.weixin.qq.com/s/uDwX0iq9RWs1sK1ct0tiCg" target="_blank" rel="external">干货 | 浅谈Node.js在携程的应用</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/66039729?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">npm install 版本号^的坑</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/59365797?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">使用 Puppeteer 导出声享 PPT</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/48319397" target="_blank" rel="external">『Carlo』 一个新的 Electron ?</a></li>
-<li><a href="https://blog.csdn.net/weixin_40817115/article/details/81007774" target="_blank" rel="external">关于npm audit fix</a></li>
-<li><a href="https://blog.csdn.net/qq_25106703/article/details/84786250" target="_blank" rel="external">MAC终端安装指定版本node</a></li>
-<li><a href="https://blog.csdn.net/weixin_28906733/article/details/82215842" target="_blank" rel="external">macOS工具使用篇之–Homebrew</a></li>
-<li><p><a href="https://github.com/yarnpkg/yarn/issues/5725" target="_blank" rel="external">“yarn global list” doesn’t list globally installed packages that don’t have binaries </a></p>
+<li><a href="https://segmentfault.com/a/1190000007469968#articleHeader4" target="_blank" rel="external">彻底征服 Spring AOP 之 理论篇</a></li>
+<li><a href="https://www.jianshu.com/p/994027425b44" target="_blank" rel="external">Spring(4)——面向切面编程（AOP模块）</a></li>
+<li><a href="https://www.cnblogs.com/xiaoxi/p/5981514.html" target="_blank" rel="external">Spring系列之AOP实现的两种方式</a></li>
+<li><a href="https://blog.csdn.net/shuimuniao/article/details/80805308" target="_blank" rel="external">Unable to locate Spring NamespaceHandler for XML schema产生的原因及解决方法</a></li>
+<li><a href="http://www.tianxiaobo.com/" target="_blank" rel="external">Dubbo 源码分析</a></li>
+<li><a href="https://www.imooc.com/article/43380" target="_blank" rel="external">Spring AOP 源码分析 - 拦截器链的执行过程</a></li>
+<li><a href="https://www.cnblogs.com/latteyan/articles/7065130.html#top" target="_blank" rel="external">Spring IOC和AOP 原理彻底搞懂</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/26/spring-source-BeanFactory/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/06/26/spring-source-BeanFactory/" class="post-title-link" itemprop="url">spring5.1.1源码剖析之BeanFactory接口</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-26 13:42:54 / 修改时间：21:55:42" itemprop="dateCreated datePublished" datetime="2019-06-26T13:42:54+08:00">2019-06-26</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="关于BeanFactory接口"><a href="#关于BeanFactory接口" class="headerlink" title="关于BeanFactory接口"></a>关于BeanFactory接口</h2><p>The org.springframework.beans and org.springframework.context packages are the basis for Spring Framework’s IoC container. The BeanFactory interface provides an advanced configuration mechanism capable of managing any type of object. ApplicationContext is a sub-interface of BeanFactory。</p>
+<p><code>org.springframework.beans</code> 和 <code>org.springframework.context</code> 两个包是Spring框架IoC<br>容器的基础。BeanFactory接口为任何类型提供了高级配置能力。ApplicationContext是BeanFactory的子接口,它提供了以下功能：</p>
+<ol>
+<li><p>Easier integration with Spring’s AOP features<br>(与Spring AOP特性的简单集成)</p>
 </li>
-<li><p><a href="https://mp.weixin.qq.com/s/bwhA6wlnFSV-PpBEoC3h0w" target="_blank" rel="external">Node的“字节码增强技术”你了解吗？</a><br><a href="mailto:iltorb@1.3.10" target="_blank" rel="external">iltorb@1.3.10</a></p>
+<li><p>Message resource handling (for use in internationalization) (处理Message resource,用于国际化)</p>
 </li>
-<li><p><a href="https://mp.weixin.qq.com/s/-R1f7MHJpw9w5dOJHGfGaw" target="_blank" rel="external">道路千万条，安全第一条——一次服务器被入侵的处理经过</a></p>
+<li><p>Event publication (事件发布)</p>
 </li>
+<li><p>Application-layer specific contexts such as the WebApplicationContext for use in web applications. (应用层指定上下文,比如Web应用的WebApplicationContext)</p>
+</li>
+</ol>
+<p>为啥这么说呢？我们来看AppplicationContext接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationContext</span> <span class="keyword">extends</span> <span class="title">EnvironmentCapable</span>, <span class="title">ListableBeanFactory</span>, <span class="title">HierarchicalBeanFactory</span>,</span><br><span class="line">  <span class="title">MessageSource</span>, <span class="title">ApplicationEventPublisher</span>, <span class="title">ResourcePatternResolver</span> </span>&#123;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>ApplicationEventPublisher跟Event publication相关</li>
+<li>MessageSource跟Message resource handling相关</li>
+</ol>
+<p>In short, the BeanFactory provides the configuration framework and basic functionality, and the ApplicationContext adds more enterprise-specific functionality. The ApplicationContext is a complete superset of the BeanFactory and is used exclusively in this chapter in descriptions of Spring’s IoC container.</p>
+<p>大致意思如下：</p>
+<p>简单的说，BeanFactory提供配置框架和基础的函数，子接口ApplicationContext加入了针对商业特定的方法。<br>ApplicationContext是BeanFactory完整的超集，在这个Spring IoC容器章节描述中会专门使用。</p>
+<p>In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called beans. A bean is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container. Otherwise, a bean is simply one of many objects in your application. Beans, and the dependencies among them, are reflected in the configuration metadata used by a container.</p>
+<p>在Spring世界里，构成应用程序主干和被IoC容器管理的对象称之为beans。一个bean要么实例化，组装，要么被容器管理。除此以外，一个bean就是你应用里许多对象中的一个。<br>Beans和他们的依赖是在容器使用的配置元数据里反射的。</p>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html" target="_blank" rel="external"> Introduction to the Spring IoC Container and Beans</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/18/spring-cloud-zuul/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/06/18/spring-cloud-zuul/" class="post-title-link" itemprop="url">Spring Cloud zuul知识点和问题整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-18 15:45:51" itemprop="dateCreated datePublished" datetime="2019-06-18T15:45:51+08:00">2019-06-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><a href="https://www.cnblogs.com/lexiaofei/p/7080257.html" target="_blank" rel="external">zuul入门（1）zuul 的概念和原理</a></li>
+<li><a href="https://www.liangzl.com/get-article-detail-20957.html" target="_blank" rel="external">白话SpringCloud | 第九章：路由网关(Zuul)的使用</a></li>
+<li><a href="https://www.cnblogs.com/hellxz/p/9282756.html" target="_blank" rel="external">Spring Cloud (十三) Zuul：静态路由、静态过滤器与动态路由的实现</a></li>
+<li><a href="https://blog.csdn.net/forezp/article/details/69934399" target="_blank" rel="external">史上最简单的SpringCloud教程 | 第四篇:断路器（Hystrix）</a></li>
+<li><a href="http://blog.didispace.com/spring-cloud-tips-ribbon-eager/" target="_blank" rel="external">Spring Cloud实战小贴士：Ribbon的饥饿加载(eager-load)模式</a></li>
+<li><a href="https://blog.csdn.net/lidew521/article/details/84661158" target="_blank" rel="external">SpringCloud工作笔记069—The Hystrix timeout of 60000ms for the command sc-auth is set lower than the</a></li>
 </ol>
 
           
@@ -1096,7 +1131,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/42/">42</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1138,7 +1173,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">197</span>
+                    <span class="site-state-item-count">206</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

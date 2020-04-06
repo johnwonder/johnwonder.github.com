@@ -111,7 +111,7 @@
 <meta property="og:site_name" content="john's tech blog">
 <meta property="og:description" content="angular 1.5.8 注入annotate方式解析先看使用案例：
 12345678910111213// 创建myModule模块、注册服务var myModule = angular.module(&apos;myModule&apos;, []);myModule.service(&apos;myService&apos;, function() &amp;#123;			this.my = 0;&amp;#125;);// 获取inject">
-<meta property="og:updated_time" content="2019-05-07T12:32:35.555Z">
+<meta property="og:updated_time" content="2020-03-21T11:18:06.044Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="angular源码分析之依赖注入--注解">
 <meta name="twitter:description" content="angular 1.5.8 注入annotate方式解析先看使用案例：
@@ -381,7 +381,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+                <time title="修改时间：2020-03-21 19:18:06" itemprop="dateModified" datetime="2020-03-21T19:18:06+08:00">2020-03-21</time>
               
             
           </span>
@@ -438,9 +438,7 @@
       
         <h2 id="angular-1-5-8-注入annotate方式解析"><a href="#angular-1-5-8-注入annotate方式解析" class="headerlink" title="angular 1.5.8 注入annotate方式解析"></a>angular 1.5.8 注入annotate方式解析</h2><p>先看使用案例：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建myModule模块、注册服务</span></span><br><span class="line"><span class="keyword">var</span> myModule = angular.module(<span class="string">'myModule'</span>, []);</span><br><span class="line">myModule.service(<span class="string">'myService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.my = <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取injector</span></span><br><span class="line"><span class="keyword">var</span> injector = angular.injector([<span class="string">"myModule"</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二种annotation</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">explicit</span>(<span class="params">serviceA</span>) </span>&#123;alert(serviceA.my);&#125;;</span><br><span class="line">explicit.$inject = [<span class="string">'myService'</span>];</span><br><span class="line">injector.invoke(explicit);</span><br></pre></td></tr></table></figure>
-<h3 id="angular-module函数"><a href="#angular-module函数" class="headerlink" title="angular.module函数"></a>angular.module函数</h3><p>核心angular.module方法是通过执行factory函数返回factory内部的函数</p>
-<p>调用angular.module(‘myModule’, [])方法的时候已经是执行最内部的函数了</p>
-<p>最终演变为modules[“myModule”] = factory(); 返回moduleInstance。</p>
+<h3 id="angular-module函数"><a href="#angular-module函数" class="headerlink" title="angular.module函数"></a>angular.module函数</h3><p>核心angular.module方法是通过执行factory函数返回factory内部的函数,调用<br>angular.module(‘myModule’, [])方法的时候已经是执行最内部的函数了,最终演变为<br>modules[“myModule”] = factory(); 返回moduleInstance。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setupModuleLoader</span>(<span class="params">window</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">var</span> angular = ensure(<span class="built_in">window</span>, <span class="string">'angular'</span>, <span class="built_in">Object</span>);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> ensure(angular, <span class="string">'module'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">var</span> modules = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">module</span>(<span class="params">name, requires, configFn</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> ensure(modules, name, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="module的service函数"><a href="#module的service函数" class="headerlink" title="module的service函数"></a>module的service函数</h3><p>module里包含了一系列方法:provider,factory,service,value,constant,decorator,</p>
 <p>animation,filter,controller,directive,component。</p>
@@ -585,7 +583,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">197</span>
+                    <span class="site-state-item-count">206</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
