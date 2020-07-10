@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/08/cache-knownpoints/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/spring-knownpoints/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -336,7 +336,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/05/08/cache-knownpoints/" class="post-title-link" itemprop="url">缓存知识点整理</a>
+                <a href="/2019/05/11/spring-knownpoints/" class="post-title-link" itemprop="url">spring框架学习资料整理</a>
               
             
           </h2>
@@ -361,302 +361,7 @@
                 
               
 
-              <time title="创建时间：2019-05-08 16:50:16 / 修改时间：20:26:59" itemprop="dateCreated datePublished" datetime="2019-05-08T16:50:16+08:00">2019-05-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>缓存穿透</p>
-<p>一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。一些恶意的请求会故意查询不存在的key,请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。</p>
-<p>如何避免？<br>1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。<br>2：对一定不存在的key进行过滤。可以把所有的可能存在的key放到一个大的Bitmap中，查询时通过该bitmap过滤。</p>
-<p>缓存雪崩<br>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，会给后端系统带来很大压力。导致系统崩溃。</p>
-<p>如何避免？<br>1：在缓存失效后，通过加锁或者队列来控制读数据库写缓存的线程数量。比如对某个key只允许一个线程查询数据和写缓存，其他线程等待。<br>2：做二级缓存，A1为原始缓存，A2为拷贝缓存，A1失效时，可以访问A2，A1缓存失效时间设置为短期，A2设置为长期<br>3：不同的key，设置不同的过期时间，让缓存失效的时间点尽量均匀。</p>
-<p><a href="https://www.cnblogs.com/jasontec/p/9699242.html" target="_blank" rel="external">Redis常见面试题</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/08/redis-knownpoints1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/08/redis-knownpoints1/" class="post-title-link" itemprop="url">redis知识点整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-08 16:41:52 / 修改时间：20:26:59" itemprop="dateCreated datePublished" datetime="2019-05-08T16:41:52+08:00">2019-05-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1、Redis如何做内存优化？尽可能使用散列表（hashes），散列表（是说散列表里面存储的数少）使用的内存非常小，所以你应该尽可能的将你的数据模型抽象到一个散列表里面。比如你的web系统中有一个用户对象，不要为这个用户的名称，姓氏，邮箱，密码设置单独的key,而是应该把这个用户的所有信息存储到一张散列表里面。</p>
-<p>2.mySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据</p>
-<p>相关知识：redis 内存数据集大小上升到一定大小的时候，就会施行数据淘汰策略。</p>
-<p>redis 提供 6种数据淘汰策略：<br>voltile-lru：从已设置过期时间的数据集（server.db[i].expires）中挑选最近最少使用的数据淘汰<br>volatile-ttl：从已设置过期时间的数据集（server.db[i].expires）中挑选将要过期的数据淘汰<br>volatile-random：从已设置过期时间的数据集（server.db[i].expires）中任意选择数据淘汰<br>allkeys-lru：从数据集（server.db[i].dict）中挑选最近最少使用的数据淘汰<br>allkeys-random：从数据集（server.db[i].dict）中任意选择数据淘汰<br>no-enviction（驱逐）：禁止驱逐数据</p>
-<p><a href="https://www.jianshu.com/p/36a646cef11a" target="_blank" rel="external">30道Redis面试题，面试官能问的都被我找到了</a><br><a href="https://www.cnblogs.com/jasontec/p/9699242.html" target="_blank" rel="external">Redis常见面试题</a>)</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/08/spring-security-1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/08/spring-security-1/" class="post-title-link" itemprop="url">spring security框架基础知识点</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-08 15:43:02" itemprop="dateCreated datePublished" datetime="2019-05-08T15:43:02+08:00">2019-05-08</time>
+              <time title="创建时间：2019-05-11 19:21:22" itemprop="dateCreated datePublished" datetime="2019-05-11T19:21:22+08:00">2019-05-11</time>
             
 
             
@@ -673,7 +378,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
+                <time title="修改时间：2019-06-26 23:21:43" itemprop="dateModified" datetime="2019-06-26T23:21:43+08:00">2019-06-26</time>
               
             
           </span>
@@ -709,12 +414,23 @@
       
         
           
-            <p>1、引入包spring-boot-starter-security<br>2.@EnableWebSecurity 注解<br>3.WebSecurityConfigurerAdapter适配器</p>
-<p>参考资料：<br><a href="https://www.jianshu.com/p/0c54788c94f3" target="_blank" rel="external">Spring Security原理篇(一) 启动原理</a></p>
-<ol>
-<li><a href="https://cloud.tencent.com/developer/article/1353426" target="_blank" rel="external">SpringCloud组件：你的Eureka服务注册中心安全吗？</a></li>
-<li><a href="https://blog.csdn.net/FangX_u/article/details/82589727" target="_blank" rel="external">spring cloud-给Eureka Server加上安全的用户认证</a></li>
-<li><a href="https://blog.csdn.net/weixin_42465125/article/details/88337698" target="_blank" rel="external">新版Eureka Server 加上Spring Security安全认证之后，客户端无法注册和客户端启动Up后就Down的问题</a></li>
+            <h2 id="博客文章收集"><a href="#博客文章收集" class="headerlink" title="博客文章收集"></a>博客文章收集</h2><ol>
+<li><a href="https://blog.csdn.net/aa464971/article/details/78250259" target="_blank" rel="external">IntelliJ IDEA创建Spring Maven 项目 - HelloWorld</a></li>
+<li><a href="https://blog.csdn.net/lu677521/article/details/79017626" target="_blank" rel="external">idea中Spring项目创建以及实现一个小的IoC案例</a></li>
+<li><a href="https://github.com/palantir/atlasdb" target="_blank" rel="external">Transactional Distributed Database Layer</a></li>
+<li><a href="https://blog.csdn.net/u013310075/article/details/80707098" target="_blank" rel="external">IDEA阅读spring源码并调试</a></li>
+<li><a href="https://blog.csdn.net/boling_cavalry/article/details/80796059" target="_blank" rel="external">Win10环境编译spring-framework4.1.9版本，报错”Failed to capture snapshot of input files for task ‘distZip’”</a></li>
+<li><a href="https://www.cnblogs.com/digdeep/p/4518571.html#top" target="_blank" rel="external">深入剖析 Spring 框架的 BeanFactory</a></li>
+<li><a href="https://www.cnblogs.com/niechen/p/9016816.html" target="_blank" rel="external">深入理解SpringAOP之代理对象</a></li>
+<li><a href="https://blog.csdn.net/u012881904/article/details/80813294" target="_blank" rel="external">你真的了解Java泛型参数？spring ResolvableType更好的处理泛型</a></li>
+<li><a href="https://blog.csdn.net/zbw18297786698/article/details/73441623" target="_blank" rel="external">spring更好的处理泛型</a></li>
+<li><a href="https://blog.csdn.net/shenchaohao12321/article/details/80282833" target="_blank" rel="external">【Spring源码分析】06-ResolvableType</a></li>
+<li><a href="https://www.jianshu.com/p/b90cbd61474a?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">Spring与后端模板引擎的故事</a></li>
+<li><a href="https://www.cnblogs.com/nicknailo/articles/9221392.html" target="_blank" rel="external">Spring boot源码分析-环境搭建</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzU5MDgzOTYzMw==&amp;mid=2247484030&amp;idx=1&amp;sn=7ad29239aca876e29155f5b1439281bb&amp;chksm=fe396840c94ee156adfcd44c63a3b5c1cf93805cf592ad7d45bc5222c349ba6f552b553a5c09&amp;scene=21#wechat_redirect" target="_blank" rel="external">SpringCloud学习系列汇总</a></li>
+<li><a href="https://www.cnblogs.com/goodcheap/p/6492393.html" target="_blank" rel="external">Spring学习–静态工厂方法、实例工厂方法创建 Bean</a></li>
+<li><a href="https://blog.csdn.net/chenzitaojay/article/details/46716071" target="_blank" rel="external">Spring IOC-BeanFactory的继承体系结构</a></li>
+<li><a href="https://www.jianshu.com/p/73c357cc1331" target="_blank" rel="external">Spring解析之IoC：bean的加载（三</a></li>
 </ol>
 
           
@@ -772,7 +488,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/05/KnowPoints/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/opensource-project/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -792,7 +508,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/05/05/KnowPoints/" class="post-title-link" itemprop="url">知识点整理</a>
+                <a href="/2019/05/11/opensource-project/" class="post-title-link" itemprop="url">javascript开源项目整理</a>
               
             
           </h2>
@@ -817,24 +533,12 @@
                 
               
 
-              <time title="创建时间：2019-05-05 10:09:15" itemprop="dateCreated datePublished" datetime="2019-05-05T10:09:15+08:00">2019-05-05</time>
+              <time title="创建时间：2019-05-11 14:47:12 / 修改时间：21:38:58" itemprop="dateCreated datePublished" datetime="2019-05-11T14:47:12+08:00">2019-05-11</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-08 22:37:04" itemprop="dateModified" datetime="2019-05-08T22:37:04+08:00">2019-05-08</time>
               
             
           </span>
@@ -870,23 +574,16 @@
       
         
           
-            <p>1.常用设计模式<br>2.spring cloud ribbon 熟悉<br>3.springboot 和 spring cloud 的区别 spring cloud 依赖于springboot<br>4.springboot 必须的配置 – 端口<br>5.算法– 100以内素数的数组<br>6.算法– 斐波数列的函数表达式<br>7.jvm gc相关 //<a href="https://www.cnblogs.com/wjtaigwh/p/6635484.html" target="_blank" rel="external">https://www.cnblogs.com/wjtaigwh/p/6635484.html</a><br>8.jvm为什么能跨平台 //不能编译成机器语言，因为那样就与平台相关了，编译为中间语言，再由解释器二次编译，解释执行。//<a href="https://www.cnblogs.com/roger-yu/p/5827452.html" target="_blank" rel="external">https://www.cnblogs.com/roger-yu/p/5827452.html</a><br>9.scala和java的区别<br>10.tcp三次握手<br>11.restful接口<br>12.mysql innodb 和maridb的区别 //<a href="https://blog.csdn.net/qq_27607965/article/details/79925288" target="_blank" rel="external">https://blog.csdn.net/qq_27607965/article/details/79925288</a></p>
-<p>13.string stringbuffer 和 stringbuilder的区别 //<a href="https://www.cnblogs.com/su-feng/p/6659064.html" target="_blank" rel="external">https://www.cnblogs.com/su-feng/p/6659064.html</a></p>
-<p>14.java反射常用类 classloader //<a href="https://www.cnblogs.com/jimoer/p/9185662.html" target="_blank" rel="external">https://www.cnblogs.com/jimoer/p/9185662.html</a><br>//<a href="http://blog.itpub.net/31561269/viewspace-2222522/" target="_blank" rel="external">http://blog.itpub.net/31561269/viewspace-2222522/</a><br>//<a href="https://www.cnblogs.com/doit8791/p/5820037.html" target="_blank" rel="external">https://www.cnblogs.com/doit8791/p/5820037.html</a><br>//<a href="https://www.cnblogs.com/sun1993/p/7828535.html" target="_blank" rel="external">https://www.cnblogs.com/sun1993/p/7828535.html</a><br>//<a href="https://www.cnblogs.com/zabulon/p/5826610.html" target="_blank" rel="external">https://www.cnblogs.com/zabulon/p/5826610.html</a></p>
-<p>15.spring mvc 路由机制</p>
-<p>16.Aop<br><a href="https://blog.csdn.net/dadiyang/article/details/82920139" target="_blank" rel="external">https://blog.csdn.net/dadiyang/article/details/82920139</a></p>
-<p>17.Spring Security<br><a href="https://blog.csdn.net/liushangzaibeijing/article/details/81220610#%C2%A0%202%E3%80%81WebSecurityConfiguration%E7%B1%BB" target="_blank" rel="external">https://blog.csdn.net/liushangzaibeijing/article/details/81220610#%C2%A0%202%E3%80%81WebSecurityConfiguration%E7%B1%BB</a></p>
-<p><a href="https://www.liangzl.com/get-article-detail-7915.html" target="_blank" rel="external">https://www.liangzl.com/get-article-detail-7915.html</a><br><a href="https://www.jianshu.com/nb/29347401" target="_blank" rel="external">https://www.jianshu.com/nb/29347401</a></p>
-<p>18.MQ</p>
-<p>19.除了ip白名单，还有其他拦截机制吗<br>20.分布式任务调度<br>21.缓存穿透和缓存雪崩<br><a href="https://www.cnblogs.com/jasontec/p/9699242.html" target="_blank" rel="external">https://www.cnblogs.com/jasontec/p/9699242.html</a></p>
-<p>22.dubbo 没有注册中心 也可以访问吗<br><a href="https://blog.csdn.net/weixin_43170586/article/details/83244562" target="_blank" rel="external">https://blog.csdn.net/weixin_43170586/article/details/83244562</a><br><a href="https://blog.csdn.net/xy3233/article/details/85759649" target="_blank" rel="external">https://blog.csdn.net/xy3233/article/details/85759649</a><br><a href="https://blog.csdn.net/sosozha/article/details/86712478" target="_blank" rel="external">https://blog.csdn.net/sosozha/article/details/86712478</a></p>
-<p>23、Dubbo与注册中心Zookeeper的交互过程<br><a href="https://blog.csdn.net/qq_27529917/article/details/80632078" target="_blank" rel="external">https://blog.csdn.net/qq_27529917/article/details/80632078</a></p>
-<p>24.Spring cloud Feign<br><a href="https://www.cnblogs.com/liferecord/p/6893786.html" target="_blank" rel="external">https://www.cnblogs.com/liferecord/p/6893786.html</a><br><a href="https://blog.csdn.net/q_0718/article/details/80269864" target="_blank" rel="external">https://blog.csdn.net/q_0718/article/details/80269864</a></p>
-<p>25.jdk 1.8 的主要特性<br><a href="https://blog.csdn.net/qq_29411737/article/details/80835658" target="_blank" rel="external">https://blog.csdn.net/qq_29411737/article/details/80835658</a></p>
-<p>26.幂等性<br>//<a href="https://www.cnblogs.com/javalyy/p/8882144.html" target="_blank" rel="external">https://www.cnblogs.com/javalyy/p/8882144.html</a><br>27.spring事务 参数<br>28.redis锁<br>29.jvm调优 为什么设置256m就够了<br>//<a href="https://blog.csdn.net/tpasta/article/details/82120974" target="_blank" rel="external">https://blog.csdn.net/tpasta/article/details/82120974</a><br>JVM参数中添加GC日志，GC日志中会记录每次FullGC之后各代的内存大小，观察老年代GC之后的空间大小。可观察一段时间内（比如2天）的FullGC之后的内存情况，根据多次的FullGC之后的老年代的空间大小数据来预估FullGC之后老年代的存活对象大小（可根据多次FullGC之后的内存大小取平均值）</p>
-<p>30.策略模式是怎样的<br>//<a href="http://baijiahao.baidu.com/s?id=1601547440739500969&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">http://baijiahao.baidu.com/s?id=1601547440739500969&amp;wfr=spider&amp;for=pc</a><br>封装变化的概念。<br>编程中使用接口，而不是使用的是具体的实现类(面向接口编程)。</p>
-<p>31.什么情况下会出现内存溢出<br>//<a href="https://www.cnblogs.com/panxuejun/p/5883044.html" target="_blank" rel="external">https://www.cnblogs.com/panxuejun/p/5883044.html</a><br>32.乐观锁和悲观锁 //乐观锁与悲观锁不是指具体的什么类型的锁，而是指看待并发同步的角度。<br>//<a href="https://www.cnblogs.com/lxmyhappy/p/7380073.html" target="_blank" rel="external">https://www.cnblogs.com/lxmyhappy/p/7380073.html</a><br>33.如何保证一致性<br>//<a href="https://blog.csdn.net/hxpjava1/article/details/79409459" target="_blank" rel="external">https://blog.csdn.net/hxpjava1/article/details/79409459</a><br>//<a href="https://blog.csdn.net/qq_41568597/article/details/82501738" target="_blank" rel="external">https://blog.csdn.net/qq_41568597/article/details/82501738</a><br>34.java有哪些锁<br>//<a href="https://www.cnblogs.com/lxmyhappy/p/7380073.html" target="_blank" rel="external">https://www.cnblogs.com/lxmyhappy/p/7380073.html</a></p>
-<p>35.spring ioc bean 的生命周期<br>//<a href="https://www.cnblogs.com/goodcheap/p/6491490.html" target="_blank" rel="external">https://www.cnblogs.com/goodcheap/p/6491490.html</a><br>36.代码规范<br>37.消耗cpu的操作<br>//<a href="https://www.cnblogs.com/duanxz/p/4159963.html" target="_blank" rel="external">https://www.cnblogs.com/duanxz/p/4159963.html</a><br>//<a href="https://www.cnblogs.com/paul8339/p/7464206.html" target="_blank" rel="external">https://www.cnblogs.com/paul8339/p/7464206.html</a></p>
+            <ol>
+<li><p><a href="https://github.com/jhchen" target="_blank" rel="external">Quill is a modern WYSIWYG editor built for compatibility and extensibility</a><br>WYSIWYG:What You See Is What You Get</p>
+</li>
+<li><p><a href="https://github.com/dt-fe/weekly" target="_blank" rel="external">前端周刊</a></p>
+</li>
+<li><p><a href="https://juejin.im/entry/59a6325d6fb9a024932228e0" target="_blank" rel="external">精读 《Nestjs 文档》</a></p>
+</li>
+<li><a href="https://www.jianshu.com/p/ce8a8ec5e940" target="_blank" rel="external">Nestjs 学习随谈</a></li>
+<li><a href="https://www.jianshu.com/p/f0a4944e8fb9" target="_blank" rel="external">让我们用Nestjs来重写一个CNode</a></li>
+</ol>
 
           
         
@@ -943,7 +640,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/12/angular-run-flow/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/java-concurrent-knownpoints/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -963,7 +660,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/03/12/angular-run-flow/" class="post-title-link" itemprop="url">angular源码分析之运行流程</a>
+                <a href="/2019/05/11/java-concurrent-knownpoints/" class="post-title-link" itemprop="url">java并发知识点整理</a>
               
             
           </h2>
@@ -988,7 +685,7 @@
                 
               
 
-              <time title="创建时间：2019-03-12 15:03:12" itemprop="dateCreated datePublished" datetime="2019-03-12T15:03:12+08:00">2019-03-12</time>
+              <time title="创建时间：2019-05-11 14:28:58" itemprop="dateCreated datePublished" datetime="2019-05-11T14:28:58+08:00">2019-05-11</time>
             
 
             
@@ -1005,7 +702,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-07-06 14:32:02" itemprop="dateModified" datetime="2019-07-06T14:32:02+08:00">2019-07-06</time>
+                <time title="修改时间：2019-05-30 20:43:17" itemprop="dateModified" datetime="2019-05-30T20:43:17+08:00">2019-05-30</time>
               
             
           </span>
@@ -1041,29 +738,327 @@
       
         
           
-            <p>梳理下angular的运行流程：</p>
-<p>JQLitePrototype.ready</p>
-<p>JQLite.on<br>此处涉及到expandoStore 的问题<br>on里面主要是addHandler 放到eventFns里</p>
-<p>等到onload后 再调用</p>
-<p>angularInit<br>bootstrap<br>doBootstrap<br>createInjector<br>injectionArgs<br>invoke -&gt; $RootScopeProvider</p>
-<p>以表达式 文本插值来梳理：</p>
-<p>collectDirectives -&gt; addTextInterpolateDirective -&gt; $interpolate</p>
-<p>$interpolate函数中调用parse函数，parse函数里<br>addInterceptor(parsedExpression, interceptorFn)<br>parsedExpression 为解析后的表达式，interceptorFn 为 parseStringifyInterceptor</p>
-<p>parsedExpression外面再封装一层 regularInterceptedExpression函数</p>
-<p>regularInterceptedExpression函数的watchDelegate 为inputsWatchDelegate。</p>
-<p>$interpolate函数返回的 interpolateFn实际是 调用 extend函数过后的函数：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回interpolationFn方法</span></span><br><span class="line">        <span class="keyword">return</span> extend(<span class="function"><span class="keyword">function</span> <span class="title">interpolationFn</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">var</span> ii = expressions.length;</span><br><span class="line">            <span class="keyword">var</span> values = <span class="keyword">new</span> <span class="built_in">Array</span>(ii);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">              <span class="comment">//根据表达式来解析</span></span><br><span class="line">              <span class="keyword">for</span> (; i &lt; ii; i++) &#123;</span><br><span class="line">                <span class="comment">//调用parseFns得到value</span></span><br><span class="line">                values[i] = parseFns[i](context);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">return</span> compute(values);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">              $exceptionHandler($interpolateMinErr.interr(text, err));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">          &#125;, &#123;</span><br><span class="line">          <span class="comment">// all of these properties are undocumented for now</span></span><br><span class="line">          exp: text, <span class="comment">//just for compatibility with regular watchers created via $watch</span></span><br><span class="line">          expressions: expressions,</span><br><span class="line">          <span class="attr">$$watchDelegate</span>: <span class="function"><span class="keyword">function</span>(<span class="params">scope, listener</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> lastValue;</span><br><span class="line">            <span class="keyword">return</span> scope.$watchGroup(parseFns, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatcher</span>(<span class="params">values, oldValues</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">var</span> currValue = compute(values);</span><br><span class="line">              <span class="keyword">if</span> (isFunction(listener)) &#123;</span><br><span class="line">                listener.call(<span class="keyword">this</span>, currValue, values !== oldValues ? lastValue : currValue, scope);</span><br><span class="line">              &#125;</span><br><span class="line">              lastValue = currValue;</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
-<p>所以此时的调用文本指令的时候，此时scope已经为childScope:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scope.$watch(interpolateFn, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatchAction</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">             node[<span class="number">0</span>].nodeValue = value;</span><br><span class="line">           &#125;);</span><br></pre></td></tr></table></figure>
-<p>这里的interpolateFn 就是上面的function interpolationFn(context) 函数，</p>
-<p>因为带有watchDelegate,所以直接调用watchDelegate返回:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果被解析过后的watch函数有watch的代理那就返回这个代理watch函数</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//会创建一个watcher</span></span><br><span class="line"><span class="comment">//watcher里放入listener(类似spring里的监听器)</span></span><br><span class="line"><span class="comment">//数据变化时会触发listener</span></span><br><span class="line">$watch: <span class="function"><span class="keyword">function</span>(<span class="params">watchExp, listener, objectEquality, prettyPrintExpression</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">get</span> = $parse(watchExp);//watchExp为函数时直接返回watchExp</span><br><span class="line"></span><br><span class="line">        if (<span class="keyword">get</span>.$$watchDelegate) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">get</span>.$$watchDelegate(this, listener, objectEquality, <span class="keyword">get</span>, watchExp);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
-<p>从而进入<br>scope.$watchGroup :</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$watchGroup</span>: <span class="title">function</span>(<span class="params">watchExpressions, listener</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (watchExpressions.length === <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="comment">// Special case size of one</span></span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">this</span>.$watch(watchExpressions[<span class="number">0</span>], <span class="function"><span class="keyword">function</span> <span class="title">watchGroupAction</span>(<span class="params">value, oldValue, scope</span>) </span>&#123;</span><br><span class="line">            newValues[<span class="number">0</span>] = value;</span><br><span class="line">            oldValues[<span class="number">0</span>] = oldValue;</span><br><span class="line">            listener(newValues, (value === oldValue) ? newValues : oldValues, scope);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此时watchExpressions就是 parseFns ，那继续进入watch,那此时的watchDelegate就是</p>
-<p>inputsWatchDelegate。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inputsWatchDelegate</span>(<span class="params">scope, listener, objectEquality, parsedExpression, prettyPrintExpression</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">var</span> inputExpressions = parsedExpression.inputs;</span><br><span class="line">   <span class="keyword">var</span> lastResult;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> (inputExpressions.length === <span class="number">1</span>) &#123;</span><br><span class="line">     <span class="keyword">var</span> oldInputValueOf = expressionInputDirtyCheck; <span class="comment">// init to something unique so that equals check fails</span></span><br><span class="line">     inputExpressions = inputExpressions[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">return</span> scope.$watch(<span class="function"><span class="keyword">function</span> <span class="title">expressionInputWatch</span>(<span class="params">scope</span>) </span>&#123;</span><br><span class="line">       <span class="keyword">var</span> newInputValue = inputExpressions(scope);</span><br><span class="line">       <span class="keyword">if</span> (!expressionInputDirtyCheck(newInputValue, oldInputValueOf)) &#123;</span><br><span class="line">         lastResult = parsedExpression(scope, <span class="literal">undefined</span>, <span class="literal">undefined</span>, [newInputValue]);</span><br><span class="line">         oldInputValueOf = newInputValue &amp;&amp; getValueOf(newInputValue);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> lastResult;</span><br><span class="line">     &#125;, listener, objectEquality, prettyPrintExpression);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>实际这个插值的watchers就只有一个，就是这个expressionInputWatch</p>
+            <ol>
+<li><a href="https://blog.csdn.net/dm_vincent/article/details/79604716" target="_blank" rel="external">为什么volatile++不是原子性的？</a></li>
+<li><a href="https://mp.weixin.qq.com/s/wvBziVsRNS7pXyknAHEYKg" target="_blank" rel="external">分享一道阿里Java并发面试题 (详细分析篇)</a></li>
+<li><a href="https://www.cnblogs.com/dancser/p/4450963.html#top" target="_blank" rel="external">不错的TOMCAT监控好工具probe</a></li>
+<li><a href="http://www.linkedkeeper.com/detail/blog.action?bid=1453&amp;hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">JDK1.8应用启动出现fullgc问题解决方案</a></li>
+<li><a href="https://mp.weixin.qq.com/s/TeDvhjZoldoJs4VZNS26tg" target="_blank" rel="external">阿里Sentinel整合Zuul网关详解</a></li>
+<li><a href="https://mp.weixin.qq.com/s/uDwX0iq9RWs1sK1ct0tiCg" target="_blank" rel="external">干货 | 浅谈Node.js在携程的应用</a></li>
+<li><a href="https://mp.weixin.qq.com/s/qeYRAcDm2ZNmYgcPndAZjQ" target="_blank" rel="external">Kubernetes 原生 CI/CD 系统 Prow 简介</a></li>
+<li><a href="https://www.jb51.net/article/114900.htm" target="_blank" rel="external">java 使用ConcurrentHashMap和计数器实现锁</a></li>
+<li><a href="https://mp.weixin.qq.com/s/5I6a2ab7dkO4XOnJ5Q3x4w" target="_blank" rel="external">为什么ConcurrentHashMap的读操作不需要加锁？</a></li>
+<li><a href="https://blog.csdn.net/zqz_zqz/article/details/80408035" target="_blank" rel="external">通过ConcurrentHashMap的putIfAbsent方法实现对象锁</a></li>
+<li><a href="https://www.jianshu.com/p/b8073a6ce1c0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation" target="_blank" rel="external">阿里面试题，Java中wait()方法为什么要放在同步块中</a></li>
+<li><a href="https://www.zhihu.com/question/26350691/answer/42692522?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">阿里巴巴、美团等各大互联网公司的 Java 类校招对本科生的要求是什么</a></li>
+<li><a href="https://github.com/wosyingjun" target="_blank" rel="external">优雅的SSM（Spring+SpringMVC+Mybatis）框架</a></li>
+<li><a href="http://calvin1978.blogcn.com/articles/javaguide4.html" target="_blank" rel="external">《唯品会Java开发手册》－与阿里手册的比较文学</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/66807833?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank" rel="external">知乎千万级高性能长连接网关揭秘</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/Algorithm-knownpoints/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/11/Algorithm-knownpoints/" class="post-title-link" itemprop="url">算法学习资料整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-11 10:05:49 / 修改时间：10:07:30" itemprop="dateCreated datePublished" datetime="2019-05-11T10:05:49+08:00">2019-05-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><a href="https://blog.csdn.net/dennis_wu_/article/category/6977094/2?" target="_blank" rel="external">剑指offer</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/flutter-knownpoints/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/10/flutter-knownpoints/" class="post-title-link" itemprop="url">flutter跨平台开发资料整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-10 10:02:17" itemprop="dateCreated datePublished" datetime="2019-05-10T10:02:17+08:00">2019-05-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-18 09:22:52" itemprop="dateModified" datetime="2019-05-18T09:22:52+08:00">2019-05-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><a href="https://blog.csdn.net/ddwhan0123" target="_blank" rel="external">Flutter学写个NIO APP</a></li>
+<li><a href="https://github.com/Sky24n" target="_blank" rel="external">基于Google Flutter的WanAndroid客户端</a></li>
+<li><a href="https://github.com/pedromassango/my_flutter_challenges" target="_blank" rel="external">My Flutter Challenges</a></li>
+</ol>
 
           
         
@@ -1109,7 +1104,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/42/">42</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/44/">44</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1151,7 +1146,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">206</span>
+                    <span class="site-state-item-count">218</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1240,7 +1235,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">35</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

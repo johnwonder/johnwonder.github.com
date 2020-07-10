@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-loading-bar.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="今天在看1234567891011121314151617181920212223```Java/**	 * Name of property to set to specify active profiles: &amp;#123;@value&amp;#125;. Value may be comma	 * delimited.	 * &amp;lt;p&amp;gt;Note that certain shell envi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解开spring中Profile的神秘面纱之一">
+<meta property="og:url" content="http://yoursite.com/2020/04/06/spring-envrionment-profile/index.html">
+<meta property="og:site_name" content="john's tech blog">
+<meta property="og:description" content="今天在看1234567891011121314151617181920212223```Java/**	 * Name of property to set to specify active profiles: &amp;#123;@value&amp;#125;. Value may be comma	 * delimited.	 * &amp;lt;p&amp;gt;Note that certain shell envi">
+<meta property="og:updated_time" content="2020-04-06T13:48:57.702Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解开spring中Profile的神秘面纱之一">
+<meta name="twitter:description" content="今天在看1234567891011121314151617181920212223```Java/**	 * Name of property to set to specify active profiles: &amp;#123;@value&amp;#125;. Value may be comma	 * delimited.	 * &amp;lt;p&amp;gt;Note that certain shell envi">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2020/04/06/spring-envrionment-profile/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>解开spring中Profile的神秘面纱之一 | john's tech blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">john's tech blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">hope is coming</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/06/spring-envrionment-profile/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">解开spring中Profile的神秘面纱之一
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-06 21:26:07 / 修改时间：21:48:57" itemprop="dateCreated datePublished" datetime="2020-04-06T21:26:07+08:00">2020-04-06</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2020/04/06/spring-envrionment-profile/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/04/06/spring-envrionment-profile/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天在看<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```Java</span><br><span class="line">/**</span><br><span class="line">	 * Name of property to set to specify active profiles: &#123;@value&#125;. Value may be comma</span><br><span class="line">	 * delimited.</span><br><span class="line">	 * &lt;p&gt;Note that certain shell environments such as Bash disallow the use of the period</span><br><span class="line">	 * character in variable names. Assuming that Spring&apos;s &#123;@link SystemEnvironmentPropertySource&#125;</span><br><span class="line">	 * is in use, this property may be specified as an environment variable as</span><br><span class="line">	 * &#123;@code SPRING_PROFILES_ACTIVE&#125;.</span><br><span class="line">	 * @see ConfigurableEnvironment#setActiveProfiles</span><br><span class="line">	 */</span><br><span class="line">	public static final String ACTIVE_PROFILES_PROPERTY_NAME = &quot;spring.profiles.active&quot;;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Name of property to set to specify profiles active by default: &#123;@value&#125;. Value may</span><br><span class="line">	 * be comma delimited.</span><br><span class="line">	 * &lt;p&gt;Note that certain shell environments such as Bash disallow the use of the period</span><br><span class="line">	 * character in variable names. Assuming that Spring&apos;s &#123;@link SystemEnvironmentPropertySource&#125;</span><br><span class="line">	 * is in use, this property may be specified as an environment variable as</span><br><span class="line">	 * &#123;@code SPRING_PROFILES_DEFAULT&#125;.</span><br><span class="line">	 * @see ConfigurableEnvironment#setDefaultProfiles</span><br><span class="line">	 */</span><br><span class="line">	public static final String DEFAULT_PROFILES_PROPERTY_NAME = &quot;spring.profiles.default&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>这里面的<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">那么这个类里就包含了对我们这些配置的读写操作。参考网上的说法：</span><br><span class="line"></span><br><span class="line">如果当spring.profiles.active属性被设置时，那么Spring会优先使用该属性对应值来激活Profile。当spring.profiles.active没有被设置时，那么Spring会根据spring.profiles.default属性的对应值来进行Profile进行激活。如果上面的两个属性都没有被设置，那么就不会有任务Profile被激活，只有定义在Profile之外的Bean才会被创建。</span><br><span class="line"></span><br><span class="line">我们先看对默认配置的读写操作：</span><br><span class="line"></span><br><span class="line">### setDefaultProfiles</span><br><span class="line"></span><br><span class="line">```Java</span><br><span class="line">    /**</span><br><span class="line">    * Specify the set of profiles to be made active by default if no other profiles</span><br><span class="line">    * are explicitly made active through &#123;@link #setActiveProfiles&#125;.</span><br><span class="line">    * &lt;p&gt;Calling this method removes overrides any reserved default profiles</span><br><span class="line">    * that may have been added during construction of the environment.</span><br><span class="line">    * @see #AbstractEnvironment()</span><br><span class="line">    * @see #getReservedDefaultProfiles()</span><br><span class="line">    */</span><br><span class="line">    //https://blog.csdn.net/jamet/article/details/77508182</span><br><span class="line">    @Override</span><br><span class="line">    public void setDefaultProfiles(String... profiles) &#123;</span><br><span class="line">    Assert.notNull(profiles, &quot;Profile array must not be null&quot;);</span><br><span class="line">      synchronized (this.defaultProfiles) &#123;</span><br><span class="line">        this.defaultProfiles.clear();</span><br><span class="line">        for (String profile : profiles) &#123;</span><br><span class="line">          validateProfile(profile);</span><br><span class="line">          this.defaultProfiles.add(profile);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">      /**</span><br><span class="line">  	 * Validate the given profile, called internally prior to adding to the set of</span><br><span class="line">  	 * active or default profiles.</span><br><span class="line">  	 * &lt;p&gt;Subclasses may override to impose further restrictions on profile syntax.</span><br><span class="line">  	 * @throws IllegalArgumentException if the profile is null, empty, whitespace-only or</span><br><span class="line">  	 * begins with the profile NOT operator (!).</span><br><span class="line">  	 * @see #acceptsProfiles</span><br><span class="line">  	 * @see #addActiveProfile</span><br><span class="line">  	 * @see #setDefaultProfiles</span><br><span class="line">  	 */</span><br><span class="line">  	protected void validateProfile(String profile) &#123;</span><br><span class="line">  		if (!StringUtils.hasText(profile)) &#123;</span><br><span class="line">  			throw new IllegalArgumentException(&quot;Invalid profile [&quot; + profile + &quot;]: must contain text&quot;);</span><br><span class="line">  		&#125;</span><br><span class="line">  		if (profile.charAt(0) == &apos;!&apos;) &#123;</span><br><span class="line">  			throw new IllegalArgumentException(&quot;Invalid profile [&quot; + profile + &quot;]: must not begin with ! operator&quot;);</span><br><span class="line">  		&#125;</span><br><span class="line">  	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中defaultProfiles是个Set集合，它会先验证传入的一个或多个profile字符串不能为空且不能以!开头，然后放入集合中。</p>
+<h3 id="doGetDefaultProfiles"><a href="#doGetDefaultProfiles" class="headerlink" title="doGetDefaultProfiles"></a>doGetDefaultProfiles</h3><p>获取默认的Profiles</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Return the set of default profiles explicitly set via</span><br><span class="line"> * &#123;<span class="doctag">@link</span> #setDefaultProfiles(String...)&#125; or if the current set of default profiles</span><br><span class="line"> * consists only of &#123;<span class="doctag">@linkplain</span> #getReservedDefaultProfiles() reserved default</span><br><span class="line"> * profiles&#125;, then check for the presence of the</span><br><span class="line"> * &#123;<span class="doctag">@value</span> #DEFAULT_PROFILES_PROPERTY_NAME&#125; property and assign its value (if any)</span><br><span class="line"> * to the set of default profiles.</span><br><span class="line"> * <span class="doctag">@see</span> #AbstractEnvironment()</span><br><span class="line"> * <span class="doctag">@see</span> #getDefaultProfiles()</span><br><span class="line"> * <span class="doctag">@see</span> #DEFAULT_PROFILES_PROPERTY_NAME</span><br><span class="line"> * <span class="doctag">@see</span> #getReservedDefaultProfiles()</span><br><span class="line"> */</span></span><br><span class="line"><span class="comment">//https://blog.csdn.net/jamet/article/details/77508182</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Set&lt;String&gt; <span class="title">doGetDefaultProfiles</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">synchronized</span> (<span class="keyword">this</span>.defaultProfiles) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.defaultProfiles.equals(getReservedDefaultProfiles())) &#123;</span><br><span class="line">      String profiles = getProperty(DEFAULT_PROFILES_PROPERTY_NAME);</span><br><span class="line">      <span class="keyword">if</span> (StringUtils.hasText(profiles)) &#123;</span><br><span class="line">        setDefaultProfiles(StringUtils.commaDelimitedListToStringArray(</span><br><span class="line">            StringUtils.trimAllWhitespace(profiles)));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.defaultProfiles;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果当前defaultProfiles为保留的Profiles(就是一个单例的包含default的集合)，那么就尝试从<code>propertyResolver</code><br>中获取,然后返回defaultProfiles集合。我们要注意到这边的Set集合实现其实是<code>LinkedHashSet</code>。<br>下回我们讲下ActiveProfiles的操作。</p>
+<p>参考资料:</p>
+<ol>
+<li><a href="https://www.jianshu.com/p/948c303b2253" target="_blank" rel="external">详解Spring中的Profile</a></li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/05/springboot-tomcat-session/" rel="next" title="springboot应用在同IP下Session冲突该怎么解决">
+                <i class="fa fa-chevron-left"></i> springboot应用在同IP下Session冲突该怎么解决
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/07/spring-applicationcontextInitializer/" rel="prev" title="spring中的ApplicationContextInitializer揭秘">
+                spring中的ApplicationContextInitializer揭秘 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display: none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">218</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/johnwonder" title="GitHub &rarr; https://github.com/johnwonder" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/johnfuck19" title="Twitter &rarr; https://twitter.com/johnfuck19" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#doGetDefaultProfiles"><span class="nav-number">1.</span> <span class="nav-text">doGetDefaultProfiles</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.1.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css"/>
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: window.location.pathname,
+      owner: 'johnwonder',
+      repo: 'johnwonder.github.com',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        proxy_gateway: 'https://gh-oauth.imsun.net',
+      
+        client_id: '5e5ac1108f5771d9a770'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    function showGitment() {
+      document.getElementById('gitment-display-button').style.display = 'none';
+      document.getElementById('gitment-container').style.display = 'block';
+      renderGitment();
+    }
+  
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

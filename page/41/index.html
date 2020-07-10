@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/09/30/orchard-recipe/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/27/jquery_filter/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -336,7 +336,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2015/09/30/orchard-recipe/" class="post-title-link" itemprop="url">orchard-recipe</a>
+                <a href="/2016/08/27/jquery_filter/" class="post-title-link" itemprop="url">jquery之filter函数解析</a>
               
             
           </h2>
@@ -361,7 +361,7 @@
                 
               
 
-              <time title="创建时间：2015-09-30 09:07:54" itemprop="dateCreated datePublished" datetime="2015-09-30T09:07:54+08:00">2015-09-30</time>
+              <time title="创建时间：2016-08-27 08:46:49" itemprop="dateCreated datePublished" datetime="2016-08-27T08:46:49+08:00">2016-08-27</time>
             
 
             
@@ -378,7 +378,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-09 20:30:54" itemprop="dateModified" datetime="2019-05-09T20:30:54+08:00">2019-05-09</time>
+                <time title="修改时间：2019-05-09 20:28:39" itemprop="dateModified" datetime="2019-05-09T20:28:39+08:00">2019-05-09</time>
               
             
           </span>
@@ -414,25 +414,10 @@
       
         
           
-            <h2 id="Orchard的Recipe是如何解析的"><a href="#Orchard的Recipe是如何解析的" class="headerlink" title="Orchard的Recipe是如何解析的"></a>Orchard的Recipe是如何解析的</h2><h3 id="SetupService类"><a href="#SetupService类" class="headerlink" title="SetupService类"></a>SetupService类</h3><p>安装的时候先去发现Recipe:</p>
-<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_recipeHarvester.HarvestRecipes(<span class="string">"Orchard.Setup"</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
-<h3 id="RecipeHarvester类"><a href="#RecipeHarvester类" class="headerlink" title="RecipeHarvester类"></a>RecipeHarvester类</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span> 比如extensionId 为 Orchard.Setup</span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span> 找到以.recipe.xml结束的文件</span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="extensionId"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> IEnumerable&lt;Recipe&gt; <span class="title">HarvestRecipes</span>(<span class="params"><span class="keyword">string</span> extensionId</span>)</span> &#123;</span><br><span class="line">          <span class="keyword">var</span> recipes = <span class="keyword">new</span> List&lt;Recipe&gt;();</span><br><span class="line">          <span class="keyword">var</span> extension = _extensionManager.GetExtension(extensionId);</span><br><span class="line">          <span class="keyword">if</span> (extension != <span class="literal">null</span>) &#123;</span><br><span class="line">  <span class="comment">// ~/Modules/Orchard.Setup/Recipes</span></span><br><span class="line">              <span class="keyword">var</span> recipeLocation = Path.Combine(extension.Location, extensionId, <span class="string">"Recipes"</span>);</span><br><span class="line">              <span class="keyword">var</span> recipeFiles = _webSiteFolder.ListFiles(recipeLocation, <span class="literal">true</span>);</span><br><span class="line">              recipes.AddRange(</span><br><span class="line">                  <span class="keyword">from</span> recipeFile <span class="keyword">in</span> recipeFiles</span><br><span class="line">                  <span class="keyword">where</span> recipeFile.EndsWith(<span class="string">".recipe.xml"</span>, StringComparison.OrdinalIgnoreCase)</span><br><span class="line">                  <span class="keyword">select</span> _recipeParser.ParseRecipe(_webSiteFolder.ReadFile(recipeFile)));<span class="comment">//根据虚拟目录来</span></span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">else</span> &#123;</span><br><span class="line">              Logger.Error(<span class="string">"Could not discover recipes because module '&#123;0&#125;' was not found."</span>, extensionId);</span><br><span class="line">          &#125;</span><br><span class="line">   <span class="comment">//返回组装好的Recipe</span></span><br><span class="line">          <span class="keyword">return</span> recipes;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="RecipeParser类"><a href="#RecipeParser类" class="headerlink" title="RecipeParser类"></a>RecipeParser类</h2><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Recipe <span class="title">ParseRecipe</span>(<span class="params"><span class="keyword">string</span> recipeText</span>)</span> &#123;</span><br><span class="line">            <span class="keyword">var</span> recipe = <span class="keyword">new</span> Recipe();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">var</span> recipeSteps = <span class="keyword">new</span> List&lt;RecipeStep&gt;();</span><br><span class="line">                TextReader textReader = <span class="keyword">new</span> StringReader(recipeText);</span><br><span class="line">                <span class="keyword">var</span> recipeTree = XElement.Load(textReader, LoadOptions.PreserveWhitespace);</span><br><span class="line">                textReader.Close();</span><br><span class="line"></span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> element <span class="keyword">in</span> recipeTree.Elements()) &#123;</span><br><span class="line">                    <span class="comment">// Recipe mETaDaTA</span></span><br><span class="line">                    <span class="keyword">if</span> (element.Name.LocalName == <span class="string">"Recipe"</span>) &#123;</span><br><span class="line">                        <span class="keyword">foreach</span> (<span class="keyword">var</span> metadataElement <span class="keyword">in</span> element.Elements()) &#123;</span><br><span class="line">                            <span class="keyword">switch</span> (metadataElement.Name.LocalName) &#123;</span><br><span class="line">                                <span class="keyword">case</span> <span class="string">"Name"</span>:</span><br><span class="line">                                    recipe.Name = metadataElement.Value;</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                <span class="keyword">case</span> <span class="string">"Description"</span>:</span><br><span class="line">                                    recipe.Description = metadataElement.Value;</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                <span class="keyword">case</span> <span class="string">"Author"</span>:</span><br><span class="line">                                    recipe.Author = metadataElement.Value;</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                <span class="keyword">case</span> <span class="string">"WebSite"</span>:</span><br><span class="line">                                    recipe.WebSite = metadataElement.Value;</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                <span class="keyword">case</span> <span class="string">"Version"</span>:</span><br><span class="line">                                    recipe.Version = metadataElement.Value;</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                <span class="keyword">case</span> <span class="string">"Tags"</span>:</span><br><span class="line">                                    recipe.Tags = metadataElement.Value;</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                                <span class="keyword">default</span>:</span><br><span class="line">                                    Logger.Error(<span class="string">"Unrecognized recipe metadata element &#123;0&#125; encountered. Skipping."</span>, metadataElement.Name.LocalName);</span><br><span class="line">                                    <span class="keyword">break</span>;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// Recipe step</span></span><br><span class="line">                    <span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="keyword">var</span> recipeStep = <span class="keyword">new</span> RecipeStep &#123; Name = element.Name.LocalName, Step = element &#125;;</span><br><span class="line">                        recipeSteps.Add(recipeStep);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                recipe.RecipeSteps = recipeSteps;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">catch</span> (Exception exception) &#123;</span><br><span class="line">                Logger.Error(exception, <span class="string">"Parsing recipe failed. Recipe text was: &#123;0&#125;."</span>, recipeText);</span><br><span class="line">                <span class="keyword">throw</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> recipe;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<p>安装的时候就会通过在界面中选择的model.Recipe去Execute对应的Recipe.</p>
-<h2 id="RecipeManager类"><a href="#RecipeManager类" class="headerlink" title="RecipeManager类"></a>RecipeManager类</h2><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (recipe<span class="operator"> == </span>null)</span><br><span class="line">            return null;</span><br><span class="line"></span><br><span class="line">        var executionId = Guid.<span class="constructor">NewGuid()</span>.<span class="constructor">ToString(<span class="string">"n"</span>)</span>;</span><br><span class="line">        _recipeJournal.<span class="constructor">ExecutionStart(<span class="params">executionId</span>)</span>;</span><br><span class="line"></span><br><span class="line">        foreach (var recipeStep <span class="keyword">in</span> recipe.RecipeSteps) &#123;</span><br><span class="line">            _recipeStepQueue.<span class="constructor">Enqueue(<span class="params">executionId</span>, <span class="params">recipeStep</span>)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        _recipeScheduler.<span class="constructor">ScheduleWork(<span class="params">executionId</span>)</span>;</span><br><span class="line"></span><br><span class="line">        return executionId;</span><br></pre></td></tr></table></figure>
-<p>先把RecipeStep加入recipeStepQueue中，其实内部就是写入一个个文件</p>
-<h2 id="RecipeStepQueue类"><a href="#RecipeStepQueue类" class="headerlink" title="RecipeStepQueue类"></a>RecipeStepQueue类</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="type">void</span> Enqueue(string executionId, RecipeStep step) &#123;</span><br><span class="line">       var recipeStepElement = <span class="built_in">new</span> XElement("RecipeStep");</span><br><span class="line">       recipeStepElement.<span class="keyword">Add</span>(<span class="built_in">new</span> XElement("Name", step.Name));</span><br><span class="line">       recipeStepElement.<span class="keyword">Add</span>(step.Step);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (_appDataFolder.DirectoryExists(<span class="type">Path</span>.Combine(_recipeQueueFolder, executionId))) &#123;</span><br><span class="line">           <span class="type">int</span> stepIndex = GetLastStepIndex(executionId) + <span class="number">1</span>;</span><br><span class="line">           _appDataFolder.CreateFile(<span class="type">Path</span>.Combine(_recipeQueueFolder, executionId + <span class="type">Path</span>.DirectorySeparatorChar + stepIndex),</span><br><span class="line">                                     recipeStepElement.ToString());</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span> &#123;</span><br><span class="line">           _appDataFolder.CreateFile(</span><br><span class="line">               <span class="type">Path</span>.Combine(_recipeQueueFolder, executionId + <span class="type">Path</span>.DirectorySeparatorChar + "0"),</span><br><span class="line">               recipeStepElement.ToString());</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>然后RecipeStepExecutor就去去执行各个Step</p>
-<h2 id="RecipeStepExecutor类"><a href="#RecipeStepExecutor类" class="headerlink" title="RecipeStepExecutor类"></a>RecipeStepExecutor类</h2><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public <span class="built_in">bool</span> <span class="constructor">ExecuteNextStep(<span class="params">string</span> <span class="params">executionId</span>)</span> &#123;</span><br><span class="line">            var nextRecipeStep= _recipeStepQueue.<span class="constructor">Dequeue(<span class="params">executionId</span>)</span>;</span><br><span class="line">            <span class="keyword">if</span> (nextRecipeStep<span class="operator"> == </span>null) &#123;</span><br><span class="line">                _recipeJournal.<span class="constructor">ExecutionComplete(<span class="params">executionId</span>)</span>;</span><br><span class="line">                return <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            _recipeJournal.<span class="constructor">WriteJournalEntry(<span class="params">executionId</span>, <span class="params">string</span>.Format(<span class="string">"Executing step &#123;0&#125;."</span>, <span class="params">nextRecipeStep</span>.Name)</span>);</span><br><span class="line">            var recipeContext = <span class="keyword">new</span> RecipeContext &#123; RecipeStep = nextRecipeStep, Executed = <span class="literal">false</span> &#125;;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                foreach (var recipeHandler <span class="keyword">in</span> _recipeHandlers) &#123;</span><br><span class="line">                    recipeHandler.<span class="constructor">ExecuteRecipeStep(<span class="params">recipeContext</span>)</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">	    ...</span><br></pre></td></tr></table></figure>
-<p>有没有发现 其实到最后是通过recipeHandler来处理的<br>我们来看看有多少Handler<br>FeatureRecipeHandler<br>CommandRecipeHandler<br>DataRecipeHandler<br>MetadataRecipeHandler<br>MigrationRecipHandler<br>ModuleRecipeHandler<br>SettingsRecipeHandler<br>ThemeRecipeHandler</p>
-<p>看看FeatureRecipeHandler内部是怎么ExecuteRecipeStep的</p>
-<h2 id="FeatureRecipeHandler类"><a href="#FeatureRecipeHandler类" class="headerlink" title="FeatureRecipeHandler类"></a>FeatureRecipeHandler类</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// &lt;Feature <span class="keyword">enable</span>="f1,f2,f3" <span class="keyword">disable</span>="f4" /&gt;</span><br><span class="line">      // <span class="keyword">Enable</span>/<span class="keyword">Disable</span> features.</span><br><span class="line">      <span class="built_in">public</span> <span class="type">void</span> ExecuteRecipeStep(RecipeContext recipeContext) &#123;</span><br><span class="line">          <span class="keyword">if</span> (!String.Equals(recipeContext.RecipeStep.Name, "Feature", StringComparison.OrdinalIgnoreCase)) &#123;</span><br><span class="line">              <span class="keyword">return</span>;</span><br><span class="line">          &#125;</span><br></pre></td></tr></table></figure>
-<p>一开始判断RecipeStep.Name是不是Feature，不是就直接Return.</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">foreach (var featureName <span class="keyword">in</span> featuresToEnable) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!availableFeatures.<span class="constructor">Contains(<span class="params">featureName</span>)</span>) &#123;</span><br><span class="line">                    throw <span class="keyword">new</span> <span class="constructor">InvalidOperationException(<span class="params">string</span>.Format(<span class="string">"Could not enable feature &#123;0&#125; because it was not found."</span>, <span class="params">featureName</span>)</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
-<p>随后去availableFeatures中判断是不是存在featuresToEnable中的某个feature。</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">然后去EnableFeatures.</span><br><span class="line"> <span class="keyword">if</span> (featuresToEnable.Count != <span class="number">0</span>) &#123;</span><br><span class="line">                _featureManager.<span class="constructor">EnableFeatures(<span class="params">featuresToEnable</span>, <span class="params">true</span>)</span>;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="FeatureManager类"><a href="#FeatureManager类" class="headerlink" title="FeatureManager类"></a>FeatureManager类</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_<span class="selector-tag">shellDescriptorManager</span><span class="selector-class">.UpdateShellDescriptor</span>(<span class="selector-tag">shellDescriptor</span><span class="selector-class">.SerialNumber</span>, <span class="selector-tag">enabledFeatures</span>,</span><br><span class="line">                                                            <span class="selector-tag">shellDescriptor</span><span class="selector-class">.Parameters</span>);</span><br></pre></td></tr></table></figure>
-<p>我们先来看这两段代码：<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ShellDescriptor </span><span class="keyword">shellDescriptor </span>= _shellDescriptorManager.GetShellDescriptor()<span class="comment">;</span></span><br><span class="line">          List&lt;<span class="keyword">ShellFeature&gt; </span>enabledFeatures = <span class="keyword">shellDescriptor.Features.ToList();</span></span><br></pre></td></tr></table></figure></p>
+            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><h3 id="filter函数"><a href="#filter函数" class="headerlink" title="filter函数"></a>filter函数</h3><p>1.0源码:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">filter: <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//返回pushStack的结果</span></span><br><span class="line">	<span class="comment">//这种 与加或 的方法值得学习</span></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.pushStack(</span><br><span class="line">		<span class="comment">//如果参数是数组 那么就调用map函数</span></span><br><span class="line">		<span class="comment">//返回新的结果</span></span><br><span class="line">		t.constructor == <span class="built_in">Array</span> &amp;&amp;</span><br><span class="line">		jQuery.map(<span class="keyword">this</span>,<span class="function"><span class="keyword">function</span>(<span class="params">a</span>)</span>&#123;</span><br><span class="line">			<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; t.length; i++ )</span><br><span class="line">				<span class="keyword">if</span> ( jQuery.filter(t[i],[a]).r.length )</span><br><span class="line">					<span class="keyword">return</span> a;</span><br><span class="line">		&#125;) ||</span><br><span class="line">		<span class="comment">//如果参数是true那么就直接get()获取</span></span><br><span class="line">		<span class="comment">//如果参数是false那么就返回空数组</span></span><br><span class="line">		t.constructor == <span class="built_in">Boolean</span> &amp;&amp;</span><br><span class="line">		( t ? <span class="keyword">this</span>.get() : [] ) ||</span><br><span class="line">		<span class="comment">//如果参数是函数那么就调用grep函数</span></span><br><span class="line">		t.constructor == <span class="built_in">Function</span> &amp;&amp;</span><br><span class="line">		jQuery.grep( <span class="keyword">this</span>, t ) ||</span><br><span class="line">		<span class="comment">//如果参数是其他类型那么就调用静态的filter函数</span></span><br><span class="line">		jQuery.filter(t,<span class="keyword">this</span>).r, <span class="built_in">arguments</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="根据函数类型判断再内部调用不同的函数："><a href="#根据函数类型判断再内部调用不同的函数：" class="headerlink" title="根据函数类型判断再内部调用不同的函数："></a>根据函数类型判断再内部调用不同的函数：</h2><h3 id="1-grep函数内部就是遍历元素数组，调用参数函数t，如果满足t函数，那么就push到result数组。"><a href="#1-grep函数内部就是遍历元素数组，调用参数函数t，如果满足t函数，那么就push到result数组。" class="headerlink" title="1.grep函数内部就是遍历元素数组，调用参数函数t，如果满足t函数，那么就push到result数组。"></a>1.grep函数内部就是遍历元素数组，调用参数函数t，如果满足t函数，那么就push到result数组。</h3><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">grep: <span class="built_in">function</span>(elems, fn, <span class="built_in">inv</span>) &#123;</span><br><span class="line">	<span class="comment">// If a string is passed in for the function, make a function</span></span><br><span class="line">	<span class="comment">// for it (a handy shortcut)</span></span><br><span class="line">	<span class="keyword">if</span> ( <span class="function"><span class="keyword">fn</span>.<span class="title">constructor</span> </span>== <span class="keyword">String</span> )</span><br><span class="line">		<span class="function"><span class="keyword">fn</span> </span>= <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"a"</span>,<span class="string">"i"</span>,<span class="string">"return "</span> + fn);</span><br><span class="line">	<span class="comment">//定义局部数组</span></span><br><span class="line">	var result = [];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Go through the array, only saving the items</span></span><br><span class="line">	<span class="comment">// that pass the validator function</span></span><br><span class="line">	<span class="keyword">for</span> ( var i = <span class="number">0</span>; i &lt; elems.length; i++ )</span><br><span class="line">		if ( !<span class="built_in">inv</span> &amp;&amp; <span class="keyword">fn</span>(elems[i],i) || <span class="built_in">inv</span> &amp;&amp; !<span class="keyword">fn</span>(elems[i],i) )</span><br><span class="line">			result.push( elems[i] );</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比如<br><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> elems = $(<span class="string">'li'</span>);</span><br><span class="line"></span><br><span class="line">elems.filter(<span class="function"><span class="keyword">function</span>(<span class="params">index</span>) </span>&#123;</span><br><span class="line">	<span class="comment">//index就是elems的一个元素</span></span><br><span class="line"> 		<span class="keyword">return</span> $(<span class="string">"strong"</span>,index).length == <span class="number">1</span>;<span class="comment">//</span></span><br><span class="line">&#125;).css(<span class="string">'background-color'</span>, <span class="string">'red'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>jQuery的静态方法是通过extent扩展方法生成的：<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jQuery</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jQuery.extend = <span class="function"><span class="keyword">function</span><span class="params">(obj,prop)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//巧妙的运用了obj =this;转换了角色</span></span><br><span class="line">	<span class="comment">//obj就变成jQuery</span></span><br><span class="line">	<span class="comment">//prop就变成了obj</span></span><br><span class="line">	<span class="keyword">if</span> ( !prop ) &#123; prop = obj; obj = <span class="keyword">this</span>; &#125;</span><br><span class="line">	<span class="keyword">for</span> ( <span class="keyword">var</span> i <span class="keyword">in</span> prop ) obj[i] = prop[i];</span><br><span class="line">	<span class="keyword">return</span> obj;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//jQuery静态方法就可以通过如下方法引入</span></span><br><span class="line">jQuery.extend(&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -489,7 +474,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/09/30/orchard-route/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/26/entityframework-first/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -509,7 +494,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2015/09/30/orchard-route/" class="post-title-link" itemprop="url">orchard-route</a>
+                <a href="/2016/08/26/entityframework-first/" class="post-title-link" itemprop="url">entityframework_随想</a>
               
             
           </h2>
@@ -534,7 +519,7 @@
                 
               
 
-              <time title="创建时间：2015-09-30 09:07:54" itemprop="dateCreated datePublished" datetime="2015-09-30T09:07:54+08:00">2015-09-30</time>
+              <time title="创建时间：2016-08-26 13:51:05" itemprop="dateCreated datePublished" datetime="2016-08-26T13:51:05+08:00">2016-08-26</time>
             
 
             
@@ -551,7 +536,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-09 20:31:01" itemprop="dateModified" datetime="2019-05-09T20:31:01+08:00">2019-05-09</time>
+                <time title="修改时间：2019-05-09 20:27:51" itemprop="dateModified" datetime="2019-05-09T20:27:51+08:00">2019-05-09</time>
               
             
           </span>
@@ -587,14 +572,7 @@
       
         
           
-            <h2 id="Orchard路由解析1"><a href="#Orchard路由解析1" class="headerlink" title="Orchard路由解析1"></a>Orchard路由解析1</h2><h3 id="DefaultOrchardShell类"><a href="#DefaultOrchardShell类" class="headerlink" title="DefaultOrchardShell类"></a>DefaultOrchardShell类</h3><p>DefaultOrchardShell中跟路由相关的就是Active函数。看代码：</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var allRoutes = <span class="keyword">new</span> List&lt;RouteDescriptor&gt;<span class="literal">()</span>;</span><br><span class="line">           <span class="comment">//注册的时候 只有 Orchard.Setup.Routes这个类</span></span><br><span class="line">           allRoutes.<span class="constructor">AddRange(<span class="params">_routeProviders</span>.SelectMany(<span class="params">provider</span> =&gt; <span class="params">provider</span>.GetRoutes()</span>));<span class="comment">//SellContainerFactory中注册到容器</span></span><br></pre></td></tr></table></figure>
-<p>然后再通过routePublisher 加入RouteCollection集合</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//封装成ShellRoute对象</span></span><br><span class="line">                   <span class="comment">//传入shellSettings</span></span><br><span class="line">                   var shellRoute = <span class="keyword">new</span> <span class="constructor">ShellRoute(<span class="params">routeDescriptor</span>.Route, <span class="params">_shellSettings</span>, <span class="params">_workContextAccessor</span>, <span class="params">_runningShellTable</span>)</span> &#123;</span><br><span class="line">                       IsHttpRoute = routeDescriptor is HttpRouteDescriptor,</span><br><span class="line">                       SessionState = sessionStateBehavior</span><br><span class="line">                   &#125;;</span><br><span class="line">                   <span class="comment">//_routeCollection 为RouteTable.Routes</span></span><br><span class="line">                   _routeCollection.<span class="constructor">Add(<span class="params">routeDescriptor</span>.Name, <span class="params">shellRoute</span>)</span>;</span><br></pre></td></tr></table></figure>
-<p>publish的时候会先对RouteArray排序，根据Priority</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var routesArray = routes</span><br><span class="line">               .<span class="constructor">OrderByDescending(<span class="params">r</span> =&gt; <span class="params">r</span>.Priority)</span></span><br><span class="line">               .<span class="constructor">ToArray()</span>;</span><br></pre></td></tr></table></figure>
-<p>模块的RouteBase对象都封装成ShellRoute对象，以后都在ShellRoute中解析。</p>
-<p>接下来我们来看看安装完后 首页是如何定位到Controller的。</p>
+            <h2 id="EntityFramework之DbContext"><a href="#EntityFramework之DbContext" class="headerlink" title="EntityFramework之DbContext"></a>EntityFramework之DbContext</h2><h3 id="1-IdentityDbContext-貌似在AutomaticMigrationsEnabled-false时仍然可以生成数据库。DbContext貌似就不可以。"><a href="#1-IdentityDbContext-貌似在AutomaticMigrationsEnabled-false时仍然可以生成数据库。DbContext貌似就不可以。" class="headerlink" title="1. IdentityDbContext 貌似在AutomaticMigrationsEnabled=false时仍然可以生成数据库。DbContext貌似就不可以。"></a>1. IdentityDbContext 貌似在AutomaticMigrationsEnabled=false时仍然可以生成数据库。DbContext貌似就不可以。</h3><h3 id="2-AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data-loss之类的错误，可能跟-MigrationHistory表有关。"><a href="#2-AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data-loss之类的错误，可能跟-MigrationHistory表有关。" class="headerlink" title="2. AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data loss之类的错误，可能跟_MigrationHistory表有关。"></a>2. AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data loss之类的错误，可能跟_MigrationHistory表有关。</h3><h3 id="3-把-Migration表清空后，如果对象新增属性，会报数据库中已存在名为-‘’-的对象的错误-。"><a href="#3-把-Migration表清空后，如果对象新增属性，会报数据库中已存在名为-‘’-的对象的错误-。" class="headerlink" title="3. 把_Migration表清空后，如果对象新增属性，会报数据库中已存在名为 ‘’ 的对象的错误 。"></a>3. 把_Migration表清空后，如果对象新增属性，会报数据库中已存在名为 ‘’ 的对象的错误 。</h3><p>一开始如果没有用AutomaticMigration生成数据库，之后新增对象属性，如果配置了Database.SetInitializer 那么会报已存在””的对象。</p>
 
           
         
@@ -651,7 +629,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/09/28/Orchard-Layout-Create/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/25/comeback/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -671,7 +649,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2015/09/28/Orchard-Layout-Create/" class="post-title-link" itemprop="url">Orchard-Layout-Create</a>
+                <a href="/2016/08/25/comeback/" class="post-title-link" itemprop="url">i come back</a>
               
             
           </h2>
@@ -696,326 +674,7 @@
                 
               
 
-              <time title="创建时间：2015-09-28 10:55:24" itemprop="dateCreated datePublished" datetime="2015-09-28T10:55:24+08:00">2015-09-28</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:30:47" itemprop="dateModified" datetime="2019-05-09T20:30:47+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Orchard安装界面的布局创建过程"><a href="#Orchard安装界面的布局创建过程" class="headerlink" title="Orchard安装界面的布局创建过程"></a>Orchard安装界面的布局创建过程</h2><h3 id="LayoutAwareViewEngine类"><a href="#LayoutAwareViewEngine类" class="headerlink" title="LayoutAwareViewEngine类"></a>LayoutAwareViewEngine类</h3><p>   这个类是布局创建的入口，什么时候调用这个类呢？看同级目录ThemeAwareness中的ThemedViewResultFilter.cs。</p>
-<p>从类命名就可以看出这是一个视图结果筛选器，在这里面把视图引擎集合重新定义了一下。</p>
-<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">viewResultBase.ViewEngineCollection = <span class="keyword">new</span> <span class="type">ViewEngineCollection</span>(<span class="keyword">new</span><span class="type"></span>[] &#123; _layoutAwareViewEngine &#125;);</span><br></pre></td></tr></table></figure>
-<p>   当然_layoutAwareViewEngine是通过Autofac这个强大的IOC容器去resolve出来的。Autofac的解析我们以后会分析。<br>实际就是调用了LayoutAwareViewEngine类。<br>   那么这个过滤器是什么时候去调用的呢？就靠FilterProvider这个抽象类了。FilterProvider实现了IFilterProvider接口。<br>IFilterProvider接口是在SetupMode类中注册的</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">builder</span><span class="selector-class">.RegisterType</span>&lt;<span class="selector-tag">ThemedViewResultFilter</span>&gt;()<span class="selector-class">.As</span>&lt;<span class="selector-tag">IFilterProvider</span>&gt;()<span class="selector-class">.InstancePerLifetimeScope</span>();</span><br><span class="line"><span class="selector-tag">builder</span><span class="selector-class">.RegisterType</span>&lt;<span class="selector-tag">ThemeFilter</span>&gt;()<span class="selector-class">.As</span>&lt;<span class="selector-tag">IFilterProvider</span>&gt;()<span class="selector-class">.InstancePerLifetimeScope</span>();</span><br></pre></td></tr></table></figure>
-<p>   为什么要在SetupMode中注册呢？因为执行安装的时候没有把Orchard.Framework的ShellFeature给包装进来，看代码：</p>
-<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> descriptor = <span class="keyword">new</span> <span class="type">ShellDescriptor</span> &#123;</span><br><span class="line">          SerialNumber = <span class="number">-1</span>,</span><br><span class="line">          Features = <span class="keyword">new</span><span class="type"></span>[] &#123;</span><br><span class="line">              <span class="keyword">new</span> <span class="type">ShellFeature</span> &#123; Name = <span class="string">"Orchard.Setup"</span> &#125;,</span><br><span class="line">              <span class="keyword">new</span> <span class="type">ShellFeature</span> &#123; Name = <span class="string">"Shapes"</span> &#125;,<span class="comment">//这里 用于找 模板</span></span><br><span class="line">              <span class="keyword">new</span> <span class="type">ShellFeature</span> &#123; Name = <span class="string">"Orchard.jQuery"</span> &#125;,</span><br><span class="line">          &#125;,</span><br><span class="line">      &#125;;</span><br></pre></td></tr></table></figure>
-<p>   如果不是安装过程 ，那么直接在CreateContainerFactory.CreateContainer中通过IDependency接口去调用</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//实现IDependency接口的依赖都可以使用动态代理 AOP</span></span><br><span class="line">                   foreach (var item <span class="keyword">in</span> blueprint.Dependencies.<span class="constructor">Where(<span class="params">t</span> =&gt; <span class="params">typeof</span>(IDependency)</span>.<span class="constructor">IsAssignableFrom(<span class="params">t</span>.Type)</span>)) &#123;</span><br><span class="line">                       var registration = <span class="constructor">RegisterType(<span class="params">builder</span>, <span class="params">item</span>)</span></span><br><span class="line">                           .<span class="constructor">EnableDynamicProxy(<span class="params">dynamicProxyContext</span>)</span></span><br><span class="line">                           .<span class="constructor">InstancePerLifetimeScope()</span>;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/09/25/jquery-find/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2015/09/25/jquery-find/" class="post-title-link" itemprop="url">jquery-find</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2015-09-25 15:03:05" itemprop="dateCreated datePublished" datetime="2015-09-25T15:03:05+08:00">2015-09-25</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:29:26" itemprop="dateModified" datetime="2019-05-09T20:29:26+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><h3 id="find函数"><a href="#find函数" class="headerlink" title="find函数"></a>find函数</h3><p>1.0源码:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">find: <span class="function"><span class="keyword">function</span>(<span class="params"> t, context </span>) </span>&#123;</span><br><span class="line">		<span class="comment">// Make sure that the context is a DOM Element</span></span><br><span class="line">		<span class="keyword">if</span> ( context &amp;&amp; context.nodeType == <span class="literal">undefined</span> )</span><br><span class="line">			context = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Set the correct context (if none is provided)</span></span><br><span class="line">        <span class="comment">//设置当前上下文为Document</span></span><br><span class="line">		context = context || jQuery.context || <span class="built_in">document</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> ( t.constructor != <span class="built_in">String</span> ) <span class="keyword">return</span> [t];</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> ( !t.indexOf(<span class="string">"//"</span>) ) &#123;</span><br><span class="line">			context = context.documentElement;</span><br><span class="line">			t = t.substr(<span class="number">2</span>,t.length);</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> ( !t.indexOf(<span class="string">"/"</span>) ) &#123;</span><br><span class="line">			context = context.documentElement;</span><br><span class="line">			t = t.substr(<span class="number">1</span>,t.length);</span><br><span class="line">			<span class="comment">// FIX Assume the root element is right :(</span></span><br><span class="line">			<span class="keyword">if</span> ( t.indexOf(<span class="string">"/"</span>) &gt;= <span class="number">1</span> )</span><br><span class="line">				t = t.substr(t.indexOf(<span class="string">"/"</span>),t.length);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> ret = [context];</span><br><span class="line">		<span class="keyword">var</span> done = [];</span><br><span class="line">		<span class="keyword">var</span> last = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">while</span> ( t.length &gt; <span class="number">0</span> &amp;&amp; last != t ) &#123;</span><br><span class="line">			<span class="keyword">var</span> r = [];</span><br><span class="line">			last = t;</span><br><span class="line"></span><br><span class="line">			t = jQuery.trim(t).replace( <span class="regexp">/^\/\//i</span>, <span class="string">""</span> );</span><br><span class="line"></span><br><span class="line">			<span class="keyword">var</span> foundToken = <span class="literal">false</span>;</span><br><span class="line">			<span class="comment">//这里调用token 正则匹配 然后在map里传入function的字符串。。</span></span><br><span class="line">			<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; jQuery.token.length; i += <span class="number">2</span> ) &#123;</span><br><span class="line">				<span class="keyword">var</span> re = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"^("</span> + jQuery.token[i] + <span class="string">")"</span>);</span><br><span class="line">				<span class="keyword">var</span> m = re.exec(t);</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> ( m ) &#123;</span><br><span class="line">					r = ret = jQuery.map( ret, jQuery.token[i+<span class="number">1</span>] );</span><br><span class="line">					t = jQuery.trim( t.replace( re, <span class="string">""</span> ) );</span><br><span class="line">					foundToken = <span class="literal">true</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> ( !foundToken ) &#123;</span><br><span class="line">				<span class="keyword">if</span> ( !t.indexOf(<span class="string">","</span>) || !t.indexOf(<span class="string">"|"</span>) ) &#123;</span><br><span class="line">					<span class="keyword">if</span> ( ret[<span class="number">0</span>] == context ) ret.shift();</span><br><span class="line">					done = jQuery.merge( done, ret );</span><br><span class="line">					r = ret = [context];</span><br><span class="line">					t = <span class="string">" "</span> + t.substr(<span class="number">1</span>,t.length);</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="keyword">var</span> re2 = <span class="regexp">/^([#.]?)([a-z0-9\\*_-]*)/i</span>;<span class="comment">//# 或 .开头</span></span><br><span class="line">					<span class="keyword">var</span> m = re2.exec(t);</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> ( m[<span class="number">1</span>] == <span class="string">"#"</span> ) &#123;</span><br><span class="line">						<span class="comment">// Ummm, should make this work in all XML docs</span></span><br><span class="line">						<span class="keyword">var</span> oid = <span class="built_in">document</span>.getElementById(m[<span class="number">2</span>]);</span><br><span class="line">						r = ret = oid ? [oid] : [];</span><br><span class="line">						t = t.replace( re2, <span class="string">""</span> );</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						<span class="keyword">if</span> ( !m[<span class="number">2</span>] || m[<span class="number">1</span>] == <span class="string">"."</span> ) m[<span class="number">2</span>] = <span class="string">"*"</span>;</span><br><span class="line">						<span class="comment">//参数为div#example，那么会先找到div</span></span><br><span class="line">						<span class="comment">//调用getElementsByTagName,获取所有div</span></span><br><span class="line">						<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; ret.length; i++ )</span><br><span class="line">							r = jQuery.merge( r,</span><br><span class="line">								m[<span class="number">2</span>] == <span class="string">"*"</span> ?</span><br><span class="line">									jQuery.getAll(ret[i]) :</span><br><span class="line">									ret[i].getElementsByTagName(m[<span class="number">2</span>])</span><br><span class="line">							);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> ( t ) &#123;<span class="comment">//获取所有div后再通过调用jQuery静态filter函数</span></span><br><span class="line">				  <span class="comment">//过滤出example元素</span></span><br><span class="line">				<span class="keyword">var</span> val = jQuery.filter(t,r);</span><br><span class="line">				ret = r = val.r;</span><br><span class="line">				t = jQuery.trim(val.t);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> ( ret &amp;&amp; ret[<span class="number">0</span>] == context ) ret.shift();</span><br><span class="line">		done = jQuery.merge( done, ret );</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> done;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="filter函数"><a href="#filter函数" class="headerlink" title="filter函数"></a>filter函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">filter: <span class="function"><span class="keyword">function</span>(<span class="params">t,r,not</span>) </span>&#123;</span><br><span class="line">		<span class="comment">// Figure out if we're doing regular, or inverse, filtering</span></span><br><span class="line">		<span class="comment">//grep查找满足过滤函数的数组元素。原始数组不受影响</span></span><br><span class="line">		<span class="keyword">var</span> g = not !== <span class="literal">false</span> ? jQuery.grep :</span><br><span class="line">			<span class="function"><span class="keyword">function</span>(<span class="params">a,f</span>) </span>&#123;<span class="keyword">return</span> jQuery.grep(a,f,<span class="literal">true</span>);&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">while</span> ( t &amp;&amp; <span class="regexp">/^[a-z[(&#123;&lt;*:.#]/i</span>.test(t) ) &#123;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">var</span> p = jQuery.parse;<span class="comment">//解析数组存放 规则</span></span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; p.length; i++ ) &#123;</span><br><span class="line">				<span class="keyword">var</span> re = <span class="keyword">new</span> <span class="built_in">RegExp</span>( <span class="string">"^"</span> + p[i][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">					<span class="comment">// Look for a string-like sequence</span></span><br><span class="line">					.replace( <span class="string">'S'</span>, <span class="string">"([a-z*_-][a-z0-9_-]*)"</span> )</span><br><span class="line"></span><br><span class="line">					<span class="comment">// Look for something (optionally) enclosed with quotes</span></span><br><span class="line">					.replace( <span class="string">'Q'</span>, <span class="string">" *'?\"?([^'\"]*?)'?\"? *"</span> ), <span class="string">"i"</span> );</span><br><span class="line">				<span class="comment">//i 在 RegExp级别下</span></span><br><span class="line"></span><br><span class="line">				<span class="keyword">var</span> m = re.exec( t );</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> ( m ) &#123;<span class="comment">//div#example 匹配[ "([:.#]*)S", 0 ]</span></span><br><span class="line">					<span class="comment">// Re-organize the match</span></span><br><span class="line">					<span class="keyword">if</span> ( p[i][<span class="number">1</span>] )<span class="comment">//检查parse数组 第二个元素是0还是1 0就跳过</span></span><br><span class="line">						m = [<span class="string">""</span>, m[<span class="number">1</span>], m[<span class="number">3</span>], m[<span class="number">2</span>], m[<span class="number">4</span>]];</span><br><span class="line"></span><br><span class="line">					<span class="comment">// Remove what we just matched</span></span><br><span class="line">					<span class="comment">//div#exmaple 把div给替换掉了 接下来再遍历匹配#example</span></span><br><span class="line">					t = t.replace( re, <span class="string">""</span> );</span><br><span class="line"></span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// :not() is a special case that can be optomized by</span></span><br><span class="line">			<span class="comment">// keeping it out of the expression list</span></span><br><span class="line">			<span class="keyword">if</span> ( m[<span class="number">1</span>] == <span class="string">":"</span> &amp;&amp; m[<span class="number">2</span>] == <span class="string">"not"</span> )</span><br><span class="line">				r = jQuery.filter(m[<span class="number">3</span>],r,<span class="literal">false</span>).r;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Otherwise, find the expression to execute</span></span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">var</span> f = jQuery.expr[m[<span class="number">1</span>]]; <span class="comment">//寻找表达式数组匹配元素</span></span><br><span class="line">				<span class="comment">//	"": "m[2]== '*'||a.nodeName.toUpperCase()==m[2].toUpperCase()",</span></span><br><span class="line">				<span class="comment">// "#": "a.getAttribute('id')&amp;&amp;a.getAttribute('id')==m[2]",</span></span><br><span class="line">				<span class="keyword">if</span> ( f.constructor != <span class="built_in">String</span> )</span><br><span class="line">					f = jQuery.expr[m[<span class="number">1</span>]][m[<span class="number">2</span>]];</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Build a custom macro to enclose it</span></span><br><span class="line">				<span class="comment">//制造一个自定义的函数</span></span><br><span class="line">				<span class="built_in">eval</span>(<span class="string">"f = function(a,i)&#123;"</span> +</span><br><span class="line">					( m[<span class="number">1</span>] == <span class="string">"@"</span> ? <span class="string">"z=jQuery.attr(a,m[3]);"</span> : <span class="string">""</span> ) +</span><br><span class="line">					<span class="string">"return "</span> + f + <span class="string">"&#125;"</span>);</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Execute it against the current filter</span></span><br><span class="line"></span><br><span class="line">				<span class="comment">//过滤 通过f 函数</span></span><br><span class="line">				r = g( r, f );</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Return an array of filtered elements (r)</span></span><br><span class="line">		<span class="comment">// and the modified expression string (t)</span></span><br><span class="line">		<span class="keyword">return</span> &#123; <span class="attr">r</span>: r, <span class="attr">t</span>: t &#125;;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/09/24/jquery-each/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2015/09/24/jquery-each/" class="post-title-link" itemprop="url">jquery-each</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2015-09-24 14:22:05" itemprop="dateCreated datePublished" datetime="2015-09-24T14:22:05+08:00">2015-09-24</time>
+              <time title="创建时间：2016-08-25 22:35:01" itemprop="dateCreated datePublished" datetime="2016-08-25T22:35:01+08:00">2016-08-25</time>
             
 
             
@@ -1068,10 +727,319 @@
       
         
           
-            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><h3 id="each函数"><a href="#each函数" class="headerlink" title="each函数"></a>each函数</h3><p>1.0源码:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">each: <span class="function"><span class="keyword">function</span>(<span class="params"> obj, fn, args </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> ( obj.length == <span class="literal">undefined</span> )<span class="comment">//如果不是数组</span></span><br><span class="line">		<span class="keyword">for</span> ( <span class="keyword">var</span> i <span class="keyword">in</span> obj )</span><br><span class="line">			fn.apply( obj[i], args || [i, obj[i]] );</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; obj.length; i++ )</span><br><span class="line">			fn.apply( obj[i], args || [i, obj[i]] );</span><br><span class="line">	<span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>遍历obj对象，直接用fn.apply调用。</p>
-<p>再看1.2.6源码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">each: <span class="function"><span class="keyword">function</span>(<span class="params"> object, callback, args </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> name, i = <span class="number">0</span>, length = object.length;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ( args ) &#123;</span><br><span class="line">		<span class="keyword">if</span> ( length == <span class="literal">undefined</span> ) &#123;</span><br><span class="line">			<span class="keyword">for</span> ( name <span class="keyword">in</span> object )</span><br><span class="line">				<span class="keyword">if</span> ( callback.apply( object[ name ], args ) === <span class="literal">false</span> )</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span></span><br><span class="line">			<span class="keyword">for</span> ( ; i &lt; length; )</span><br><span class="line">				<span class="keyword">if</span> ( callback.apply( object[ i++ ], args ) === <span class="literal">false</span> )</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// A special, fast, case for the most common use of each</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> ( length == <span class="literal">undefined</span> ) &#123;</span><br><span class="line">			<span class="keyword">for</span> ( name <span class="keyword">in</span> object )</span><br><span class="line">				<span class="keyword">if</span> ( callback.call( object[ name ], name, object[ name ] ) === <span class="literal">false</span> )</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span></span><br><span class="line">			<span class="keyword">for</span> ( <span class="keyword">var</span> value = object[<span class="number">0</span>];</span><br><span class="line">				i &lt; length &amp;&amp; callback.call( value, i, value ) !== <span class="literal">false</span>; value = object[++i] )&#123;&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> object;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>最主要是对第三个参数的调用做修改优化,1.0直接 args || [i,obj[i]],而1.2.6<br>分开判断 ，在没有args的情况下 用call调用。而且把object.length 先保存在length变量中。</p>
+            <p>**将近一年没写博客了，这次回来希望能坚持下去。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/01/csharp-linq-merge/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2015/12/01/csharp-linq-merge/" class="post-title-link" itemprop="url">csharp-linqmerge</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-12-01 18:02:00" itemprop="dateCreated datePublished" datetime="2015-12-01T18:02:00+08:00">2015-12-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:27:05" itemprop="dateModified" datetime="2019-05-09T20:27:05+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="C-Linq合并List中的对象"><a href="#C-Linq合并List中的对象" class="headerlink" title="C# Linq合并List中的对象"></a>C# Linq合并List中的对象</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">	List&lt;Person&gt; pList = <span class="keyword">new</span> List&lt;Person&gt;();</span><br><span class="line"></span><br><span class="line">	Person person1 = <span class="keyword">new</span> Person() &#123; FirstName = <span class="string">"john"</span>, LastName = <span class="string">"wonder"</span> &#125;;</span><br><span class="line">	Person person3 = <span class="keyword">new</span> Person() &#123; FirstName = <span class="string">"john2"</span>, LastName = <span class="string">"wonder22"</span> &#125;;</span><br><span class="line">	Person person4 = <span class="keyword">new</span> Person() &#123; FirstName = <span class="string">"john2"</span>, LastName = <span class="string">"wonder2233"</span> &#125;;</span><br><span class="line"></span><br><span class="line">	pList.Add(person1);</span><br><span class="line">	pList.Add(person3);</span><br><span class="line">	pList.Add(person4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> pMergeList= pList.ToLookup(x =&gt; x.FirstName).Select(x =&gt; x.Aggregate((p1, p2) =&gt;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Person&#123;</span><br><span class="line">             FirstName = p1.FirstName,</span><br><span class="line">             LastName =  p1.LastName + <span class="string">";"</span>+ p2.LastName</span><br><span class="line">        &#125;</span><br><span class="line">    )).ToList();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> pMergeList)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">"FirstName:"</span> + item.FirstName);</span><br><span class="line">        Console.WriteLine(<span class="string">"LastName:"</span> + item.LastName);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Console.Read();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">class</span> <span class="title">Person</span></span><br><span class="line">	&#123;</span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> FirstName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> LastName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">class</span> <span class="title">PersonModel</span></span><br><span class="line">	&#123;</span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> FirstName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> LastNameList &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/06/csharp-stringintern1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2015/11/06/csharp-stringintern1/" class="post-title-link" itemprop="url">csharp-stringintern1</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-11-06 10:24:50" itemprop="dateCreated datePublished" datetime="2015-11-06T10:24:50+08:00">2015-11-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:27:19" itemprop="dateModified" datetime="2019-05-09T20:27:19+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>读了<a href="http://http://tech.meituan.com/in_depth_understanding_string_intern.html" target="_blank" rel="external">深入解析String#intern</a>这篇文章，带着对C#字符串驻留的疑问，在C#里做了如下测试：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">"1"</span>;</span><br><span class="line"><span class="built_in">string</span> s11 = <span class="built_in">string</span>.<span class="constructor">Intern(<span class="params">s1</span>)</span>;</span><br><span class="line"><span class="built_in">string</span> s2 = <span class="keyword">new</span> <span class="built_in">string</span>(<span class="keyword">new</span> <span class="built_in">char</span><span class="literal">[]</span> &#123; <span class="character">'1'</span> &#125;);</span><br><span class="line"></span><br><span class="line">   Console.<span class="constructor">WriteLine(<span class="params">s1</span> <span class="operator">==</span> <span class="params">s2</span>)</span>;<span class="comment">//True</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(ReferenceEquals(<span class="params">s1</span>, <span class="params">s2</span>)</span>);<span class="comment">//False</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(Object.ReferenceEquals(<span class="params">string</span>.Intern(<span class="params">s1</span>)</span>,s2));<span class="comment">//False</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(Object.ReferenceEquals(<span class="params">s11</span> ,<span class="params">s2</span>)</span>);<span class="comment">//False</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(Object.ReferenceEquals(<span class="params">s1</span>,  String.Intern(<span class="params">s2</span>)</span>));<span class="comment">//True</span></span><br><span class="line"></span><br><span class="line">   String s22 = <span class="string">"2"</span>;</span><br><span class="line">   String s3 = s22 + <span class="string">"2"</span>;</span><br><span class="line">   String s4 = <span class="string">"22"</span>;</span><br><span class="line">   <span class="built_in">string</span> s5 = <span class="built_in">string</span>.<span class="constructor">Intern(<span class="params">s3</span>)</span>;</span><br><span class="line"></span><br><span class="line">   Console.<span class="constructor">WriteLine(<span class="params">s3</span> <span class="operator">==</span> <span class="params">s4</span>)</span>;<span class="comment">//true</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(ReferenceEquals(<span class="params">s3</span>, <span class="params">s4</span>)</span>);<span class="comment">//false</span></span><br><span class="line">   Console.<span class="constructor">WriteLine(ReferenceEquals(<span class="params">s5</span>, <span class="params">s4</span>)</span>);<span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">//让我们来修改下s5的值 看看会不会对s4 造成影响</span></span><br><span class="line">   s5 = <span class="string">"33"</span>;</span><br><span class="line">   Console.<span class="constructor">WriteLine(<span class="params">s4</span>)</span>;<span class="comment">//还是输出22 即使同一个String实例，但是利用任何一个对String实例的引用所进行的修改操作都不会切实地影响到该实例的状态</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">//不过同样值得注意的是，使用Intern方法让一个字符串存活于驻留池中也有一个副作用：即使已经不存在任何其它引用指向驻留池中的字符串了，这个字符串仍然不一定会被垃圾回收掉。也就是说即使驻留池中的字符串已经没有用处了，它可能也要等到CLR终结时才被销毁。当您使用Intern方法的时候，也应该考虑到这个特殊的行为</span></span><br><span class="line">   Console.<span class="constructor">Read()</span>;</span><br></pre></td></tr></table></figure>
+<p>这两篇文章 <a href="http://kb.cnblogs.com/page/102225/" target="_blank" rel="external">C#中字符串的内存分配与驻留池</a>, <a href="http://blog.sina.com.cn/s/blog_7b60d05f0101s25l.html" target="_blank" rel="external">C# 字符串驻留</a> 也有阐述。</p>
 
           
         
@@ -1117,7 +1085,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/40/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><span class="page-number current">41</span><a class="page-number" href="/page/42/">42</a><a class="extend next" rel="next" href="/page/42/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/40/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><span class="page-number current">41</span><a class="page-number" href="/page/42/">42</a><span class="space">&hellip;</span><a class="page-number" href="/page/44/">44</a><a class="extend next" rel="next" href="/page/42/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1159,7 +1127,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">206</span>
+                    <span class="site-state-item-count">218</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1248,7 +1216,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">35</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

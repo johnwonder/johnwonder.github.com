@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/06/angular-jqlite/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/27/slick-hlist/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -336,7 +336,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/04/06/angular-jqlite/" class="post-title-link" itemprop="url">angular1.5.8源码解析之JQLite函数</a>
+                <a href="/2017/05/27/slick-hlist/" class="post-title-link" itemprop="url">slick_hlist</a>
               
             
           </h2>
@@ -361,7 +361,7 @@
                 
               
 
-              <time title="创建时间：2017-04-06 14:01:55" itemprop="dateCreated datePublished" datetime="2017-04-06T14:01:55+08:00">2017-04-06</time>
+              <time title="创建时间：2017-05-27 15:03:44" itemprop="dateCreated datePublished" datetime="2017-05-27T15:03:44+08:00">2017-05-27</time>
             
 
             
@@ -378,7 +378,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-25 21:50:22" itemprop="dateModified" datetime="2020-03-25T21:50:22+08:00">2020-03-25</time>
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
               
             
           </span>
@@ -414,23 +414,8 @@
       
         
           
-            <p>前言：为了搞清楚上篇文章提到的data函数，我们必须先讲angularjs的JQLite库。<br>angularjs有个内嵌的轻量级的jquery:jqLite，它的参数只有两种，一种是Dom元素，一种是类似html元素的字符串</p>
-<h2 id="JQLite定义"><a href="#JQLite定义" class="headerlink" title="JQLite定义"></a>JQLite定义</h2><p>从定义可以看到，JQLite不支持不带html格式的字符串传入：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">JQLite</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//如果传入的参数已经是JQLite实例，那直接返回</span></span><br><span class="line">  <span class="keyword">if</span> (element <span class="keyword">instanceof</span> JQLite) &#123;</span><br><span class="line">    <span class="keyword">return</span> element;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> argIsString;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isString(element)) &#123;</span><br><span class="line">    element = trim(element);</span><br><span class="line">    argIsString = <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//this 有可能就是window</span></span><br><span class="line">  <span class="comment">//如果参数是字符串 且不是以&lt;开头</span></span><br><span class="line">  <span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> JQLite)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (argIsString &amp;&amp; element.charAt(<span class="number">0</span>) != <span class="string">'&lt;'</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> jqLiteMinErr(<span class="string">'nosel'</span>, <span class="string">'Looking up elements via selectors is not supported by jqLite!'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> JQLite(element);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//字符串还需要调用jqLiteParseHTML函数解析</span></span><br><span class="line">  <span class="keyword">if</span> (argIsString) &#123;</span><br><span class="line">    jqLiteAddNodes(<span class="keyword">this</span>, jqLiteParseHTML(element));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    jqLiteAddNodes(<span class="keyword">this</span>, element);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如果参数以&lt;开头那还需要<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## jqLiteParseHTML</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  //简单的标记正则</span><br><span class="line">  var SINGLE_TAG_REGEXP = /^&lt;([\w-]+)\s*\/?&gt;(?:&lt;\/\1&gt;|)$/;</span><br><span class="line"></span><br><span class="line">  function jqLiteParseHTML(html, context) &#123;</span><br><span class="line">    context = context || window.document;</span><br><span class="line">    var parsed;</span><br><span class="line"></span><br><span class="line">    if ((parsed = SINGLE_TAG_REGEXP.exec(html))) &#123;</span><br><span class="line">      //parsed[1]是类似 div 的字符串</span><br><span class="line">      return [context.createElement(parsed[1])];</span><br><span class="line">    &#125;</span><br><span class="line">    //制造Fragment</span><br><span class="line">    if ((parsed = jqLiteBuildFragment(html, context))) &#123;</span><br><span class="line">      return parsed.childNodes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return [];</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>SINGLE_TAG_REGEXP中有几点知识点：</p>
-<ol>
-<li><p>非获取匹配，匹配pattern但不获取匹配结果，不进行存储供以后使用。这在使用或字符“(|)”来组合一个模式的各个部分时很有用。<br>例如“industr(?:y|ies)”就是一个比“industry|industries”更简略的表达式</p>
-</li>
-<li><p>\1  \2……  都要和正则表达式集合()一起使用,简单的说就是\1表示重复正则第一个圆括号内匹配到的内容<br> \2表示重复正则第二个圆括号内匹配到的内容</p>
-</li>
-<li><p>?匹配前面的子表达式零次或一次。例如，“do(es)?”可以匹配“do”或“does”。?等价于{0,1}。</p>
-</li>
-</ol>
-<p>如果符合正则SINGLE_TAG_REGEXP那就通过document.createElement来返回，否则 通过jqLiteBuildFragment<br>函数来构建html片段，关于jqLiteBuildFragment我们下篇文章再分析。</p>
-<p>最后调用jqLiteAddNodes把元素放入JQLite对象中。</p>
-<h2 id="jqLiteAddNodes"><a href="#jqLiteAddNodes" class="headerlink" title="jqLiteAddNodes"></a>jqLiteAddNodes</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jqLiteAddNodes</span>(<span class="params">root, elements</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (elements) &#123;</span><br><span class="line">    <span class="comment">// if a Node (the most common case)</span></span><br><span class="line">    <span class="comment">//绝大多数情况是单个节点</span></span><br><span class="line">    <span class="keyword">if</span> (elements.nodeType) &#123;</span><br><span class="line">      root[root.length++] = elements;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">var</span> length = elements.length;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// if an Array or NodeList and not a Window</span></span><br><span class="line">      <span class="comment">//如果是数组或者NodeList 且不是window</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> length === <span class="string">'number'</span> &amp;&amp; elements.window !== elements) &#123;</span><br><span class="line">        <span class="keyword">if</span> (length) &#123;</span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            root[root.length++] = elements[i];</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        root[root.length++] = elements;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们通过<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">//try to bind to jquery now so that one can write jqLite(document).ready()</span><br><span class="line">//but we will rebind on bootstrap again.</span><br><span class="line">bindJQuery();</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">var bindJQueryFired = false;</span><br><span class="line">function bindJQuery() &#123;</span><br><span class="line">var originalCleanData;</span><br><span class="line"></span><br><span class="line">if (bindJQueryFired) &#123;</span><br><span class="line">  return;</span><br><span class="line">&#125;</span><br><span class="line">//http://div.io/topic/1154</span><br><span class="line">// bind to jQuery if present;</span><br><span class="line">var jqName = jq(); // 调用jq方法返回jq库名称</span><br><span class="line">jQuery = isUndefined(jqName) ? window.jQuery :   // use jQuery (if present)</span><br><span class="line">         !jqName             ? undefined     :   // use jqLite</span><br><span class="line">                               window[jqName];   // use jQuery specified by `ngJq`</span><br><span class="line"></span><br><span class="line">if (jQuery &amp;&amp; jQuery.fn.on) &#123;</span><br><span class="line">  jqLite = jQuery;</span><br><span class="line">  //扩展fn函数</span><br><span class="line">   //省略部分代码，</span><br><span class="line">   //重写了jQuery的cleanData,扩展了jQuery.fn</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  jqLite = JQLite;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">angular.element = jqLite;</span><br><span class="line">// Prevent double-proxying.</span><br><span class="line">//阻止双代理</span><br><span class="line">bindJQueryFired = true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>到到这里我们发现angular.element就是jqLite函数。</p>
+            <h2 id="slick-使用hlist-用于超过22列"><a href="#slick-使用hlist-用于超过22列" class="headerlink" title="slick 使用hlist 用于超过22列"></a>slick 使用hlist 用于超过22列</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"> slick.collection.heterogeneous.&#123;HNil&#125;</span><br><span class="line"> slick.collection.heterogeneous.syntax.<span class="function">_</span><br><span class="line"></span><br><span class="line"> class <span class="title">Invoice</span><span class="params">(tag:Tag)</span> extends Table[String :: String :: String :: HNil]<span class="params">(tag,<span class="string">"INVOICELOG"</span>)</span></span>&#123;</span><br><span class="line">     def logId = column[String](<span class="string">"LOGID"</span>)</span><br><span class="line">   def createDate = column[String](<span class="string">"CREATEDATE"</span>)</span><br><span class="line">   def invoiceId = column[String](<span class="string">"INVOICEID"</span>)</span><br><span class="line"></span><br><span class="line">   def * = logId :: createDate :: invoiceId :: HNil</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">val i  = db.run(invoices.filter((i) =&gt; i.logId === <span class="string">"0af9de5ab5a9457a950ecd9a97ddbe80"</span>).result)</span><br><span class="line"></span><br><span class="line">val t = Await.result(i, Duration.Inf)</span><br><span class="line"></span><br><span class="line">type MyRow  = String::String :: String :: HNil</span><br><span class="line"></span><br><span class="line">val  ssss  = t.asInstanceOf[Seq[MyRow]]</span><br><span class="line"></span><br><span class="line">   println(ssss.head(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">   t.foreach((i) =&gt;  &#123;</span><br><span class="line"></span><br><span class="line">     i match  &#123;</span><br><span class="line">       <span class="keyword">case</span> a::b::c::rest =&gt;</span><br><span class="line">           println(a)</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<p>参考资料：<br><a href="https://stackoverflow.com/questions/41637704/how-to-read-an-element-from-a-scala-hlist" target="_blank" rel="external">How to read an element from a Scala HList?</a><br><a href="http://underscore.io/blog/posts/2015/08/08/slickless.html" target="_blank" rel="external">Using shapeless HLists with Slick 3</a><br><a href="http://www.cnblogs.com/tiger-xc/p/6178065.html" target="_blank" rel="external">细谈Slick（6）－ Projection：ProvenShape，强类型的Query结果类型</a></p>
 
           
         
@@ -487,7 +472,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/scala-package/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/27/slick-plainSQL/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -507,7 +492,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/03/31/scala-package/" class="post-title-link" itemprop="url">scala_package</a>
+                <a href="/2017/05/27/slick-plainSQL/" class="post-title-link" itemprop="url">slick_plainSQL</a>
               
             
           </h2>
@@ -532,7 +517,7 @@
                 
               
 
-              <time title="创建时间：2017-03-31 15:29:23" itemprop="dateCreated datePublished" datetime="2017-03-31T15:29:23+08:00">2017-03-31</time>
+              <time title="创建时间：2017-05-27 14:54:11" itemprop="dateCreated datePublished" datetime="2017-05-27T14:54:11+08:00">2017-05-27</time>
             
 
             
@@ -585,10 +570,7 @@
       
         
           
-            <h2 id="scala-打包子项目"><a href="#scala-打包子项目" class="headerlink" title="scala 打包子项目"></a>scala 打包子项目</h2><p>在idea中有多个项目时，我想单独打包子项目，搜了几篇文章受到了启发，  </p>
-<p>只要在命令行中执行<code>sbt module-a/clean module-a/test</code>命令即可.  </p>
-<p>其中 module-a 为定义在根项目中的变量.<br>比如：<br>lazy val <code>api</code> = (project in file(“api”)).settings(javadocSettings: _*).dependsOn(<code>common</code>, <code>bigdata</code>).aggregate(<code>common</code>, <code>bigdata</code>)</p>
-<p><a href="http://stackoverflow.com/questions/18075820/how-to-execute-package-for-one-submodule-only-on-jenkins" target="_blank" rel="external">How to execute package for one submodule only on Jenkins?</a></p>
+            <h2 id="slick3-1-1-使用sql语句查询"><a href="#slick3-1-1-使用sql语句查询" class="headerlink" title="slick3.1.1 使用sql语句查询"></a>slick3.1.1 使用sql语句查询</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">val db  = Database.forURL(<span class="string">"jdbc:mysql://ip:port/db?useUnicode=true"</span>,</span><br><span class="line">    driver = <span class="string">"com.mysql.jdbc.Driver"</span>,</span><br><span class="line">    user=<span class="string">"root"</span>,</span><br><span class="line">    password=<span class="string">"root"</span>)</span><br><span class="line"></span><br><span class="line"> <span class="function">def <span class="title">insertInvoice</span><span class="params">()</span>: DBIO[Int] </span>=</span><br><span class="line">    sqlu<span class="string">"insert   invoicelog values('sss','2017-05-26 12:00:00','sasas')"</span></span><br><span class="line"></span><br><span class="line"> val b:Future[Int] = db.run(insertInvoice())</span><br><span class="line">   Await.result(b, Duration.Inf)</span><br><span class="line"></span><br><span class="line"> implicit val getSupplierResult = GetResult(r =&gt; InvoiceLog(r.nextString(), r.nextString, r.nextString))</span><br><span class="line"> <span class="function">def <span class="title">selectInvoice</span><span class="params">()</span>: DBIO[Seq[InvoiceLog]] </span>=</span><br><span class="line">    sql<span class="string">"select * from invoicelog"</span>.as[InvoiceLog]</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a: Future[Seq[InvoiceLog]] = db.run(selectInvoice)</span><br><span class="line">val s = Await.result(a, Duration.Inf)</span><br></pre></td></tr></table></figure>
 
           
         
@@ -645,7 +627,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/scala-mock/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/12/tomcat-errorpage/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -665,7 +647,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/03/31/scala-mock/" class="post-title-link" itemprop="url">scala_mock</a>
+                <a href="/2017/05/12/tomcat-errorpage/" class="post-title-link" itemprop="url">tomcat_errorpage</a>
               
             
           </h2>
@@ -690,7 +672,7 @@
                 
               
 
-              <time title="创建时间：2017-03-31 14:04:04" itemprop="dateCreated datePublished" datetime="2017-03-31T14:04:04+08:00">2017-03-31</time>
+              <time title="创建时间：2017-05-12 10:02:07" itemprop="dateCreated datePublished" datetime="2017-05-12T10:02:07+08:00">2017-05-12</time>
             
 
             
@@ -743,12 +725,20 @@
       
         
           
-            <h2 id="scala-mock"><a href="#scala-mock" class="headerlink" title="scala mock"></a>scala mock</h2><p>读了这篇文章( Mock Objects for Scala and Android)[<a href="https://www.artima.com/scalazine/articles/borachio_mock_objects_for_scala.html],对scala" target="_blank" rel="external">https://www.artima.com/scalazine/articles/borachio_mock_objects_for_scala.html],对scala</a> mock有点了解了。  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">trait Turtle &#123;</span><br><span class="line">  <span class="function">def <span class="title">penUp</span><span class="params">()</span></span><br><span class="line">  def <span class="title">penDown</span><span class="params">()</span></span><br><span class="line">  def <span class="title">forward</span><span class="params">(distance: Double)</span></span><br><span class="line">  def <span class="title">turn</span><span class="params">(angle: Double)</span></span><br><span class="line">  def getAngle: Double</span><br><span class="line">  def getPosition: <span class="params">(Double, Double)</span></span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>This API is not very convenient. We have no way to move to a specific position, instead we need to work out how to get from where we are now to where we want to get by calculating angles and distances. The diagram below, for example, demonstrates the movements a turtle starting at the origin (0, 0) would need to make to draw a line from (1, 1) to (2, 1).</p>
-<p>Turtle diagram</p>
-<p>You can see an example of code that performs these calculations here. This isn’t trivial, so we want to test to make sure that it’s doing the right thing. Here’s a test (written with ScalaTest) that creates a mock turtle that pretends to start at the origin (0, 0) and verifies that if we ask the code we’ve just written to draw a line from (1, 1) to (2, 1) it performs the correct sequence of turns and movements:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class MockFunctionTest extends Suite with MockFactory &#123;</span><br><span class="line"></span><br><span class="line">  val mockTurtle = mock[Turtle]</span><br><span class="line">  val controller = new Controller(mockTurtle)</span><br><span class="line"></span><br><span class="line">  def testDrawLine() &#123;</span><br><span class="line">    inSequence &#123;</span><br><span class="line">      mockTurtle expects 'getPosition returning (0.0, 0.0)</span><br><span class="line">      mockTurtle expects 'getAngle returning 0.0</span><br><span class="line">      mockTurtle expects 'penUp</span><br><span class="line">      mockTurtle expects 'turn withArgs (~(Pi / 4))</span><br><span class="line">      mockTurtle expects 'forward withArgs (~sqrt(2.0))</span><br><span class="line">      mockTurtle expects 'getAngle returning Pi / 4</span><br><span class="line">      mockTurtle expects 'turn withArgs (~(-Pi / 4))</span><br><span class="line">      mockTurtle expects 'penDown</span><br><span class="line">      mockTurtle expects 'forward withArgs (1.0)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    controller.drawLine((1.0, 1.0), (2.0, 1.0))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h2 id="scalatra-自定义404文件"><a href="#scalatra-自定义404文件" class="headerlink" title="scalatra 自定义404文件"></a>scalatra 自定义404文件</h2><p>在scalatra中，如果访问servlet不存在的路由时，默认为返回<br><code>Requesting &quot;%s %s&quot; on servlet &quot;%s&quot; but only have: %s</code></p>
+<p>那么我就去源码看了看，发现如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">var</span> doNotFound: Action = () =&gt; &#123;</span><br><span class="line">    serveStaticResource() <span class="function">getOrElse <span class="title">resourceNotFound</span><span class="params">()</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Attempts to find a static resource matching the request path.  Override</span><br><span class="line">   * to return None to stop this.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="keyword">protected</span> def <span class="title">serveStaticResource</span><span class="params">()</span>: Option[Any] </span>=</span><br><span class="line">    servletContext.resource(request) map &#123; _ =&gt;</span><br><span class="line">      servletContext.getNamedDispatcher(<span class="string">"default"</span>).forward(request, response)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Called by default notFound if no routes matched and no static resource</span><br><span class="line">   * could be found.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> def <span class="title">resourceNotFound</span><span class="params">()</span>: Any </span>= &#123;</span><br><span class="line">    response.setStatus(<span class="number">404</span>)</span><br><span class="line">    <span class="keyword">if</span> (isDevelopmentMode) &#123;</span><br><span class="line">      val error = <span class="string">"Requesting \"%s %s\" on servlet \"%s\" but only have: %s"</span></span><br><span class="line">      response.getWriter println error.format(</span><br><span class="line">        request.getMethod,</span><br><span class="line">        Option(request.getPathInfo) getOrElse <span class="string">"/"</span>,</span><br><span class="line">        request.getServletPath,</span><br><span class="line">        routes.entryPoints.mkString(<span class="string">"&lt;ul&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;/ul&gt;"</span>))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;<span class="keyword">protected</span> <span class="keyword">var</span> doNotFound: Action = () =&gt; &#123;</span><br><span class="line">    serveStaticResource() <span class="function">getOrElse <span class="title">resourceNotFound</span><span class="params">()</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Attempts to find a static resource matching the request path.  Override</span><br><span class="line">   * to return None to stop this.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="keyword">protected</span> def <span class="title">serveStaticResource</span><span class="params">()</span>: Option[Any] </span>=</span><br><span class="line">    servletContext.resource(request) map &#123; _ =&gt;</span><br><span class="line">      servletContext.getNamedDispatcher(<span class="string">"default"</span>).forward(request, response)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * Called by default notFound if no routes matched and no static resource</span><br><span class="line">   * could be found.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> def <span class="title">resourceNotFound</span><span class="params">()</span>: Any </span>= &#123;</span><br><span class="line">    response.setStatus(<span class="number">404</span>)</span><br><span class="line">    <span class="keyword">if</span> (isDevelopmentMode) &#123;</span><br><span class="line">      val error = <span class="string">"Requesting \"%s %s\" on servlet \"%s\" but only have: %s"</span></span><br><span class="line">      response.getWriter println error.format(</span><br><span class="line">        request.getMethod,</span><br><span class="line">        Option(request.getPathInfo) getOrElse <span class="string">"/"</span>,</span><br><span class="line">        request.getServletPath,</span><br><span class="line">        routes.entryPoints.mkString(<span class="string">"&lt;ul&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;li&gt;"</span>, <span class="string">"&lt;/li&gt;&lt;/ul&gt;"</span>))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>发现它如果没找到路由时，会尝试通过defaultServlet找静态资源，如果还找不到那么就会进入resourceNotFound方法，</p>
+<p>如果是开发模式下，那么就会返回一开始提到的内容。。</p>
+<p>如果我们通过在web.xml中配置：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>org.scalatra.environment<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>production<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>就不会显示配置的404页面，那是怎么回事呢？</p>
+<p>我们来看看response.setStatus(404)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">     * Sets the status code for this response.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;This method is used to set the return status code when there is</span><br><span class="line">     * no error (for example, for the SC_OK or SC_MOVED_TEMPORARILY status</span><br><span class="line">     * codes).</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;If this method is used to set an error code, then the container's</span><br><span class="line">     * error page mechanism will not be triggered. If there is an error and</span><br><span class="line">     * the caller wishes to invoke an error page defined in the web</span><br><span class="line">     * application, then &#123;<span class="doctag">@link</span> #sendError&#125; must be used instead.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;This method preserves any cookies and other response headers.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;Valid status codes are those in the 2XX, 3XX, 4XX, and 5XX ranges.</span><br><span class="line">     * Other status codes are treated as container specific.</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span>	sc	the status code</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@see</span> #sendError</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStatus</span><span class="params">(<span class="keyword">int</span> sc)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>有这么段话：<br>If this method is used to set an error code, then the container’s</p>
+<ul>
+<li>error page mechanism（机制） will not be triggered.</li>
+</ul>
+<p>参考资料：<br><a href="http://tomcat.apache.org/tomcat-4.1-doc/catalina/funcspecs/fs-default.html" target="_blank" rel="external">Default Servlet</a><br><a href="http://stackoverflow.com/questions/32337999/tomcat-use-defaultservlet-for-static-content-in-external-directory" target="_blank" rel="external">Tomcat use DefaultServlet for static content in external directory</a><br><a href="http://blog.csdn.net/husan_3/article/details/23792517" target="_blank" rel="external">Tomcat处理静态文件DefaultServlet分析 </a><br><a href="http://scalatra.org/guides/2.3/deployment/configuration.html" target="_blank" rel="external">Configuration</a><br><a href="https://docs.oracle.com/cd/E13222_01/wls/docs81/webapp/components.html" target="_blank" rel="external">Configuring Web Application Components</a></p>
 
           
         
@@ -805,7 +795,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/scala-abstract-override2/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/05/angular-interpolate/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -825,7 +815,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/03/31/scala-abstract-override2/" class="post-title-link" itemprop="url">scala_abstract_override2</a>
+                <a href="/2017/05/05/angular-interpolate/" class="post-title-link" itemprop="url">angular_interpolate</a>
               
             
           </h2>
@@ -850,7 +840,7 @@
                 
               
 
-              <time title="创建时间：2017-03-31 10:21:25" itemprop="dateCreated datePublished" datetime="2017-03-31T10:21:25+08:00">2017-03-31</time>
+              <time title="创建时间：2017-05-05 22:44:06" itemprop="dateCreated datePublished" datetime="2017-05-05T22:44:06+08:00">2017-05-05</time>
             
 
             
@@ -903,31 +893,11 @@
       
         
           
-            <h2 id="scala-abstract-override"><a href="#scala-abstract-override" class="headerlink" title="scala abstract override"></a>scala abstract override</h2><p>看到了<a href="http://www.artima.com/scalazine/articles/stackable_trait_pattern.html" target="_blank" rel="external">Scala’s Stackable Trait Pattern</a>这篇文章， 继续研究scala abstract override：</p>
-<pre><code class="java">trait Base {
-def foo
-}
-
-trait StackingTrait extends Base {
-<span class="keyword">abstract</span> override def foo { println (<span class="string">"aa"</span>)}
-}
-
-<span class="class"><span class="keyword">class</span> <span class="title">ImplHelper</span> <span class="keyword">extends</span> <span class="title">Base</span> </span>{
-def foo {}
-}
-
-<span class="class"><span class="keyword">class</span> <span class="title">Impl</span>   <span class="keyword">extends</span> <span class="title">Base</span></span>{
-  def foo {
-        println(<span class="string">"ss"</span>)
-  }
-}
-
-val implInstance = <span class="keyword">new</span> Impl with StackingTrait
-
-implInstance.foo
-</code></pre>
-<p>打印出来了aa  </p>
-<p>This arrangement is frequently needed with traits that implement stackable modifications. To tell the compiler you are doing this on purpose, you must mark such methods as abstract override. This combination of modifiers is only allowed for members of traits, not classes, and it means that the trait must be mixed into some class that has a concrete definition of the method in question. </p>
+            <h2 id="angular-插值"><a href="#angular-插值" class="headerlink" title="angular 插值"></a>angular 插值</h2><h3 id="angular-interpolate"><a href="#angular-interpolate" class="headerlink" title="angular interpolate"></a>angular interpolate</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Concatenating(连接) expressions makes it hard to reason about whether some combination of</span></span><br><span class="line"><span class="comment">// concatenated values are unsafe to use and could easily lead to XSS.  By requiring that a</span></span><br><span class="line"><span class="comment">// single expression be used for iframe[src], object[src], etc., we ensure that the value</span></span><br><span class="line"><span class="comment">// that's used is assigned or constructed by some JS code somewhere that is more testable or</span></span><br><span class="line"><span class="comment">// make it obvious that you bound the value to some user controlled value.  This helps reduce</span></span><br><span class="line"><span class="comment">// the load when auditing for XSS issues.</span></span><br><span class="line"><span class="keyword">if</span> (trustedContext &amp;&amp; concat.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    $interpolateMinErr.throwNoconcat(text);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>什么时候报错呢？</p>
+<p>像ng-src=”img/“就会报错了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> $interpolateMinErr = angular.$interpolateMinErr = minErr(<span class="string">'$interpolate'</span>);</span><br><span class="line"><span class="comment">//https://segmentfault.com/q/1010000007677889?_ea=1423254</span></span><br><span class="line">$interpolateMinErr.throwNoconcat = <span class="function"><span class="keyword">function</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line"><span class="keyword">throw</span> $interpolateMinErr(<span class="string">'noconcat'</span>,</span><br><span class="line">    <span class="string">"Error while interpolating: &#123;0&#125;\nStrict Contextual Escaping disallows "</span> +</span><br><span class="line">    <span class="string">"interpolations that concatenate multiple expressions when a trusted value is "</span> +</span><br><span class="line">    <span class="string">"required.  See http://docs.angularjs.org/api/ng.$sce"</span>, text);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">$interpolateMinErr.interr = <span class="function"><span class="keyword">function</span>(<span class="params">text, err</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> $interpolateMinErr(<span class="string">'interr'</span>, <span class="string">"Can't interpolate: &#123;0&#125;\n&#123;1&#125;"</span>, text, err.toString());</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>参考资料：<br><a href="https://segmentfault.com/q/1010000007677889?_ea=1423254" target="_blank" rel="external">AugularJS通过服务器请求图片时总是报错 $interpolate:noconcat</a><br><a href="https://segmentfault.com/a/1190000002753321" target="_blank" rel="external">浅谈AngularJS的$interpolate服务 1</a></p>
 
           
         
@@ -984,7 +954,7 @@ implInstance.foo
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/scala-abscractoverride/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/02/javascript-base1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John"/>
@@ -1004,7 +974,7 @@ implInstance.foo
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2017/03/31/scala-abscractoverride/" class="post-title-link" itemprop="url">scala_abscractoverride</a>
+                <a href="/2017/05/02/javascript-base1/" class="post-title-link" itemprop="url">javascript_base1</a>
               
             
           </h2>
@@ -1029,7 +999,7 @@ implInstance.foo
                 
               
 
-              <time title="创建时间：2017-03-31 09:42:43" itemprop="dateCreated datePublished" datetime="2017-03-31T09:42:43+08:00">2017-03-31</time>
+              <time title="创建时间：2017-05-02 09:22:56" itemprop="dateCreated datePublished" datetime="2017-05-02T09:22:56+08:00">2017-05-02</time>
             
 
             
@@ -1082,18 +1052,8 @@ implInstance.foo
       
         
           
-            <h2 id="abstract-override"><a href="#abstract-override" class="headerlink" title="abstract override"></a>abstract override</h2><p>前几天在看scalatra源码时，看到FileUploadExample这个实例类时，竟然提示我如下错误：  </p>
-<p><code>error: class FileUploadExample needs to be a mixin, since method initialize in trait HasMultipartConfig of type =&gt; Unit is marked abstract and override</code>  </p>
-<p>我在HasMultipartConfig中可以看到如下定义：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">abstract</span> override def <span class="title">initialize</span><span class="params">(config: ConfigT)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">super</span>.initialize(config)</span><br><span class="line"></span><br><span class="line"> providedConfig foreach &#123; _ apply config.context &#125;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">这个initialize其实是定义在Initializable这个trait中的：  </span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">  trait Initializable &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * A hook to initialize the class with some configuration after it has</span><br><span class="line">     * been constructed.</span><br><span class="line">     *</span><br><span class="line">     * Not called init because GenericServlet doesn't override it, and then</span><br><span class="line">     * we get into https://lampsvn.epfl.ch/trac/scala/ticket/2497.</span><br><span class="line">     */</span></span><br><span class="line">      <span class="function">def <span class="title">initialize</span><span class="params">(config: ConfigT)</span></span><br><span class="line">  &#125;</span></span><br></pre></td></tr></table></figure>
-<p>也就是说HasMultipartConfig 中abstract override了它，那么为什么会报错呢？搜索了相关资料，有如下答案：  </p>
-<p>My understanding is that while the error message may be confusing, the behaviour is correct. foo is declared as abstract override in StackingTrait, and thus in any concrete class that mixes StackingTrait there must be a concrete (not marked as abstract) implementation of foo before StackingTrait (relative to the linearization order). This is because super refers to the trait just before in the linearization order, so there definitely needs to be a concrete implementation of foo before StackingTrait is mixed in, or super.foo would be nonsensical.</p>
-<p>When you do this:  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Impl</span> <span class="keyword">extends</span> <span class="title">Base</span> <span class="title">with</span> <span class="title">StackingTrait</span> </span>&#123;</span><br><span class="line">  def foo &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>the linearization order is Base &lt;- StackingTrait &lt;- Impl. The only trait before StackingTrait is Base and Base does not define a concrete implementation of foo.</p>
-<p>But when you do this:    </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">traitImplHelper extends Base &#123;</span><br><span class="line">  def foo &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Impl</span> <span class="keyword">extends</span> <span class="title">ImplHelper</span> <span class="title">with</span> <span class="title">StackingTrait</span></span></span><br></pre></td></tr></table></figure>
-<p>参考资料：<br><a href="http://stackoverflow.com/questions/14169542/scala-trait-mixin-with-abstract-base-class" target="_blank" rel="external">Scala: Trait Mixin with Abstract Base Class</a></p>
+            <h2 id="javascript基础"><a href="#javascript基础" class="headerlink" title="javascript基础"></a>javascript基础</h2><h3 id="行内元素-onclick-和-jquery-绑定的-onclick-有什么区别？"><a href="#行内元素-onclick-和-jquery-绑定的-onclick-有什么区别？" class="headerlink" title="行内元素 onclick 和 jquery 绑定的 onclick 有什么区别？"></a>行内元素 onclick 和 jquery 绑定的 onclick 有什么区别？</h3><p>HTML或原生js是单一对应绑定的，绑多了只留最后一个。jQuery是追加绑定的，绑多少执行多少。</p>
+<p>参考资料：<br>在javascript或者jQuery中绑定按钮点击事件，和在HTML 标签中直接调用onclick属性有什么区别？](<a href="https://segmentfault.com/q/1010000000332625" target="_blank" rel="external">https://segmentfault.com/q/1010000000332625</a>)<br><a href="http://www.cnblogs.com/shi0090/p/6793341.html" target="_blank" rel="external">从国企到阿里的面试经历（一）</a></p>
 
           
         
@@ -1139,7 +1099,7 @@ implInstance.foo
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/21/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/page/23/">23</a><span class="space">&hellip;</span><a class="page-number" href="/page/42/">42</a><a class="extend next" rel="next" href="/page/23/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/21/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/page/23/">23</a><span class="space">&hellip;</span><a class="page-number" href="/page/44/">44</a><a class="extend next" rel="next" href="/page/23/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1181,7 +1141,7 @@ implInstance.foo
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">206</span>
+                    <span class="site-state-item-count">218</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1270,7 +1230,11 @@ implInstance.foo
                     
                       
                     
-                    <span class="site-state-item-count">35</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
