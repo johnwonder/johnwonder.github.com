@@ -316,6 +316,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/31/spring-envrionment/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/31/spring-envrionment/" class="post-title-link" itemprop="url">spring5.x源码解析之加载bean过程前奏--Environment</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-31 20:43:05 / 修改时间：21:20:04" itemprop="dateCreated datePublished" datetime="2020-03-31T20:43:05+08:00">2020-03-31</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上篇文章里最后我们提到了spring会获取当前所处环境后调用它的resolveRequiredPlaceholders<br>方法，也就是解析我们传递路径参数中的占位符，那么它是如何确定当前处于什么环境的呢？</p>
+<p>AbstractRefreshableConfigApplicationContext类会调用它的抽象父类AbstractApplicationContext<br>类中的getEnvironment方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">* Return the &#123;<span class="doctag">@code</span> Environment&#125; for this application context in configurable</span><br><span class="line">* form, allowing for further customization.</span><br><span class="line">* &lt;p&gt;If none specified, a default environment will be initialized via</span><br><span class="line">* &#123;<span class="doctag">@link</span> #createEnvironment()&#125;.</span><br><span class="line">*/</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ConfigurableEnvironment <span class="title">getEnvironment</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.environment == <span class="keyword">null</span>) &#123;</span><br><span class="line">  <span class="keyword">this</span>.environment = createEnvironment();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">this</span>.environment;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法的注释很清晰，意思就是以可配置的格式返回当前应用程序上下文的环境对象。我们看到这个方法<br>已经重写了，它的定义其实是在<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">是干嘛的呢？我们看官方文档：</span><br><span class="line"></span><br><span class="line">Interface indicating a component that contains and exposes an &#123;@link Environment&#125; reference.</span><br><span class="line">是一个接口，它可以用来表明一个组件包含并暴露Environment的引用。我们看它的定义就知道了：</span><br><span class="line"></span><br><span class="line">```Java</span><br><span class="line">  public interface EnvironmentCapable &#123;</span><br><span class="line">  	/**</span><br><span class="line">  	 * Return the &#123;@link Environment&#125; associated with this component.</span><br><span class="line">  	 */</span><br><span class="line">     //返回跟这个组件关联的环境</span><br><span class="line">  	Environment getEnvironment();</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>All Spring application contexts are EnvironmentCapable, and the interface is used primarily<br>for performing {@code instanceof} checks in framework methods that accept BeanFactory<br>instances that may or may not actually be ApplicationContext instances in order to interact<br>with the environment if indeed it is available.</p>
+<p>所有的Spring应用上下文都是带EnvironmentCapable接口的(可装配Environment)，而且接口主要用于在框架方法中执行<code>instanceof</code>检查，<br>这些方法接受BeanFactory实例，实例可能是ApplicationContext实例，也可能不是，如果是带EnvironmentCapable那么就可以访问Environment了。</p>
+<p>As mentioned, {@link org.springframework.context.ApplicationContext ApplicationContext}<br>extends EnvironmentCapable, and thus exposes a {@link #getEnvironment()} method; however,<br>{@link org.springframework.context.ConfigurableApplicationContext ConfigurableApplicationContext}<br>redefines {@link org.springframework.context.ConfigurableApplicationContext#getEnvironment<br>getEnvironment()} and narrows the signature to return a {@link ConfigurableEnvironment}.<br>The effect is that an Environment object is ‘read-only’ until it is being accessed from<br> a ConfigurableApplicationContext, at which point it too may be configured。</p>
+<p> 总体意思就是ApplicationContext继承了EnvironmentCapable接口，但是ConfigurableApplicationContext重新定义了getEnvironment方法，<br> 而且返回了一个ConfigurableEnvironment，影响就是Environment对象变只读了，除非从ConfigurableApplicationContext访问，<br>这个时候它就是可配置的了。</p>
+<p>我们在文章一开始就看到AbstractApplicationContext类实现了ConfigurableApplicationContext接口，所以我们看到在getEnvironment方法<br>中我们可以自己配置environment变量了。那么这个createEnvironment内部到底做了些什么呢？</p>
+<p>下回再分解！</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/30/spring-refreshBeanFactory/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -925,183 +1077,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/22/spring-configlocation-resolve/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/03/22/spring-configlocation-resolve/" class="post-title-link" itemprop="url">ClassPathXmlApplicationContext中针对configLocation配置路径的解析</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-03-22 20:58:00" itemprop="dateCreated datePublished" datetime="2020-03-22T20:58:00+08:00">2020-03-22</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-03-24 14:50:34" itemprop="dateModified" datetime="2020-03-24T14:50:34+08:00">2020-03-24</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在使用ClassPathXmlApplicationContext 传入配置文件时，解析配置文件的流程如下：</p>
-<ol>
-<li><p>AbstractRefreshableConfigApplicationContext.resolvePath</p>
-</li>
-<li><p>getEnvironment() -&gt; createEnvironment() -&gt; StandardEnvironment</p>
-</li>
-<li><p>实例化StandardEnvironment 时 调用customizePropertySources函数</p>
-</li>
-<li><p>customizePropertySources时加入MapPropertySource ，SystemEnvironmentPropertySource</p>
-</li>
-<li><p>调用StandardEnvironment父类AbstractEnvironment.resolveRequiredPlaceholders</p>
-</li>
-<li><p>内部调用PropertySourcesPropertyResolver父类AbstractPropertyResolver的<br>resolveRequiredPlaceholders，此时propertySources传入PropertySourcesPropertyResolver</p>
-</li>
-<li><p>调用doResolvePlaceholders 传入this::getPropertyAsRawString，实际就是<br>，PropertySourcesPropertyResolver的getProperty方法作为函数式接口PlaceholderResolver的 参数</p>
-</li>
-</ol>
-<p>阅读随记：</p>
-<ol>
-<li>CopyOnWriteArrayList 内部indexOf是根据传入的对象的equals方法来比较</li>
-<li>PropertySource.named返回的ComparisonPropertySource 只会比较两个对象的name</li>
-<li>jdk里AbstractCollection的toString方法</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1148,7 +1123,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">218</span>
+                    <span class="site-state-item-count">219</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

@@ -316,6 +316,167 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/03/jquery-filter-grep/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/09/03/jquery-filter-grep/" class="post-title-link" itemprop="url">jquery的filter和grep函数思考</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-03 22:11:04" itemprop="dateCreated datePublished" datetime="2016-09-03T22:11:04+08:00">2016-09-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:29:10" itemprop="dateModified" datetime="2019-05-09T20:29:10+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><p>filter函数首先根据参数not确定是不是筛选出不满足参数t的：<br>1.not为true时筛选出不满足参数t的元素:<br>  构造<code>function(a,f) {return jQuery.grep(a,f,true);}</code>，因为要传递true，所以只能构造。</p>
+<p>2.not为false时筛选出满足参数t的元素：调用<code>jQuery.grep</code></p>
+<p>然后根据<code>while ( t &amp;&amp; /^[a-z[({&lt;*:.#]/i.test(t) )</code>来循环筛选元素</p>
+<p>1.必须满足<code>/^[a-z[({&lt;*:.#]/i</code>正则才会进入<code>while</code>循环，否则直接返回<code>return { r: r, t: t };</code></p>
+<p>2.进入循环后就开始应用<code>jQuery.parse</code>数组循环筛选：</p>
+<p>  因为jQuery.parse数组中包含S，Q两个正则常量:<br>  1.//Look for a string-like sequence<br>    replace( ‘S’, “([a-z<em><em>-][a-z0-9</em>-]</em>)” )<br>    就是要找类似字符串的<br>  2.//Look for something (optionally) enclosed with quotes<br>    .replace( ‘Q’, “ <em>‘?\”?([^’\”]</em>?)’?\”? *” ), “i” );<br>    寻找通过引号关闭的<br>    如果满足parse数组中的某个，那么就跳出for循环，这时候<code>t = t.replace( re, &quot;&quot; )</code>，t就把满足正则的替换为空了(ps:一般到这t就为空了。)<br>  3.如果匹配出的结果中包含not,那么就递归进入filter继续筛选出not的元素。<br>  4.如果没有not，那么就根据<code>jQuery.expr</code>找出符合筛选规则的函数进行eval<br>    因为要传入字符串，所以用eval<br>  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(<span class="string">"f = function(a,i)&#123;"</span> +</span><br><span class="line">	( m[<span class="number">1</span>] == <span class="string">"@"</span> ? <span class="string">"z=jQuery.attr(a,m[3]);"</span> : <span class="string">""</span> ) +</span><br><span class="line">	<span class="string">"return "</span> + f + <span class="string">"&#125;"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>  最后通过grep函数传入f规则函数 再筛选出剩余的元素。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/02/jquery-filter-deep/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -953,165 +1114,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/29/hexo-cli-consoleregister/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/08/29/hexo-cli-consoleregister/" class="post-title-link" itemprop="url">hexo-cli源码分析之控制台注册</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-08-29 23:33:11" itemprop="dateCreated datePublished" datetime="2016-08-29T23:33:11+08:00">2016-08-29</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="hexo-cli-1-0-2版本"><a href="#hexo-cli-1-0-2版本" class="headerlink" title="hexo-cli 1.0.2版本"></a>hexo-cli 1.0.2版本</h2><h3 id="loadModule"><a href="#loadModule" class="headerlink" title="loadModule"></a>loadModule</h3><p>hexo.js中定义了context.js，用来实例化hexo对象。<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">return</span> findPkg(cwd, args).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(path)</span></span> &#123;</span><br><span class="line">   	<span class="keyword">if</span> (!<span class="built_in">path</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">   	hexo.base_dir = <span class="built_in">path</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> loadModule(<span class="built_in">path</span>, args).catch(<span class="function"><span class="keyword">function</span><span class="params">()</span></span> &#123;</span><br><span class="line">      <span class="built_in">log</span>.<span class="built_in">error</span>(<span class="string">'Local hexo not found in %s'</span>, chalk.magenta(tildify(<span class="built_in">path</span>)));</span><br><span class="line">      <span class="built_in">log</span>.<span class="built_in">error</span>(<span class="string">'Try running: \'npm install hexo --save\''</span>);</span><br><span class="line">      process.<span class="built_in">exit</span>(<span class="number">2</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(mod)</span></span> &#123;</span><br><span class="line">	//加载完hexo模块把实例赋给hexo</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">mod</span>) hexo = <span class="built_in">mod</span>;</span><br><span class="line">    <span class="built_in">log</span> = hexo.<span class="built_in">log</span>;</span><br><span class="line">    //注册help init version</span><br><span class="line">    <span class="built_in">require</span>(<span class="string">'./console'</span>)(hexo);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> hexo.init();</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure></p>
-<h3 id="hexo-init"><a href="#hexo-init" class="headerlink" title="hexo.init()"></a>hexo.init()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Hexo.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.log.debug(<span class="string">'Hexo version: %s'</span>, chalk.magenta(<span class="keyword">this</span>.version));</span><br><span class="line">  <span class="keyword">this</span>.log.debug(<span class="string">'Working directory: %s'</span>, chalk.magenta(tildify(<span class="keyword">this</span>.base_dir)));</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Load internal plugins</span></span><br><span class="line">  <span class="comment">//注册内部命令 如deploy new ...</span></span><br><span class="line">  <span class="built_in">require</span>(<span class="string">'../plugins/console'</span>)(<span class="keyword">this</span>);</span><br><span class="line">  <span class="built_in">require</span>(<span class="string">'../plugins/filter'</span>)(<span class="keyword">this</span>);</span><br><span class="line">  <span class="built_in">require</span>(<span class="string">'../plugins/generator'</span>)(<span class="keyword">this</span>);</span><br><span class="line">  <span class="built_in">require</span>(<span class="string">'../plugins/helper'</span>)(<span class="keyword">this</span>);</span><br><span class="line">  <span class="built_in">require</span>(<span class="string">'../plugins/processor'</span>)(<span class="keyword">this</span>);</span><br><span class="line">  <span class="built_in">require</span>(<span class="string">'../plugins/renderer'</span>)(<span class="keyword">this</span>);</span><br><span class="line">  <span class="built_in">require</span>(<span class="string">'../plugins/tag'</span>)(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Load config</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Promise</span>.each([</span><br><span class="line">    <span class="string">'update_package'</span>, <span class="comment">// Update package.json</span></span><br><span class="line">    <span class="string">'load_config'</span>, <span class="comment">// Load config</span></span><br><span class="line">    <span class="string">'load_plugins'</span> <span class="comment">// Load external plugins &amp; scripts</span></span><br><span class="line">  ], <span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">require</span>(<span class="string">'./'</span> + name)(self);</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> self.execFilter(<span class="string">'after_init'</span>, <span class="literal">null</span>, &#123;<span class="attr">context</span>: self&#125;);</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// Ready to go!</span></span><br><span class="line">    self.emit(<span class="string">'ready'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><code>require(&#39;../plugins/console&#39;)(this);</code> 会加载plugins/console目录下的index.js文件,<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">ctx</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> <span class="built_in">console</span> = ctx.extend.console;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.register(<span class="string">'clean'</span>, <span class="string">'Removed generated files and cache.'</span>, <span class="built_in">require</span>(<span class="string">'./clean'</span>));</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.register(<span class="string">'config'</span>, <span class="string">'Get or set configurations.'</span>, &#123;</span><br><span class="line">    <span class="attr">usage</span>: <span class="string">'[name] [value]'</span>,</span><br><span class="line">    <span class="attr">arguments</span>: [</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'name'</span>, <span class="attr">desc</span>: <span class="string">'Setting name. Leave it blank if you want to show all configurations.'</span>&#125;,</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'value'</span>, <span class="attr">desc</span>: <span class="string">'New value of a setting. Leave it blank if you just want to show a single configuration.'</span>&#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;, <span class="built_in">require</span>(<span class="string">'./config'</span>));</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.register(<span class="string">'deploy'</span>, <span class="string">'Deploy your website.'</span>, &#123;</span><br><span class="line">    <span class="attr">options</span>: [</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'--setup'</span>, <span class="attr">desc</span>: <span class="string">'Setup without deployment'</span>&#125;,</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'-g, --generate'</span>, <span class="attr">desc</span>: <span class="string">'Generate before deployment'</span>&#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;, <span class="built_in">require</span>(<span class="string">'./deploy'</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先获取<code>ctx.extend.console</code>，其实就是extend目录下的index.js文件中定义的</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">exports.Console = <span class="built_in">require</span>(<span class="string">'./console'</span>);</span><br><span class="line">exports.Deployer = <span class="built_in">require</span>(<span class="string">'./deployer'</span>);</span><br><span class="line">exports.Filter = <span class="built_in">require</span>(<span class="string">'./filter'</span>);</span><br><span class="line">exports.Generator = <span class="built_in">require</span>(<span class="string">'./generator'</span>);</span><br><span class="line">exports.Helper = <span class="built_in">require</span>(<span class="string">'./helper'</span>);</span><br><span class="line">exports.Migrator = <span class="built_in">require</span>(<span class="string">'./migrator'</span>);</span><br><span class="line">exports.Processor = <span class="built_in">require</span>(<span class="string">'./processor'</span>);</span><br><span class="line">exports.Renderer = <span class="built_in">require</span>(<span class="string">'./renderer'</span>);</span><br><span class="line">exports.Tag = <span class="built_in">require</span>(<span class="string">'./tag'</span>);</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1158,7 +1160,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">218</span>
+                    <span class="site-state-item-count">219</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

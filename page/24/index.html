@@ -316,6 +316,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/17/angular-provide/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/04/17/angular-provide/" class="post-title-link" itemprop="url">angular_$provide</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-04-17 11:30:02" itemprop="dateCreated datePublished" datetime="2017-04-17T11:30:02+08:00">2017-04-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular-provide源码解析"><a href="#angular-provide源码解析" class="headerlink" title="angular provide源码解析"></a>angular provide源码解析</h2><p>在createInjector中会调用loadModules方法，loadModules方法中调用如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//遍历modulesToLoad数组</span></span><br><span class="line"> forEach(modulesToLoad, <span class="function"><span class="keyword">function</span>(<span class="params">module</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isString(<span class="built_in">module</span>)) &#123;</span><br><span class="line">          moduleFn = angularModule(<span class="built_in">module</span>);</span><br><span class="line">          runBlocks = runBlocks.concat(loadModules(moduleFn.requires)).concat(moduleFn._runBlocks);</span><br><span class="line">          runInvokeQueue(moduleFn._invokeQueue);</span><br><span class="line">          <span class="comment">//像module.service时加入的service ，那么需要把这些service加入prividerCache</span></span><br><span class="line">          runInvokeQueue(moduleFn._configBlocks);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isFunction(<span class="built_in">module</span>)) &#123;</span><br><span class="line">            runBlocks.push(providerInjector.invoke(<span class="built_in">module</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isArray(<span class="built_in">module</span>)) &#123;</span><br><span class="line">          <span class="comment">// $provide.value('$rootElement', element);</span></span><br><span class="line">          <span class="comment">//为undefined</span></span><br><span class="line">          <span class="comment">//invoke里会调用function</span></span><br><span class="line">            runBlocks.push(providerInjector.invoke(<span class="built_in">module</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          assertArgFn(<span class="built_in">module</span>, <span class="string">'module'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>还记得bootstrap中调用是怎么样的么？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">modules = modules || [];</span><br><span class="line"><span class="comment">//unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span></span><br><span class="line">modules.unshift([<span class="string">'$provide'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$provide</span>) </span>&#123;</span><br><span class="line">  $provide.value(<span class="string">'$rootElement'</span>, element);</span><br><span class="line">&#125;]);</span><br></pre></td></tr></table></figure>
+<p>那么就会先调用<code>providerInjector.invoke</code>然后再push到runBlocks中，$provide定义如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">valueFn</span>(<span class="params">value</span>) </span>&#123;<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">valueRef</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> value;&#125;;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createInjector</span>(<span class="params">modulesToLoad, strictDi</span>) </span>&#123;</span><br><span class="line"><span class="keyword">var</span> providerCache = &#123;</span><br><span class="line">     <span class="attr">$provide</span>: &#123;</span><br><span class="line">         <span class="attr">provider</span>: supportObject(provider),</span><br><span class="line">         <span class="attr">factory</span>: supportObject(factory),</span><br><span class="line">         <span class="attr">service</span>: supportObject(service),</span><br><span class="line">         <span class="attr">value</span>: supportObject(value),</span><br><span class="line">         <span class="attr">constant</span>: supportObject(constant),</span><br><span class="line">         <span class="attr">decorator</span>: decorator</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">provider</span>(<span class="params">name, provider_</span>) </span>&#123;</span><br><span class="line">    assertNotHasOwnProperty(name, <span class="string">'service'</span>);</span><br><span class="line">    <span class="keyword">if</span> (isFunction(provider_) || isArray(provider_)) &#123;</span><br><span class="line">      <span class="comment">//先实例化</span></span><br><span class="line">      provider_ = providerInjector.instantiate(provider_);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!provider_.$<span class="keyword">get</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> $injectorMinErr(<span class="string">'pget'</span>, <span class="string">"Provider '&#123;0&#125;' must define $get factory method."</span>, name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> providerCache[name + providerSuffix] = provider_;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">factory</span>(<span class="params">name, factoryFn, enforce</span>) </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> provider(name, &#123;</span><br><span class="line">         <span class="attr">$get</span>: enforce !== <span class="literal">false</span> ? enforceReturnValue(name, factoryFn) : factoryFn</span><br><span class="line">       &#125;);</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">value</span>(<span class="params">name, val</span>) </span>&#123; <span class="keyword">return</span> factory(name, valueFn(val), <span class="literal">false</span>); &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>看instantiate方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">instantiate</span>(<span class="params">Type, locals, serviceName</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Check if Type is annotated and use just the given function at n-1 as parameter</span></span><br><span class="line">    <span class="comment">// e.g. someModule.factory('greeter', ['$window', function(renamed$window) &#123;&#125;]);</span></span><br><span class="line">    <span class="keyword">var</span> ctor = (isArray(Type) ? Type[Type.length - <span class="number">1</span>] : Type);</span><br><span class="line">    <span class="keyword">var</span> args = injectionArgs(Type, locals, serviceName);</span><br><span class="line">    <span class="comment">// Empty object at position 0 is ignored for invocation with `new`, but required.</span></span><br><span class="line">    args.unshift(<span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> (<span class="built_in">Function</span>.prototype.bind.apply(ctor, args))();</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/12/linux-vi2/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -950,166 +1112,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/scala-mock/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/03/31/scala-mock/" class="post-title-link" itemprop="url">scala_mock</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-31 14:04:04" itemprop="dateCreated datePublished" datetime="2017-03-31T14:04:04+08:00">2017-03-31</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="scala-mock"><a href="#scala-mock" class="headerlink" title="scala mock"></a>scala mock</h2><p>读了这篇文章( Mock Objects for Scala and Android)[<a href="https://www.artima.com/scalazine/articles/borachio_mock_objects_for_scala.html],对scala" target="_blank" rel="external">https://www.artima.com/scalazine/articles/borachio_mock_objects_for_scala.html],对scala</a> mock有点了解了。  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">trait Turtle &#123;</span><br><span class="line">  <span class="function">def <span class="title">penUp</span><span class="params">()</span></span><br><span class="line">  def <span class="title">penDown</span><span class="params">()</span></span><br><span class="line">  def <span class="title">forward</span><span class="params">(distance: Double)</span></span><br><span class="line">  def <span class="title">turn</span><span class="params">(angle: Double)</span></span><br><span class="line">  def getAngle: Double</span><br><span class="line">  def getPosition: <span class="params">(Double, Double)</span></span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>This API is not very convenient. We have no way to move to a specific position, instead we need to work out how to get from where we are now to where we want to get by calculating angles and distances. The diagram below, for example, demonstrates the movements a turtle starting at the origin (0, 0) would need to make to draw a line from (1, 1) to (2, 1).</p>
-<p>Turtle diagram</p>
-<p>You can see an example of code that performs these calculations here. This isn’t trivial, so we want to test to make sure that it’s doing the right thing. Here’s a test (written with ScalaTest) that creates a mock turtle that pretends to start at the origin (0, 0) and verifies that if we ask the code we’ve just written to draw a line from (1, 1) to (2, 1) it performs the correct sequence of turns and movements:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class MockFunctionTest extends Suite with MockFactory &#123;</span><br><span class="line"></span><br><span class="line">  val mockTurtle = mock[Turtle]</span><br><span class="line">  val controller = new Controller(mockTurtle)</span><br><span class="line"></span><br><span class="line">  def testDrawLine() &#123;</span><br><span class="line">    inSequence &#123;</span><br><span class="line">      mockTurtle expects 'getPosition returning (0.0, 0.0)</span><br><span class="line">      mockTurtle expects 'getAngle returning 0.0</span><br><span class="line">      mockTurtle expects 'penUp</span><br><span class="line">      mockTurtle expects 'turn withArgs (~(Pi / 4))</span><br><span class="line">      mockTurtle expects 'forward withArgs (~sqrt(2.0))</span><br><span class="line">      mockTurtle expects 'getAngle returning Pi / 4</span><br><span class="line">      mockTurtle expects 'turn withArgs (~(-Pi / 4))</span><br><span class="line">      mockTurtle expects 'penDown</span><br><span class="line">      mockTurtle expects 'forward withArgs (1.0)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    controller.drawLine((1.0, 1.0), (2.0, 1.0))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1156,7 +1158,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">218</span>
+                    <span class="site-state-item-count">219</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
