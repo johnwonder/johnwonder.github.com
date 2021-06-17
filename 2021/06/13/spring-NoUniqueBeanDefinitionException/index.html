@@ -111,7 +111,7 @@
 <meta property="og:site_name" content="john's tech blog">
 <meta property="og:description" content="前言我们在开发Spring应用时可能会不小心注入两个相同类型的Bean，比如实现了两个相同Service接口的类,示例伪代码如下：
 1234567891011121314interface SampleService &amp;#123;  String getName();&amp;#125;class ServiceA implements SampleService&amp;#123;   String getNa">
-<meta property="og:updated_time" content="2021-06-13T02:33:34.038Z">
+<meta property="og:updated_time" content="2021-06-17T14:11:49.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring应用抛出NoUniqueBeanDefinitionException异常时该怎么办">
 <meta name="twitter:description" content="前言我们在开发Spring应用时可能会不小心注入两个相同类型的Bean，比如实现了两个相同Service接口的类,示例伪代码如下：
@@ -371,12 +371,24 @@
                 
               
 
-              <time title="创建时间：2021-06-13 10:27:54 / 修改时间：10:33:34" itemprop="dateCreated datePublished" datetime="2021-06-13T10:27:54+08:00">2021-06-13</time>
+              <time title="创建时间：2021-06-13 10:27:54" itemprop="dateCreated datePublished" datetime="2021-06-13T10:27:54+08:00">2021-06-13</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-06-17 22:11:49" itemprop="dateModified" datetime="2021-06-17T22:11:49+08:00">2021-06-17</time>
               
             
           </span>
@@ -439,8 +451,9 @@
 <blockquote>
 <p>Exception in thread “main” org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type ‘com.john.primary.SampleService’ available: expected single matching bean but found 2: ServiceA,ServiceB</p>
 </blockquote>
-<p>这时候我们该怎么办呢？</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>如果我们是用早期Spring的Xml配置Bean时，可以使用如下两种方式解决：</p>
+<p>但是我们不想报错且想获取其中某一个Bean，这时候我们该怎么办呢？</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>既然包含了两个相同类型的Bean,通常来说我们只要把其中一个Bean不注入就好，那如果我们想保留这两个相同类型的Bean,但是又想让SampleService正常注入呢？</p>
+<p>如果我们是用早期Spring的Xml配置Bean时，可以使用如下两种方式解决：</p>
 <ol>
 <li><p>那么我们可以在其中一个Bean配置里加上autowire-candidate=”false”</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"serviceA"</span> <span class="attr">class</span>=<span class="string">"com.john.primary.ServiceA"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"serviceB"</span> <span class="attr">class</span>=<span class="string">"com.john.primary.ServiceB"</span> <span class="attr">autowire-candidate</span>=<span class="string">"false"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
@@ -458,7 +471,11 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PriorityOrderComparator</span> <span class="keyword">extends</span> <span class="title">AnnotationAwareOrderComparator</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span><br><span class="line">    * Shared default instance of &#123;<span class="doctag">@code</span> PriorityOrderComparator&#125;.</span><br><span class="line">    */</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> PriorityOrderComparator INSTANCE = <span class="keyword">new</span> PriorityOrderComparator();</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> Integer <span class="title">getPriority</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">     	 <span class="comment">//先获取Priority</span></span><br><span class="line">       Integer order = <span class="keyword">super</span>.getPriority(obj);</span><br><span class="line">       <span class="keyword">if</span>(order == <span class="keyword">null</span>)</span><br><span class="line">         <span class="comment">//获取Order注解或者Ordered接口返回值</span></span><br><span class="line">         <span class="keyword">return</span>  <span class="keyword">super</span>.findOrder(obj);</span><br><span class="line">       <span class="keyword">return</span>  order;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>如果我们使用目前流行的注解方式来实现，那么可以使用如下方式：</p>
+<p>我们还可以使用目前流行的注解方式来实现，Spring文档中也提到过：</p>
+<blockquote>
+<p>Because autowiring by type may lead to multiple candidates, it is often necessary to have more control over the selection process. One way to accomplish this is with Spring’s @Primary annotation. @Primary indicates that a particular bean should be given preference when multiple beans are candidates to be autowired to a single-valued dependency. If exactly one primary bean exists among the candidates, it becomes the autowired value.</p>
+</blockquote>
+<p>那么可以使用如下方式：</p>
 <ol>
 <li><p>@Primary注解：</p>
 <p>该注解可以标注在类上或者方法上，示例如下：</p>
