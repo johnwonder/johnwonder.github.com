@@ -323,6 +323,189 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/06/26/spring-harvest/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/06/26/spring-harvest/" class="post-title-link" itemprop="url">spring框架知识点收获整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-26 22:02:32" itemprop="dateCreated datePublished" datetime="2019-06-26T22:02:32+08:00">2019-06-26</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-06 14:34:42" itemprop="dateModified" datetime="2019-07-06T14:34:42+08:00">2019-07-06</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="static-静态代码块"><a href="#static-静态代码块" class="headerlink" title="static 静态代码块"></a>static 静态代码块</h2><p><code>org.springframework.util.ClassUtils</code>  抽象类里包含了static静态代码初始化块。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">  primitiveWrapperTypeMap.put(Boolean.class, <span class="keyword">boolean</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Byte.class, <span class="keyword">byte</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Character.class, <span class="keyword">char</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Double.class, <span class="keyword">double</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Float.class, <span class="keyword">float</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Integer.class, <span class="keyword">int</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Long.class, <span class="keyword">long</span>.class);</span><br><span class="line">  primitiveWrapperTypeMap.put(Short.class, <span class="keyword">short</span>.class);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Java编程思想p96页5.7.3节提到了java的显式静态初始化。</p>
+<h2 id="Ljava-lang-String-的含义"><a href="#Ljava-lang-String-的含义" class="headerlink" title="[Ljava/lang/String; 的含义"></a>[Ljava/lang/String; 的含义</h2><p>“([Ljava/lang/String;)V” 它是一种对函数返回值和参数的编码。这种编码叫做JNI字段描述符（JavaNative Interface FieldDescriptors)。一个数组int[]，就需要表示为这样”[I”。如果多个数组double[][][]就需要表示为这样 “[[[D”。也就是说每一个方括号开始，就表示一个数组维数。多个方框后面，就是数组 的类型。<br>如果以一个L开头的描述符，就是类描述符，它后紧跟着类的字符串，然后分号“；”结束。</p>
+<p>比如”Ljava/lang/String;”就是表示类型String；</p>
+<p>“[I”就是表示int[];</p>
+<p>“[Ljava/lang/Object;”就是表示Object[]。</p>
+<p>JNI方法描述符，主要就是在括号里放置参数，在括号后面放置返回类型，如下：</p>
+<p>（参数描述符）返回类型</p>
+<p>当一个函数不需要返回参数类型时，就使用”V”来表示。</p>
+<p>比如”()Ljava/lang/String;”就是表示String f();</p>
+<p>“(ILjava/lang/Class;)J”就是表示long f(int i, Class c);</p>
+<p>“([B)V”就是表示void String(byte[] bytes);</p>
+<p>Java类型 符号<br>Boolean  Z,<br>Byte     B,<br>Char C,<br>Short S,<br>Int I,<br>Long J,<br>Float F,<br>Double D,<br>Void V;<br>objects对象以”L”开头，以”;”结尾，中间是用”/“ 隔开的包及类名。比如：Ljava/lang/String;如果是嵌套类，则用$来表示嵌套。例如 “(Ljava/lang/String;Landroid/os/FileUtils$FileStatus;)Z”</p>
+<p>另外数组类型的简写,则用”[“加上如表A所示的对应类型的简写形式进行表示就可以了，</p>
+<p>比如：[I 表示 int [];[L/java/lang/objects;表示Objects[],另外。引用类型（除基本类型的数组外）的标示最后都有个”;”</p>
+<p>例如：</p>
+<p>“()V” 就表示void Func();</p>
+<p>“(II)V” 表示 void Func(int, int);</p>
+<p>“(Ljava/lang/String;Ljava/lang/String;)I”.表示 int Func(String,String)</p>
+<h2 id="Array-newInstance"><a href="#Array-newInstance" class="headerlink" title="Array.newInstance"></a>Array.newInstance</h2><p>动态创建数组</p>
+<ol>
+<li><a href="https://uule.iteye.com/blog/2236322" target="_blank" rel="external">java.lang.reflect.Array.newInstance与list.toArray</a></li>
+</ol>
+<h2 id="ClassLoader-loadClass"><a href="#ClassLoader-loadClass" class="headerlink" title="ClassLoader.loadClass"></a>ClassLoader.loadClass</h2><ol>
+<li><a href="https://www.iteye.com/problems/4054" target="_blank" rel="external">类加载器URLClassLoader.loadClass(className)后, 无法卸载Jar</a></li>
+<li><a href="http://ifeve.com/classloader/" target="_blank" rel="external">深入浅出ClassLoader</a></li>
+<li><a href="https://blog.mythsman.com/2017/12/17/1/" target="_blank" rel="external">Java类加载原理与ClassLoader使用总结</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/06/26/spring-aop-knownpoints/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -947,166 +1130,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/06/17/maven-knownpoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/06/17/maven-knownpoints/" class="post-title-link" itemprop="url">maven_knownpoints</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-17 15:29:51" itemprop="dateCreated datePublished" datetime="2019-06-17T15:29:51+08:00">2019-06-17</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Maven中的BOM概念"><a href="#Maven中的BOM概念" class="headerlink" title="Maven中的BOM概念"></a>Maven中的BOM概念</h3><p>BOM stands for Bill Of Materials. A BOM is a special kind of POM that is used to control the versions of a project’s dependencies and provide a central place to define and update those versions.</p>
-<p>BOM provides the flexibility to add a dependency to our module without worrying about the version that we should depend on.</p>
-<p>参考资料：</p>
-<ol>
-<li><a href="http://www.bubuko.com/infodetail-2801304.html" target="_blank" rel="external">Maven中的BOM概念</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1153,7 +1176,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">219</span>
+                    <span class="site-state-item-count">220</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
