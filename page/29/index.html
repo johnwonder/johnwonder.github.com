@@ -323,6 +323,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/02/24/angular-init/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/02/24/angular-init/" class="post-title-link" itemprop="url">angular_源码分析之初始化</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-02-24 15:35:27" itemprop="dateCreated datePublished" datetime="2017-02-24T15:35:27+08:00">2017-02-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular初始化过程"><a href="#angular初始化过程" class="headerlink" title="angular初始化过程"></a>angular初始化过程</h2><h3 id="页面加载完成调用angularInit"><a href="#页面加载完成调用angularInit" class="headerlink" title="页面加载完成调用angularInit"></a>页面加载完成调用angularInit</h3><p>跟jquery中的ready函数很像吧<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">jqLite(<span class="built_in">window</span>.document).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  angularInit(<span class="built_in">window</span>.document, bootstrap);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="jqLite-ready函数"><a href="#jqLite-ready函数" class="headerlink" title="jqLite.ready函数"></a>jqLite.ready函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> JQLitePrototype = JQLite.prototype = &#123;</span><br><span class="line">    <span class="attr">ready</span>: <span class="function"><span class="keyword">function</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> fired = <span class="literal">false</span>;</span><br><span class="line">      <span class="comment">//trigger方法中再调用参数fn</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">trigger</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (fired) <span class="keyword">return</span>;</span><br><span class="line">        fired = <span class="literal">true</span>;</span><br><span class="line">        fn();<span class="comment">//调用fn参数 函数</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// check if document is already loaded</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">window</span>.document.readyState === <span class="string">'complete'</span>) &#123;</span><br><span class="line">        <span class="built_in">window</span>.setTimeout(trigger);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.on(<span class="string">'DOMContentLoaded'</span>, trigger); <span class="comment">// works for modern browsers and IE9</span></span><br><span class="line">        <span class="comment">// we can not use jqLite since we are not done loading and jQuery could be loaded later.</span></span><br><span class="line">        <span class="comment">// jshint -W064</span></span><br><span class="line">        JQLite(<span class="built_in">window</span>).on(<span class="string">'load'</span>, trigger); <span class="comment">// fallback to window.onload for others</span></span><br><span class="line">        <span class="comment">// jshint +W064</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="angularInit"><a href="#angularInit" class="headerlink" title="angularInit"></a>angularInit</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//element元素 ，从上文看就是window.document</span></span><br><span class="line"><span class="comment">//bootstrap函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">angularInit</span>(<span class="params">element, bootstrap</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> appElement,</span><br><span class="line">        <span class="built_in">module</span>,</span><br><span class="line">        config = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//element比其他元素优先级高</span></span><br><span class="line">    <span class="comment">// The element `element` has priority over any other element.</span></span><br><span class="line">    forEach(ngAttrPrefixes, <span class="function"><span class="keyword">function</span>(<span class="params">prefix</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> name = prefix + <span class="string">'app'</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!appElement &amp;&amp; element.hasAttribute &amp;&amp; element.hasAttribute(name)) &#123;</span><br><span class="line">        appElement = element;</span><br><span class="line">        <span class="built_in">module</span> = element.getAttribute(name);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    forEach(ngAttrPrefixes, <span class="function"><span class="keyword">function</span>(<span class="params">prefix</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> name = prefix + <span class="string">'app'</span>;</span><br><span class="line">      <span class="keyword">var</span> candidate;</span><br><span class="line">      <span class="comment">//从element元素中用querySelector方法查找带ng-app的元素</span></span><br><span class="line">      <span class="keyword">if</span> (!appElement &amp;&amp; (candidate = element.querySelector(<span class="string">'['</span> + name.replace(<span class="string">':'</span>, <span class="string">'\\:'</span>) + <span class="string">']'</span>))) &#123;</span><br><span class="line">        appElement = candidate;</span><br><span class="line">        <span class="built_in">module</span> = candidate.getAttribute(name);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">//ng-app标记的元素，</span></span><br><span class="line">    <span class="comment">//模块比如ng-app="oaApp"，那么module就等于oaApp</span></span><br><span class="line">    <span class="keyword">if</span> (appElement) &#123;</span><br><span class="line">      config.strictDi = getNgAttribute(appElement, <span class="string">"strict-di"</span>) !== <span class="literal">null</span>;</span><br><span class="line">      <span class="comment">//启动</span></span><br><span class="line">      bootstrap(appElement, <span class="built_in">module</span> ? [<span class="built_in">module</span>] : [], config);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="bootstrap"><a href="#bootstrap" class="headerlink" title="bootstrap"></a>bootstrap</h3><p>最终调用的还是bootstrap函数<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bootstrap</span>(<span class="params">element, modules, config</span>) </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!isObject(config)) config = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> defaultConfig = &#123;</span><br><span class="line">  <span class="attr">strictDi</span>: <span class="literal">false</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//扩展默认配置</span></span><br><span class="line">config = extend(defaultConfig, config);</span><br><span class="line"><span class="keyword">var</span> doBootstrap = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  element = jqLite(element);<span class="comment">//用jqLite包装下</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//判断injector方法调用的结果</span></span><br><span class="line">  <span class="comment">//一开始调用element.injector()时是返回false的，当调用到</span></span><br><span class="line">  <span class="comment">//element.data('$injector', injector);就为true了</span></span><br><span class="line">  <span class="keyword">if</span> (element.injector()) &#123;</span><br><span class="line">    <span class="keyword">var</span> tag = (element[<span class="number">0</span>] === <span class="built_in">window</span>.document) ? <span class="string">'document'</span> : startingTag(element);</span><br><span class="line">    <span class="comment">// Encode angle brackets to prevent input from being sanitized to empty string #8683.</span></span><br><span class="line">    <span class="keyword">throw</span> ngMinErr(</span><br><span class="line">        <span class="string">'btstrpd'</span>,</span><br><span class="line">        <span class="string">"App already bootstrapped with this element '&#123;0&#125;'"</span>,</span><br><span class="line">        tag.replace(<span class="regexp">/&lt;/</span>,<span class="string">'&amp;lt;'</span>).replace(<span class="regexp">/&gt;/</span>,<span class="string">'&amp;gt;'</span>));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  modules = modules || [];</span><br><span class="line">  <span class="comment">//unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span></span><br><span class="line">  modules.unshift([<span class="string">'$provide'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$provide</span>) </span>&#123;</span><br><span class="line">    $provide.value(<span class="string">'$rootElement'</span>, element);</span><br><span class="line">  &#125;]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (config.debugInfoEnabled) &#123;</span><br><span class="line">    <span class="comment">// Pushing so that this overrides `debugInfoEnabled` setting defined in user's `modules`.</span></span><br><span class="line">    modules.push([<span class="string">'$compileProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$compileProvider</span>) </span>&#123;</span><br><span class="line">      $compileProvider.debugInfoEnabled(<span class="literal">true</span>);</span><br><span class="line">    &#125;]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//ng模块放入第一位</span></span><br><span class="line">  modules.unshift(<span class="string">'ng'</span>);</span><br><span class="line">  <span class="keyword">var</span> injector = createInjector(modules, config.strictDi);</span><br><span class="line">  injector.invoke([<span class="string">'$rootScope'</span>, <span class="string">'$rootElement'</span>, <span class="string">'$compile'</span>, <span class="string">'$injector'</span>,</span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">bootstrapApply</span>(<span class="params">scope, element, compile, injector</span>) </span>&#123;</span><br><span class="line">      scope.$apply(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        element.data(<span class="string">'$injector'</span>, injector);</span><br><span class="line">        compile(element)(scope);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;]</span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">return</span> injector;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> NG_ENABLE_DEBUG_INFO = <span class="regexp">/^NG_ENABLE_DEBUG_INFO!/</span>;</span><br><span class="line"><span class="keyword">var</span> NG_DEFER_BOOTSTRAP = <span class="regexp">/^NG_DEFER_BOOTSTRAP!/</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span> &amp;&amp; NG_ENABLE_DEBUG_INFO.test(<span class="built_in">window</span>.name)) &#123;</span><br><span class="line">  config.debugInfoEnabled = <span class="literal">true</span>;</span><br><span class="line">  <span class="built_in">window</span>.name = <span class="built_in">window</span>.name.replace(NG_ENABLE_DEBUG_INFO, <span class="string">''</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span> &amp;&amp; !NG_DEFER_BOOTSTRAP.test(<span class="built_in">window</span>.name)) &#123;</span><br><span class="line">  <span class="keyword">return</span> doBootstrap();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.name = <span class="built_in">window</span>.name.replace(NG_DEFER_BOOTSTRAP, <span class="string">''</span>);</span><br><span class="line">angular.resumeBootstrap = <span class="function"><span class="keyword">function</span>(<span class="params">extraModules</span>) </span>&#123;</span><br><span class="line">  forEach(extraModules, <span class="function"><span class="keyword">function</span>(<span class="params">module</span>) </span>&#123;</span><br><span class="line">    modules.push(<span class="built_in">module</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> doBootstrap();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isFunction(angular.resumeDeferredBootstrap)) &#123;</span><br><span class="line">  angular.resumeDeferredBootstrap();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>element.injector在哪边定义的呢？</p>
+<p>通过forEach遍历函数<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//line 3347</span></span><br><span class="line">forEach(&#123;</span><br><span class="line"><span class="attr">data</span>: jqLiteData,</span><br><span class="line"><span class="attr">inheritedData</span>: jqLiteInheritedData,</span><br><span class="line"></span><br><span class="line"><span class="attr">scope</span>: <span class="function"><span class="keyword">function</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Can't use jqLiteData here directly so we stay compatible with jQuery!</span></span><br><span class="line">  <span class="keyword">return</span> jqLite.data(element, <span class="string">'$scope'</span>) || jqLiteInheritedData(element.parentNode || element, [<span class="string">'$isolateScope'</span>, <span class="string">'$scope'</span>]);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"><span class="attr">isolateScope</span>: <span class="function"><span class="keyword">function</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Can't use jqLiteData here directly so we stay compatible with jQuery!</span></span><br><span class="line">  <span class="keyword">return</span> jqLite.data(element, <span class="string">'$isolateScope'</span>) || jqLite.data(element, <span class="string">'$isolateScopeNoTemplate'</span>);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"><span class="attr">controller</span>: jqLiteController,</span><br><span class="line"></span><br><span class="line"><span class="attr">injector</span>: <span class="function"><span class="keyword">function</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> jqLiteInheritedData(element, <span class="string">'$injector'</span>);</span><br><span class="line">&#125;&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">fn, name</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//fn相当于value name相当于key</span></span><br><span class="line">    <span class="comment">//jQLite.prototype['injector'] =</span></span><br><span class="line">    JQLite.prototype[name] = <span class="function"><span class="keyword">function</span>(<span class="params">arg1, arg2</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> i, key;</span><br><span class="line">    <span class="keyword">var</span> nodeCount = <span class="keyword">this</span>.length;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//jqLiteHasClass是个只读函数，所以需要特殊处理</span></span><br><span class="line">    <span class="comment">// jqLiteHasClass has only two arguments, but is a getter-only fn, so we need to special-case it</span></span><br><span class="line">    <span class="comment">// in a way that survives minification.</span></span><br><span class="line">    <span class="comment">//缩小范围</span></span><br><span class="line">    <span class="comment">// jqLiteEmpty takes no arguments but is a setter.</span></span><br><span class="line">    <span class="comment">//jqLiteEmpty 无参函数 但是 是一个setter方法</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (fn !== jqLiteEmpty &amp;&amp;</span><br><span class="line">        (isUndefined((fn.length == <span class="number">2</span> &amp;&amp; (fn !== jqLiteHasClass &amp;&amp; fn !== jqLiteController)) ? arg1 : arg2))) &#123;</span><br><span class="line">      <span class="keyword">if</span> (isObject(arg1)) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// we are a write, but the object properties are the key/values</span></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; nodeCount; i++) &#123;</span><br><span class="line">          <span class="keyword">if</span> (fn === jqLiteData) &#123;</span><br><span class="line">            <span class="comment">// data() takes the whole object in jQuery</span></span><br><span class="line">            <span class="comment">//this[i] 是通过jqLiteAddNodes函数往jqLite对象中加入索引</span></span><br><span class="line">            fn(<span class="keyword">this</span>[i], arg1);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (key <span class="keyword">in</span> arg1) &#123;</span><br><span class="line">              fn(<span class="keyword">this</span>[i], key, arg1[key]);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// return self for chaining</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//element.injector() 走到这里</span></span><br><span class="line">        <span class="comment">// we are a read, so read the first child.</span></span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> do we still need this?</span></span><br><span class="line">        <span class="keyword">var</span> value = fn.$dv;</span><br><span class="line">        <span class="comment">// Only if we have $dv do we iterate over all, otherwise it is just the first element.</span></span><br><span class="line">        <span class="keyword">var</span> jj = (isUndefined(value)) ? <span class="built_in">Math</span>.min(nodeCount, <span class="number">1</span>) : nodeCount;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; jj; j++) &#123;</span><br><span class="line">          <span class="keyword">var</span> nodeValue = fn(<span class="keyword">this</span>[j], arg1, arg2);</span><br><span class="line">          value = value ? value + nodeValue : nodeValue;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// we are a write, so apply to all children</span></span><br><span class="line">      <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; nodeCount; i++) &#123;</span><br><span class="line">        fn(<span class="keyword">this</span>[i], arg1, arg2);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// return self for chaining</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="jqLiteInheritedData"><a href="#jqLiteInheritedData" class="headerlink" title="jqLiteInheritedData"></a>jqLiteInheritedData</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jqLiteInheritedData</span>(<span class="params">element, name, value</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// if element is the document object work with the html element instead</span></span><br><span class="line">  <span class="comment">// this makes $(document).scope() possible</span></span><br><span class="line">  <span class="keyword">if</span> (element.nodeType == NODE_TYPE_DOCUMENT) &#123;</span><br><span class="line">    element = element.documentElement;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> names = isArray(name) ? name : [name];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (element) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, ii = names.length; i &lt; ii; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (isDefined(value = jqLite.data(element, names[i]))) <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If dealing with a document fragment node with a host element, and no parent, use the host</span></span><br><span class="line">    <span class="comment">// element as the parent. This enables directives within a Shadow DOM or polyfilled Shadow DOM</span></span><br><span class="line">    <span class="comment">// to lookup parent controllers.</span></span><br><span class="line">    element = element.parentNode || (element.nodeType === NODE_TYPE_DOCUMENT_FRAGMENT &amp;&amp; element.host);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="jqLite-data-jqLiteData-："><a href="#jqLite-data-jqLiteData-：" class="headerlink" title="jqLite.data(jqLiteData)："></a>jqLite.data(jqLiteData)：</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">jqLiteData</span>(<span class="params">element, key, value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (jqLiteAcceptsData(element)) &#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">var</span> isSimpleSetter = isDefined(value);</span><br><span class="line">      <span class="comment">//element.injector() 就是 获取$injector</span></span><br><span class="line">      <span class="comment">//那么就是isSimpleGetter</span></span><br><span class="line">      <span class="keyword">var</span> isSimpleGetter = !isSimpleSetter &amp;&amp; key &amp;&amp; !isObject(key);</span><br><span class="line">      <span class="keyword">var</span> massGetter = !key;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//element.injector()</span></span><br><span class="line">      <span class="comment">//!isSimpleGetter传false</span></span><br><span class="line">      <span class="keyword">var</span> expandoStore = jqLiteExpandoStore(element, !isSimpleGetter);</span><br><span class="line">      <span class="keyword">var</span> data = expandoStore &amp;&amp; expandoStore.data;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (isSimpleSetter) &#123; <span class="comment">// data('key', value)</span></span><br><span class="line">        data[key] = value;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (massGetter) &#123;  <span class="comment">// data()</span></span><br><span class="line">          <span class="keyword">return</span> data;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (isSimpleGetter) &#123; <span class="comment">// data('key')</span></span><br><span class="line">            <span class="comment">// don't force creation of expandoStore if it doesn't exist yet</span></span><br><span class="line">            <span class="keyword">return</span> data &amp;&amp; data[key];</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123; <span class="comment">// mass-setter: data(&#123;key1: val1, key2: val2&#125;)</span></span><br><span class="line">            extend(data, key);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="jqLiteExpandoStore函数"><a href="#jqLiteExpandoStore函数" class="headerlink" title="jqLiteExpandoStore函数"></a>jqLiteExpandoStore函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jqLiteExpandoStore</span>(<span class="params">element, createIfNecessary</span>) </span>&#123;</span><br><span class="line"><span class="keyword">var</span> expandoId = element.ng339,</span><br><span class="line">    expandoStore = expandoId &amp;&amp; jqCache[expandoId];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (createIfNecessary &amp;&amp; !expandoStore) &#123;</span><br><span class="line">  element.ng339 = expandoId = jqNextId();</span><br><span class="line">  expandoStore = jqCache[expandoId] = &#123;<span class="attr">events</span>: &#123;&#125;, <span class="attr">data</span>: &#123;&#125;, <span class="attr">handle</span>: <span class="literal">undefined</span>&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> expandoStore;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="jqCache对象"><a href="#jqCache对象" class="headerlink" title="jqCache对象"></a>jqCache对象</h3><p><code>var jqCache = JQLite.cache = {};</code></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/02/22/angular-injector3/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -950,171 +1114,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/02/06/json4s-problem/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/02/06/json4s-problem/" class="post-title-link" itemprop="url">json4s_problem</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-02-06 13:27:41" itemprop="dateCreated datePublished" datetime="2017-02-06T13:27:41+08:00">2017-02-06</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="json4s是个什么东东"><a href="#json4s是个什么东东" class="headerlink" title="json4s是个什么东东"></a>json4s是个什么东东</h2><p>首先去<a href="http://json4s.org/" target="_blank" rel="external">官网</a>,看到标题就是One AST to rule them all。  </p>
-<p><a href="https://www.zhihu.com/question/33107553" target="_blank" rel="external">AST</a>:抽象语法树（Abstract Syntax Tree）也称为AST语法树，指的是源代码语法所对应的树状结构。也就是说，对于一种具体编程语言下的源代码，通过构建语法树的形式将源代码中的语句映射到树中的每一个节点上。  </p>
-<p>At this moment there are at least 6 json libraries for scala, not counting the java json libraries. All these libraries have a very similar AST. This project aims to provide a single AST to be used by other scala json libraries.<br>也就是说这个项目是要提供一个抽象语法树给其他scala的json库使用</p>
-<p>At this moment the approach taken to working with the AST has been taken from lift-json and the native package is in fact lift-json but outside of the lift project.<br>当前可以与这个AST一起使用的是从lift-json借过来的。</p>
-<h2 id="Jackson"><a href="#Jackson" class="headerlink" title="Jackson"></a>Jackson</h2><p>In addition to the native parser there is also an implementation that uses jackson for parsing to the AST. The jackson module includes most of the jackson-module-scala functionality and the ability to use it with the lift-json AST.  </p>
-<p>可以用jackson去解析AST.</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/28/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><span class="space">&hellip;</span><a class="page-number" href="/page/44/">44</a><a class="extend next" rel="next" href="/page/30/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/28/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/30/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1156,7 +1160,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">220</span>
+                    <span class="site-state-item-count">221</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
