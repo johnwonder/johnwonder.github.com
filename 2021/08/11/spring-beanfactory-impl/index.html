@@ -113,7 +113,7 @@ getBean方法1Object getBean(String name) throws BeansException;
 <meta property="og:description" content="BeanFactory接口中定义了获取Bean的若干方法，而这些方法分别由不同的抽象类实现，我们知道在Java中抽象类实现接口的时候不是一定要实现接口中的每个方法的，Spring就是巧妙地利用了这点来设计它的架构。下面我们来逐一看这些方法的作用以及分别是由哪些类来实现的。
 getBean方法1Object getBean(String name) throws BeansException;
 从方">
-<meta property="og:updated_time" content="2021-08-11T13:44:10.877Z">
+<meta property="og:updated_time" content="2021-08-12T14:48:21.524Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BeanFactory接口的实现理解">
 <meta name="twitter:description" content="BeanFactory接口中定义了获取Bean的若干方法，而这些方法分别由不同的抽象类实现，我们知道在Java中抽象类实现接口的时候不是一定要实现接口中的每个方法的，Spring就是巧妙地利用了这点来设计它的架构。下面我们来逐一看这些方法的作用以及分别是由哪些类来实现的。
@@ -374,12 +374,24 @@ getBean方法1Object getBean(String name) throws BeansException;
                 
               
 
-              <time title="创建时间：2021-08-11 21:43:31 / 修改时间：21:44:10" itemprop="dateCreated datePublished" datetime="2021-08-11T21:43:31+08:00">2021-08-11</time>
+              <time title="创建时间：2021-08-11 21:43:31" itemprop="dateCreated datePublished" datetime="2021-08-11T21:43:31+08:00">2021-08-11</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-08-12 22:48:21" itemprop="dateModified" datetime="2021-08-12T22:48:21+08:00">2021-08-12</time>
               
             
           </span>
@@ -450,6 +462,17 @@ getBean方法1Object getBean(String name) throws BeansException;
 <p>Will ask the parent factory if the bean cannot be found in this factory instance</p>
 </blockquote>
 <p>也就是说在当前bean容器中找不到的话还会去父容器中去查找。</p>
+<p>这个getBean方法还有个重载的方法，对比上面就多传入了一个requiredType参数，方法签名如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;T&gt; <span class="function">T <span class="title">getBean</span><span class="params">(String name, Class&lt;T&gt; requiredType)</span> <span class="keyword">throws</span> BeansException</span>;</span><br></pre></td></tr></table></figure>
+<p>这个方法就强大多了，除了拥有上面的方法具备的功能之外，首先它支持了泛型，也就是返回类型不用再强制转换了。从它的api文档描述就可以看出：</p>
+<blockquote>
+<p>Behaves the same as {@link #getBean(String)}, but provides a measure of type safety by throwing a BeanNotOfRequiredTypeException if the bean is not of the required type. This means that ClassCastException can’t be thrown on casting the result correctly, as can happen with {@link #getBean(String)}.</p>
+</blockquote>
+<p>也就是提供了类型安全的保障，Java的ClassCastException就不可能抛出了，ge tBean(String)对返回结果强制转换的时候有可能会遇到这个异常。另外api文档也提到了如下：</p>
+<blockquote>
+<p>requiredType type the bean must match; can be an interface or superclass</p>
+</blockquote>
+<p>参数requiredType可以是接口或者父类型，这个也是比较人性化的功能呢。</p>
 <p>本文还会持续更新。。。</p>
 
       
