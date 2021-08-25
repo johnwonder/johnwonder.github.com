@@ -323,6 +323,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/21/scala-config/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/21/scala-config/" class="post-title-link" itemprop="url">scala_config</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-21 16:20:06" itemprop="dateCreated datePublished" datetime="2017-06-21T16:20:06+08:00">2017-06-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala-typesafe-config库读取配置"><a href="#scala-typesafe-config库读取配置" class="headerlink" title="scala typesafe config库读取配置"></a>scala typesafe config库读取配置</h2><p>这两天在看一个akka remote actor future超时的问题</p>
+<p>之前的超时是在remoteActor里配置的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def remoteActor = TypedActor.context.system.actorSelection(actorInfo.remoteActorPath)</span><br></pre></td></tr></table></figure>
+<p>然后调用的时候是用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Await.result(remoteActor.?(GetCarMonthlyInfo(date,parkCode))(Timeout.intToTimeout(<span class="number">5000000</span>)), timeout)</span><br></pre></td></tr></table></figure></p>
+<p>结果发现还是会出现<figure class="highlight plain"><figcaption><span>times out in 5000 ms```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">问题出在哪里呢？</span><br><span class="line"></span><br><span class="line">其实出在TypedActor本身，默认配置读取的jar包里的reference.conf</span><br><span class="line">```java</span><br><span class="line">typed &#123;</span><br><span class="line">      # Default timeout for typed actor methods with non-void return type</span><br><span class="line">      timeout = 5s</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TypedActor(system).DefaultReturnTimeout</span><br></pre></td></tr></table></figure>
+<p>这里的配置会和应用的配置文件合并</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> val config: Config = &#123;</span><br><span class="line">     <span class="comment">//cfg 应用配置文件</span></span><br><span class="line">     <span class="comment">//defaultReference 默认配置</span></span><br><span class="line">      val config = cfg.withFallback(ConfigFactory.defaultReference(classLoader))</span><br><span class="line">      config.checkValid(ConfigFactory.defaultReference(classLoader), <span class="string">"akka"</span>)</span><br><span class="line">      config</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>路径：config-1.2.1-sources.jar!\com\typesafe\config\impl\AbstractConfigValue.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> AbstractConfigValue <span class="title">withFallback</span><span class="params">(ConfigMergeable mergeable)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ignoresFallbacks()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ConfigValue other = ((MergeableValue) mergeable).toFallbackValue();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (other <span class="keyword">instanceof</span> Unmergeable) &#123;</span><br><span class="line">            <span class="keyword">return</span> mergedWithTheUnmergeable((Unmergeable) other);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (other <span class="keyword">instanceof</span> AbstractConfigObject) &#123;</span><br><span class="line">            <span class="keyword">return</span> mergedWithObject((AbstractConfigObject) other);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mergedWithNonObject((AbstractConfigValue) other);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/19/angular-newRouter/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -966,171 +1129,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/16/java-servlet/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/06/16/java-servlet/" class="post-title-link" itemprop="url">java_servlet</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-06-16 22:24:15" itemprop="dateCreated datePublished" datetime="2017-06-16T22:24:15+08:00">2017-06-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="scalatraServlet实现"><a href="#scalatraServlet实现" class="headerlink" title="scalatraServlet实现"></a>scalatraServlet实现</h2><p>前几天看了别人的面试题，提到了HttpServlet实现了哪几个接口，</p>
-<p>今天就抽空看了下scalatraServlet中的源码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpServlet</span> <span class="keyword">extends</span> <span class="title">GenericServlet</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericServlet</span></span><br><span class="line">  <span class="keyword">implements</span> <span class="title">Servlet</span>, <span class="title">ServletConfig</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h3><p>Defines methods that all servlets must implement.<br>就是说定义了所有servlets必须实现的方法。</p>
-<h3 id="ServletConfig"><a href="#ServletConfig" class="headerlink" title="ServletConfig"></a>ServletConfig</h3><ul>
-<li>A servlet configuration object used by a servlet container</li>
-<li>to pass information to a servlet during initialization.</li>
-</ul>
-<p>一个被servlet容器用来传递信息给servlet初始化的配置对象</p>
-<h3 id="java-io-Serializable"><a href="#java-io-Serializable" class="headerlink" title="java.io.Serializable"></a>java.io.Serializable</h3><p>java的序列化接口</p>
-<p>Serializability of a class is enabled by the class implementing the<br>java.io.Serializable interface. Classes that do not implement this<br> interface will not have any of their state serialized or<br>deserialized.  </p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1177,7 +1175,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">221</span>
+                    <span class="site-state-item-count">222</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

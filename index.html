@@ -323,6 +323,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2021/08/25/spring-applicationcontext-xml/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2021/08/25/spring-applicationcontext-xml/" class="post-title-link" itemprop="url">悟透Spring之Xml配置路径查找的秘密</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-08-25 13:54:52 / 修改时间：13:56:18" itemprop="dateCreated datePublished" datetime="2021-08-25T13:54:52+08:00">2021-08-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="字符串路径怎么查找XML资源"><a href="#字符串路径怎么查找XML资源" class="headerlink" title="字符串路径怎么查找XML资源"></a>字符串路径怎么查找XML资源</h2><p>Spring中使用Xml配置时会使用ResourceLoader查找,官网文档里提到了很重要的一句：</p>
+<blockquote>
+<p>NOTE:After you learn about Spring’s IoC container, you may want to know more about Spring’s <code>Resource</code> abstraction (as described in <a href="#resources">Resources</a>), which provides a convenient mechanism for reading an InputStream from locations defined in a URI syntax. In particular, <code>Resource</code> paths are used to construct applications contexts, as described in <a href="#resources-app-ctx">Application Contexts and Resource Paths</a>.</p>
+</blockquote>
+<p>这边我们先直接定位到最主要的一个实现类PathMatchingResourcePatternResolver，文章最后会解释为什么会是这个类以及它的作用。</p>
+<h3 id="classpath-查找资源"><a href="#classpath-查找资源" class="headerlink" title="classpath: 查找资源"></a>classpath: 查找资源</h3><p>我们通过spring-bean*.xml查找Xml配置文件的时候，流程如下：</p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825102816884.png" alt="PathMatchingResourcePatternResolver"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825102936016.png" alt="PathMatchingResourcePatternResolver"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825103039783.png" alt="PathMatchingResourcePatternResolver"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825103116544.png" alt="DefaultResourceLoader"></p>
+<p><img src="/Users/zhangjiong/Library/Application%20Support/typora-user-images/image-20210825103602041.png" alt="ClassPathResource"></p>
+<p><img src="/Users/zhangjiong/Library/Application%20Support/typora-user-images/image-20210825103655841.png" alt="ClassPathResource"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825104439638.png" alt="ClassLoader"></p>
+<p>也就是classLoader.getResource返回一个classpath路径，所以如果spring-bean<em>.xml不存在该路径下那么就找不到了。</em></p>
+<h3 id="classpath-带通配符查找资源"><a href="#classpath-带通配符查找资源" class="headerlink" title="classpath* 带通配符查找资源"></a>classpath* 带通配符查找资源</h3><p>而我们通过classpath*:spring-bean*.xml来查找的时候，流程如下：</p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105623631.png" alt="image-20210825105623631"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105702416.png" alt="image-20210825105702416"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105731509.png" alt="findAllClasspathResources"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105812891.png" alt="image-20210825105812891"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825110030410.png" alt="image-20210825110030410"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825110237091.png" alt="addAllClassLoaderJarRoots"></p>
+<p>所以区别还是发生在PathMatchingResourcePatternResolver类的getResources方法内部</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> Resource[] getResources(String locationPattern) <span class="keyword">throws</span> IOException &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>ClasspathXmlApplicationContext加载BeanDefinition会调用AbstractBeanDefinitionReader类的这个方法，方法内部会去获取当前的ResourceLoader：</p>
+<h3 id="AbstractBeanDefinitionReader-loadBeanDefinitions"><a href="#AbstractBeanDefinitionReader-loadBeanDefinitions" class="headerlink" title="AbstractBeanDefinitionReader#loadBeanDefinitions"></a>AbstractBeanDefinitionReader#loadBeanDefinitions</h3><p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825114121238.png" alt="AbstractBeanDefinitionReader"></p>
+<p>那么当前的ResourceLoader到底是哪个呢？我们又要回到AbstractXmlApplicationContext去加载BeanDefinition的时候：XmlBeanDefinitionReader实例化后会把当前ApplicationContext设置为它的ResourceLoader</p>
+<h3 id="AbstractXmlApplicationContext-loadBeanDefinitions"><a href="#AbstractXmlApplicationContext-loadBeanDefinitions" class="headerlink" title="AbstractXmlApplicationContext#loadBeanDefinitions"></a>AbstractXmlApplicationContext#loadBeanDefinitions</h3><p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825114439582.png" alt="AbstractXmlApplicationContext"></p>
+<p>为啥能设置呢？因为当前ApplicationContext的父类AbstractApplicationContext继承了DefaultResouceLoader。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractApplicationContext</span> <span class="keyword">extends</span> <span class="title">DefaultResourceLoader</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>且因为AbstractApplicationContext实现了ApplicationContext接口，ApplicationContext接口我们知道是继承自ResourcePatternResolver接口，从上篇文章的类图中我们可以一窥全貌。</p>
+<p>所以从location获取资源就会调用AbstractApplicationContext的getResources方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//---------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// Implementation of ResourcePatternResolver interface</span></span><br><span class="line"><span class="comment">//---------------------------------------------------------------------</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> Resource[] getResources(String locationPattern) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">   <span class="comment">//todo 调用 resourcePatternResolver去 getResources 默认是 2020-09-05</span></span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">this</span>.resourcePatternResolver.getResources(locationPattern);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这边就很重要了，resourcePatternResolver就是在构造函数里实例化的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Create a new AbstractApplicationContext with no parent.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AbstractApplicationContext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">this</span>.resourcePatternResolver = getResourcePatternResolver();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> ResourcePatternResolver <span class="title">getResourcePatternResolver</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> PathMatchingResourcePatternResolver(<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>到这里我们就看到了本文一开始提到的PathMatchingResourcePatternResolver，需要注意的是在实例化该<strong>ResourcePatternResolver</strong>的时候把当前<strong>ResourceLoader</strong>当作构造函数参数传了进去。ResourcePatternResolver最终返回一个<strong>Resource</strong>数组给到AbstractBeanDefinitionReader。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2021/08/11/spring-beanfactory-impl/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1014,156 +1191,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/06/11/algorithm-coinChange/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/06/11/algorithm-coinChange/" class="post-title-link" itemprop="url">每日算法之零钱兑换</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-06-11 22:38:49 / 修改时间：22:44:28" itemprop="dateCreated datePublished" datetime="2020-06-11T22:38:49+08:00">2020-06-11</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。</p>
-<p>如果没有任何一种硬币组合能组成总金额，返回 -1。</p>
-<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>我们采用自下而上的方式进行思考。仍定义 F(i)，F(i) 为组成金额 i 所需最少的硬币数量，假设在计算 F(i)之前，我们已经计算出 F(0)-F(i-1)的答案。 再算上枚举的这枚硬币数量 1 的贡献，由于要硬币数量最少，所以 F(i) 为前面能转移过来的状态的最小值加上枚举的硬币数量 1。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">coinChange</span><span class="params">(<span class="keyword">int</span>[] coins, <span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> max = amount + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span>[] dp = <span class="keyword">new</span> <span class="keyword">int</span>[amount + <span class="number">1</span>];</span><br><span class="line">    Arrays.fill(dp, max);</span><br><span class="line">    dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= amount; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; coins.length; j++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (coins[j] &lt;= i) &#123;</span><br><span class="line">          dp[i] = Math.min(dp[i], dp[i - coins[j]] + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[amount] &gt; amount ? -<span class="number">1</span> : dp[amount];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>转载自：</p>
-<ol>
-<li><a href="https://leetcode-cn.com/problems/coin-change/" target="_blank" rel="external">零钱兑换</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1210,7 +1237,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">221</span>
+                    <span class="site-state-item-count">222</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

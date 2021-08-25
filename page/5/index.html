@@ -323,6 +323,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/29/angularjs-provide-value/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/29/angularjs-provide-value/" class="post-title-link" itemprop="url">angularjs1.5.8源码解析之value服务</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-29 09:20:04 / 修改时间：09:58:35" itemprop="dateCreated datePublished" datetime="2020-03-29T09:20:04+08:00">2020-03-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>angularjs中模块的value()方法可以对模块数据模型进行扩展,使得不同controller可以进行通信,<br>充当全局变量的作用。使用示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> app=angular.module(<span class="string">'app'</span>,[]);</span><br><span class="line">app.value(<span class="string">'val'</span>,&#123;&#125;);</span><br><span class="line"></span><br><span class="line">app.controller(<span class="string">'con'</span>,[<span class="string">'$scope'</span>,<span class="string">'val'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,ssr</span>)</span>&#123;</span><br><span class="line">	$scope.msg=<span class="string">''</span>;</span><br><span class="line">	$scope.submit=<span class="function"><span class="keyword">function</span>(<span class="params">temp</span>)</span><br><span class="line">	</span>&#123;</span><br><span class="line">		<span class="comment">//向全局变量存入msg</span></span><br><span class="line">		ssr.save=temp;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;])</span><br><span class="line"></span><br><span class="line">app.controller(<span class="string">'con2'</span>,[<span class="string">'$scope'</span>,<span class="string">'val'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,ssr</span>)</span>&#123;</span><br><span class="line">		$scope.showMsg=<span class="string">''</span>;</span><br><span class="line">		$scope.download=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span><br><span class="line">		</span>&#123;</span><br><span class="line">       <span class="comment">//获取全局变量</span></span><br><span class="line">			$scope.showMsg=val.save;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">&#125;])</span><br></pre></td></tr></table></figure>
+<p>跟我们之前分析过的decorator一样，value方法内部实际上也是调用$provide.value函数，我们先看看<br>moduleInstance的value方法:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">    <span class="attr">value</span>: invokeLater(<span class="string">'$provide'</span>, <span class="string">'value'</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeLater</span>(<span class="params">provider, method, insertMethod, queue</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (!queue) queue = invokeQueue;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        queue[insertMethod || <span class="string">'push'</span>]([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">        <span class="keyword">return</span> moduleInstance;</span><br><span class="line">      &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>可以清楚的看到，调用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">loadModules的时候再调用$provide.value方法</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  //用个valueFn包装下，返回内部带有val的方法valueRef</span><br><span class="line">  function value(name, val) &#123; return factory(name, valueFn(val), false); &#125;</span><br><span class="line"></span><br><span class="line">  function valueFn(value) &#123;return function valueRef() &#123;return value;&#125;;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>factory方法我们之前分析过，内部会把<figure class="highlight plain"><figcaption><span>provider, undefined, serviceName);```的时候实际上就会调用```valueRef```函数把存放的对象取出来。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">我们有时候会调用```$rootElement```这个对象，那找遍了angular内部并没有显示的声明$rootElementProvider方法，那么它到底存储在哪呢？</span><br><span class="line">它就是在angular启动的时候调用```doBootstrap```的时候压入modules数组顶部然后调用的$provide.value把找到的ng-app元素用jqLite包装成jqLite对象，</span><br><span class="line">然后放入全局变量$rootElement中，代码如下：</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  //传入的modules 比如html中定义的ng-app=&quot;myApp&quot;</span><br><span class="line">  //那么为[&quot;myApp&quot;]</span><br><span class="line">  //正常的话 这时 modules已经初始化</span><br><span class="line">  modules = modules || [];</span><br><span class="line">  //unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span><br><span class="line">  modules.unshift([&apos;$provide&apos;, function($provide) &#123;</span><br><span class="line">   //调用$provide方法</span><br><span class="line">   //设置$rootElement</span><br><span class="line">   $provide.value(&apos;$rootElement&apos;, element);</span><br><span class="line">  &#125;]);</span><br></pre></td></tr></table></figure></p>
+<p>下篇我们分析下angular的启动函数doBootStrap或者jqLite对象中的扩展方法或者一些常用函数。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/28/angularjs-extend/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -966,162 +1115,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/20/spring-classpathxmlApplicationContext/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/03/20/spring-classpathxmlApplicationContext/" class="post-title-link" itemprop="url">Spring源码分析之ClassPathXmlApplicationContext</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-03-20 13:45:00 / 修改时间：14:49:46" itemprop="dateCreated datePublished" datetime="2020-03-20T13:45:00+08:00">2020-03-20</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我们在分析Spring源码时，通常会自己创建一个独立的应用上下文，比如本文说的ClassPathXmlApplicationContext。我们在实际开发过程中一般框架内部会初始化一个应用程序上下文，比如springmvc中的XmlWebApplicationContext还有springboot中的AnnotationConfigServletWebServerApplicationContext。</p>
-<h2 id="ClassPathXmlApplicationContext-简介"><a href="#ClassPathXmlApplicationContext-简介" class="headerlink" title="ClassPathXmlApplicationContext 简介"></a>ClassPathXmlApplicationContext 简介</h2><p>官方文档是这么说的：</p>
-<p>Standalone XML application context, taking the context definition files from the class path,<br>interpreting plain paths as class path resource names that include the package path<br>(e.g. “mypackage/myresource.txt”). Useful for test harnesses(测试框架) as well as<br>for application contexts embedded within JARs.</p>
-<p>也就是说它可以创建独立应用程序上下文，获取上下文的定义文件等等。它的主要功能如下：</p>
-<ol>
-<li><p>定义了很多构造函数，只是参数不同，不同的参数具体会影响配置资源的定义和spring应用上下文的刷新(refresh函数)。</p>
-</li>
-<li><p>配置资源路径的不同，获取方式的不同。如果设置configLocations参数，那么会通过该类的父类也就是抽象类AbstractRefreshableConfigApplicationContext的resolvePath函数来解析。如果使用带有class参数的构造函数，那么会使用ClassPathResource来获取资源。</p>
-</li>
-</ol>
-<h3 id="AbstractEnvironment"><a href="#AbstractEnvironment" class="headerlink" title="AbstractEnvironment"></a>AbstractEnvironment</h3><p>resolvePath函数内部其实是调用AbstractEnvironment的resolveRequiredPlaceholders方法，方法内部会调用propertyResolver它的父类AbstractPropertyResolver的resolveRequiredPlaceholders方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ConfigurablePropertyResolver propertyResolver =</span><br><span class="line">			<span class="keyword">new</span> PropertySourcesPropertyResolver(<span class="keyword">this</span>.propertySources);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">resolveRequiredPlaceholders</span><span class="params">(String text)</span> <span class="keyword">throws</span> IllegalArgumentException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.propertyResolver.resolveRequiredPlaceholders(text);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>参考资料：</p>
-<p><a href="https://blog.csdn.net/qq_37960603/article/details/82709660" target="_blank" rel="external">Spring 中 ClassPathXmlApplicationContext 类的简单使用</a><br><a href="https://blog.csdn.net/zhangshk_/article/details/82704010" target="_blank" rel="external">彻底搞懂Class.getResource和ClassLoader.getResource的区别和底层原理</a><br><a href="https://baijiahao.baidu.com/s?id=1655259813981508769&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">SpringMVC加载流程</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1168,7 +1161,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">221</span>
+                    <span class="site-state-item-count">222</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

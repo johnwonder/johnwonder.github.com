@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-loading-bar.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="字符串路径怎么查找XML资源Spring中使用Xml配置时会使用ResourceLoader查找,官网文档里提到了很重要的一句：
+
+NOTE:After you learn about Spring’s IoC container, you may want to know more about Spring’s Resource abstraction (as described in Reso">
+<meta property="og:type" content="article">
+<meta property="og:title" content="悟透Spring之Xml配置路径查找的秘密">
+<meta property="og:url" content="http://johnwonder.github.io/2021/08/25/spring-applicationcontext-xml/index.html">
+<meta property="og:site_name" content="john's tech blog">
+<meta property="og:description" content="字符串路径怎么查找XML资源Spring中使用Xml配置时会使用ResourceLoader查找,官网文档里提到了很重要的一句：
+
+NOTE:After you learn about Spring’s IoC container, you may want to know more about Spring’s Resource abstraction (as described in Reso">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825102816884.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825102936016.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825103039783.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825103116544.png">
+<meta property="og:image" content="http://johnwonder.github.io/Users/zhangjiong/Library/Application%20Support/typora-user-images/image-20210825103602041.png">
+<meta property="og:image" content="http://johnwonder.github.io/Users/zhangjiong/Library/Application%20Support/typora-user-images/image-20210825103655841.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825104439638.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105623631.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105702416.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105731509.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105812891.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825110030410.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825110237091.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825114121238.png">
+<meta property="og:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825114439582.png">
+<meta property="og:updated_time" content="2021-08-25T05:56:18.884Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="悟透Spring之Xml配置路径查找的秘密">
+<meta name="twitter:description" content="字符串路径怎么查找XML资源Spring中使用Xml配置时会使用ResourceLoader查找,官网文档里提到了很重要的一句：
+
+NOTE:After you learn about Spring’s IoC container, you may want to know more about Spring’s Resource abstraction (as described in Reso">
+<meta name="twitter:image" content="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825102816884.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://johnwonder.github.io/2021/08/25/spring-applicationcontext-xml/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>悟透Spring之Xml配置路径查找的秘密 | john's tech blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">john's tech blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">hope is coming</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/johnwonder" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2021/08/25/spring-applicationcontext-xml/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">悟透Spring之Xml配置路径查找的秘密
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-08-25 13:54:52 / 修改时间：13:56:18" itemprop="dateCreated datePublished" datetime="2021-08-25T13:54:52+08:00">2021-08-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2021/08/25/spring-applicationcontext-xml/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2021/08/25/spring-applicationcontext-xml/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="字符串路径怎么查找XML资源"><a href="#字符串路径怎么查找XML资源" class="headerlink" title="字符串路径怎么查找XML资源"></a>字符串路径怎么查找XML资源</h2><p>Spring中使用Xml配置时会使用ResourceLoader查找,官网文档里提到了很重要的一句：</p>
+<blockquote>
+<p>NOTE:After you learn about Spring’s IoC container, you may want to know more about Spring’s <code>Resource</code> abstraction (as described in <a href="#resources">Resources</a>), which provides a convenient mechanism for reading an InputStream from locations defined in a URI syntax. In particular, <code>Resource</code> paths are used to construct applications contexts, as described in <a href="#resources-app-ctx">Application Contexts and Resource Paths</a>.</p>
+</blockquote>
+<p>这边我们先直接定位到最主要的一个实现类PathMatchingResourcePatternResolver，文章最后会解释为什么会是这个类以及它的作用。</p>
+<h3 id="classpath-查找资源"><a href="#classpath-查找资源" class="headerlink" title="classpath: 查找资源"></a>classpath: 查找资源</h3><p>我们通过spring-bean*.xml查找Xml配置文件的时候，流程如下：</p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825102816884.png" alt="PathMatchingResourcePatternResolver"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825102936016.png" alt="PathMatchingResourcePatternResolver"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825103039783.png" alt="PathMatchingResourcePatternResolver"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825103116544.png" alt="DefaultResourceLoader"></p>
+<p><img src="/Users/zhangjiong/Library/Application%20Support/typora-user-images/image-20210825103602041.png" alt="ClassPathResource"></p>
+<p><img src="/Users/zhangjiong/Library/Application%20Support/typora-user-images/image-20210825103655841.png" alt="ClassPathResource"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825104439638.png" alt="ClassLoader"></p>
+<p>也就是classLoader.getResource返回一个classpath路径，所以如果spring-bean<em>.xml不存在该路径下那么就找不到了。</em></p>
+<h3 id="classpath-带通配符查找资源"><a href="#classpath-带通配符查找资源" class="headerlink" title="classpath* 带通配符查找资源"></a>classpath* 带通配符查找资源</h3><p>而我们通过classpath*:spring-bean*.xml来查找的时候，流程如下：</p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105623631.png" alt="image-20210825105623631"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105702416.png" alt="image-20210825105702416"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105731509.png" alt="findAllClasspathResources"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825105812891.png" alt="image-20210825105812891"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825110030410.png" alt="image-20210825110030410"></p>
+<p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825110237091.png" alt="addAllClassLoaderJarRoots"></p>
+<p>所以区别还是发生在PathMatchingResourcePatternResolver类的getResources方法内部</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> Resource[] getResources(String locationPattern) <span class="keyword">throws</span> IOException &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>ClasspathXmlApplicationContext加载BeanDefinition会调用AbstractBeanDefinitionReader类的这个方法，方法内部会去获取当前的ResourceLoader：</p>
+<h3 id="AbstractBeanDefinitionReader-loadBeanDefinitions"><a href="#AbstractBeanDefinitionReader-loadBeanDefinitions" class="headerlink" title="AbstractBeanDefinitionReader#loadBeanDefinitions"></a>AbstractBeanDefinitionReader#loadBeanDefinitions</h3><p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825114121238.png" alt="AbstractBeanDefinitionReader"></p>
+<p>那么当前的ResourceLoader到底是哪个呢？我们又要回到AbstractXmlApplicationContext去加载BeanDefinition的时候：XmlBeanDefinitionReader实例化后会把当前ApplicationContext设置为它的ResourceLoader</p>
+<h3 id="AbstractXmlApplicationContext-loadBeanDefinitions"><a href="#AbstractXmlApplicationContext-loadBeanDefinitions" class="headerlink" title="AbstractXmlApplicationContext#loadBeanDefinitions"></a>AbstractXmlApplicationContext#loadBeanDefinitions</h3><p><img src="https://gitee.com/gitjohn/picgoupload/raw/master/image-20210825114439582.png" alt="AbstractXmlApplicationContext"></p>
+<p>为啥能设置呢？因为当前ApplicationContext的父类AbstractApplicationContext继承了DefaultResouceLoader。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractApplicationContext</span> <span class="keyword">extends</span> <span class="title">DefaultResourceLoader</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>且因为AbstractApplicationContext实现了ApplicationContext接口，ApplicationContext接口我们知道是继承自ResourcePatternResolver接口，从上篇文章的类图中我们可以一窥全貌。</p>
+<p>所以从location获取资源就会调用AbstractApplicationContext的getResources方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//---------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// Implementation of ResourcePatternResolver interface</span></span><br><span class="line"><span class="comment">//---------------------------------------------------------------------</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> Resource[] getResources(String locationPattern) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">   <span class="comment">//todo 调用 resourcePatternResolver去 getResources 默认是 2020-09-05</span></span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">this</span>.resourcePatternResolver.getResources(locationPattern);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这边就很重要了，resourcePatternResolver就是在构造函数里实例化的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Create a new AbstractApplicationContext with no parent.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AbstractApplicationContext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">this</span>.resourcePatternResolver = getResourcePatternResolver();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> ResourcePatternResolver <span class="title">getResourcePatternResolver</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> PathMatchingResourcePatternResolver(<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>到这里我们就看到了本文一开始提到的PathMatchingResourcePatternResolver，需要注意的是在实例化该<strong>ResourcePatternResolver</strong>的时候把当前<strong>ResourceLoader</strong>当作构造函数参数传了进去。ResourcePatternResolver最终返回一个<strong>Resource</strong>数组给到AbstractBeanDefinitionReader。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+<div class="wechat_OA">
+    <span>欢迎关注我的公众号:沉迷Spring</span>
+    <br>
+    <!-- 这里添加你的二维码图片 -->
+    <img src ="https://gitee.com/gitjohn/picgoupload/raw/master/qrcode_for_gh_e8ea1bc0eb53_258.jpg">
+</div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+  <strong>本文作者：</strong>
+   John  |  微信公众号【沉迷Spring】
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://johnwonder.github.io/2021/08/25/spring-applicationcontext-xml/" title="悟透Spring之Xml配置路径查找的秘密">http://johnwonder.github.io/2021/08/25/spring-applicationcontext-xml/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/08/11/spring-beanfactory-impl/" rel="next" title="BeanFactory接口的实现理解">
+                <i class="fa fa-chevron-left"></i> BeanFactory接口的实现理解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display: none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">222</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/johnwonder" title="GitHub &rarr; https://github.com/johnwonder" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/johnfuck19" title="Twitter &rarr; https://twitter.com/johnfuck19" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串路径怎么查找XML资源"><span class="nav-number">1.</span> <span class="nav-text">字符串路径怎么查找XML资源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#classpath-查找资源"><span class="nav-number">1.1.</span> <span class="nav-text">classpath: 查找资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#classpath-带通配符查找资源"><span class="nav-number">1.2.</span> <span class="nav-text">classpath* 带通配符查找资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AbstractBeanDefinitionReader-loadBeanDefinitions"><span class="nav-number">1.3.</span> <span class="nav-text">AbstractBeanDefinitionReader#loadBeanDefinitions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AbstractXmlApplicationContext-loadBeanDefinitions"><span class="nav-number">1.4.</span> <span class="nav-text">AbstractXmlApplicationContext#loadBeanDefinitions</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+      <div class="wechat_OA">
+    <span>欢迎关注我的公众号：沉迷Spring</span>
+    <br>
+    <img src ="https://gitee.com/gitjohn/picgoupload/raw/master/qrcode_for_gh_e8ea1bc0eb53_258.jpg">
+    </div>
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">johnwonder</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css"/>
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: window.location.pathname,
+      owner: 'johnwonder',
+      repo: 'johnwonder.github.com',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        proxy_gateway: 'https://gh-oauth.imsun.net',
+      
+        client_id: '5e5ac1108f5771d9a770'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    function showGitment() {
+      document.getElementById('gitment-display-button').style.display = 'none';
+      document.getElementById('gitment-container').style.display = 'block';
+      renderGitment();
+    }
+  
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

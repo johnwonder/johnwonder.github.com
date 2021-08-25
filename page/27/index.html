@@ -323,6 +323,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/25/scalatra-mount/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/03/25/scalatra-mount/" class="post-title-link" itemprop="url">scalatra_mount</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-25 16:13:39" itemprop="dateCreated datePublished" datetime="2017-03-25T16:13:39+08:00">2017-03-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scalatra是如何加入servlet的"><a href="#scalatra是如何加入servlet的" class="headerlink" title="scalatra是如何加入servlet的"></a>scalatra是如何加入servlet的</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> def <span class="title">mountServlet</span><span class="params">(</span><br><span class="line">  servlet: HttpServlet,</span><br><span class="line">  urlPattern: String,</span><br><span class="line">  name: String,</span><br><span class="line">  loadOnStartup: Int)</span>: Unit </span>= &#123;</span><br><span class="line">  val reg = Option(sc.getServletRegistration(name)) getOrElse &#123;</span><br><span class="line">    val r = sc.addServlet(name, servlet)</span><br><span class="line">    servlet match &#123;</span><br><span class="line">      <span class="keyword">case</span> s: HasMultipartConfig =&gt; <span class="comment">//如果有HasMultipartConfig 特质</span></span><br><span class="line">        r.setMultipartConfig(s.multipartConfig.toMultipartConfigElement)</span><br><span class="line">      <span class="keyword">case</span> _ =&gt;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (servlet.isInstanceOf[ScalatraAsyncSupport])</span><br><span class="line">      r.setAsyncSupported(<span class="keyword">true</span>)</span><br><span class="line">    r.setLoadOnStartup(loadOnStartup)</span><br><span class="line">    r</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  reg.addMapping(urlPattern)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> def <span class="title">mountServlet</span><span class="params">(</span><br><span class="line">  servletClass: Class[HttpServlet],</span><br><span class="line">  urlPattern: String,</span><br><span class="line">  name: String,</span><br><span class="line">  loadOnStartup: Int)</span>: Unit </span>= &#123;</span><br><span class="line">  val reg = Option(sc.getServletRegistration(name)) getOrElse &#123;</span><br><span class="line">    val r = sc.addServlet(name, servletClass)</span><br><span class="line">    <span class="comment">// since we only have a Class[_] here, we can't access the MultipartConfig value</span></span><br><span class="line">    <span class="comment">// if (classOf[HasMultipartConfig].isAssignableFrom(servletClass))</span></span><br><span class="line">    <span class="keyword">if</span> (classOf[ScalatraAsyncSupport].isAssignableFrom(servletClass)) &#123;</span><br><span class="line">      r.setAsyncSupported(<span class="keyword">true</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    r.setLoadOnStartup(loadOnStartup)</span><br><span class="line">    r</span><br><span class="line">  &#125;</span><br><span class="line">  reg.addMapping(urlPattern)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/25/scala-implicit1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -960,163 +1115,6 @@ ss.mount
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/18/kmp-algorithm/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/03/18/kmp-algorithm/" class="post-title-link" itemprop="url">kmp-algorithm</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-18 12:57:19" itemprop="dateCreated datePublished" datetime="2017-03-18T12:57:19+08:00">2017-03-18</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="kmp算法理解一"><a href="#kmp算法理解一" class="headerlink" title="kmp算法理解一"></a>kmp算法理解一</h2><p>前几个月之前读了<a href="http://blog.csdn.net/joylnwang/article/details/6778316/" target="_blank" rel="external">KMP算法详解</a>之后，一知半解，昨天再次读了之后有点感悟：</p>
-<p>上代码：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">inline <span class="built_in">void</span> BuildNext(<span class="keyword">const</span> char* pattern, size_t length, unsigned <span class="built_in">int</span>* next)  </span><br><span class="line">&#123;  </span><br><span class="line">  unsigned <span class="built_in">int</span> i, t;  </span><br><span class="line"></span><br><span class="line">  i = <span class="number">1</span>;  </span><br><span class="line">  t = <span class="number">0</span>;  </span><br><span class="line">  next[<span class="number">1</span>] = <span class="number">0</span>;  </span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span>(i &lt; length + <span class="number">1</span>)  </span><br><span class="line">  &#123;  </span><br><span class="line">      <span class="comment">//abcabcacab</span></span><br><span class="line">      <span class="comment">//当求next[5]时，先计算前4位</span></span><br><span class="line">      <span class="comment">//当i = 4时 ,t = 1</span></span><br><span class="line">      <span class="comment">//找到满足pattern[k] = pattern[j]的最大k值</span></span><br><span class="line">      <span class="comment">//退出循环就是找到</span></span><br><span class="line">      <span class="keyword">while</span>(t &gt; <span class="number">0</span> &amp;&amp; pattern[i - <span class="number">1</span>] != pattern[t - <span class="number">1</span>])  </span><br><span class="line">      &#123;  </span><br><span class="line">          t = next[t];  </span><br><span class="line">      &#125;  </span><br><span class="line"></span><br><span class="line">      ++t;  </span><br><span class="line">      ++i;  </span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(pattern[i - <span class="number">1</span>] == pattern[t - <span class="number">1</span>])  </span><br><span class="line">      &#123;  </span><br><span class="line">          next[i] = next[t];  </span><br><span class="line">      &#125;  </span><br><span class="line">      <span class="keyword">else</span>  </span><br><span class="line">      &#123;  </span><br><span class="line">          next[i] = t;  </span><br><span class="line">      &#125;  </span><br><span class="line">  &#125;  </span><br><span class="line"></span><br><span class="line">  <span class="comment">//pattern末尾的结束符控制，用于寻找目标字符串中的所有匹配结果用  </span></span><br><span class="line">  <span class="keyword">while</span>(t &gt; <span class="number">0</span> &amp;&amp; pattern[i - <span class="number">1</span>] != pattern[t - <span class="number">1</span>])  </span><br><span class="line">  &#123;  </span><br><span class="line">      t = next[t];  </span><br><span class="line">  &#125;  </span><br><span class="line"></span><br><span class="line">  ++t;  </span><br><span class="line">  ++i;  </span><br><span class="line"></span><br><span class="line">  next[i] = t;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1163,7 +1161,7 @@ ss.mount
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">221</span>
+                    <span class="site-state-item-count">222</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
