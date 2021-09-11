@@ -323,6 +323,174 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/17/angular-injector5/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/17/angular-injector5/" class="post-title-link" itemprop="url">angular_injector5</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-17 16:57:01" itemprop="dateCreated datePublished" datetime="2017-06-17T16:57:01+08:00">2017-06-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular-injector-剖析流程"><a href="#angular-injector-剖析流程" class="headerlink" title="angular injector 剖析流程"></a>angular injector 剖析流程</h2><p>angular中的注入器是承载angular整个运行的基石，如果想弄清楚angular的来龙去脉，那injector这块必须得熟悉。</p>
+<h3 id="createInjector"><a href="#createInjector" class="headerlink" title="createInjector"></a>createInjector</h3><p>createInjector方法是入口函数，方法参数是modulesToLoad和strictDi,</p>
+<p>我们主要关注modulesToLoad参数，字面含义就是待加载的模块。</p>
+<h4 id="providerCache"><a href="#providerCache" class="headerlink" title="providerCache"></a>providerCache</h4><p>函数一开始就定义了providerCache对象，顾名思义就是提供provider的缓存。</p>
+<p>providerCache内部又定义了$provide对象属性，暂且不管。</p>
+<h4 id="providerInjector"><a href="#providerInjector" class="headerlink" title="providerInjector"></a>providerInjector</h4><p>定义provider的注入器，同时也定义了providerCache.$injector.<br>最终是返回一个用于提供protoInstanceInjector查找instance的方法对象</p>
+<h4 id="publishExternalAPI"><a href="#publishExternalAPI" class="headerlink" title="publishExternalAPI"></a>publishExternalAPI</h4><p>通过setupModuleLoader 方法，顾名思义为设置模块加载器， 定义了 angularModule 对象为angular.module方法</p>
+<p>里面很重要的一个方法就是<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>随之定义了angular.module(‘ng’,[‘ngLocale’], [‘$provide’,function($provide){}])</p>
+<p>把ng模块放入了modules对象集合</p>
+<p>先是定义<figure class="highlight plain"><figcaption><span>config = invokeLater('$injector', 'invoke', 'push', configBlocks);```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### invokeLater</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">function invokeLater(provider, method, insertMethod, queue) &#123;</span><br><span class="line">          if (!queue) queue = invokeQueue;</span><br><span class="line">          return function() &#123;</span><br><span class="line">            queue[insertMethod || &apos;push&apos;]([provider, method, arguments]);</span><br><span class="line">            return moduleInstance;</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过以下方法把<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">if (configFn) &#123;</span><br><span class="line">          config(configFn);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>configBlocks一开始定义为空数组，然后push 了一个数组对象<code>[&#39;$injector&#39;,&#39;invoke&#39;,[&#39;$provide&#39;,function($provide){}]]</code></p>
+<p>  下篇文章继续分析push了以后是从哪调用的。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/16/java-servlet/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -954,164 +1122,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/15/css3-animation1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/06/15/css3-animation1/" class="post-title-link" itemprop="url">css3动画探秘1</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-06-15 14:18:35" itemprop="dateCreated datePublished" datetime="2017-06-15T14:18:35+08:00">2017-06-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="百度地图动画研究"><a href="#百度地图动画研究" class="headerlink" title="百度地图动画研究"></a>百度地图动画研究</h2><p>今天在百度地图上看到了一个动画效果，遂找了下他的源码研究一下：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.poidetail-widget-generalInfo</span> <span class="selector-class">.generalInfo-function-buttons</span> <span class="selector-class">.generalInfo-function-buttons-fav</span><span class="selector-pseudo">:hover</span>&#123;<span class="attribute">cursor</span>:pointer&#125;</span><br><span class="line"><span class="selector-class">.poidetail-widget-generalInfo</span> <span class="selector-class">.generalInfo-function-buttons</span> <span class="selector-class">.generalInfo-function-buttons-fav</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.buttons-fav-icon</span>&#123;<span class="attribute">-webkit-animation-name</span>:bigsmall;<span class="attribute">animation-name</span>:bigsmall;<span class="attribute">-webkit-animation-timing-function</span>:ease-in-out;<span class="attribute">animation-timing-function</span>:ease-in-out&#125;</span><br><span class="line">@<span class="keyword">keyframes</span> bigsmall&#123;0%&#123;<span class="attribute">-webkit-transform</span>:<span class="built_in">scale</span>(1);<span class="attribute">transform</span>:<span class="built_in">scale</span>(1)&#125;30%&#123;<span class="attribute">-webkit-transform</span>:<span class="built_in">scale</span>(1.3);<span class="attribute">transform</span>:<span class="built_in">scale</span>(1.3)&#125;60%&#123;<span class="attribute">-webkit-transform</span>:<span class="built_in">scale</span>(0.7);<span class="attribute">transform</span>:<span class="built_in">scale</span>(0.7)&#125;85%&#123;<span class="attribute">-webkit-transform</span>:<span class="built_in">scale</span>(1.2);<span class="attribute">transform</span>:<span class="built_in">scale</span>(1.2)&#125;100%&#123;<span class="attribute">-webkit-transform</span>:<span class="built_in">scale</span>(1);<span class="attribute">transform</span>:<span class="built_in">scale</span>(1)&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>主要就是定义animation-name,和@keyframes</p>
-<p>参考资料：<br><a href="http://www.w3school.com.cn/cssref/pr_animation-name.asp" target="_blank" rel="external">CSS3 animation-name 属性</a><br><a href="http://www.w3school.com.cn/cssref/pr_keyframes.asp" target="_blank" rel="external">CSS3 @keyframes 规则</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1158,7 +1168,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">222</span>
+                    <span class="site-state-item-count">223</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

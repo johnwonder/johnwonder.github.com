@@ -323,6 +323,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/07/typescript-define/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/08/07/typescript-define/" class="post-title-link" itemprop="url">typescript定义文件疑惑</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-08-07 11:24:26" itemprop="dateCreated datePublished" datetime="2017-08-07T11:24:26+08:00">2017-08-07</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-13 21:31:35" itemprop="dateModified" datetime="2019-05-13T21:31:35+08:00">2019-05-13</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="typescript声明文件"><a href="#typescript声明文件" class="headerlink" title="typescript声明文件"></a>typescript声明文件</h2><p>今天在看lodash的声明文件，看到下面这一段有点疑问：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">declare <span class="keyword">var</span> _: _.LoDashStatic;</span><br><span class="line"></span><br><span class="line">declare namespace _ &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我在namespace里导出一个function,如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">declare namespace _ &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>):<span class="title">void</span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>那vscode会提示错误Duplicate identifier,我们回到TypeScript官网文档看下：</p>
+<p>与类型相比，你可能已经理解了什么是值。 值是运行时名字，可以在表达式里引用。 比如 let x = 5;创建一个名为x的值。</p>
+<p>同样，以下方式能够创建值：</p>
+<p>let，const，和var声明<br>包含值的namespace或module声明<br>enum声明<br>class声明<br>指向值的import声明<br>function声明</p>
+<p>只要不产生冲突就是合法的。 一个普通的规则是值总是会和同名的其它值产生冲突除非它们在不同命名空间里。</p>
+<p>也就是说值冲突了，但是如果我把declare var 换成declare class 那就是可以的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">declare namespace _ &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>):<span class="title">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title">declare</span> <span class="title">class</span> <span class="title">_</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>typescript官网是这么说的：</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Note that <span class="keyword">in</span> this example, we added a value <span class="keyword">to</span> the <span class="keyword">static</span> side <span class="keyword">of</span> C (its <span class="function"><span class="keyword">constructor</span> <span class="title">function</span>). <span class="title">This</span> <span class="title">is</span> <span class="title">because</span> <span class="title">we</span> <span class="title">added</span> <span class="title">a</span> <span class="title">value</span>, <span class="title">and</span> <span class="title">the</span> <span class="title">container</span> <span class="title">for</span> <span class="title">all</span> <span class="title">values</span> <span class="title">is</span> <span class="title">another</span> <span class="title">value</span> <span class="params">(types are contained <span class="keyword">by</span> namespaces, <span class="keyword">and</span> namespaces are contained <span class="keyword">by</span> other namespaces)</span>.</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/04/angular2-forwardRef/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -962,164 +1129,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/07/27/angular-rootScope/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/07/27/angular-rootScope/" class="post-title-link" itemprop="url">angular-源码分析之rootScope</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-07-27 15:49:22" itemprop="dateCreated datePublished" datetime="2017-07-27T15:49:22+08:00">2017-07-27</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="rootScope-到底是啥"><a href="#rootScope-到底是啥" class="headerlink" title="$rootScope 到底是啥"></a>$rootScope 到底是啥</h2><h3 id="出处"><a href="#出处" class="headerlink" title="出处"></a>出处</h3><p>在bootstrap函数中会调用injector.invoke，里面用到了rootScope:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">injector.invoke([<span class="string">'$rootScope'</span>, <span class="string">'$rootElement'</span>, <span class="string">'$compile'</span>, <span class="string">'$injector'</span>,</span><br><span class="line">       <span class="function"><span class="keyword">function</span> <span class="title">bootstrapApply</span>(<span class="params">scope, element, compile, injector</span>) </span>&#123;</span><br><span class="line">        scope.$apply(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">//rootScope</span></span><br><span class="line">          element.data(<span class="string">'$injector'</span>, injector);</span><br><span class="line">          compile(element)(scope);</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;]</span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
-<p>从之前的文章中我们可以知道$rootScope从$rootScopeProvider.$get方法返回的，那么我们就可以看$rootScopeProvider.$get方法返回了什么。</p>
-<h3 id="RootScopeProvider"><a href="#RootScopeProvider" class="headerlink" title="$RootScopeProvider"></a>$RootScopeProvider</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Scope</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="keyword">this</span>.$id = nextUid();</span><br><span class="line">   <span class="keyword">this</span>.$$phase = <span class="keyword">this</span>.$parent = <span class="keyword">this</span>.$$watchers =</span><br><span class="line">                  <span class="keyword">this</span>.$$nextSibling = <span class="keyword">this</span>.$$prevSibling =</span><br><span class="line">                  <span class="keyword">this</span>.$$childHead = <span class="keyword">this</span>.$$childTail = <span class="literal">null</span>;</span><br><span class="line">   <span class="keyword">this</span>.$root = <span class="keyword">this</span>;</span><br><span class="line">   <span class="keyword">this</span>.$$destroyed = <span class="literal">false</span>;</span><br><span class="line">   <span class="keyword">this</span>.$$listeners = &#123;&#125;;</span><br><span class="line">   <span class="keyword">this</span>.$$listenerCount = &#123;&#125;;</span><br><span class="line">   <span class="keyword">this</span>.$$watchersCount = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">this</span>.$$isolateBindings = <span class="literal">null</span>;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> Scope.prototype = &#123;</span><br><span class="line">   <span class="attr">constructor</span>: Scope,</span><br><span class="line">   <span class="attr">$new</span>: <span class="function"><span class="keyword">function</span>(<span class="params">isolate, parent</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="comment">//$apply方法就是在这定义的</span></span><br><span class="line">     <span class="comment">//expr 可以为function</span></span><br><span class="line">   $apply: <span class="function"><span class="keyword">function</span>(<span class="params">expr</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">try</span> &#123;</span><br><span class="line">              beginPhase(<span class="string">'$apply'</span>);</span><br><span class="line">              <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>.$<span class="built_in">eval</span>(expr);</span><br><span class="line">              &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                clearPhase();</span><br><span class="line">              &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">              $exceptionHandler(e);</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">              <span class="keyword">try</span> &#123;</span><br><span class="line">                $rootScope.$digest();</span><br><span class="line">              &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                $exceptionHandler(e);</span><br><span class="line">                <span class="keyword">throw</span> e;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//省略</span></span><br><span class="line"> &#125;;</span><br><span class="line">    <span class="comment">//定义了Scope对象</span></span><br><span class="line"><span class="keyword">var</span> $rootScope = <span class="keyword">new</span> Scope();</span><br><span class="line"></span><br><span class="line"> <span class="comment">//The internal queues. Expose them on the $rootScope for debugging/testing purposes.</span></span><br><span class="line"> <span class="keyword">var</span> asyncQueue = $rootScope.$$asyncQueue = [];</span><br><span class="line"> <span class="keyword">var</span> postDigestQueue = $rootScope.$$postDigestQueue = [];</span><br><span class="line"> <span class="keyword">var</span> applyAsyncQueue = $rootScope.$$applyAsyncQueue = [];</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> postDigestQueuePosition = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> $rootScope;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1166,7 +1175,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">222</span>
+                    <span class="site-state-item-count">223</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

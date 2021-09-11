@@ -323,6 +323,172 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/07/20/typescript-declare/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/07/20/typescript-declare/" class="post-title-link" itemprop="url">typescript声明</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-07-20 16:00:40" itemprop="dateCreated datePublished" datetime="2017-07-20T16:00:40+08:00">2017-07-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天在看<a href="https://mp.weixin.qq.com/s/LVoa3YnDaldiZroya_EN1A" target="_blank" rel="external">typescript 导入模块</a>的时候，看到这么一个导入法：</p>
+<p><code>import * as express from &#39;express&#39;</code></p>
+<p>文中提到了如下的问题</p>
+<p>最后一行export = express，并且上面分别定义了一个 function express() 和namespace express，这种写法是比较特殊的，我一时也没法解释清楚，反正多参照 DefinitelyTyped 上其他模块的写法即可。这个问题归根结底是 express 模块通过 import * as express from ‘express’ 引入的时候，express本身又是一个函数，这种写法在早期的 Node.js 版本的程序和 NPM 模块中是比较流行的。</p>
+<p>这个应该只和声明有关</p>
+<p>然后就看到<a href="https://segmentfault.com/q/1010000008316030" target="_blank" rel="external">这篇文章</a>,里面提到了用 tsc 编译成 commonjs</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span>;</span><br><span class="line"><span class="keyword">var</span> moment = <span class="built_in">require</span>(<span class="string">'./moment'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> moment)</span><br></pre></td></tr></table></figure>
+<p>然后我自己试了一下在target为es5的情况下确实是编译成了如下js:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">"express"</span>);</span><br><span class="line"><span class="keyword">var</span> app = express();</span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    res.end(<span class="string">'hello, world'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">app.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'server is listening'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>文中还提到了如何编写声明文件，然后我看了下express的声明文件：</p>
+<p>确实是像如下</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="function"><span class="keyword">function</span> <span class="title">e</span>(<span class="params"></span>): <span class="title">core</span>.<span class="title">Express</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">namespace</span> e &#123;</span><br><span class="line">     <span class="keyword">var</span> <span class="keyword">static</span>: <span class="keyword">typeof</span> serveStatic;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">Router</span>(<span class="params">options?: RouterOptions</span>): <span class="title">core</span>.<span class="title">Router</span></span>;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//内部接口 外部获取不到</span></span><br><span class="line">     <span class="keyword">interface</span> RouterOptions &#123;</span><br><span class="line"></span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> = e;</span><br></pre></td></tr></table></figure>
+<p>发现express可以定义Router，和内部的RouterOptions<br>参考资料<a href="http://www.expressjs.com.cn/4x/api.html#router" target="_blank" rel="external">Express 4.x API 中文手册</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/07/10/jad-decompiler/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -951,169 +1117,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/07/01/angular-service-injector/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/07/01/angular-service-injector/" class="post-title-link" itemprop="url">angularjs 1.5.8源码解析之service到底干了什么</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-07-01 22:13:53" itemprop="dateCreated datePublished" datetime="2017-07-01T22:13:53+08:00">2017-07-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-03-23 21:54:44" itemprop="dateModified" datetime="2020-03-23T21:54:44+08:00">2020-03-23</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="provide-service函数"><a href="#provide-service函数" class="headerlink" title="$provide.service函数"></a>$provide.service函数</h2><p>上篇文章<a href="https://mp.weixin.qq.com/s/B3-VS8jnOSOKtDz91rtP0g" target="_blank" rel="external">创建service</a>最后我们提到了<br>$provide.service,也就是说模块调用service方法 其实内部到loadModules的时候通过runInvokeQueue<br>会调用内置的$provide.service函数。</p>
-<p>比如我写了个方法如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> herModule = angular.module(<span class="string">'herModule'</span>, []);</span><br><span class="line">herModule.service(<span class="string">'herService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.her = <span class="number">1</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>我们一步步来分析它是怎么调用的，首先看第一步</p>
-<h3 id="provideCache"><a href="#provideCache" class="headerlink" title="provideCache"></a>provideCache</h3><p>我们在之前的文章<a href="https://mp.weixin.qq.com/s/1IUhjOQoVfEdds0nt-8Hlw" target="_blank" rel="external">依赖注入器的产生</a>中看到createInjector的时候会把provideCache传入providerInjector，也就是说我们在调用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">    function supportObject(delegate) &#123;</span><br><span class="line">       return function(key, value) &#123;       </span><br><span class="line">         //当key是 对象的时候 就把delegate函数放入闭包里</span><br><span class="line">         if (isObject(key)) &#123;</span><br><span class="line">           //reverseParams 为了适应foreach里调用函数的参数顺序</span><br><span class="line">           forEach(key, reverseParams(delegate));// function(value, key) &#123;iteratorFn(key, value);&#125;;</span><br><span class="line">         &#125; else &#123;</span><br><span class="line">            //调用参数delegate方法</span><br><span class="line">           return delegate(key, value);</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    var providerCache = &#123;</span><br><span class="line">       //supportObject 都返回一个新函数,内部调用service</span><br><span class="line">       $provide: &#123;</span><br><span class="line">           service: supportObject(service),</span><br><span class="line">           //省略部分代码</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
-<p>$provide对象不止有service一个属性函数，supportObject 都返回一个新函数,内部调用service。</p>
-<h3 id="内部service函数"><a href="#内部service函数" class="headerlink" title="内部service函数"></a>内部service函数</h3><p>service函数内部其实就是调用factory函数<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">service</span>(<span class="params">name, constructor</span>) </span>&#123;</span><br><span class="line">   <span class="comment">//factoryFn就是个对象数组</span></span><br><span class="line">  <span class="keyword">return</span> factory(name, [<span class="string">'$injector'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$injector</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//实例化构造函数，返回实例</span></span><br><span class="line">    <span class="keyword">return</span> $injector.instantiate(<span class="keyword">constructor</span>);</span><br><span class="line">  &#125;]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="内部factory函数"><a href="#内部factory函数" class="headerlink" title="内部factory函数"></a>内部factory函数</h3><p>factory函数内部又调用provider函数<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//factoryFn有可能就是对象数组</span></span><br><span class="line"><span class="comment">//enforce代表是否要有返回值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factory</span>(<span class="params">name, factoryFn, enforce</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> provider(name, &#123;</span><br><span class="line">    <span class="attr">$get</span>: enforce !== <span class="literal">false</span> ? enforceReturnValue(name, factoryFn) : factoryFn</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回一个有返回值的方法而已</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">enforceReturnValue</span>(<span class="params">name, factory</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">enforcedReturnValue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> result = instanceInjector.invoke(factory, <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="内部provider函数"><a href="#内部provider函数" class="headerlink" title="内部provider函数"></a>内部provider函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">provider</span>(<span class="params">name, provider_</span>) </span>&#123;</span><br><span class="line">    assertNotHasOwnProperty(name, <span class="string">'service'</span>);</span><br><span class="line">    <span class="keyword">if</span> (isFunction(provider_) || isArray(provider_)) &#123;</span><br><span class="line">      provider_ = providerInjector.instantiate(provider_);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> providerCache[name + providerSuffix] = provider_;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>其中最终调用的就是provider方法把一开始的serviceName加上providerSuffix当作对象key，然后<code>{$get:[&#39;$injector&#39;, function($injector) {return $injector.instantiate(constructor);}]}</code>放入了providerCache。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1160,7 +1163,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">222</span>
+                    <span class="site-state-item-count">223</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

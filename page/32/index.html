@@ -323,6 +323,180 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/12/29/slf4j_MDC/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/12/29/slf4j_MDC/" class="post-title-link" itemprop="url">slf4j_MDC</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-12-29 16:50:56" itemprop="dateCreated datePublished" datetime="2016-12-29T16:50:56+08:00">2016-12-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:37:48" itemprop="dateModified" datetime="2019-05-09T20:37:48+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="slf4j-MDC"><a href="#slf4j-MDC" class="headerlink" title="slf4j MDC"></a>slf4j MDC</h1><p>A lighter technique consists of uniquely stamping each log request servicing a given client. Neil Harrison described this method in the book Patterns for Logging Diagnostic Messages in Pattern Languages of Program Design 3, edited by R. Martin, D. Riehle, and F. Buschmann (Addison-Wesley, 1997).</p>
+<p>Logback leverages a variant of this technique included in the SLF4J API: Mapped Diagnostic Contexts (MDC).</p>
+<p>在分布式系统中，各种无关日志穿行其中，导致我们可能无法直接定位整个操作流程。因此，我们可能需要对一个用户的操作流程进行归类标记，比如使用线程+时间戳，或者用户身份标识等；如此，我们可以从大量日志信息中grep出某个用户的操作流程，或者某个时间的流转记录。</p>
+<p>因此，这就有了 Slf4j MDC 方法</p>
+<p>转载自<a href="http://www.ithao123.cn/content-8291525.html" target="_blank" rel="external">Slf4j MDC 使用和 基于 Logback 的实现分析</a></p>
+<p><a href="http://www.cnblogs.com/dumuqiao/p/3654702.html?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">LogBack sl4j 通过MDC实现日志记录区分用户Session</a></p>
+<h2 id="slf4j-api-MDC类"><a href="#slf4j-api-MDC类" class="headerlink" title="slf4j-api MDC类"></a>slf4j-api MDC类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line">   *内部静态类</span><br><span class="line">   * An adapter to remove the key when done.</span><br><span class="line">   */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MDCCloseable</span> <span class="keyword">implements</span> <span class="title">Closeable</span> </span>&#123;</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">final</span> String key;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="title">MDCCloseable</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">          <span class="keyword">this</span>.key = key;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          MDC.remove(<span class="keyword">this</span>.key);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>Java中的类可以是static吗？答案是可以。在java中我们可以有静态实例变量、静态方法、静态块。类也可以是静态的</p>
+<p>静态内部类只能访问外部类的静态成员</p>
+<p>静态内部类和非静态内部类之间到底有什么不同呢？下面是两者间主要的不同。</p>
+<blockquote>
+<p>内部静态类不需要有指向外部类的引用。但非静态内部类需要持有对外部类的引用。</p>
+</blockquote>
+<blockquote>
+<p>非静态内部类能够访问外部类的静态和非静态成员。静态类不能访问外部类的非静态成员。他只能访问外部类的静态成员。</p>
+</blockquote>
+<blockquote>
+<p>一个非静态内部类不能脱离外部类实体被创建，一个非静态内部类可以访问外部类的数据和方法，因为他就在外部类里面。</p>
+</blockquote>
+<p>参考资料:<br><a href="http://www.cnblogs.com/kissazi2/p/3971065.html" target="_blank" rel="external">java中的Static class</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/12/29/angularjs-minError/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -978,162 +1152,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/11/07/read-book1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/11/07/read-book1/" class="post-title-link" itemprop="url">读书品1</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-11-07 21:57:05" itemprop="dateCreated datePublished" datetime="2016-11-07T21:57:05+08:00">2016-11-07</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="张伯淳"><a href="#张伯淳" class="headerlink" title="张伯淳"></a>张伯淳</h2><p>张伯淳(1242—1302)，字师道，号养蒙，崇德(今浙江桐乡)人。祖父张汝昌，官至迪功郎，与石门酒官张子修为邻，两家并有池馆园林之胜，号东西园，结社觞咏，时称东西二张。父张琥，南宋嘉定十三年(1220)进士，累官朝议大夫、崇德开国男。与赵孟頫为中表，人物相望。张伯淳9岁举童子科，以父荫铨迪功郎、淮阴尉，改扬州司户参军</p>
-<p>（元）张伯淳&lt;&lt;送刘东崖赴建昌总管序&gt;&gt;云：“以翰林学士南康刘公为建昌路总管……其笔词源浩荡橫逸，人多称之。（养蒙文集）卷二</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1180,7 +1198,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">222</span>
+                    <span class="site-state-item-count">223</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

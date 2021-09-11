@@ -323,6 +323,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/07/spring-applicationcontextInitializer/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/04/07/spring-applicationcontextInitializer/" class="post-title-link" itemprop="url">spring中的ApplicationContextInitializer揭秘</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-07 21:49:11" itemprop="dateCreated datePublished" datetime="2020-04-07T21:49:11+08:00">2020-04-07</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-04-09 22:17:52" itemprop="dateModified" datetime="2020-04-09T22:17:52+08:00">2020-04-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>看<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">在它上面有这么几行注释：</span><br><span class="line"></span><br><span class="line">Note that clients of any &#123;@link ConfigurableEnvironment&#125; may further customize property sources via the &#123;@link #getPropertySources()&#125; accessor, typically within an &#123;@link org.springframework.context.ApplicationContextInitializer ApplicationContextInitializer&#125;.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">意思就是实现ConfigurableEnvironment的应用都有可能通过getPropertySources访问器来自定义property sources,比如通过ApplicationContextInitializer。</span><br><span class="line"></span><br><span class="line">那么我们来看看ApplicationContextInitializer这个接口是怎样的</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```Java</span><br><span class="line">public interface ApplicationContextInitializer&lt;C extends ConfigurableApplicationContext&gt; &#123;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Initialize the given application context.</span><br><span class="line">	 * @param applicationContext the application to configure</span><br><span class="line">	 */</span><br><span class="line">	void initialize(C applicationContext);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>里面就一个initialize函数，但是传入了一个重要的参数applicationContext,而且这个参数继承自ConfigurableApplicationContext，这个接口就如之前提到的实现了EnvironmentCapable接口，有了getEnvironment方法，就可以通过类似如下例子来自定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ConfigurableEnvironment env = applicationContext.getEnvironment();</span><br><span class="line"> env.getPropertySources().addLast(<span class="keyword">new</span> PropertySourceX(...));</span><br></pre></td></tr></table></figure>
+<p>那有哪些实现了ApplicationContextInitializer接口的类呢，有什么作用呢？下回再解！</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/06/spring-envrionment-profile/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -918,165 +1076,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/30/spring-refreshBeanFactory/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/03/30/spring-refreshBeanFactory/" class="post-title-link" itemprop="url">spring5源码解析之加载bean过程前奏</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-03-30 20:48:01 / 修改时间：21:57:20" itemprop="dateCreated datePublished" datetime="2020-03-30T20:48:01+08:00">2020-03-30</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Java生态圈里的Spring框架众所周知，研究它源码的大神也多如牛毛，小弟不才，也对它的源码很感兴趣，<br>不光是要一窥框架设计之精妙，也要在平时的开发过程中能借鉴其中的设计思想。今天这篇文章我们就来<br>聊聊它加载bean的过程中有什么值得学习的地方。</p>
-<p>首先我们可以写个简单的demo,来一步步调试和窥探：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">      String XMLPath = <span class="string">"spring-config.xml"</span>;</span><br><span class="line">      <span class="comment">//</span></span><br><span class="line">      ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"spring-config.xml"</span>);</span><br><span class="line">      Landlord landlord = (Landlord) applicationContext.getBean(<span class="string">"landlord"</span>, Landlord.class);</span><br><span class="line">      landlord.service();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>spring-config.xml配置文件中我们就定义了一个简单的bean元素，那么我们先自己简单地想下Spring内部要解决哪些<br>问题它才能获取到这个实例，我们要带着问题去阅读源码才会有所收获。我首先想到的就是如下这些：</p>
-<ol>
-<li>它是如何定位xml配置文件并读取的</li>
-<li>如何解析xml配置文件中的bean元素和属性</li>
-<li>解析完了以后这些配置放到哪里呢</li>
-<li>getBean的时候又是去哪获取的呢</li>
-</ol>
-<h2 id="定位xml配置文件"><a href="#定位xml配置文件" class="headerlink" title="定位xml配置文件"></a>定位xml配置文件</h2><p>我们在把一个文件名放入ClassPathXmlApplicationContext构造函数的时候，它内部就开始了定位逻辑，</p>
-<p>因为它支持多个配置文件路径，所以我们传入一个路径的时候它会new一个String数组，调用其他构造函数，</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(String configLocation)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>(<span class="keyword">new</span> String[] &#123;configLocation&#125;, <span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//这里我们学到了可变参数的用途</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(String... configLocations)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>(configLocations, <span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(</span><br><span class="line">  String[] configLocations, <span class="keyword">boolean</span> refresh, @Nullable ApplicationContext parent)</span></span><br><span class="line">  <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">  <span class="comment">//省略部分代码</span></span><br><span class="line">  <span class="comment">//AbstractRefreshableConfigApplicationContext的setConfigLocations方法</span></span><br><span class="line">  setConfigLocations(configLocations);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>最后就调用了<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">我们可以在ClassPathXmlApplicationContext类中自己实现，这就是一个很好的设计之处。</span><br><span class="line">AbstractRefreshableApplicationContext的setConfigLocations方法如下：</span><br><span class="line">```Java</span><br><span class="line">  /**</span><br><span class="line">	 * Set the config locations for this application context.</span><br><span class="line">	 * &lt;p&gt;If not set, the implementation may use a default as appropriate.</span><br><span class="line">	 */</span><br><span class="line">	public void setConfigLocations(@Nullable String... locations) &#123;</span><br><span class="line">  if (locations != null) &#123;</span><br><span class="line"></span><br><span class="line">      this.configLocations = new String[locations.length];</span><br><span class="line">      for (int i = 0; i &lt; locations.length; i++) &#123;</span><br><span class="line">        this.configLocations[i] = resolvePath(locations[i]).trim();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      this.configLocations = null;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>它的注释说的很明白，如果我们不调用setConfigLocations,那它就会根据情况用一个默认路径了，后果不看设想。。<br>显然我们要重点关注的是<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```Java</span><br><span class="line">  /**</span><br><span class="line">  	 * Resolve the given path, replacing placeholders with corresponding</span><br><span class="line">  	 * environment property values if necessary. Applied to config locations.</span><br><span class="line">  	 * @param path the original file path</span><br><span class="line">  	 * @return the resolved file path</span><br><span class="line">  	 * @see org.springframework.core.env.Environment#resolveRequiredPlaceholders(String)</span><br><span class="line">  	 */</span><br><span class="line">    protected String resolvePath(String path) &#123;</span><br><span class="line">  		return getEnvironment().resolveRequiredPlaceholders(path);</span><br><span class="line">  	&#125;</span><br></pre></td></tr></table></figure></p>
-<p>我们又要看它的注释了，很清楚，根据给定的path路径字符串，如果必要的话会用环境变量替换它里面占位符，然后赋给配置路径，<br>比如我们把<code>spring-config.xml</code> 换成${java.version}spring-config.xml传入，那么它会把${java.version}用我们环境变量替换掉<br>具体要看<code>org.springframework.core.env.Environment#resolveRequiredPlaceholders(String)</code>里面的代码了。</p>
-<p>我们下回再解！</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1123,7 +1122,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">222</span>
+                    <span class="site-state-item-count">223</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

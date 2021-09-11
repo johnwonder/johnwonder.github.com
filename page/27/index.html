@@ -323,6 +323,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/25/linux-php/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/03/25/linux-php/" class="post-title-link" itemprop="url">linux_php</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-25 22:16:23" itemprop="dateCreated datePublished" datetime="2017-03-25T22:16:23+08:00">2017-03-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="ubuntu14-04-安装php"><a href="#ubuntu14-04-安装php" class="headerlink" title="ubuntu14.04 安装php"></a>ubuntu14.04 安装php</h2><p>###先安装apache2:</p>
+<p><code>sudo apt-get install apache2</code>  </p>
+<h3 id="安装php5"><a href="#安装php5" class="headerlink" title="安装php5:"></a>安装php5:</h3><p><code>sudo apt-get install php5</code></p>
+<h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql:"></a>安装mysql:</h3><p><code>sudo apt-get install mysql-server</code>  </p>
+<h3 id="查看ip地址："><a href="#查看ip地址：" class="headerlink" title="查看ip地址："></a>查看ip地址：</h3><p><code>ifconfig -a</code></p>
+<h3 id="查看ssh是否启动"><a href="#查看ssh是否启动" class="headerlink" title="查看ssh是否启动"></a>查看ssh是否启动</h3><p><code>sudo ps -e |grep ssh</code></p>
+<h3 id="ubuntu-终端修改中文乱码"><a href="#ubuntu-终端修改中文乱码" class="headerlink" title="ubuntu 终端修改中文乱码"></a>ubuntu 终端修改中文乱码</h3><p>修改Ubuntu的配置文件/etc/default/locale<br>将原来的配置内容修改为<br>LANG=”en_US.UTF-8″<br>LANGUAGE=”en_US:en”<br>再在终端下运行：<br>$ locale-gen -en_US:en<br>注销或重启后，Ubuntu Server真正服务器实体终端就恢复成了英文的语言环境。<br>所以，此方法不是真正意义上的中文化，而是恢复英文的默认编码</p>
+<p>参考资料：<br><a href="http://blog.csdn.net/dufufd/article/details/51201634" target="_blank" rel="external">Ubuntu Server 命令行下的默认语言 中文乱码 </a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/25/scalatra-mount/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -956,165 +1118,6 @@ ss.mount
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/18/angular-injector-module/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/03/18/angular-injector-module/" class="post-title-link" itemprop="url">angular_injector_module</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-18 15:49:16" itemprop="dateCreated datePublished" datetime="2017-03-18T15:49:16+08:00">2017-03-18</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="angular-1-5-8源码解读"><a href="#angular-1-5-8源码解读" class="headerlink" title="angular 1.5.8源码解读"></a>angular 1.5.8源码解读</h2><p>有如下一段代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建myModule模块、注册服务</span></span><br><span class="line"><span class="keyword">var</span> myModule = angular.module(<span class="string">'myModule'</span>, []);</span><br><span class="line">myModule.service(<span class="string">'myService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.my = <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 创建herModule模块、注册服务</span></span><br><span class="line"><span class="keyword">var</span> herModule = angular.module(<span class="string">'herModule'</span>, []);</span><br><span class="line">herModule.service(<span class="string">'herService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.her = <span class="number">1</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 加载了2个模块中的服务</span></span><br><span class="line"><span class="keyword">var</span> injector = angular.injector([<span class="string">"myModule"</span>,<span class="string">"herModule"</span>]);</span><br><span class="line">alert(injector.get(<span class="string">"myService"</span>).my);</span><br><span class="line">alert(injector.get(<span class="string">"herService"</span>).her);</span><br></pre></td></tr></table></figure></p>
-<p>我们先看看service方法是如何定义的  </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">  <span class="comment">//service</span></span><br><span class="line">  service: invokeLaterAndSetModuleName(<span class="string">'$provide'</span>, <span class="string">'service'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * @param &#123;string&#125; provider</span><br><span class="line"> * @param &#123;string&#125; method</span><br><span class="line"> * @returns &#123;angular.Module&#125;</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeLaterAndSetModuleName</span>(<span class="params">provider, method</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">recipeName, factoryFunction</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (factoryFunction &amp;&amp; isFunction(factoryFunction)) factoryFunction.$$moduleName = name;</span><br><span class="line">    invokeQueue.push([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">    <span class="keyword">return</span> moduleInstance;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">``</span><span class="string">`  </span><br><span class="line">也就是如果加入了个module，那么module.service就是</span><br><span class="line">`</span><span class="string">``</span>js</span><br><span class="line"><span class="built_in">module</span>.service = <span class="function"><span class="keyword">function</span>(<span class="params">recipeName, factoryFunction</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (factoryFunction &amp;&amp; isFunction(factoryFunction))</span><br><span class="line">      factoryFunction.$$moduleName = name;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//arguments就是 recipeName 和factoryFunction的数组</span></span><br><span class="line">  invokeQueue.push([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">  <span class="keyword">return</span> moduleInstance;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="string">``</span><span class="string">`  </span><br><span class="line"></span><br><span class="line">invokeQueue就push 进去了`</span><span class="string">``</span>$provide service recipeName, factoryFunction<span class="string">``</span><span class="string">`  </span><br><span class="line">provider定义的时候 定义了service方法:   </span><br><span class="line"></span><br><span class="line">`</span><span class="string">``</span>js</span><br><span class="line">$provide: &#123;</span><br><span class="line">          <span class="attr">provider</span>: supportObject(provider),<span class="comment">//supportObject返回了</span></span><br><span class="line">          factory: supportObject(factory),</span><br><span class="line">          <span class="attr">service</span>: supportObject(service),</span><br><span class="line">          <span class="attr">value</span>: supportObject(value),</span><br><span class="line">          <span class="attr">constant</span>: supportObject(constant),</span><br><span class="line">          <span class="attr">decorator</span>: decorator</span><br><span class="line">        &#125;</span><br><span class="line"><span class="string">``</span><span class="string">`  </span><br><span class="line"></span><br><span class="line">supportObject方法:    </span><br><span class="line">`</span><span class="string">``</span>js</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">supportObject</span>(<span class="params">delegate</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">key, value</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (isObject(key)) &#123;</span><br><span class="line">        forEach(key, reverseParams(delegate));</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> delegate(key, value);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="string">``</span><span class="string">`  </span><br><span class="line">$provide.service 就是`</span><span class="string">``</span><span class="function"><span class="keyword">function</span>(<span class="params">key,value</span>)</span>&#123; &#125;</span><br></pre></td></tr></table></figure>
-<p>如果是service的话，那么此处的delegate就是外部定义的service方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">service</span>(<span class="params">name, constructor</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> factory(name, [<span class="string">'$injector'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$injector</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> $injector.instantiate(<span class="keyword">constructor</span>);</span><br><span class="line">    &#125;]);</span><br><span class="line">  &#125;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">再按一定的顺序调用如下方法：</span><br><span class="line">```js</span><br><span class="line"> //factoryFn 就是['$injector',function()&#123;$injector&#125;&#123;&#125;]</span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">factory</span>(<span class="params">name, factoryFn, enforce</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> provider(name, &#123;</span><br><span class="line">     <span class="attr">$get</span>: enforce !== <span class="literal">false</span> ? enforceReturnValue(name, factoryFn) : factoryFn</span><br><span class="line">   &#125;);<span class="comment">//注意 enforceReturnValue只是返回一个方法而已</span></span><br><span class="line">   <span class="comment">//如果enforce 为true 或者undefined</span></span><br><span class="line">   <span class="comment">//那么factoryFn 最终 被instanceInjector.invoke(factory, this);</span></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//provider_就是上面定义的&#123; $get: function &#125;对象</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">provider</span>(<span class="params">name, provider_</span>) </span>&#123;</span><br><span class="line">     assertNotHasOwnProperty(name, <span class="string">'service'</span>);</span><br><span class="line">     <span class="keyword">if</span> (isFunction(provider_) || isArray(provider_)) &#123;</span><br><span class="line">       provider_ = providerInjector.instantiate(provider_);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">if</span> (!provider_.$<span class="keyword">get</span>) &#123;<span class="comment">//必须含有$get方法</span></span><br><span class="line">       <span class="keyword">throw</span> $injectorMinErr(<span class="string">'pget'</span>, <span class="string">"Provider '&#123;0&#125;' must define $get factory method."</span>, name);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> providerCache[name + providerSuffix] = provider_;</span><br><span class="line">     <span class="comment">//probider_ 定义了 &#123; $get:  enforce !== false ? enforceReturnValue(name, factoryFn) : factoryFn &#125;</span></span><br><span class="line">     <span class="comment">//enforceReturnValue 返回了 一个调用factoryFn的方法</span></span><br><span class="line">     <span class="comment">//相当于调用$get的时候调用</span></span><br><span class="line">     <span class="comment">//instanceInjector.invoke(factory)</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回一个方法而已</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">enforceReturnValue</span>(<span class="params">name, factory</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">enforcedReturnValue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="keyword">var</span> result = instanceInjector.invoke(factory, <span class="keyword">this</span>);</span><br><span class="line">     <span class="keyword">if</span> (isUndefined(result)) &#123;</span><br><span class="line">       <span class="keyword">throw</span> $injectorMinErr(<span class="string">'undef'</span>, <span class="string">"Provider '&#123;0&#125;' must return a value from $get factory method."</span>, name);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> result;</span><br><span class="line">   &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>我们来看看<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">首先angular.injector就是调用的createInjector方法  </span><br><span class="line"></span><br><span class="line">createInjector方法内部有句```var runBlocks = loadModules(modulesToLoad);```  </span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">////////////////////////////////////</span><br><span class="line">// Module Loading</span><br><span class="line">////////////////////////////////////</span><br><span class="line">function loadModules(modulesToLoad) &#123;</span><br><span class="line">  //判断是否是数组</span><br><span class="line">  assertArg(isUndefined(modulesToLoad) || isArray(modulesToLoad), &apos;modulesToLoad&apos;, &apos;not an array&apos;);</span><br><span class="line">  var runBlocks = [], moduleFn;</span><br><span class="line">  //遍历modulesToLoad数组</span><br><span class="line">  forEach(modulesToLoad, function(module) &#123;</span><br><span class="line">    if (loadedModules.get(module)) return;</span><br><span class="line">    loadedModules.put(module, true);</span><br><span class="line"></span><br><span class="line">    function runInvokeQueue(queue) &#123;</span><br><span class="line">      var i, ii;</span><br><span class="line">      for (i = 0, ii = queue.length; i &lt; ii; i++) &#123;</span><br><span class="line">        var invokeArgs = queue[i],</span><br><span class="line">            provider = providerInjector.get(invokeArgs[0]);//invokeArgs[0]就是$provide</span><br><span class="line"></span><br><span class="line">          //invokeArgs[1]就是service</span><br><span class="line">          //invokeArgs[2]就是 recipeName factoryFunction的数组</span><br><span class="line">        provider[invokeArgs[1]].apply(provider, invokeArgs[2]);</span><br><span class="line">      //  provider[&apos;service&apos;] 就是调用```provider[invokeArgs[1]].apply(provider, invokeArgs[2]);```  </span><br><span class="line">      //invokeArgs[2]就是一个数组，传入了service的key,value</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  //      function(key, value) &#123;</span><br><span class="line">  //          if (isObject(key)) &#123;</span><br><span class="line">  //            forEach(key, reverseParams(delegate));</span><br><span class="line">  //          &#125; else &#123;</span><br><span class="line">  //            return delegate(key, value);</span><br><span class="line">  //          &#125;</span><br><span class="line">  // &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    try &#123;</span><br><span class="line">      if (isString(module)) &#123;</span><br><span class="line">        moduleFn = angularModule(module);</span><br><span class="line">        runBlocks = runBlocks.concat(loadModules(moduleFn.requires)).concat(moduleFn._runBlocks);</span><br><span class="line">        runInvokeQueue(moduleFn._invokeQueue);//_invokeQueue是在定义service 等时候push进去的</span><br><span class="line">        runInvokeQueue(moduleFn._configBlocks);</span><br><span class="line">      &#125; else if (isFunction(module)) &#123;</span><br><span class="line">          runBlocks.push(providerInjector.invoke(module));</span><br><span class="line">      &#125; else if (isArray(module)) &#123;</span><br><span class="line">          runBlocks.push(providerInjector.invoke(module));</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        assertArgFn(module, &apos;module&apos;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; catch (e) &#123;</span><br><span class="line">      if (isArray(module)) &#123;</span><br><span class="line">        module = module[module.length - 1];</span><br><span class="line">      &#125;</span><br><span class="line">      if (e.message &amp;&amp; e.stack &amp;&amp; e.stack.indexOf(e.message) == -1) &#123;</span><br><span class="line">        // Safari &amp; FF&apos;s stack traces don&apos;t contain error.message content</span><br><span class="line">        // unlike those of Chrome and IE</span><br><span class="line">        // So if stack doesn&apos;t contain message, we create a new string that contains both.</span><br><span class="line">        // Since error.stack is read-only in Safari, I&apos;m overriding e and not e.stack here.</span><br><span class="line">        /* jshint -W022 */</span><br><span class="line">        e = e.message + &apos;\n&apos; + e.stack;</span><br><span class="line">      &#125;</span><br><span class="line">      throw $injectorMinErr(&apos;modulerr&apos;, &quot;Failed to instantiate module &#123;0&#125; due to:\n&#123;1&#125;&quot;,</span><br><span class="line">                module, e.stack || e.message || e);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  return runBlocks;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">service调用如下：  </span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">//当调用injector.get(&quot;myService&quot;).my时</span><br><span class="line"></span><br><span class="line">var provider = providerInjector.get(serviceName + providerSuffix, caller);</span><br><span class="line">return instanceInjector.invoke(provider.$get, provider, undefined, serviceName);</span><br><span class="line">//此处的provider.$get 就是如下方法</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function enforcedReturnValue() &#123;</span><br><span class="line">      var result = instanceInjector.invoke(factory, this);</span><br><span class="line">      if (isUndefined(result)) &#123;</span><br><span class="line">        throw $injectorMinErr(&apos;undef&apos;, &quot;Provider &apos;&#123;0&#125;&apos; must return a value from $get factory method.&quot;, name);</span><br><span class="line">      &#125;</span><br><span class="line">      return result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">//factory方法就是</span><br><span class="line">[&apos;$injector&apos;, function($injector) &#123;return $injector.instantiate(constructor);&#125;]</span><br><span class="line"></span><br><span class="line">function instantiate(Type, locals, serviceName) &#123;</span><br><span class="line">      // Check if Type is annotated and use just the given function at n-1 as parameter</span><br><span class="line">      // e.g. someModule.factory(&apos;greeter&apos;, [&apos;$window&apos;, function(renamed$window) &#123;&#125;]);</span><br><span class="line">      var ctor = (isArray(Type) ? Type[Type.length - 1] : Type);</span><br><span class="line">      var args = injectionArgs(Type, locals, serviceName);</span><br><span class="line">      // Empty object at position 0 is ignored for invocation with `new`, but required.</span><br><span class="line">      args.unshift(null);</span><br><span class="line">      return new (Function.prototype.bind.apply(ctor, args))();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1161,7 +1164,7 @@ ss.mount
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">222</span>
+                    <span class="site-state-item-count">223</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
