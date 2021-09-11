@@ -103,19 +103,19 @@
 
 
 
-  <meta name="description" content="为什么需要Bean定义我们知道Spring框架的核心是它内部的Bean工厂(在设计模式上来说也称之为IOC容器), 当我们要使用某一个在工厂托管的Bean时，工厂会帮助我们去生成，注入依赖，初始化等一系列行为，最后返回一个符合我们期望的Bean,那工厂怎么知道他要生成什么，注入哪些依赖，初始化什么呢，这就需要我们定义一个Bean定义告诉工厂我们需要怎样的Bean。
-抽象的Bean定义我们试想一下，">
+  <meta name="description" content="为什么需要Bean定义我们知道Spring框架的核心是它内部的Bean工厂(在设计模式上来说也称之为IOC容器), 当我们要使用某一个在工厂托管的Bean时，工厂会帮助我们去生成，注入依赖，初始化等一系列行为，最后返回一个符合我们期望的Bean,那工厂怎么知道他要生成什么，注入哪些依赖，初始化什么呢，这就需要我们先有一个Bean定义告诉工厂我们需要怎样的Bean，其他的慢慢来也不急。
+抽象的Bea">
 <meta property="og:type" content="article">
 <meta property="og:title" content="接近Spring实现一个IOC框架之Bean定义">
 <meta property="og:url" content="http://johnwonder.github.io/2021/09/11/imitate-spring-ioc-bean/index.html">
 <meta property="og:site_name" content="john's tech blog">
-<meta property="og:description" content="为什么需要Bean定义我们知道Spring框架的核心是它内部的Bean工厂(在设计模式上来说也称之为IOC容器), 当我们要使用某一个在工厂托管的Bean时，工厂会帮助我们去生成，注入依赖，初始化等一系列行为，最后返回一个符合我们期望的Bean,那工厂怎么知道他要生成什么，注入哪些依赖，初始化什么呢，这就需要我们定义一个Bean定义告诉工厂我们需要怎样的Bean。
-抽象的Bean定义我们试想一下，">
-<meta property="og:updated_time" content="2021-09-11T07:14:42.073Z">
+<meta property="og:description" content="为什么需要Bean定义我们知道Spring框架的核心是它内部的Bean工厂(在设计模式上来说也称之为IOC容器), 当我们要使用某一个在工厂托管的Bean时，工厂会帮助我们去生成，注入依赖，初始化等一系列行为，最后返回一个符合我们期望的Bean,那工厂怎么知道他要生成什么，注入哪些依赖，初始化什么呢，这就需要我们先有一个Bean定义告诉工厂我们需要怎样的Bean，其他的慢慢来也不急。
+抽象的Bea">
+<meta property="og:updated_time" content="2021-09-11T07:18:35.623Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="接近Spring实现一个IOC框架之Bean定义">
-<meta name="twitter:description" content="为什么需要Bean定义我们知道Spring框架的核心是它内部的Bean工厂(在设计模式上来说也称之为IOC容器), 当我们要使用某一个在工厂托管的Bean时，工厂会帮助我们去生成，注入依赖，初始化等一系列行为，最后返回一个符合我们期望的Bean,那工厂怎么知道他要生成什么，注入哪些依赖，初始化什么呢，这就需要我们定义一个Bean定义告诉工厂我们需要怎样的Bean。
-抽象的Bean定义我们试想一下，">
+<meta name="twitter:description" content="为什么需要Bean定义我们知道Spring框架的核心是它内部的Bean工厂(在设计模式上来说也称之为IOC容器), 当我们要使用某一个在工厂托管的Bean时，工厂会帮助我们去生成，注入依赖，初始化等一系列行为，最后返回一个符合我们期望的Bean,那工厂怎么知道他要生成什么，注入哪些依赖，初始化什么呢，这就需要我们先有一个Bean定义告诉工厂我们需要怎样的Bean，其他的慢慢来也不急。
+抽象的Bea">
 
 
 
@@ -371,7 +371,7 @@
                 
               
 
-              <time title="创建时间：2021-09-11 15:13:41 / 修改时间：15:14:42" itemprop="dateCreated datePublished" datetime="2021-09-11T15:13:41+08:00">2021-09-11</time>
+              <time title="创建时间：2021-09-11 15:13:41 / 修改时间：15:18:35" itemprop="dateCreated datePublished" datetime="2021-09-11T15:13:41+08:00">2021-09-11</time>
             
 
             
@@ -431,7 +431,7 @@
       
 
       
-        <h2 id="为什么需要Bean定义"><a href="#为什么需要Bean定义" class="headerlink" title="为什么需要Bean定义"></a>为什么需要Bean定义</h2><p>我们知道Spring框架的核心是它内部的Bean工厂(在设计模式上来说也称之为IOC容器), 当我们要使用某一个在工厂托管的Bean时，工厂会帮助我们去生成，注入依赖，初始化等一系列行为，最后返回一个符合我们期望的Bean,那工厂怎么知道他要生成什么，注入哪些依赖，初始化什么呢，<strong>这就需要我们定义一个Bean定义告诉工厂我们需要怎样的Bean</strong>。</p>
+        <h2 id="为什么需要Bean定义"><a href="#为什么需要Bean定义" class="headerlink" title="为什么需要Bean定义"></a>为什么需要Bean定义</h2><p>我们知道Spring框架的核心是它内部的Bean工厂(在设计模式上来说也称之为IOC容器), 当我们要使用某一个在工厂托管的Bean时，工厂会帮助我们去生成，注入依赖，初始化等一系列行为，最后返回一个符合我们期望的Bean,那工厂怎么知道他要生成什么，注入哪些依赖，初始化什么呢，<strong>这就需要我们先有一个Bean定义告诉工厂我们需要怎样的Bean</strong>，其他的慢慢来也不急。</p>
 <h2 id="抽象的Bean定义"><a href="#抽象的Bean定义" class="headerlink" title="抽象的Bean定义"></a>抽象的Bean定义</h2><p>我们试想一下，所有的Bean是不是有一些通用的属性可以抽象出来呢？简单想想，最先想到的有是否单例，属性集合，其他一些先等等不急。那首先我们得把属性定义下吧。</p>
 <h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><p>属性一般由属性名称和属性值构成，属性值也需要通用，那就先声明为Object类型吧，简单点：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PropertyValue</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//属性名称</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//属性值</span></span><br><span class="line">    <span class="keyword">private</span> Object value;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PropertyValue</span><span class="params">(String name, Object value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
