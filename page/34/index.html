@@ -323,6 +323,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/29/scala-with/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/10/29/scala-with/" class="post-title-link" itemprop="url">scala_with关键字</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-10-29 21:00:09" itemprop="dateCreated datePublished" datetime="2016-10-29T21:00:09+08:00">2016-10-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="with-关键字"><a href="#with-关键字" class="headerlink" title="with 关键字"></a>with 关键字</h2><p>with关键字可以用来实现包装器的功能,新建withSample.scala文件示例如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">trait</span> <span class="title">Friendly</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">greet</span></span>() = <span class="string">"Hi"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Friendly</span> </span>&#123;</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">greet</span></span>() = <span class="string">"Woof"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HungryDog</span> <span class="keyword">extends</span> <span class="title">Dog</span> </span>&#123;</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">greet</span></span>() = <span class="string">"I'd like to eat my own dog food"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">trait</span> <span class="title">ExclamatoryGreeter</span> <span class="keyword">extends</span> <span class="title">Friendly</span> </span>&#123;</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">greet</span></span>() = <span class="keyword">super</span>.greet() + <span class="string">"!"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pet: <span class="type">Friendly</span> = <span class="keyword">new</span> <span class="type">Dog</span></span><br><span class="line">println(pet.greet())</span><br><span class="line"></span><br><span class="line">pet = <span class="keyword">new</span> <span class="type">HungryDog</span></span><br><span class="line">println(pet.greet())</span><br><span class="line"></span><br><span class="line">pet = <span class="keyword">new</span> <span class="type">Dog</span> <span class="keyword">with</span> <span class="type">ExclamatoryGreeter</span></span><br><span class="line">println(pet.greet())</span><br><span class="line"></span><br><span class="line">pet = <span class="keyword">new</span> <span class="type">HungryDog</span> <span class="keyword">with</span> <span class="type">ExclamatoryGreeter</span></span><br><span class="line">println(pet.greet())</span><br></pre></td></tr></table></figure>
+<p>用scala命令调用(scala withSample.scala)，输出如下</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">woof</span><br><span class="line"><span class="type">I</span><span class="symbol">'d</span> like to eat my own dog food</span><br><span class="line">woof!</span><br><span class="line"><span class="type">I</span><span class="symbol">'d</span> like to eat my own dog food!</span><br></pre></td></tr></table></figure>
+<p>张逸的<a href="http://www.tuicool.com/articles/reiMBzA" target="_blank" rel="external">Scala中的Partial Function</a>一文中提到PartialFunction的定义如下:</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">trait</span> <span class="title">PartialFunction</span>[-<span class="type">A</span>, +<span class="type">B</span>] <span class="keyword">extends</span> (<span class="params"><span class="type">A</span> =&gt; <span class="type">B</span></span>) </span>&#123; self =&gt;</span><br><span class="line">  <span class="keyword">import</span> <span class="type">PartialFunction</span>._</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">isDefinedAt</span></span>(x: <span class="type">A</span>): <span class="type">Boolean</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">applyOrElse</span></span>[<span class="type">A1</span> &lt;: <span class="type">A</span>, <span class="type">B1</span> &gt;: <span class="type">B</span>](x: <span class="type">A1</span>, <span class="keyword">default</span>: <span class="type">A1</span> =&gt; <span class="type">B1</span>): <span class="type">B1</span> =</span><br><span class="line">    <span class="keyword">if</span> (isDefinedAt(x)) apply(x) <span class="keyword">else</span> <span class="keyword">default</span>(x)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>追本溯源，是因为这里对偏函数值的调用，实则是调用了AbstractPartialFunction的apply()方法(case语句相当于是继承AbstractPartialFunction的子类)：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractPartialFunction</span>[@specialized(scala.<span class="type">Int</span>, scala.<span class="type">Long</span>, scala.<span class="type">Float</span>, scala.<span class="type">Double</span>, scala.<span class="type">AnyRef</span>) -<span class="type">T1</span>, @specialized(scala.<span class="type">Unit</span>, scala.<span class="type">Boolean</span>, scala.<span class="type">Int</span>, scala.<span class="type">Float</span>, scala.<span class="type">Long</span>, scala.<span class="type">Double</span>, scala.<span class="type">AnyRef</span>) +<span class="type">R</span>] <span class="keyword">extends</span> <span class="title">Function1</span>[<span class="type">T1</span>, <span class="type">R</span>] <span class="keyword">with</span> <span class="title">PartialFunction</span>[<span class="type">T1</span>, <span class="type">R</span>] </span>&#123; self =&gt;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">apply</span></span>(x: <span class="type">T1</span>): <span class="type">R</span> = applyOrElse(x, <span class="type">PartialFunction</span>.empty)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到里面用到了with PartialFunction[T1,R]。</p>
+<p><a href="http://www.cnblogs.com/elaron/archive/2013/01/18/2866142.html" target="_blank" rel="external">Scala 学习笔记（一）</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/28/scala-callmethod/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -961,174 +1125,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/22/sbt-settings/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/10/22/sbt-settings/" class="post-title-link" itemprop="url">sbt-settings</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-10-22 21:32:02" itemprop="dateCreated datePublished" datetime="2016-10-22T21:32:02+08:00">2016-10-22</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="sbt-Settings"><a href="#sbt-Settings" class="headerlink" title="sbt Settings"></a>sbt Settings</h2><p>Remember, a build definition creates a list of Setting, which is then used to transform sbt’s description of the build (which is a map of key-value pairs). A Setting is a transformation with sbt’s earlier map as input and a new map as output. The new map becomes sbt’s new state.</p>
-<p>build定义会创建setting列表，用于转变build的描述，是key-value pairs.<br>一个setting是之前映射的会输出新的映射。新的映射是sbt新的状态。</p>
-<p>Different settings transform the map in different ways. Earlier, you read about the := method.</p>
-<p>不同的settings通过不同的方式改变映射。比如:=。</p>
-<p>The Setting which := creates puts a fixed, constant value in the new, transformed map. For example, if you transform a map with the setting name := “hello” the new map has the string “hello” stored under the key name. </p>
-<p>:= 创建了新的常量，如果你设置了 name := “Hello” ,那么就存储了key 为name值为hello的map.<br>在build.sbt里面并非key := value, 而是key := expression. 文件里的每一行其实是一句scala语句</p>
-<p><a href="http://www.scala-sbt.org/0.13/docs/More-About-Settings.html" target="_blank" rel="external">More-About-Settings</a></p>
-<p><a href="http://beike.iteye.com/blog/1575296" target="_blank" rel="external">sbt从入门到半熟</a></p>
-<h3 id="sbt"><a href="#sbt" class="headerlink" title="sbt +="></a>sbt +=</h3><p>+=，将值添加进现有值里，适用于集合类型的key，比如libraryDependencies<br>如果是<code>version := &quot;0.1&quot;</code>,再用version += “0.2”，那么在交互模式里show version，会变成0.10.2</p>
-<h3 id="sbt-Attributed"><a href="#sbt-Attributed" class="headerlink" title="sbt.Attributed"></a>sbt.Attributed</h3><p>sbt.Attributed[java.io.File]</p>
-<p>Retrieves the associated value of key from the metadata.</p>
-<p>顾名思义，是获取java.io.File类型的Attributed[D]</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">put</span></span>[<span class="type">T</span>](key: <span class="type">AttributeKey</span>[<span class="type">T</span>], value: <span class="type">T</span>): <span class="type">Attributed</span>[<span class="type">D</span>]</span><br><span class="line"></span><br><span class="line"><span class="type">Defines</span> a mapping key -&gt; value in the metadata.</span><br></pre></td></tr></table></figure>
-<p><a href="http://www.scala-sbt.org/release/api/index.html#sbt.Attributed" target="_blank" rel="external">final case class Attributed<a href="data: D" target="_blank" rel="external">D</a></a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1175,7 +1171,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">223</span>
+                    <span class="site-state-item-count">224</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

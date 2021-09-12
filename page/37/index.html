@@ -323,6 +323,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/09/29/hexo-scaffold/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/09/29/hexo-scaffold/" class="post-title-link" itemprop="url">hexo scaffold的创建过程</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-29 22:08:49" itemprop="dateCreated datePublished" datetime="2016-09-29T22:08:49+08:00">2016-09-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="layout从哪边来"><a href="#layout从哪边来" class="headerlink" title="layout从哪边来"></a>layout从哪边来</h2><h3 id="new-js"><a href="#new-js" class="headerlink" title="new.js"></a>new.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> data = &#123;</span><br><span class="line">   <span class="attr">title</span>: args._.pop(),<span class="comment">//标题</span></span><br><span class="line">   layout: args._.length ? args._[<span class="number">0</span>] : <span class="keyword">this</span>.config.default_layout,</span><br><span class="line">   <span class="attr">slug</span>: args.s || args.slug,</span><br><span class="line">   <span class="attr">path</span>: args.p || args.path</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> ...省略</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.post.create(data, args.r || args.replace).then(<span class="function"><span class="keyword">function</span>(<span class="params">post</span>)</span>&#123;</span><br><span class="line">   self.log.info(<span class="string">'Created: %s'</span>, chalk.magenta(tildify(post.path)));</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="post-js"><a href="#post-js" class="headerlink" title="post.js"></a>post.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//默认layout为post</span></span><br><span class="line">data.layout = (data.layout || config.default_layout).toLowerCase();</span><br><span class="line"></span><br><span class="line">...省略</span><br><span class="line"><span class="keyword">this</span>._getScaffold(data.layout)</span><br><span class="line"></span><br><span class="line">...省略</span><br><span class="line">Post.prototype._getScaffold = <span class="function"><span class="keyword">function</span>(<span class="params">layout</span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> ctx = <span class="keyword">this</span>.context;</span><br><span class="line"></span><br><span class="line"><span class="comment">//从scaffold目录中获取post.md</span></span><br><span class="line"><span class="keyword">return</span> ctx.scaffold.get(layout).then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (result != <span class="literal">null</span>) <span class="keyword">return</span> result;</span><br><span class="line">    <span class="keyword">return</span> ctx.scaffold.get(<span class="string">'normal'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="hexo-front-matter-front-matter-js"><a href="#hexo-front-matter-front-matter-js" class="headerlink" title="hexo-front-matter/front_matter.js"></a>hexo-front-matter/front_matter.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> split = yfm.split(scaffold);</span><br><span class="line"></span><br><span class="line"> ...省略</span><br><span class="line"> <span class="keyword">var</span> rPrefixSep = <span class="regexp">/^(-&#123;3,&#125;|;&#123;3,&#125;)/</span>;</span><br><span class="line"> <span class="keyword">var</span> rFrontMatter = <span class="regexp">/^(-&#123;3,&#125;|;&#123;3,&#125;)\n([\s\S]+?)\n\1(?:$|\n([\s\S]*)$)/</span>;</span><br><span class="line"> <span class="keyword">var</span> rFrontMatterNew = <span class="regexp">/^([\s\S]+?)\n(-&#123;3,&#125;|;&#123;3,&#125;)(?:$|\n([\s\S]*)$)/</span>;</span><br><span class="line"></span><br><span class="line"> ...省略</span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">split</span>(<span class="params">str</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> str !== <span class="string">'string'</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'str is required!'</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(str);</span><br><span class="line">  <span class="keyword">if</span> (rFrontMatter.test(str)) <span class="keyword">return</span> splitOld(str);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//post.md中默认内容 匹配rFrontMatterNew</span></span><br><span class="line">  <span class="keyword">if</span> (rFrontMatterNew.test(str)) <span class="keyword">return</span> splitNew(str);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;<span class="attr">content</span>: str&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">splitNew</span>(<span class="params">str</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'splitNew'</span>);</span><br><span class="line">  <span class="keyword">if</span> (rPrefixSep.test(str)) <span class="keyword">return</span> &#123;<span class="attr">content</span>: str&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> match = str.match(rFrontMatterNew);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">data</span>: match[<span class="number">1</span>],</span><br><span class="line">    <span class="attr">content</span>: match[<span class="number">3</span>] || <span class="string">''</span>,</span><br><span class="line">    <span class="attr">separator</span>: match[<span class="number">2</span>],</span><br><span class="line">    <span class="attr">prefixSeparator</span>: <span class="literal">false</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> frontMatter = prepareFrontMatter(_.clone(data));</span><br><span class="line"></span><br><span class="line">...省略</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">prepareFrontMatter</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line"> <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(data);</span><br><span class="line"> <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line"> <span class="keyword">var</span> item;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">   key = keys[i];</span><br><span class="line">   item = data[key];</span><br><span class="line"><span class="comment">//时间格式化</span></span><br><span class="line">   <span class="keyword">if</span> (moment.isMoment(item))&#123;</span><br><span class="line">     data[key] = item.utc().format(<span class="string">'YYYY-MM-DD HH:mm:ss'</span>);</span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (moment.isDate(item))&#123;</span><br><span class="line">     data[key] = moment.utc(item).format(<span class="string">'YYYY-MM-DD HH:mm:ss'</span>);</span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> item === <span class="string">'string'</span>)&#123;</span><br><span class="line">     data[key] = <span class="string">'"'</span> + item + <span class="string">'"'</span>;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后调用 swig模板引擎 编译splitedata对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> renderedData = swig.compile(split.data)(frontMatter);</span><br><span class="line"></span><br><span class="line"><span class="keyword">this</span>.compile = <span class="function"><span class="keyword">function</span> (<span class="params">source, options</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> key = options ? options.filename : <span class="literal">null</span>,</span><br><span class="line">      cached = key ? cacheGet(key, options) : <span class="literal">null</span>,</span><br><span class="line">      context,</span><br><span class="line">      contextLength,</span><br><span class="line">      pre;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cached) &#123;</span><br><span class="line">      <span class="keyword">return</span> cached;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    context = getLocals(options);</span><br><span class="line">    contextLength = utils.keys(context).length;</span><br><span class="line">    pre = <span class="keyword">this</span>.precompile(source, options);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">compiled</span>(<span class="params">locals</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> lcls;</span><br><span class="line">      <span class="keyword">if</span> (locals &amp;&amp; contextLength) &#123;</span><br><span class="line">        lcls = utils.extend(&#123;&#125;, context, locals);</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (locals &amp;&amp; !contextLength) &#123;</span><br><span class="line">        lcls = locals;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!locals &amp;&amp; contextLength) &#123;</span><br><span class="line">        lcls = context;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        lcls = &#123;&#125;;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> pre.tpl(self, lcls, filters, utils, efn);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    utils.extend(compiled, pre.tokens);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (key) &#123;</span><br><span class="line">      cacheSet(key, options, compiled);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> compiled;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/09/25/hexo-loadConfig/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -944,163 +1104,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/09/13/bluebird-learn/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/09/13/bluebird-learn/" class="post-title-link" itemprop="url">bluebird Promise框架学习一</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-09-13 22:17:53" itemprop="dateCreated datePublished" datetime="2016-09-13T22:17:53+08:00">2016-09-13</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:25:15" itemprop="dateModified" datetime="2019-05-09T20:25:15+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>hexo中的Promise用了bluebird提供的，比如Promise.each,Promise.all,new Promise,Promise.map 等等。</p>
-<h2 id="Promise-each"><a href="#Promise-each" class="headerlink" title="Promise.each"></a>Promise.each</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">Promise</span> = <span class="built_in">require</span>(<span class="string">'bluebird'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.each([</span><br><span class="line">    <span class="string">'update_package'</span>, <span class="comment">// Update package.json</span></span><br><span class="line">    <span class="string">'load_config'</span>, <span class="comment">// Load config</span></span><br><span class="line">    <span class="string">'load_plugins'</span> <span class="comment">// Load external plugins &amp; scripts</span></span><br><span class="line">  ], <span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(name == <span class="string">'load_config'</span>)</span><br><span class="line">     	<span class="keyword">throw</span> <span class="string">'error'</span>;</span><br><span class="line">     <span class="built_in">console</span>.log(name);<span class="comment">//会输出update_package,其余不会输出</span></span><br><span class="line">  &#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">  		<span class="built_in">console</span>.log(e);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">Promise</span> = <span class="built_in">require</span>(<span class="string">'bluebird'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> call = <span class="function"><span class="keyword">function</span>(<span class="params">name, args, callback</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!callback &amp;&amp; <span class="keyword">typeof</span> args === <span class="string">'function'</span>)&#123;</span><br><span class="line">    callback = args;</span><br><span class="line">    args = &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> c = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!c)&#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">'done'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    	<span class="comment">//进入reject</span></span><br><span class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Console `` has not been registered yet!'</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;).nodeify(callback);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"> call(<span class="string">'new'</span>, <span class="string">'2'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line"> 	<span class="built_in">console</span>.log(e);</span><br><span class="line"> 	<span class="built_in">console</span>.log(<span class="string">'callback'</span>); <span class="comment">//进入reject会调用callback</span></span><br><span class="line"> &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      	<span class="built_in">console</span>.log(<span class="string">'then'</span>);</span><br><span class="line">    &#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(err);<span class="comment">//进入reject会调用</span></span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1147,7 +1150,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">223</span>
+                    <span class="site-state-item-count">224</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
