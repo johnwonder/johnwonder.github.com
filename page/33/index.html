@@ -323,6 +323,171 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/12/22/scala-import-problem/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/12/22/scala-import-problem/" class="post-title-link" itemprop="url">scala_import_problem</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-12-22 09:27:26" itemprop="dateCreated datePublished" datetime="2016-12-22T09:27:26+08:00">2016-12-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala文件导入java包"><a href="#scala文件导入java包" class="headerlink" title="scala文件导入java包"></a>scala文件导入java包</h2><p>定义一个stringTest.java文件如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">stringTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">queryVehicleNum</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="string">"ss"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用javac命令编译此文件，在目录下会生成stringTest.class<br>此时我们并没有定义它的package,如果在同级目录下新建javaStringTest.scala文件如下：</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">object</span> testIm<span class="keyword">port</span> &#123;</span><br><span class="line"></span><br><span class="line">   def main(args: <span class="type">Array</span>[<span class="type">String</span>])&#123;</span><br><span class="line"></span><br><span class="line">     println(stringTest.queryVehicleNum())</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，此时可以直接引入stringTest类不会报错，用scala命令运行此文件会输出ss</p>
+<p>如果在目录下新建com目录，在com目录下新建test目录,把stringTest文件放入test目录，那么再执行scala testImport.scala文件就会报如下错误：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">java<span class="selector-class">.lang</span><span class="selector-class">.ClassNotFoundException</span>: stringTest</span><br><span class="line">at java<span class="selector-class">.net</span><span class="selector-class">.URLClassLoader</span><span class="selector-class">.findClass</span>(URLClassLoader<span class="selector-class">.java</span>:<span class="number">381</span>)</span><br><span class="line">at java<span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.loadClass</span>(ClassLoader<span class="selector-class">.java</span>:<span class="number">424</span>)</span><br><span class="line">at java<span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.loadClass</span>(ClassLoader<span class="selector-class">.java</span>:<span class="number">357</span>)</span><br><span class="line">at Main$.main(javaStringTest<span class="selector-class">.scala</span>:<span class="number">9</span>)</span><br><span class="line">at Main.main(javaStringTest.scala)</span><br><span class="line">at sun<span class="selector-class">.reflect</span><span class="selector-class">.NativeMethodAccessorImpl</span><span class="selector-class">.invoke0</span>(Native Method)</span><br><span class="line">at sun<span class="selector-class">.reflect</span><span class="selector-class">.NativeMethodAccessorImpl</span><span class="selector-class">.invoke</span>(NativeMethodAccessorImpl<span class="selector-class">.java</span>:<span class="number">62</span>)</span><br></pre></td></tr></table></figure>
+<p>所以此时我们要在testImport类中引入stringTest包<figure class="highlight plain"><figcaption><span>com.test.stringTest```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">但是这样我们必须先编译scala文件,```scalac javaStringTest.scala</span><br></pre></td></tr></table></figure></p>
+<p>然后我们用java命令调用生成的testImportObj <code>java -classpath .;scala-library.jar testImportObj</code></p>
+<p>或者我们也可以用<code>scala -i testImportObj.java</code>命令引入scala REPL</p>
+<p>然后我们在scala命令行输入<code>testImportObj.main(new Array[String](3))</code>也会输出ss字符串</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/11/19/scala-implicit/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -945,165 +1110,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/11/02/scala-apply/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/11/02/scala-apply/" class="post-title-link" itemprop="url">scala_apply函数</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-11-02 20:58:41" itemprop="dateCreated datePublished" datetime="2016-11-02T20:58:41+08:00">2016-11-02</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="scala-apply方法"><a href="#scala-apply方法" class="headerlink" title="scala apply方法"></a>scala apply方法</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApplyOperation</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApplyTest</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">apply</span></span>() = println(<span class="string">"I am into spark so much!"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">haveTry</span></span>: <span class="type">Unit</span> =&#123;</span><br><span class="line">		println(<span class="string">"have a try on apply"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ApplyTest</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">apply</span></span>() =&#123;</span><br><span class="line">		println(<span class="string">"I am into Scala so much"</span>)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">new</span> <span class="type">ApplyTest</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ApplyOperation</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args : <span class="type">Array</span>[<span class="type">String</span>])&#123;</span><br><span class="line">		<span class="keyword">val</span> array = <span class="type">Array</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">val</span> a = <span class="type">ApplyTest</span>()<span class="comment">// 调用object 的apply</span></span><br><span class="line"></span><br><span class="line">		a.haveTry</span><br><span class="line"></span><br><span class="line">		a() <span class="comment">// class apply use</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出<br>I am into Scala so much<br>have a try on apply<br>I am into Spark so much!!!</p>
-<p>参考<br><a href="http://blog.csdn.net/pzw_0612/article/details/48576569" target="_blank" rel="external">scala apply方法 笔记</a><br><a href="http://book.51cto.com/art/201408/449448.htm" target="_blank" rel="external">动手实战Scala中的apply方法和单例对象</a></p>
-<h2 id="scala-case-class-apply"><a href="#scala-case-class-apply" class="headerlink" title="scala case class apply"></a>scala case class apply</h2><p> Scala会给case类自动添加一个单例对象</p>
-<p> 参考<a href="http://blog.csdn.net/zxhoo/article/details/40454075" target="_blank" rel="external">探索Scala（4）– Case Classes </a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1150,7 +1156,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">224</span>
+                    <span class="site-state-item-count">225</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

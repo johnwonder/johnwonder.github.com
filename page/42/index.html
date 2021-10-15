@@ -323,6 +323,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/08/27/jquery_staticfilter/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/08/27/jquery_staticfilter/" class="post-title-link" itemprop="url">jquery之静态filter函数解析</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-08-27 21:46:59" itemprop="dateCreated datePublished" datetime="2016-08-27T21:46:59+08:00">2016-08-27</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:28:48" itemprop="dateModified" datetime="2019-05-09T20:28:48+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><h3 id="filter函数"><a href="#filter函数" class="headerlink" title="filter函数"></a>filter函数</h3><p>1.0源码:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br></pre></td><td class="code"><pre><span class="line">expr: &#123;</span><br><span class="line">	<span class="string">""</span>: <span class="string">"m[2]== '*'||a.nodeName.toUpperCase()==m[2].toUpperCase()"</span>,</span><br><span class="line">	<span class="string">"#"</span>: <span class="string">"a.getAttribute('id')&amp;&amp;a.getAttribute('id')==m[2]"</span>,</span><br><span class="line">	<span class="string">":"</span>: &#123;</span><br><span class="line">		<span class="comment">// Position Checks</span></span><br><span class="line">		lt: <span class="string">"i&lt;m[3]-0"</span>,</span><br><span class="line">		<span class="attr">gt</span>: <span class="string">"i&gt;m[3]-0"</span>,</span><br><span class="line">		<span class="attr">nth</span>: <span class="string">"m[3]-0==i"</span>,</span><br><span class="line">		<span class="attr">eq</span>: <span class="string">"m[3]-0==i"</span>,</span><br><span class="line">		<span class="attr">first</span>: <span class="string">"i==0"</span>,</span><br><span class="line">		<span class="attr">last</span>: <span class="string">"i==r.length-1"</span>,</span><br><span class="line">		<span class="attr">even</span>: <span class="string">"i%2==0"</span>,</span><br><span class="line">		<span class="attr">odd</span>: <span class="string">"i%2"</span>,</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Child Checks</span></span><br><span class="line">		<span class="string">"first-child"</span>: <span class="string">"jQuery.sibling(a,0).cur"</span>,</span><br><span class="line">		<span class="string">"last-child"</span>: <span class="string">"jQuery.sibling(a,0).last"</span>,</span><br><span class="line">		<span class="string">"only-child"</span>: <span class="string">"jQuery.sibling(a).length==1"</span>,</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Parent Checks</span></span><br><span class="line">		parent: <span class="string">"a.childNodes.length"</span>,</span><br><span class="line">		<span class="attr">empty</span>: <span class="string">"!a.childNodes.length"</span>,</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Text Check</span></span><br><span class="line">		contains: <span class="string">"(a.innerText||a.innerHTML).indexOf(m[3])&gt;=0"</span>,</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Visibility</span></span><br><span class="line">		visible: <span class="string">"a.type!='hidden'&amp;&amp;jQuery.css(a,'display')!='none'&amp;&amp;jQuery.css(a,'visibility')!='hidden'"</span>,</span><br><span class="line">		<span class="attr">hidden</span>: <span class="string">"a.type=='hidden'||jQuery.css(a,'display')=='none'||jQuery.css(a,'visibility')=='hidden'"</span>,</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Form elements</span></span><br><span class="line">		enabled: <span class="string">"!a.disabled"</span>,</span><br><span class="line">		<span class="attr">disabled</span>: <span class="string">"a.disabled"</span>,</span><br><span class="line">		<span class="attr">checked</span>: <span class="string">"a.checked"</span>,</span><br><span class="line">		<span class="attr">selected</span>: <span class="string">"a.selected"</span></span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="string">"."</span>: <span class="string">"jQuery.className.has(a,m[2])"</span>,</span><br><span class="line">	<span class="string">"@"</span>: &#123;</span><br><span class="line">		<span class="string">"="</span>: <span class="string">"z==m[4]"</span>,</span><br><span class="line">		<span class="string">"!="</span>: <span class="string">"z!=m[4]"</span>,</span><br><span class="line">		<span class="string">"^="</span>: <span class="string">"!z.indexOf(m[4])"</span>,</span><br><span class="line">		<span class="string">"$="</span>: <span class="string">"z.substr(z.length - m[4].length,m[4].length)==m[4]"</span>,</span><br><span class="line">		<span class="string">"*="</span>: <span class="string">"z.indexOf(m[4])&gt;=0"</span>,</span><br><span class="line">		<span class="string">""</span>: <span class="string">"z"</span></span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="string">"["</span>: <span class="string">"jQuery.find(m[2],a).length"</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// The regular expressions that power the parsing engine</span></span><br><span class="line"><span class="comment">//正则提供解析能力</span></span><br><span class="line">parse: [</span><br><span class="line">	<span class="comment">// Match: [@value='test'], [@foo]</span></span><br><span class="line">	[ <span class="string">"\\[ *(@)S *([!*$^=]*) *Q\\]"</span>, <span class="number">1</span> ],</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Match: [div], [div p]</span></span><br><span class="line">	[ <span class="string">"(\\[)Q\\]"</span>, <span class="number">0</span> ],</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Match: :contains('foo')  * 匹配前面的子表达式任意次。例如，zo*能匹配“z”，也能匹配“zo”以及“zoo”。</span></span><br><span class="line">	[ <span class="string">"(:)S\\(Q\\)"</span>, <span class="number">0</span> ],<span class="comment">//(:)([a-z*_-][a-z0-9_-]*)\\(*'?\"?([^'\"]*?)'?\"? *\\)</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Match: :even, :last-chlid</span></span><br><span class="line">	[ <span class="string">"([:.#]*)S"</span>, <span class="number">0</span> ]</span><br><span class="line">],</span><br><span class="line"><span class="comment">//t 一般为字符串</span></span><br><span class="line"><span class="comment">//r为 元素集合</span></span><br><span class="line">filter: <span class="function"><span class="keyword">function</span>(<span class="params">t,r,not</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// Figure out if we're doing regular, or inverse, filtering</span></span><br><span class="line">	<span class="comment">//not 为undefined的时候 not!==false返回true</span></span><br><span class="line">	<span class="comment">//所以g = jQuery.grep</span></span><br><span class="line">	<span class="comment">//grep静态函数第三个参数为true的话就返回不满足条件的新的元素</span></span><br><span class="line">	<span class="comment">//t为:not(.example)的时候就会递归调用</span></span><br><span class="line">	<span class="comment">//最终调用的是grep函数</span></span><br><span class="line">	<span class="keyword">var</span> g = not !== <span class="literal">false</span> ? jQuery.grep :</span><br><span class="line">		<span class="function"><span class="keyword">function</span>(<span class="params">a,f</span>) </span>&#123;<span class="keyword">return</span> jQuery.grep(a,f,<span class="literal">true</span>);&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//not(.example) 符合正则</span></span><br><span class="line">	<span class="keyword">while</span> ( t &amp;&amp; <span class="regexp">/^[a-z[(&#123;&lt;*:.#]/i</span>.test(t) ) &#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> p = jQuery.parse;<span class="comment">//parse数组</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; p.length; i++ ) &#123;</span><br><span class="line">			<span class="keyword">var</span> re = <span class="keyword">new</span> <span class="built_in">RegExp</span>( <span class="string">"^"</span> + p[i][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Look for a string-like sequence</span></span><br><span class="line">				.replace( <span class="string">'S'</span>, <span class="string">"([a-z*_-][a-z0-9_-]*)"</span> )</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Look for something (optionally) enclosed with quotes</span></span><br><span class="line">				.replace( <span class="string">'Q'</span>, <span class="string">" *'?\"?([^'\"]*?)'?\"? *"</span> ), <span class="string">"i"</span> );</span><br><span class="line"></span><br><span class="line">			<span class="keyword">var</span> m = re.exec( t );</span><br><span class="line"></span><br><span class="line">			<span class="comment">//:not(.example)递归调用到这</span></span><br><span class="line">			<span class="comment">//满足.example的就是[ "([:.#]*)S", 0 ]</span></span><br><span class="line">			<span class="keyword">if</span> ( m ) &#123;</span><br><span class="line">				<span class="comment">// Re-organize the match</span></span><br><span class="line">				<span class="keyword">if</span> ( p[i][<span class="number">1</span>] )<span class="comment">//Match: [@value='test'], [@foo]  p[i][1] 为1</span></span><br><span class="line">						m = [<span class="string">""</span>, m[<span class="number">1</span>], m[<span class="number">3</span>], m[<span class="number">2</span>], m[<span class="number">4</span>]];</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Remove what we just matched</span></span><br><span class="line">				t = t.replace( re, <span class="string">""</span> );<span class="comment">//一般t就为空了,所以最后就跳出while循环</span></span><br><span class="line">				<span class="comment">//.example的话 t就为空了</span></span><br><span class="line">				<span class="keyword">break</span>;<span class="comment">//这里就退出循环了</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// :not() is a special case that can be optomized by</span></span><br><span class="line">		<span class="comment">// keeping it out of the expression list</span></span><br><span class="line">		<span class="comment">//:not(.example)</span></span><br><span class="line">		<span class="comment">//m[0] = :not(.example)</span></span><br><span class="line">		<span class="comment">//m[1] = :</span></span><br><span class="line">		<span class="comment">//m[2] = not</span></span><br><span class="line">		<span class="comment">//m[3] = .example</span></span><br><span class="line">		<span class="keyword">if</span> ( m[<span class="number">1</span>] == <span class="string">":"</span> &amp;&amp; m[<span class="number">2</span>] == <span class="string">"not"</span> )</span><br><span class="line">			r = jQuery.filter(m[<span class="number">3</span>],r,<span class="literal">false</span>).r;<span class="comment">//递归下 到里面grep就是为包装grep的函数了</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// Otherwise, find the expression to execute</span></span><br><span class="line">		<span class="comment">//m[0] = .example</span></span><br><span class="line">		<span class="comment">//m[1] = .</span></span><br><span class="line">		<span class="comment">//m[2] = example</span></span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">			<span class="comment">//m[1]为.那么 在expr数组中就返回jQuery.className.has(a,m[2])</span></span><br><span class="line">			<span class="keyword">var</span> f = jQuery.expr[m[<span class="number">1</span>]];</span><br><span class="line">			<span class="keyword">if</span> ( f.constructor != <span class="built_in">String</span> )</span><br><span class="line">				f = jQuery.expr[m[<span class="number">1</span>]][m[<span class="number">2</span>]];</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Build a custom macro to enclose it</span></span><br><span class="line">			<span class="built_in">eval</span>(<span class="string">"f = function(a,i)&#123;"</span> +</span><br><span class="line">				( m[<span class="number">1</span>] == <span class="string">"@"</span> ? <span class="string">"z=jQuery.attr(a,m[3]);"</span> : <span class="string">""</span> ) +</span><br><span class="line">				<span class="string">"return "</span> + f + <span class="string">"&#125;"</span>);</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Execute it against the current filter</span></span><br><span class="line">			<span class="comment">//f 为 function(a,i)&#123;</span></span><br><span class="line">			<span class="comment">//	return jQuery.className.has(a,m[2]) //m[2] 此时为'example'</span></span><br><span class="line">			<span class="comment">//&#125;</span></span><br><span class="line">			<span class="comment">//再结合 g = function(a,f) &#123;return jQuery.grep(a,f,true);&#125;;</span></span><br><span class="line">			<span class="comment">//相当于jQuery.grep(r,f,true)</span></span><br><span class="line">			r = g( r, f );</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Return an array of filtered elements (r)</span></span><br><span class="line">	<span class="comment">// and the modified expression string (t)</span></span><br><span class="line">	<span class="keyword">return</span> &#123; <span class="attr">r</span>: r, <span class="attr">t</span>: t &#125;;</span><br><span class="line">&#125;,</span><br><span class="line"><span class="attr">className</span>: &#123;</span><br><span class="line">	<span class="attr">add</span>: <span class="function"><span class="keyword">function</span>(<span class="params">o,c</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (jQuery.className.has(o,c)) <span class="keyword">return</span>;</span><br><span class="line">		o.className += ( o.className ? <span class="string">" "</span> : <span class="string">""</span> ) + c;</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="attr">remove</span>: <span class="function"><span class="keyword">function</span>(<span class="params">o,c</span>)</span>&#123;</span><br><span class="line">		o.className = !c ? <span class="string">""</span> :</span><br><span class="line">			o.className.replace(</span><br><span class="line">				<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"(^|\\s*\\b[^-])"</span>+c+<span class="string">"($|\\b(?=[^-]))"</span>, <span class="string">"g"</span>), <span class="string">""</span>);</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="attr">has</span>: <span class="function"><span class="keyword">function</span>(<span class="params">e,a</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> ( e.className != <span class="literal">undefined</span> )</span><br><span class="line">			e = e.className;<span class="comment">//直接把e.className给e</span></span><br><span class="line">		<span class="comment">//以a开头和结束</span></span><br><span class="line">		<span class="comment">//或者a前面和后面是空格</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"(^|\\s)"</span> + a + <span class="string">"(\\s|$)"</span>).test(e);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/08/27/jquery_map/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -931,161 +1086,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2015/12/01/csharp-linq-merge/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2015/12/01/csharp-linq-merge/" class="post-title-link" itemprop="url">csharp-linqmerge</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2015-12-01 18:02:00" itemprop="dateCreated datePublished" datetime="2015-12-01T18:02:00+08:00">2015-12-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:27:05" itemprop="dateModified" datetime="2019-05-09T20:27:05+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="C-Linq合并List中的对象"><a href="#C-Linq合并List中的对象" class="headerlink" title="C# Linq合并List中的对象"></a>C# Linq合并List中的对象</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">	List&lt;Person&gt; pList = <span class="keyword">new</span> List&lt;Person&gt;();</span><br><span class="line"></span><br><span class="line">	Person person1 = <span class="keyword">new</span> Person() &#123; FirstName = <span class="string">"john"</span>, LastName = <span class="string">"wonder"</span> &#125;;</span><br><span class="line">	Person person3 = <span class="keyword">new</span> Person() &#123; FirstName = <span class="string">"john2"</span>, LastName = <span class="string">"wonder22"</span> &#125;;</span><br><span class="line">	Person person4 = <span class="keyword">new</span> Person() &#123; FirstName = <span class="string">"john2"</span>, LastName = <span class="string">"wonder2233"</span> &#125;;</span><br><span class="line"></span><br><span class="line">	pList.Add(person1);</span><br><span class="line">	pList.Add(person3);</span><br><span class="line">	pList.Add(person4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> pMergeList= pList.ToLookup(x =&gt; x.FirstName).Select(x =&gt; x.Aggregate((p1, p2) =&gt;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Person&#123;</span><br><span class="line">             FirstName = p1.FirstName,</span><br><span class="line">             LastName =  p1.LastName + <span class="string">";"</span>+ p2.LastName</span><br><span class="line">        &#125;</span><br><span class="line">    )).ToList();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> pMergeList)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">"FirstName:"</span> + item.FirstName);</span><br><span class="line">        Console.WriteLine(<span class="string">"LastName:"</span> + item.LastName);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Console.Read();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">class</span> <span class="title">Person</span></span><br><span class="line">	&#123;</span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> FirstName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> LastName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">class</span> <span class="title">PersonModel</span></span><br><span class="line">	&#123;</span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> FirstName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">	    <span class="keyword">public</span> <span class="keyword">string</span> LastNameList &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1132,7 +1132,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">224</span>
+                    <span class="site-state-item-count">225</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

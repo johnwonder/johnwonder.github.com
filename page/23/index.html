@@ -323,6 +323,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/05/29/angular-interpolate1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/05/29/angular-interpolate1/" class="post-title-link" itemprop="url">angular_interpolate1</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-05-29 15:39:05" itemprop="dateCreated datePublished" datetime="2017-05-29T15:39:05+08:00">2017-05-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="agnular-1-5-8-interpolate插值"><a href="#agnular-1-5-8-interpolate插值" class="headerlink" title="agnular 1.5.8 interpolate插值"></a>agnular 1.5.8 interpolate插值</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$InterpolateProvider</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> startSymbol = <span class="string">'&#123;&#123;'</span>;</span><br><span class="line">  <span class="keyword">var</span> endSymbol = <span class="string">'&#125;&#125;'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.startSymbol = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (value) &#123;</span><br><span class="line">      startSymbol = value;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> startSymbol;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.endSymbol = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (value) &#123;</span><br><span class="line">      endSymbol = value;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> endSymbol;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.$<span class="keyword">get</span> = ['$parse', '$exceptionHandler', '$sce', function($parse, $exceptionHandler, $sce) &#123;</span><br><span class="line">    <span class="keyword">var</span> startSymbolLength = startSymbol.length,</span><br><span class="line">        endSymbolLength = endSymbol.length,</span><br><span class="line">        escapedStartRegexp = <span class="keyword">new</span> <span class="built_in">RegExp</span>(startSymbol.replace(<span class="regexp">/./g</span>, <span class="built_in">escape</span>), <span class="string">'g'</span>),</span><br><span class="line">        escapedEndRegexp = <span class="keyword">new</span> <span class="built_in">RegExp</span>(endSymbol.replace(<span class="regexp">/./g</span>, <span class="built_in">escape</span>), <span class="string">'g'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">escape</span>(<span class="params">ch</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">'\\\\\\'</span> + ch;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//替换\&#123; \&#125; 为 &#123;&#123;&#125;&#125;</span></span><br><span class="line">    <span class="comment">//摆脱插值标记的机制，</span></span><br><span class="line">    <span class="comment">//那就是通过在嵌入标记的开始和结束符号前面加上反斜杠\，</span></span><br><span class="line">    <span class="comment">//AngularJS将会把这部分渲染为普通的部分，所以也不会被解读为为表达式或者数据绑定</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">unescapeText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> text.replace(escapedStartRegexp, startSymbol).</span><br><span class="line">        replace(escapedEndRegexp, endSymbol);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">stringify</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//undefined == null 为true</span></span><br><span class="line">      <span class="keyword">if</span> (value == <span class="literal">null</span>) &#123; <span class="comment">// null || undefined</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">switch</span> (<span class="keyword">typeof</span> value) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'string'</span>:</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'number'</span>:</span><br><span class="line">          value = <span class="string">''</span> + value;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">          value = toJson(value);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//<span class="doctag">TODO:</span> this is the same as the constantWatchDelegate in parse.js</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">constantWatchDelegate</span>(<span class="params">scope, listener, objectEquality, constantInterp</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> unwatch;</span><br><span class="line">      <span class="keyword">return</span> unwatch = scope.$watch(<span class="function"><span class="keyword">function</span> <span class="title">constantInterpolateWatch</span>(<span class="params">scope</span>) </span>&#123;</span><br><span class="line">        unwatch();</span><br><span class="line">        <span class="keyword">return</span> constantInterp(scope);</span><br><span class="line">      &#125;, listener, objectEquality);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">$interpolate</span>(<span class="params">text, mustHaveExpression, trustedContext, allOrNothing</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// Provide a quick exit and simplified result function for text with no interpolation</span></span><br><span class="line">      <span class="keyword">if</span> (!text.length || text.indexOf(startSymbol) === <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> constantInterp;<span class="comment">//常量</span></span><br><span class="line">        <span class="keyword">if</span> (!mustHaveExpression) &#123;</span><br><span class="line">          <span class="keyword">var</span> unescapedText = unescapeText(text);</span><br><span class="line">          constantInterp = valueFn(unescapedText);</span><br><span class="line">          constantInterp.exp = text;</span><br><span class="line">          constantInterp.expressions = [];</span><br><span class="line">          constantInterp.$$watchDelegate = constantWatchDelegate;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> constantInterp;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      allOrNothing = !!allOrNothing;</span><br><span class="line">      <span class="keyword">var</span> startIndex,</span><br><span class="line">          endIndex,</span><br><span class="line">          index = <span class="number">0</span>,</span><br><span class="line">          expressions = [],</span><br><span class="line">          parseFns = [],</span><br><span class="line">          textLength = text.length,</span><br><span class="line">          exp,</span><br><span class="line">          concat = [],</span><br><span class="line">          expressionPositions = [];</span><br><span class="line"></span><br><span class="line">      <span class="keyword">while</span> (index &lt; textLength) &#123;</span><br><span class="line">        <span class="keyword">if</span> (((startIndex = text.indexOf(startSymbol, index)) != <span class="number">-1</span>) &amp;&amp;</span><br><span class="line">             ((endIndex = text.indexOf(endSymbol, startIndex + startSymbolLength)) != <span class="number">-1</span>)) &#123;</span><br><span class="line">          <span class="keyword">if</span> (index !== startIndex) &#123;</span><br><span class="line">            <span class="comment">// 比如 hello &#123;&#123;name&#125;&#125;</span></span><br><span class="line">            concat.push(unescapeText(text.substring(index, startIndex)));</span><br><span class="line">          &#125;</span><br><span class="line">          exp = text.substring(startIndex + startSymbolLength, endIndex);</span><br><span class="line">          expressions.push(exp);</span><br><span class="line">          <span class="comment">//调用parseProvider</span></span><br><span class="line">          parseFns.push($parse(exp, parseStringifyInterceptor));</span><br><span class="line">          index = endIndex + endSymbolLength;</span><br><span class="line">          expressionPositions.push(concat.length);</span><br><span class="line">          concat.push(<span class="string">''</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// we did not find an interpolation, so we have to add the remainder to the separators array</span></span><br><span class="line">          <span class="keyword">if</span> (index !== textLength) &#123;</span><br><span class="line">            concat.push(unescapeText(text.substring(index)));</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Concatenating(连接) expressions makes it hard to reason about whether some combination of</span></span><br><span class="line">      <span class="comment">// concatenated values are unsafe to use and could easily lead to XSS.  By requiring that a</span></span><br><span class="line">      <span class="comment">// single expression be used for iframe[src], object[src], etc., we ensure that the value</span></span><br><span class="line">      <span class="comment">// that's used is assigned or constructed by some JS code somewhere that is more testable or</span></span><br><span class="line">      <span class="comment">// make it obvious that you bound the value to some user controlled value.  This helps reduce</span></span><br><span class="line">      <span class="comment">// the load when auditing for XSS issues.</span></span><br><span class="line">      <span class="keyword">if</span> (trustedContext &amp;&amp; concat.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">          $interpolateMinErr.throwNoconcat(text);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!mustHaveExpression || expressions.length) &#123;</span><br><span class="line">        <span class="keyword">var</span> compute = <span class="function"><span class="keyword">function</span>(<span class="params">values</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, ii = expressions.length; i &lt; ii; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (allOrNothing &amp;&amp; isUndefined(values[i])) <span class="keyword">return</span>;</span><br><span class="line">            concat[expressionPositions[i]] = values[i];</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> concat.join(<span class="string">''</span>);</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> getValue = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> trustedContext ?</span><br><span class="line">            $sce.getTrusted(trustedContext, value) :</span><br><span class="line">            $sce.valueOf(value);</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//返回interpolationFn方法</span></span><br><span class="line">        <span class="keyword">return</span> extend(<span class="function"><span class="keyword">function</span> <span class="title">interpolationFn</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">var</span> ii = expressions.length;</span><br><span class="line">            <span class="keyword">var</span> values = <span class="keyword">new</span> <span class="built_in">Array</span>(ii);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">              <span class="comment">//根据表达式来解析</span></span><br><span class="line">              <span class="keyword">for</span> (; i &lt; ii; i++) &#123;</span><br><span class="line">                values[i] = parseFns[i](context);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">return</span> compute(values);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">              $exceptionHandler($interpolateMinErr.interr(text, err));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">          &#125;, &#123;</span><br><span class="line">          <span class="comment">// all of these properties are undocumented for now</span></span><br><span class="line">          exp: text, <span class="comment">//just for compatibility with regular watchers created via $watch</span></span><br><span class="line">          expressions: expressions,</span><br><span class="line">          <span class="attr">$$watchDelegate</span>: <span class="function"><span class="keyword">function</span>(<span class="params">scope, listener</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> lastValue;</span><br><span class="line">            <span class="keyword">return</span> scope.$watchGroup(parseFns, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatcher</span>(<span class="params">values, oldValues</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">var</span> currValue = compute(values);</span><br><span class="line">              <span class="keyword">if</span> (isFunction(listener)) &#123;</span><br><span class="line">                listener.call(<span class="keyword">this</span>, currValue, values !== oldValues ? lastValue : currValue, scope);</span><br><span class="line">              &#125;</span><br><span class="line">              lastValue = currValue;</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">parseStringifyInterceptor</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          value = getValue(value);</span><br><span class="line">          <span class="keyword">return</span> allOrNothing &amp;&amp; !isDefined(value) ? value : stringify(value);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">          $exceptionHandler($interpolateMinErr.interr(text, err));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * @ngdoc method</span><br><span class="line">     * @name $interpolate#startSymbol</span><br><span class="line">     * @description</span><br><span class="line">     * Symbol to denote the start of expression in the interpolated string. Defaults to `&#123;&#123;`.</span><br><span class="line">     *</span><br><span class="line">     * Use &#123;@link ng.$interpolateProvider#startSymbol `$interpolateProvider.startSymbol`&#125; to change</span><br><span class="line">     * the symbol.</span><br><span class="line">     *</span><br><span class="line">     * @returns &#123;string&#125; start symbol.</span><br><span class="line">     */</span></span><br><span class="line">    $interpolate.startSymbol = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> startSymbol;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * @ngdoc method</span><br><span class="line">     * @name $interpolate#endSymbol</span><br><span class="line">     * @description</span><br><span class="line">     * Symbol to denote the end of expression in the interpolated string. Defaults to `&#125;&#125;`.</span><br><span class="line">     *</span><br><span class="line">     * Use &#123;@link ng.$interpolateProvider#endSymbol `$interpolateProvider.endSymbol`&#125; to change</span><br><span class="line">     * the symbol.</span><br><span class="line">     *</span><br><span class="line">     * @returns &#123;string&#125; end symbol.</span><br><span class="line">     */</span></span><br><span class="line">    $interpolate.endSymbol = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> endSymbol;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> $interpolate;</span><br><span class="line">  &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/05/27/scala-reference-function/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -943,165 +1098,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/05/05/angular-interpolate/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/05/05/angular-interpolate/" class="post-title-link" itemprop="url">angular_interpolate</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-05-05 22:44:06" itemprop="dateCreated datePublished" datetime="2017-05-05T22:44:06+08:00">2017-05-05</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="angular-插值"><a href="#angular-插值" class="headerlink" title="angular 插值"></a>angular 插值</h2><h3 id="angular-interpolate"><a href="#angular-interpolate" class="headerlink" title="angular interpolate"></a>angular interpolate</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Concatenating(连接) expressions makes it hard to reason about whether some combination of</span></span><br><span class="line"><span class="comment">// concatenated values are unsafe to use and could easily lead to XSS.  By requiring that a</span></span><br><span class="line"><span class="comment">// single expression be used for iframe[src], object[src], etc., we ensure that the value</span></span><br><span class="line"><span class="comment">// that's used is assigned or constructed by some JS code somewhere that is more testable or</span></span><br><span class="line"><span class="comment">// make it obvious that you bound the value to some user controlled value.  This helps reduce</span></span><br><span class="line"><span class="comment">// the load when auditing for XSS issues.</span></span><br><span class="line"><span class="keyword">if</span> (trustedContext &amp;&amp; concat.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    $interpolateMinErr.throwNoconcat(text);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>什么时候报错呢？</p>
-<p>像ng-src=”img/“就会报错了</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> $interpolateMinErr = angular.$interpolateMinErr = minErr(<span class="string">'$interpolate'</span>);</span><br><span class="line"><span class="comment">//https://segmentfault.com/q/1010000007677889?_ea=1423254</span></span><br><span class="line">$interpolateMinErr.throwNoconcat = <span class="function"><span class="keyword">function</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line"><span class="keyword">throw</span> $interpolateMinErr(<span class="string">'noconcat'</span>,</span><br><span class="line">    <span class="string">"Error while interpolating: &#123;0&#125;\nStrict Contextual Escaping disallows "</span> +</span><br><span class="line">    <span class="string">"interpolations that concatenate multiple expressions when a trusted value is "</span> +</span><br><span class="line">    <span class="string">"required.  See http://docs.angularjs.org/api/ng.$sce"</span>, text);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">$interpolateMinErr.interr = <span class="function"><span class="keyword">function</span>(<span class="params">text, err</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> $interpolateMinErr(<span class="string">'interr'</span>, <span class="string">"Can't interpolate: &#123;0&#125;\n&#123;1&#125;"</span>, text, err.toString());</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>参考资料：<br><a href="https://segmentfault.com/q/1010000007677889?_ea=1423254" target="_blank" rel="external">AugularJS通过服务器请求图片时总是报错 $interpolate:noconcat</a><br><a href="https://segmentfault.com/a/1190000002753321" target="_blank" rel="external">浅谈AngularJS的$interpolate服务 1</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1148,7 +1144,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">224</span>
+                    <span class="site-state-item-count">225</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

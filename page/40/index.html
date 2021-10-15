@@ -323,6 +323,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/09/04/jquery-pushstack/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/09/04/jquery-pushstack/" class="post-title-link" itemprop="url">jquery_pushstack函数分析</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-04 22:10:07" itemprop="dateCreated datePublished" datetime="2016-09-04T22:10:07+08:00">2016-09-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><h3 id="pushStack函数"><a href="#pushStack函数" class="headerlink" title="pushStack函数"></a>pushStack函数</h3><p>pushStack是个对象函数，不是静态方法，用jQuery.pushStack调用会报错，我们来看代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//实例方法保证a是数组。。。</span></span><br><span class="line">pushStack: <span class="function"><span class="keyword">function</span>(<span class="params">a,args</span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取args中的最后一个参数</span></span><br><span class="line">	<span class="keyword">var</span> fn = args &amp;&amp; args[args.length<span class="number">-1</span>];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ( !fn || fn.constructor != <span class="built_in">Function</span> ) &#123;</span><br><span class="line">		内部维护一个stack数组。用来pop 或者push</span><br><span class="line">		<span class="keyword">if</span> ( !<span class="keyword">this</span>.stack ) <span class="keyword">this</span>.stack = [];</span><br><span class="line">		<span class="keyword">this</span>.stack.push( <span class="keyword">this</span>.get() );<span class="comment">//get()把当前对象压入堆栈</span></span><br><span class="line">		<span class="comment">//jQuery.map( this, function(a)&#123; return a &#125; ) :</span></span><br><span class="line">		<span class="keyword">this</span>.get( a );</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">var</span> old = <span class="keyword">this</span>.get();<span class="comment">//里面调用map function ,返回当前jquery对象</span></span><br><span class="line">		<span class="keyword">this</span>.get( a );<span class="comment">//貌似是为了执行fn</span></span><br><span class="line">		<span class="keyword">if</span> ( fn.constructor == <span class="built_in">Function</span> )</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">this</span>.each( fn );</span><br><span class="line">		<span class="keyword">this</span>.get( old );<span class="comment">//重新返回old元素数组</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们看他关联的end函数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">end: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.get( <span class="keyword">this</span>.stack.pop() );<span class="comment">//stack 保存了元素数组,get把当前元素数组 push 到新数组，1.0还没有prevObject</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/09/03/jquery-filter-grep/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -966,161 +1122,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/08/30/csharparalle-problem/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/08/30/csharparalle-problem/" class="post-title-link" itemprop="url">csharparalle_problem</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-08-30 23:06:01" itemprop="dateCreated datePublished" datetime="2016-08-30T23:06:01+08:00">2016-08-30</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 21:05:51" itemprop="dateModified" datetime="2019-05-09T21:05:51+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span><span class="literal">[]</span> strs= <span class="keyword">new</span> <span class="built_in">string</span><span class="literal">[<span class="number">100</span>]</span>;</span><br><span class="line">           for (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">		&#123;</span><br><span class="line">               strs<span class="literal">[<span class="identifier">i</span>]</span> = DateTime.Now.<span class="constructor">Add(TimeSpan.FromDays(<span class="params">i</span>)</span>).<span class="constructor">ToString(<span class="string">"yyyy-MM-dd"</span>)</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">           <span class="built_in">string</span><span class="literal">[]</span> strs2 = <span class="keyword">new</span> <span class="built_in">string</span><span class="literal">[<span class="number">100</span>]</span>;</span><br><span class="line">           for (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">           &#123;</span><br><span class="line">               strs2<span class="literal">[<span class="identifier">i</span>]</span> = DateTime.Now.<span class="constructor">AddYears(1)</span>.<span class="constructor">Add(TimeSpan.FromDays(<span class="params">i</span>)</span>).<span class="constructor">ToString(<span class="string">"yyyy-MM-dd"</span>)</span>;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="built_in">string</span><span class="literal">[]</span> strs1 = <span class="keyword">new</span> <span class="built_in">string</span><span class="literal">[<span class="number">100</span>]</span>;</span><br><span class="line">           for (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">           &#123;</span><br><span class="line">               strs1<span class="literal">[<span class="identifier">i</span>]</span> = DateTime.Now.<span class="constructor">Add(TimeSpan.FromDays(<span class="params">i</span>)</span>).<span class="constructor">ToString(<span class="string">"HH:mm:ss"</span>)</span>;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           ConcurrentDictionary&lt;<span class="built_in">int</span>, <span class="built_in">string</span>&gt; dic = <span class="keyword">new</span> ConcurrentDictionary&lt;<span class="built_in">int</span>, <span class="built_in">string</span>&gt;<span class="literal">()</span>;</span><br><span class="line"></span><br><span class="line">           ConcurrentDictionary&lt;DateTime,List&lt;<span class="built_in">int</span>&gt;&gt; dic1 = <span class="keyword">new</span> ConcurrentDictionary&lt;DateTime,List&lt;<span class="built_in">int</span>&gt;&gt;<span class="literal">()</span>;</span><br><span class="line"></span><br><span class="line">           ParallelLoopResult result = Parallel.<span class="constructor">For(0, 10, (<span class="params">i</span>)</span> =&gt;</span><br><span class="line">           &#123;</span><br><span class="line">               dic1.<span class="constructor">AddOrUpdate(DateTime.Now.Date,(<span class="params">k</span>)</span> =&gt;</span><br><span class="line">               &#123;</span><br><span class="line">                   <span class="comment">// Thread.Sleep(1000);</span></span><br><span class="line">                   List&lt;<span class="built_in">int</span>&gt; newList = <span class="keyword">new</span> List&lt;<span class="built_in">int</span>&gt;<span class="literal">()</span>;</span><br><span class="line">                   newList.<span class="constructor">Add(<span class="params">i</span>)</span>;</span><br><span class="line">                   foreach (var item <span class="keyword">in</span> newList)</span><br><span class="line">                   &#123;</span><br><span class="line">                       Console.<span class="constructor">WriteLine(<span class="string">"init add :"</span> + <span class="params">item</span> + <span class="string">" "</span> + DateTime.Now.ToString(<span class="string">"HH:mm:ss fff"</span>)</span>);</span><br><span class="line">                   &#125;</span><br><span class="line">                   return newList;</span><br><span class="line">               &#125;,<span class="function"> (<span class="params">k</span>, <span class="params">v</span>) =&gt;</span></span><br><span class="line">               &#123;</span><br><span class="line">                   <span class="comment">//Console.WriteLine("Task:update index:" + i + ":" + v + " to " + strs[i]);</span></span><br><span class="line">                   <span class="comment">// Thread.Sleep(1000);</span></span><br><span class="line">                   v.<span class="constructor">Add(<span class="params">i</span>)</span>;</span><br><span class="line">                   Console.<span class="constructor">WriteLine(<span class="string">"init update : "</span> + DateTime.Now.ToString(<span class="string">"HH:mm:ss fff"</span>)</span>);</span><br><span class="line">                   return v;</span><br><span class="line">               &#125;);</span><br><span class="line"></span><br><span class="line">               List&lt;<span class="built_in">int</span>&gt; countList = null;</span><br><span class="line">               <span class="keyword">if</span> (dic1.<span class="constructor">TryRemove(DateTime.Now.Date, <span class="params">out</span> <span class="params">countList</span>)</span><span class="operator"> &amp;&amp; </span>countList.Count &gt;= <span class="number">2</span>)</span><br><span class="line">               &#123;</span><br><span class="line">               	<span class="comment">//这边会报集合已修改，无法进行遍历，看来countList线程共享？</span></span><br><span class="line"></span><br><span class="line">                 <span class="comment">//因为上面有可能会有其他线程的update操作</span></span><br><span class="line">                  foreach (var item <span class="keyword">in</span> countList)</span><br><span class="line">                   &#123;</span><br><span class="line">                       Console.<span class="constructor">WriteLine(<span class="string">"removed :"</span> + <span class="string">" "</span> + DateTime.Now.ToString(<span class="string">"HH:mm:ss fff"</span>)</span>);</span><br><span class="line">                  &#125;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span><span class="function"> (<span class="params">countList != null)</span></span><br><span class="line">               &#123;</span><br><span class="line">                   <span class="params">dic1.AddOrUpdate(DateTime.Now.Date,</span> (<span class="params">k)</span> =&gt;</span></span><br><span class="line">                   &#123;</span><br><span class="line">                       <span class="comment">// Thread.Sleep(1000);</span></span><br><span class="line">                       foreach (var item <span class="keyword">in</span> countList)</span><br><span class="line">                       &#123;</span><br><span class="line">                           Console.<span class="constructor">WriteLine(<span class="string">"also add : "</span>+ DateTime.Now.ToString(<span class="string">"HH:mm:ss fff"</span>)</span>);</span><br><span class="line">                       &#125;</span><br><span class="line">                       return countList;</span><br><span class="line">                   &#125;,<span class="function"> (<span class="params">k</span>, <span class="params">v</span>) =&gt;</span></span><br><span class="line">                   &#123;</span><br><span class="line">                       <span class="comment">//Console.WriteLine("Task:update index:" + i + ":" + v + " to " + strs[i]);</span></span><br><span class="line">                       <span class="comment">// Thread.Sleep(1000);</span></span><br><span class="line">                       v.<span class="constructor">AddRange(<span class="params">countList</span>)</span>;</span><br><span class="line"></span><br><span class="line">                       foreach (var item <span class="keyword">in</span> v)</span><br><span class="line">                       &#123;</span><br><span class="line">                           Console.<span class="constructor">WriteLine(<span class="string">"update : "</span> + DateTime.Now.ToString(<span class="string">"HH:mm:ss fff"</span>)</span>);</span><br><span class="line">                       &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                       return v;</span><br><span class="line">                   &#125;);</span><br><span class="line">               &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">           &#125;);</span><br><span class="line"></span><br><span class="line">           <span class="comment">//while (!result.IsCompleted)</span></span><br><span class="line">           <span class="comment">//&#123;</span></span><br><span class="line"></span><br><span class="line">           <span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line">           <span class="comment">//foreach (var item in dic1)</span></span><br><span class="line">           <span class="comment">//&#123;</span></span><br><span class="line">           <span class="comment">//    List&lt;int&gt; intList = item.Value;</span></span><br><span class="line">           <span class="comment">//    for (int i = 0; i &lt; intList.Count; i++)</span></span><br><span class="line">           <span class="comment">//    &#123;</span></span><br><span class="line">           <span class="comment">//        Console.WriteLine(intList[i]);</span></span><br><span class="line">           <span class="comment">//    &#125;</span></span><br><span class="line"></span><br><span class="line">           <span class="comment">//&#125;</span></span><br><span class="line">           Console.<span class="constructor">Read()</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">          Task task0 = Task.<span class="constructor">Run(()</span> =&gt;</span><br><span class="line"></span><br><span class="line">          &#123;</span><br><span class="line">              for (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">               &#123;</span><br><span class="line">                   dic.<span class="constructor">AddOrUpdate(<span class="params">i</span>, (<span class="params">k</span>)</span> =&gt;&#123;</span><br><span class="line">                      <span class="comment">// Thread.Sleep(1000);</span></span><br><span class="line">                       Console.<span class="constructor">WriteLine(<span class="string">"Task:add:"</span> +<span class="string">" index:"</span>+<span class="params">i</span>+<span class="string">" "</span>+ <span class="params">strs</span>[<span class="params">i</span>])</span>;</span><br><span class="line">                       return strs<span class="literal">[<span class="identifier">i</span>]</span>;</span><br><span class="line"></span><br><span class="line">                   &#125;,<span class="function"> (<span class="params">k</span>, <span class="params">v</span>) =&gt;</span></span><br><span class="line">                   &#123;</span><br><span class="line">                       Console.<span class="constructor">WriteLine(<span class="string">"Task:update index:"</span>+<span class="params">i</span>+<span class="string">":"</span>+ <span class="params">v</span> + <span class="string">" to "</span> + <span class="params">strs</span>[<span class="params">i</span>])</span>;</span><br><span class="line">                      <span class="comment">// Thread.Sleep(1000);</span></span><br><span class="line">                       return strs<span class="literal">[<span class="identifier">i</span>]</span>;</span><br><span class="line">                   &#125;);</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;);</span><br><span class="line"></span><br><span class="line">          <span class="comment">//task0.Start();</span></span><br><span class="line"></span><br><span class="line">          Task task1 = Task.<span class="constructor">Run(()</span> =&gt;</span><br><span class="line">           &#123;</span><br><span class="line">               for (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">               &#123;</span><br><span class="line">                   <span class="built_in">string</span> outValue ;</span><br><span class="line">                   dic.<span class="constructor">TryRemove(<span class="params">i</span>, <span class="params">out</span> <span class="params">outValue</span>)</span>;</span><br><span class="line">                   <span class="keyword">if</span> (!<span class="built_in">string</span>.<span class="constructor">IsNullOrEmpty(<span class="params">outValue</span>)</span>)</span><br><span class="line">                   &#123;</span><br><span class="line">                       Console.<span class="constructor">WriteLine(<span class="string">"Task1:remove:"</span> + <span class="string">" index:"</span> + <span class="params">i</span> + <span class="string">" "</span> + <span class="params">outValue</span>)</span>;</span><br><span class="line">                       dic.<span class="constructor">AddOrUpdate(<span class="params">i</span>, (<span class="params">k</span>)</span> =&gt;</span><br><span class="line">                       &#123;</span><br><span class="line">                          <span class="comment">// Thread.Sleep(1000);</span></span><br><span class="line">                           Console.<span class="constructor">WriteLine(<span class="string">"Task1:add:"</span> + <span class="string">" index:"</span> + <span class="params">i</span> + <span class="string">" "</span> + <span class="params">strs1</span>[<span class="params">i</span>])</span>;</span><br><span class="line">                           return strs1<span class="literal">[<span class="identifier">i</span>]</span>;</span><br><span class="line"></span><br><span class="line">                       &#125;,<span class="function"> (<span class="params">k</span>, <span class="params">v</span>) =&gt;</span></span><br><span class="line">                       &#123;</span><br><span class="line">                           Console.<span class="constructor">WriteLine(<span class="string">"Task1:update index:"</span> + <span class="params">i</span> + <span class="string">":"</span> + <span class="params">v</span> + <span class="string">" to "</span> + <span class="params">strs1</span>[<span class="params">i</span>])</span>;</span><br><span class="line">                           <span class="comment">//Thread.Sleep(1000);</span></span><br><span class="line">                           return strs1<span class="literal">[<span class="identifier">i</span>]</span>;</span><br><span class="line">                       &#125;);</span><br><span class="line">                   &#125;</span><br><span class="line">                   <span class="keyword">else</span></span><br><span class="line">                   &#123;</span><br><span class="line">                       Console.<span class="constructor">WriteLine(<span class="string">"Task1:remove:"</span> + <span class="string">" index:"</span> + <span class="params">i</span> + <span class="string">" empty"</span>)</span>;</span><br><span class="line">                   &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">               &#125;</span><br><span class="line">           &#125;);</span><br><span class="line"></span><br><span class="line">          Task task2 = Task.<span class="constructor">Run(()</span> =&gt;</span><br><span class="line">          &#123;</span><br><span class="line">              for (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">              &#123;</span><br><span class="line">                  dic.<span class="constructor">AddOrUpdate(<span class="params">i</span>, (<span class="params">k</span>)</span> =&gt;</span><br><span class="line">                  &#123;</span><br><span class="line">                      <span class="comment">// Thread.Sleep(1000);</span></span><br><span class="line">                      Console.<span class="constructor">WriteLine(<span class="string">"Task2:add:"</span> + <span class="string">" index:"</span> + <span class="params">i</span> + <span class="string">" "</span> + <span class="params">strs2</span>[<span class="params">i</span>])</span>;</span><br><span class="line">                      return strs2<span class="literal">[<span class="identifier">i</span>]</span>;</span><br><span class="line"></span><br><span class="line">                  &#125;,<span class="function"> (<span class="params">k</span>, <span class="params">v</span>) =&gt;</span></span><br><span class="line">                  &#123;</span><br><span class="line">                      Console.<span class="constructor">WriteLine(<span class="string">"Task2:update index:"</span> + <span class="params">i</span> + <span class="string">":"</span> + <span class="params">v</span> + <span class="string">" to "</span> + <span class="params">strs2</span>[<span class="params">i</span>])</span>;</span><br><span class="line">                      <span class="comment">// Thread.Sleep(1000);</span></span><br><span class="line">                      return strs2<span class="literal">[<span class="identifier">i</span>]</span>;</span><br><span class="line">                  &#125;);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;);</span><br><span class="line"></span><br><span class="line">          Task.<span class="constructor">WaitAll()</span>;</span><br><span class="line">          <span class="comment">//https://msdn.microsoft.com/zh-cn/library/dd997369.aspx</span></span><br><span class="line">         <span class="comment">// task1.Start();</span></span><br><span class="line">           Console.<span class="constructor">Read()</span>;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1167,7 +1168,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">224</span>
+                    <span class="site-state-item-count">225</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
