@@ -323,6 +323,461 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/05/08/spring-cloud-ribbon/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/08/spring-cloud-ribbon/" class="post-title-link" itemprop="url">SpringCloud Ribbon知识点</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-08 18:02:04" itemprop="dateCreated datePublished" datetime="2019-05-08T18:02:04+08:00">2019-05-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-30 20:43:17" itemprop="dateModified" datetime="2019-05-30T20:43:17+08:00">2019-05-30</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Feign<br>Spring Cloud Netflix 的微服务都是以 HTTP 接口的形式暴露的，所以可以用 Apache 的 HttpClient 或 Spring 的 RestTemplate 去調用</p>
+<p>而 Feign 是一個使用起來更加方便的 HTTP 客戶端，它用起來就好像調用本地方法一樣，完全感覺不到是調用的遠程方法</p>
+<p>总结起来就是：发布到注册中心的服务方接口，是 HTTP 的，也可以不用 Ribbon 或者 Feign，直接浏览器一样能够访问</p>
+<p>只不过 Ribbon 或者 Feign 调用起来要方便一些，最重要的是：它俩都支持软负载均衡</p>
+<p>注意：spring-cloud-starter-feign 里面已经包含了 spring-cloud-starter-ribbon（Feign 中也使用了 Ribbon）</p>
+<p>如何理解客户端Ribbon<br>zuul也有负载均衡的功能，它是针对外部请求做负载，那客户端ribbon的负载均衡又是怎么一回事？</p>
+<p>客户端ribbon的负载均衡，解决的是服务发起方（在Eureka注册的服务）对被调用的服务的负载，比如我们查询商品服务要调用显示库存和商品明细服务，通过商品服务的接口将两个服务组合，可以减少外部应用的请求，比如手机App发起一次请求即可，可以节省网络带宽，也更省电。</p>
+<p>ribbon是对服务之间调用做负载，是服务之间的负载均衡，zuul是可以对外部请求做负载均衡</p>
+<p><a href="https://www.cnblogs.com/liferecord/p/6893786.html" target="_blank" rel="external">Spring Cloud 客服端负载均衡 Ribbon</a><br><a href="https://blog.csdn.net/q_0718/article/details/80269864" target="_blank" rel="external">SpringCloud系列之服务消费Ribbon和Feign区别</a><br><a href="https://blog.csdn.net/taiyangdao/article/details/81359394" target="_blank" rel="external">Spring Cloud OpenFeign详解</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/05/08/spring-cloud-alibaba/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/08/spring-cloud-alibaba/" class="post-title-link" itemprop="url">Spring Cloud Alibaba 知识点</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-08 17:43:12 / 修改时间：22:37:18" itemprop="dateCreated datePublished" datetime="2019-05-08T17:43:12+08:00">2019-05-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>组件<br>Sentinel：把流量作为切入点，从流量控制、熔断降级、系统负载保护等多个维度保护服务的稳定性。<br>Nacos：一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。<br>RocketMQ：一款开源的分布式消息系统，基于高可用分布式集群技术，提供低延时的、高可靠的消息发布与订阅服务。<br>Dubbo：Apache Dubbo™ (incubating) 是一款高性能 Java RPC 框架。<br>Seata：阿里巴巴开源产品，一个易于使用的高性能微服务分布式事务解决方案。<br>Alibaba Cloud ACM：一款在分布式架构环境中对应用配置进行集中管理和推送的应用配置中心产品。<br>Alibaba Cloud OSS: 阿里云对象存储服务（Object Storage Service，简称 OSS），是阿里云提供的海量、安全、低成本、高可靠的云存储服务。您可以在任何应用、任何时间、任何地点存储和访问任意类型的数据。<br>Alibaba Cloud SchedulerX: 阿里中间件团队开发的一款分布式任务调度产品，提供秒级、精准、高可靠、高可用的定时（基于 Cron 表达式）任务调度服务。<br>Alibaba Cloud SMS: 覆盖全球的短信服务，友好、高效、智能的互联化通讯能力，帮助企业迅速搭建客户触达通道</p>
+<p><a href="https://www.cnblogs.com/zuoxiaolong/p/sca1.html#top" target="_blank" rel="external">微服务领域是不是要变天了？Spring Cloud Alibaba正式入驻Spring Cloud官方孵化器</a><br><a href="https://github.com/spring-cloud-incubator/spring-cloud-alibaba/blob/master/README-zh.md" target="_blank" rel="external">spring-cloud-alibaba</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/05/08/cache-knownpoints/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/08/cache-knownpoints/" class="post-title-link" itemprop="url">缓存知识点整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-08 16:50:16 / 修改时间：20:26:59" itemprop="dateCreated datePublished" datetime="2019-05-08T16:50:16+08:00">2019-05-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>缓存穿透</p>
+<p>一般的缓存系统，都是按照key去缓存查询，如果不存在对应的value，就应该去后端系统查找（比如DB）。一些恶意的请求会故意查询不存在的key,请求量很大，就会对后端系统造成很大的压力。这就叫做缓存穿透。</p>
+<p>如何避免？<br>1：对查询结果为空的情况也进行缓存，缓存时间设置短一点，或者该key对应的数据insert了之后清理缓存。<br>2：对一定不存在的key进行过滤。可以把所有的可能存在的key放到一个大的Bitmap中，查询时通过该bitmap过滤。</p>
+<p>缓存雪崩<br>当缓存服务器重启或者大量缓存集中在某一个时间段失效，这样在失效的时候，会给后端系统带来很大压力。导致系统崩溃。</p>
+<p>如何避免？<br>1：在缓存失效后，通过加锁或者队列来控制读数据库写缓存的线程数量。比如对某个key只允许一个线程查询数据和写缓存，其他线程等待。<br>2：做二级缓存，A1为原始缓存，A2为拷贝缓存，A1失效时，可以访问A2，A1缓存失效时间设置为短期，A2设置为长期<br>3：不同的key，设置不同的过期时间，让缓存失效的时间点尽量均匀。</p>
+<p><a href="https://www.cnblogs.com/jasontec/p/9699242.html" target="_blank" rel="external">Redis常见面试题</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/05/08/redis-knownpoints1/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -616,519 +1071,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/05/05/KnowPoints/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/05/KnowPoints/" class="post-title-link" itemprop="url">知识点整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-05 10:09:15" itemprop="dateCreated datePublished" datetime="2019-05-05T10:09:15+08:00">2019-05-05</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-08 22:37:04" itemprop="dateModified" datetime="2019-05-08T22:37:04+08:00">2019-05-08</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.常用设计模式<br>2.spring cloud ribbon 熟悉<br>3.springboot 和 spring cloud 的区别 spring cloud 依赖于springboot<br>4.springboot 必须的配置 – 端口<br>5.算法– 100以内素数的数组<br>6.算法– 斐波数列的函数表达式<br>7.jvm gc相关 //<a href="https://www.cnblogs.com/wjtaigwh/p/6635484.html" target="_blank" rel="external">https://www.cnblogs.com/wjtaigwh/p/6635484.html</a><br>8.jvm为什么能跨平台 //不能编译成机器语言，因为那样就与平台相关了，编译为中间语言，再由解释器二次编译，解释执行。//<a href="https://www.cnblogs.com/roger-yu/p/5827452.html" target="_blank" rel="external">https://www.cnblogs.com/roger-yu/p/5827452.html</a><br>9.scala和java的区别<br>10.tcp三次握手<br>11.restful接口<br>12.mysql innodb 和maridb的区别 //<a href="https://blog.csdn.net/qq_27607965/article/details/79925288" target="_blank" rel="external">https://blog.csdn.net/qq_27607965/article/details/79925288</a></p>
-<p>13.string stringbuffer 和 stringbuilder的区别 //<a href="https://www.cnblogs.com/su-feng/p/6659064.html" target="_blank" rel="external">https://www.cnblogs.com/su-feng/p/6659064.html</a></p>
-<p>14.java反射常用类 classloader //<a href="https://www.cnblogs.com/jimoer/p/9185662.html" target="_blank" rel="external">https://www.cnblogs.com/jimoer/p/9185662.html</a><br>//<a href="http://blog.itpub.net/31561269/viewspace-2222522/" target="_blank" rel="external">http://blog.itpub.net/31561269/viewspace-2222522/</a><br>//<a href="https://www.cnblogs.com/doit8791/p/5820037.html" target="_blank" rel="external">https://www.cnblogs.com/doit8791/p/5820037.html</a><br>//<a href="https://www.cnblogs.com/sun1993/p/7828535.html" target="_blank" rel="external">https://www.cnblogs.com/sun1993/p/7828535.html</a><br>//<a href="https://www.cnblogs.com/zabulon/p/5826610.html" target="_blank" rel="external">https://www.cnblogs.com/zabulon/p/5826610.html</a></p>
-<p>15.spring mvc 路由机制</p>
-<p>16.Aop<br><a href="https://blog.csdn.net/dadiyang/article/details/82920139" target="_blank" rel="external">https://blog.csdn.net/dadiyang/article/details/82920139</a></p>
-<p>17.Spring Security<br><a href="https://blog.csdn.net/liushangzaibeijing/article/details/81220610#%C2%A0%202%E3%80%81WebSecurityConfiguration%E7%B1%BB" target="_blank" rel="external">https://blog.csdn.net/liushangzaibeijing/article/details/81220610#%C2%A0%202%E3%80%81WebSecurityConfiguration%E7%B1%BB</a></p>
-<p><a href="https://www.liangzl.com/get-article-detail-7915.html" target="_blank" rel="external">https://www.liangzl.com/get-article-detail-7915.html</a><br><a href="https://www.jianshu.com/nb/29347401" target="_blank" rel="external">https://www.jianshu.com/nb/29347401</a></p>
-<p>18.MQ</p>
-<p>19.除了ip白名单，还有其他拦截机制吗<br>20.分布式任务调度<br>21.缓存穿透和缓存雪崩<br><a href="https://www.cnblogs.com/jasontec/p/9699242.html" target="_blank" rel="external">https://www.cnblogs.com/jasontec/p/9699242.html</a></p>
-<p>22.dubbo 没有注册中心 也可以访问吗<br><a href="https://blog.csdn.net/weixin_43170586/article/details/83244562" target="_blank" rel="external">https://blog.csdn.net/weixin_43170586/article/details/83244562</a><br><a href="https://blog.csdn.net/xy3233/article/details/85759649" target="_blank" rel="external">https://blog.csdn.net/xy3233/article/details/85759649</a><br><a href="https://blog.csdn.net/sosozha/article/details/86712478" target="_blank" rel="external">https://blog.csdn.net/sosozha/article/details/86712478</a></p>
-<p>23、Dubbo与注册中心Zookeeper的交互过程<br><a href="https://blog.csdn.net/qq_27529917/article/details/80632078" target="_blank" rel="external">https://blog.csdn.net/qq_27529917/article/details/80632078</a></p>
-<p>24.Spring cloud Feign<br><a href="https://www.cnblogs.com/liferecord/p/6893786.html" target="_blank" rel="external">https://www.cnblogs.com/liferecord/p/6893786.html</a><br><a href="https://blog.csdn.net/q_0718/article/details/80269864" target="_blank" rel="external">https://blog.csdn.net/q_0718/article/details/80269864</a></p>
-<p>25.jdk 1.8 的主要特性<br><a href="https://blog.csdn.net/qq_29411737/article/details/80835658" target="_blank" rel="external">https://blog.csdn.net/qq_29411737/article/details/80835658</a></p>
-<p>26.幂等性<br>//<a href="https://www.cnblogs.com/javalyy/p/8882144.html" target="_blank" rel="external">https://www.cnblogs.com/javalyy/p/8882144.html</a><br>27.spring事务 参数<br>28.redis锁<br>29.jvm调优 为什么设置256m就够了<br>//<a href="https://blog.csdn.net/tpasta/article/details/82120974" target="_blank" rel="external">https://blog.csdn.net/tpasta/article/details/82120974</a><br>JVM参数中添加GC日志，GC日志中会记录每次FullGC之后各代的内存大小，观察老年代GC之后的空间大小。可观察一段时间内（比如2天）的FullGC之后的内存情况，根据多次的FullGC之后的老年代的空间大小数据来预估FullGC之后老年代的存活对象大小（可根据多次FullGC之后的内存大小取平均值）</p>
-<p>30.策略模式是怎样的<br>//<a href="http://baijiahao.baidu.com/s?id=1601547440739500969&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">http://baijiahao.baidu.com/s?id=1601547440739500969&amp;wfr=spider&amp;for=pc</a><br>封装变化的概念。<br>编程中使用接口，而不是使用的是具体的实现类(面向接口编程)。</p>
-<p>31.什么情况下会出现内存溢出<br>//<a href="https://www.cnblogs.com/panxuejun/p/5883044.html" target="_blank" rel="external">https://www.cnblogs.com/panxuejun/p/5883044.html</a><br>32.乐观锁和悲观锁 //乐观锁与悲观锁不是指具体的什么类型的锁，而是指看待并发同步的角度。<br>//<a href="https://www.cnblogs.com/lxmyhappy/p/7380073.html" target="_blank" rel="external">https://www.cnblogs.com/lxmyhappy/p/7380073.html</a><br>33.如何保证一致性<br>//<a href="https://blog.csdn.net/hxpjava1/article/details/79409459" target="_blank" rel="external">https://blog.csdn.net/hxpjava1/article/details/79409459</a><br>//<a href="https://blog.csdn.net/qq_41568597/article/details/82501738" target="_blank" rel="external">https://blog.csdn.net/qq_41568597/article/details/82501738</a><br>34.java有哪些锁<br>//<a href="https://www.cnblogs.com/lxmyhappy/p/7380073.html" target="_blank" rel="external">https://www.cnblogs.com/lxmyhappy/p/7380073.html</a></p>
-<p>35.spring ioc bean 的生命周期<br>//<a href="https://www.cnblogs.com/goodcheap/p/6491490.html" target="_blank" rel="external">https://www.cnblogs.com/goodcheap/p/6491490.html</a><br>36.代码规范<br>37.消耗cpu的操作<br>//<a href="https://www.cnblogs.com/duanxz/p/4159963.html" target="_blank" rel="external">https://www.cnblogs.com/duanxz/p/4159963.html</a><br>//<a href="https://www.cnblogs.com/paul8339/p/7464206.html" target="_blank" rel="external">https://www.cnblogs.com/paul8339/p/7464206.html</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/03/12/angular-run-flow/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/03/12/angular-run-flow/" class="post-title-link" itemprop="url">angular源码分析之运行流程</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-03-12 15:03:12" itemprop="dateCreated datePublished" datetime="2019-03-12T15:03:12+08:00">2019-03-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-07-06 14:32:02" itemprop="dateModified" datetime="2019-07-06T14:32:02+08:00">2019-07-06</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>梳理下angular的运行流程：</p>
-<p>JQLitePrototype.ready</p>
-<p>JQLite.on<br>此处涉及到expandoStore 的问题<br>on里面主要是addHandler 放到eventFns里</p>
-<p>等到onload后 再调用</p>
-<p>angularInit<br>bootstrap<br>doBootstrap<br>createInjector<br>injectionArgs<br>invoke -&gt; $RootScopeProvider</p>
-<p>以表达式 文本插值来梳理：</p>
-<p>collectDirectives -&gt; addTextInterpolateDirective -&gt; $interpolate</p>
-<p>$interpolate函数中调用parse函数，parse函数里<br>addInterceptor(parsedExpression, interceptorFn)<br>parsedExpression 为解析后的表达式，interceptorFn 为 parseStringifyInterceptor</p>
-<p>parsedExpression外面再封装一层 regularInterceptedExpression函数</p>
-<p>regularInterceptedExpression函数的watchDelegate 为inputsWatchDelegate。</p>
-<p>$interpolate函数返回的 interpolateFn实际是 调用 extend函数过后的函数：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回interpolationFn方法</span></span><br><span class="line">        <span class="keyword">return</span> extend(<span class="function"><span class="keyword">function</span> <span class="title">interpolationFn</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">var</span> ii = expressions.length;</span><br><span class="line">            <span class="keyword">var</span> values = <span class="keyword">new</span> <span class="built_in">Array</span>(ii);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">              <span class="comment">//根据表达式来解析</span></span><br><span class="line">              <span class="keyword">for</span> (; i &lt; ii; i++) &#123;</span><br><span class="line">                <span class="comment">//调用parseFns得到value</span></span><br><span class="line">                values[i] = parseFns[i](context);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">return</span> compute(values);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">              $exceptionHandler($interpolateMinErr.interr(text, err));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">          &#125;, &#123;</span><br><span class="line">          <span class="comment">// all of these properties are undocumented for now</span></span><br><span class="line">          exp: text, <span class="comment">//just for compatibility with regular watchers created via $watch</span></span><br><span class="line">          expressions: expressions,</span><br><span class="line">          <span class="attr">$$watchDelegate</span>: <span class="function"><span class="keyword">function</span>(<span class="params">scope, listener</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> lastValue;</span><br><span class="line">            <span class="keyword">return</span> scope.$watchGroup(parseFns, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatcher</span>(<span class="params">values, oldValues</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">var</span> currValue = compute(values);</span><br><span class="line">              <span class="keyword">if</span> (isFunction(listener)) &#123;</span><br><span class="line">                listener.call(<span class="keyword">this</span>, currValue, values !== oldValues ? lastValue : currValue, scope);</span><br><span class="line">              &#125;</span><br><span class="line">              lastValue = currValue;</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
-<p>所以此时的调用文本指令的时候，此时scope已经为childScope:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scope.$watch(interpolateFn, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatchAction</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">             node[<span class="number">0</span>].nodeValue = value;</span><br><span class="line">           &#125;);</span><br></pre></td></tr></table></figure>
-<p>这里的interpolateFn 就是上面的function interpolationFn(context) 函数，</p>
-<p>因为带有watchDelegate,所以直接调用watchDelegate返回:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果被解析过后的watch函数有watch的代理那就返回这个代理watch函数</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//会创建一个watcher</span></span><br><span class="line"><span class="comment">//watcher里放入listener(类似spring里的监听器)</span></span><br><span class="line"><span class="comment">//数据变化时会触发listener</span></span><br><span class="line">$watch: <span class="function"><span class="keyword">function</span>(<span class="params">watchExp, listener, objectEquality, prettyPrintExpression</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">get</span> = $parse(watchExp);//watchExp为函数时直接返回watchExp</span><br><span class="line"></span><br><span class="line">        if (<span class="keyword">get</span>.$$watchDelegate) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">get</span>.$$watchDelegate(this, listener, objectEquality, <span class="keyword">get</span>, watchExp);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
-<p>从而进入<br>scope.$watchGroup :</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$watchGroup</span>: <span class="title">function</span>(<span class="params">watchExpressions, listener</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (watchExpressions.length === <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="comment">// Special case size of one</span></span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">this</span>.$watch(watchExpressions[<span class="number">0</span>], <span class="function"><span class="keyword">function</span> <span class="title">watchGroupAction</span>(<span class="params">value, oldValue, scope</span>) </span>&#123;</span><br><span class="line">            newValues[<span class="number">0</span>] = value;</span><br><span class="line">            oldValues[<span class="number">0</span>] = oldValue;</span><br><span class="line">            listener(newValues, (value === oldValue) ? newValues : oldValues, scope);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此时watchExpressions就是 parseFns ，那继续进入watch,那此时的watchDelegate就是</p>
-<p>inputsWatchDelegate。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inputsWatchDelegate</span>(<span class="params">scope, listener, objectEquality, parsedExpression, prettyPrintExpression</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">var</span> inputExpressions = parsedExpression.inputs;</span><br><span class="line">   <span class="keyword">var</span> lastResult;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> (inputExpressions.length === <span class="number">1</span>) &#123;</span><br><span class="line">     <span class="keyword">var</span> oldInputValueOf = expressionInputDirtyCheck; <span class="comment">// init to something unique so that equals check fails</span></span><br><span class="line">     inputExpressions = inputExpressions[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">return</span> scope.$watch(<span class="function"><span class="keyword">function</span> <span class="title">expressionInputWatch</span>(<span class="params">scope</span>) </span>&#123;</span><br><span class="line">       <span class="keyword">var</span> newInputValue = inputExpressions(scope);</span><br><span class="line">       <span class="keyword">if</span> (!expressionInputDirtyCheck(newInputValue, oldInputValueOf)) &#123;</span><br><span class="line">         lastResult = parsedExpression(scope, <span class="literal">undefined</span>, <span class="literal">undefined</span>, [newInputValue]);</span><br><span class="line">         oldInputValueOf = newInputValue &amp;&amp; getValueOf(newInputValue);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> lastResult;</span><br><span class="line">     &#125;, listener, objectEquality, prettyPrintExpression);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>实际这个插值的watchers就只有一个，就是这个expressionInputWatch</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/01/07/scala-caseclass-apply/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/01/07/scala-caseclass-apply/" class="post-title-link" itemprop="url">scala中caseclass自定义的apply方法</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-01-07 10:17:38" itemprop="dateCreated datePublished" datetime="2019-01-07T10:17:38+08:00">2019-01-07</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天在看scalaj-http源码的时候，看到了case class 里定义了apply函数，这个函数在初始化的</p>
-<p>时候并不调用，需要再次初始化下才调用这个apply函数，源码定义如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">case</span> class <span class="title">StringBodyConnectFunc</span><span class="params">(data: String)</span> extends Function2[HttpRequest, HttpURLConnection, Unit] </span>&#123;</span><br><span class="line">  <span class="comment">//apply函数在第一次初始化的时候不会调用</span></span><br><span class="line"><span class="function">def <span class="title">apply</span><span class="params">(req: HttpRequest, conn: HttpURLConnection)</span>: Unit </span>= &#123;</span><br><span class="line">  conn.setDoOutput(<span class="keyword">true</span>)</span><br><span class="line">  conn.connect</span><br><span class="line">  conn.getOutputStream.write(data.getBytes(req.charset))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">override def toString = <span class="string">"StringBodyConnectFunc("</span> + data + <span class="string">")"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>关于这个我们可以自己测试下，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">case</span> class <span class="title">caseclass1</span><span class="params">(x:Int,y:String)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// def apply() = &#123;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 	println(x)</span></span><br><span class="line">	<span class="comment">// 	println("case apply")</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	<span class="function">def <span class="title">apply</span><span class="params">()</span> </span>= &#123;</span><br><span class="line"></span><br><span class="line">		caseclass1(<span class="number">5</span>,<span class="string">"3"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义两个apply会报错  error: method apply is defined twice</span></span><br><span class="line">object caseclass1 &#123;</span><br><span class="line">	<span class="comment">// def apply() = &#123;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 	println("object apply")</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">&#125;</span><br><span class="line">val class2 = caseclass1(<span class="number">1</span>,<span class="string">"ss"</span>)</span><br><span class="line">val class1 = caseclass1(<span class="number">2</span>,<span class="string">"33"</span>)</span><br><span class="line"></span><br><span class="line">println(class2.x)</span><br><span class="line">println(class1.x)</span><br></pre></td></tr></table></figure>
-<p>输出<br>1<br>2</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1170,7 +1117,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">225</span>
+                    <span class="site-state-item-count">228</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1263,7 +1210,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1335,7 +1286,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

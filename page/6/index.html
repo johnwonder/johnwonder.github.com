@@ -323,6 +323,462 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/30/spring-refreshBeanFactory/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/30/spring-refreshBeanFactory/" class="post-title-link" itemprop="url">spring5源码解析之加载bean过程前奏</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-30 20:48:01 / 修改时间：21:57:20" itemprop="dateCreated datePublished" datetime="2020-03-30T20:48:01+08:00">2020-03-30</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Java生态圈里的Spring框架众所周知，研究它源码的大神也多如牛毛，小弟不才，也对它的源码很感兴趣，<br>不光是要一窥框架设计之精妙，也要在平时的开发过程中能借鉴其中的设计思想。今天这篇文章我们就来<br>聊聊它加载bean的过程中有什么值得学习的地方。</p>
+<p>首先我们可以写个简单的demo,来一步步调试和窥探：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">      String XMLPath = <span class="string">"spring-config.xml"</span>;</span><br><span class="line">      <span class="comment">//</span></span><br><span class="line">      ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"spring-config.xml"</span>);</span><br><span class="line">      Landlord landlord = (Landlord) applicationContext.getBean(<span class="string">"landlord"</span>, Landlord.class);</span><br><span class="line">      landlord.service();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>spring-config.xml配置文件中我们就定义了一个简单的bean元素，那么我们先自己简单地想下Spring内部要解决哪些<br>问题它才能获取到这个实例，我们要带着问题去阅读源码才会有所收获。我首先想到的就是如下这些：</p>
+<ol>
+<li>它是如何定位xml配置文件并读取的</li>
+<li>如何解析xml配置文件中的bean元素和属性</li>
+<li>解析完了以后这些配置放到哪里呢</li>
+<li>getBean的时候又是去哪获取的呢</li>
+</ol>
+<h2 id="定位xml配置文件"><a href="#定位xml配置文件" class="headerlink" title="定位xml配置文件"></a>定位xml配置文件</h2><p>我们在把一个文件名放入ClassPathXmlApplicationContext构造函数的时候，它内部就开始了定位逻辑，</p>
+<p>因为它支持多个配置文件路径，所以我们传入一个路径的时候它会new一个String数组，调用其他构造函数，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(String configLocation)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>(<span class="keyword">new</span> String[] &#123;configLocation&#125;, <span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//这里我们学到了可变参数的用途</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(String... configLocations)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>(configLocations, <span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(</span><br><span class="line">  String[] configLocations, <span class="keyword">boolean</span> refresh, @Nullable ApplicationContext parent)</span></span><br><span class="line">  <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">  <span class="comment">//省略部分代码</span></span><br><span class="line">  <span class="comment">//AbstractRefreshableConfigApplicationContext的setConfigLocations方法</span></span><br><span class="line">  setConfigLocations(configLocations);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后就调用了<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">我们可以在ClassPathXmlApplicationContext类中自己实现，这就是一个很好的设计之处。</span><br><span class="line">AbstractRefreshableApplicationContext的setConfigLocations方法如下：</span><br><span class="line">```Java</span><br><span class="line">  /**</span><br><span class="line">	 * Set the config locations for this application context.</span><br><span class="line">	 * &lt;p&gt;If not set, the implementation may use a default as appropriate.</span><br><span class="line">	 */</span><br><span class="line">	public void setConfigLocations(@Nullable String... locations) &#123;</span><br><span class="line">  if (locations != null) &#123;</span><br><span class="line"></span><br><span class="line">      this.configLocations = new String[locations.length];</span><br><span class="line">      for (int i = 0; i &lt; locations.length; i++) &#123;</span><br><span class="line">        this.configLocations[i] = resolvePath(locations[i]).trim();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      this.configLocations = null;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>它的注释说的很明白，如果我们不调用setConfigLocations,那它就会根据情况用一个默认路径了，后果不看设想。。<br>显然我们要重点关注的是<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```Java</span><br><span class="line">  /**</span><br><span class="line">  	 * Resolve the given path, replacing placeholders with corresponding</span><br><span class="line">  	 * environment property values if necessary. Applied to config locations.</span><br><span class="line">  	 * @param path the original file path</span><br><span class="line">  	 * @return the resolved file path</span><br><span class="line">  	 * @see org.springframework.core.env.Environment#resolveRequiredPlaceholders(String)</span><br><span class="line">  	 */</span><br><span class="line">    protected String resolvePath(String path) &#123;</span><br><span class="line">  		return getEnvironment().resolveRequiredPlaceholders(path);</span><br><span class="line">  	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们又要看它的注释了，很清楚，根据给定的path路径字符串，如果必要的话会用环境变量替换它里面占位符，然后赋给配置路径，<br>比如我们把<code>spring-config.xml</code> 换成${java.version}spring-config.xml传入，那么它会把${java.version}用我们环境变量替换掉<br>具体要看<code>org.springframework.core.env.Environment#resolveRequiredPlaceholders(String)</code>里面的代码了。</p>
+<p>我们下回再解！</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/29/angularjs-provide-value/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/29/angularjs-provide-value/" class="post-title-link" itemprop="url">angularjs1.5.8源码解析之value服务</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-29 09:20:04 / 修改时间：09:58:35" itemprop="dateCreated datePublished" datetime="2020-03-29T09:20:04+08:00">2020-03-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>angularjs中模块的value()方法可以对模块数据模型进行扩展,使得不同controller可以进行通信,<br>充当全局变量的作用。使用示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> app=angular.module(<span class="string">'app'</span>,[]);</span><br><span class="line">app.value(<span class="string">'val'</span>,&#123;&#125;);</span><br><span class="line"></span><br><span class="line">app.controller(<span class="string">'con'</span>,[<span class="string">'$scope'</span>,<span class="string">'val'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,ssr</span>)</span>&#123;</span><br><span class="line">	$scope.msg=<span class="string">''</span>;</span><br><span class="line">	$scope.submit=<span class="function"><span class="keyword">function</span>(<span class="params">temp</span>)</span><br><span class="line">	</span>&#123;</span><br><span class="line">		<span class="comment">//向全局变量存入msg</span></span><br><span class="line">		ssr.save=temp;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;])</span><br><span class="line"></span><br><span class="line">app.controller(<span class="string">'con2'</span>,[<span class="string">'$scope'</span>,<span class="string">'val'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,ssr</span>)</span>&#123;</span><br><span class="line">		$scope.showMsg=<span class="string">''</span>;</span><br><span class="line">		$scope.download=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span><br><span class="line">		</span>&#123;</span><br><span class="line">       <span class="comment">//获取全局变量</span></span><br><span class="line">			$scope.showMsg=val.save;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">&#125;])</span><br></pre></td></tr></table></figure>
+<p>跟我们之前分析过的decorator一样，value方法内部实际上也是调用$provide.value函数，我们先看看<br>moduleInstance的value方法:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">    <span class="attr">value</span>: invokeLater(<span class="string">'$provide'</span>, <span class="string">'value'</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeLater</span>(<span class="params">provider, method, insertMethod, queue</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (!queue) queue = invokeQueue;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        queue[insertMethod || <span class="string">'push'</span>]([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">        <span class="keyword">return</span> moduleInstance;</span><br><span class="line">      &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>可以清楚的看到，调用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">loadModules的时候再调用$provide.value方法</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  //用个valueFn包装下，返回内部带有val的方法valueRef</span><br><span class="line">  function value(name, val) &#123; return factory(name, valueFn(val), false); &#125;</span><br><span class="line"></span><br><span class="line">  function valueFn(value) &#123;return function valueRef() &#123;return value;&#125;;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>factory方法我们之前分析过，内部会把<figure class="highlight plain"><figcaption><span>provider, undefined, serviceName);```的时候实际上就会调用```valueRef```函数把存放的对象取出来。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">我们有时候会调用```$rootElement```这个对象，那找遍了angular内部并没有显示的声明$rootElementProvider方法，那么它到底存储在哪呢？</span><br><span class="line">它就是在angular启动的时候调用```doBootstrap```的时候压入modules数组顶部然后调用的$provide.value把找到的ng-app元素用jqLite包装成jqLite对象，</span><br><span class="line">然后放入全局变量$rootElement中，代码如下：</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  //传入的modules 比如html中定义的ng-app=&quot;myApp&quot;</span><br><span class="line">  //那么为[&quot;myApp&quot;]</span><br><span class="line">  //正常的话 这时 modules已经初始化</span><br><span class="line">  modules = modules || [];</span><br><span class="line">  //unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span><br><span class="line">  modules.unshift([&apos;$provide&apos;, function($provide) &#123;</span><br><span class="line">   //调用$provide方法</span><br><span class="line">   //设置$rootElement</span><br><span class="line">   $provide.value(&apos;$rootElement&apos;, element);</span><br><span class="line">  &#125;]);</span><br></pre></td></tr></table></figure></p>
+<p>下篇我们分析下angular的启动函数doBootStrap或者jqLite对象中的扩展方法或者一些常用函数。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/28/angularjs-extend/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/28/angularjs-extend/" class="post-title-link" itemprop="url">angularjs1.5.8源码解析之extend函数</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-28 21:33:56 / 修改时间：21:52:15" itemprop="dateCreated datePublished" datetime="2020-03-28T21:33:56+08:00">2020-03-28</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>angularjs中很多常用函数在我们平时的js开发中很有帮助，可以极大的帮助我们提高开发效率，<br>今天我们继续来学习下它里面的一个频繁使用的函数extend.</p>
+<h2 id="extend函数"><a href="#extend函数" class="headerlink" title="extend函数"></a>extend函数</h2><p>文档中是这样描述的：Extends the destination object <code>dst</code> by copying own enumerable properties from the <code>src</code> object(s) to <code>dst</code>。<br>翻译下就是通过拷贝src对象的枚举属性到dst对象来实现扩展dst对象。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">extend</span>(<span class="params">dst</span>) </span>&#123;</span><br><span class="line"><span class="comment">//slice 返回一个新的数组，包含从 start 到 end （如果指定end，不包括该元素）的 arrayObject 中的元素。</span></span><br><span class="line"><span class="comment">//end 可选。规定从何处结束选取。该参数是数组片断结束处的数组下标。</span></span><br><span class="line"><span class="comment">//如果没有指定该参数，那么切分的数组包含从 start 到数组结束的所有元素。如果这个参数是负数，那么它规定的是从数组尾部开始算起的元素。</span></span><br><span class="line"><span class="keyword">return</span> baseExtend(dst, slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>), <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其实该函数的核心是内部baseExtend函数：</p>
+<h2 id="baseExtend函数"><a href="#baseExtend函数" class="headerlink" title="baseExtend函数"></a>baseExtend函数</h2><p>deep参数为true代表是深拷贝，深拷贝简单点说就是通过递归拷贝把所有内部对象克隆复制。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">baseExtend</span>(<span class="params">dst, objs, deep</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> h = dst.$$hashKey;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, ii = objs.length; i &lt; ii; ++i) &#123;</span><br><span class="line">    <span class="keyword">var</span> obj = objs[i];</span><br><span class="line">     <span class="comment">//obj 不是对象 且不是函数 那就跳过</span></span><br><span class="line">    <span class="keyword">if</span> (!isObject(obj) &amp;&amp; !isFunction(obj)) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(obj);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>, jj = keys.length; j &lt; jj; j++) &#123;</span><br><span class="line">      <span class="keyword">var</span> key = keys[j];</span><br><span class="line">      <span class="keyword">var</span> src = obj[key];</span><br><span class="line"></span><br><span class="line">      <span class="comment">//如果深拷贝 且当前对象是object类型</span></span><br><span class="line">      <span class="keyword">if</span> (deep &amp;&amp; isObject(src)) &#123;</span><br><span class="line">        <span class="comment">//如果是日期</span></span><br><span class="line">        <span class="keyword">if</span> (isDate(src)) &#123;</span><br><span class="line">          dst[key] = <span class="keyword">new</span> <span class="built_in">Date</span>(src.valueOf());</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isRegExp(src)) &#123;</span><br><span class="line">          <span class="comment">//如果是正则</span></span><br><span class="line">          dst[key] = <span class="keyword">new</span> <span class="built_in">RegExp</span>(src);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (src.nodeName) &#123;</span><br><span class="line">          <span class="comment">//如果是dom节点</span></span><br><span class="line">          dst[key] = src.cloneNode(<span class="literal">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isElement(src)) &#123;</span><br><span class="line">          <span class="comment">//如果是dom元素或者 jQuery对象</span></span><br><span class="line">          dst[key] = src.clone();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">//先把dst[key]赋空对象或空数组</span></span><br><span class="line">          <span class="keyword">if</span> (!isObject(dst[key])) dst[key] = isArray(src) ? [] : &#123;&#125;;</span><br><span class="line">          <span class="comment">//递归调用</span></span><br><span class="line">          baseExtend(dst[key], [src], <span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        dst[key] = src;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> dst;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>angularjs另外一个根extend对应的merge函数就是baseExtend深拷贝的实现。</p>
+<h2 id="merge函数"><a href="#merge函数" class="headerlink" title="merge函数"></a>merge函数</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">merge</span>(<span class="params">dst</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> baseExtend(dst, slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>), <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/26/angular-jqLiteBuildFragment/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -653,493 +1109,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/21/angular-injector-service/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/03/21/angular-injector-service/" class="post-title-link" itemprop="url">angularjs源码分析--创建service</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-03-21 19:57:09" itemprop="dateCreated datePublished" datetime="2020-03-21T19:57:09+08:00">2020-03-21</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-03-23 21:07:39" itemprop="dateModified" datetime="2020-03-23T21:07:39+08:00">2020-03-23</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>angular中的service服务方法很多地方都会可以用到，内部其实也是依赖angularjs强大的依赖注入能力。<br>我们先看昨天文章<a href="https://mp.weixin.qq.com/s/2F0Zs9cRiY5AjEC0Ez0oOw" target="_blank" rel="external">模块创建</a>使用的案例：</p>
-<h2 id="angular-module"><a href="#angular-module" class="headerlink" title="angular.module"></a>angular.module</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建myModule模块</span></span><br><span class="line"><span class="keyword">var</span> myModule = angular.module(<span class="string">'myModule'</span>, []);</span><br><span class="line">myModule.service(<span class="string">'myService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.my = <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//创建注入器，把service放入providerCache</span></span><br><span class="line"><span class="keyword">var</span> injector = angular.injector([<span class="string">"myModule"</span>]);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">explicit</span>(<span class="params">serviceA</span>) </span>&#123;alert(serviceA.my);&#125;;</span><br><span class="line">explicit.$inject = [<span class="string">'myService'</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取providerCache，调用构造函数，弹出0.</span></span><br><span class="line">injector.invoke(explicit);</span><br></pre></td></tr></table></figure>
-<h2 id="service"><a href="#service" class="headerlink" title="service"></a>service</h2><p>关于angular模块的创建，我们上一篇文章已经讲过，我们就看下模块的service方法,在新建模块后这个模块<br>实例就拥有了service函数。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> invokeQueue = [];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">  <span class="attr">_invokeQueue</span>: invokeQueue,</span><br><span class="line">  <span class="attr">service</span>: invokeLaterAndSetModuleName(<span class="string">'$provide'</span>, <span class="string">'service'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeLaterAndSetModuleName</span>(<span class="params">provider, method</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//实际的service方法 ，通过闭包把$provide 和service 放入返回函数中</span></span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">recipeName, factoryFunction</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (factoryFunction &amp;&amp; isFunction(factoryFunction)) factoryFunction.$$moduleName = name;</span><br><span class="line">        invokeQueue.push([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">        <span class="comment">//比如service 就是 provider= $provide  method = service</span></span><br><span class="line">        <span class="keyword">return</span> moduleInstance;</span><br><span class="line">      &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>那么我们就可以知道在调用service的方法其实就是把$provide,service,还有参数(这边就是arguments)放入invokeQueue中，<br>从名字看出来这是个调用队列，那就有个疑问了，这个invokeQueue是干啥的呢？ 什么时候会调用这个invokeQueue呢？<br>那就是createInjector函数中的loadModules函数。</p>
-<h3 id="loadModules"><a href="#loadModules" class="headerlink" title="loadModules"></a>loadModules</h3><p>loadModules函数会在createInjector的时候去调用，看看它对service起的作用</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createInjector</span>(<span class="params">modulesToLoad</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> runBlocks = loadModules(modulesToLoad);</span><br><span class="line"></span><br><span class="line">   <span class="comment">//模块加载</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">loadModules</span>(<span class="params">modulesToLoad</span>) </span>&#123;</span><br><span class="line">    assertArg(isUndefined(modulesToLoad) || isArray(modulesToLoad), <span class="string">'modulesToLoad'</span>, <span class="string">'not an array'</span>);</span><br><span class="line">    <span class="keyword">var</span> runBlocks = [], moduleFn;</span><br><span class="line">    <span class="comment">//遍历modulesToLoad数组</span></span><br><span class="line">    forEach(modulesToLoad, <span class="function"><span class="keyword">function</span>(<span class="params">module</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (loadedModules.get(<span class="built_in">module</span>)) <span class="keyword">return</span>;</span><br><span class="line">      loadedModules.put(<span class="built_in">module</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//调用invokeQueue</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">runInvokeQueue</span>(<span class="params">queue</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> i, ii;</span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>, ii = queue.length; i &lt; ii; i++) &#123;</span><br><span class="line">          <span class="keyword">var</span> invokeArgs = queue[i], <span class="comment">//invokeArgs也是个数组</span></span><br><span class="line">              <span class="comment">//获取provider</span></span><br><span class="line">          provider = providerInjector.get(invokeArgs[<span class="number">0</span>]);</span><br><span class="line">          <span class="comment">//调用provider中的方法  </span></span><br><span class="line">          <span class="comment">//比如injectorProvider  调用invoke方法 传入函数</span></span><br><span class="line">          <span class="comment">//函数的参数可以注入</span></span><br><span class="line">          provider[invokeArgs[<span class="number">1</span>]].apply(provider, invokeArgs[<span class="number">2</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (isString(<span class="built_in">module</span>)) &#123;</span><br><span class="line">          <span class="comment">//获取module</span></span><br><span class="line">          <span class="comment">//moduleFn就是 moduleInstance</span></span><br><span class="line">          moduleFn = angularModule(<span class="built_in">module</span>);</span><br><span class="line">          <span class="comment">//moduleFn.requires 比如['ngLocale']</span></span><br><span class="line">          runBlocks = runBlocks.concat(loadModules(moduleFn.requires)).concat(moduleFn._runBlocks);</span><br><span class="line">          runInvokeQueue(moduleFn._invokeQueue);</span><br><span class="line">          <span class="comment">//像module.service时加入的service ，那么需要把这些service加入prividerCache</span></span><br><span class="line">          runInvokeQueue(moduleFn._configBlocks);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isFunction(<span class="built_in">module</span>)) &#123;</span><br><span class="line">            runBlocks.push(providerInjector.invoke(<span class="built_in">module</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isArray(<span class="built_in">module</span>)) &#123;</span><br><span class="line">            runBlocks.push(providerInjector.invoke(<span class="built_in">module</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          assertArgFn(<span class="built_in">module</span>, <span class="string">'module'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (isArray(<span class="built_in">module</span>)) &#123;</span><br><span class="line">          <span class="built_in">module</span> = <span class="built_in">module</span>[<span class="built_in">module</span>.length - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> $injectorMinErr(<span class="string">'modulerr'</span>, <span class="string">"Failed to instantiate module &#123;0&#125; due to:\n&#123;1&#125;"</span>,</span><br><span class="line">                  <span class="built_in">module</span>, e.stack || e.message || e);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> runBlocks;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们看到关键一句代码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">传入我们创建service时push进去的数组元素，最关键的就是这两句代码.</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  function runInvokeQueue()&#123;</span><br><span class="line">    provider = providerInjector.get(invokeArgs[0]);</span><br><span class="line">    //调用provider中的方法  </span><br><span class="line">    //比如injectorProvider  调用invoke方法 传入函数</span><br><span class="line">    //函数的参数可以注入</span><br><span class="line">    provider[invokeArgs[1]].apply(provider, invokeArgs[2]);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>invokeArgs[0]就是$provide,invokeArgs[1]就是service,那么实际调用的就是$provide.service函数，参数就是<code>[&#39;myService&#39;, function() {
-            this.my = 0;
-}]</code>,关于$provide.service函数我们下篇文章再分析。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/20/spring-classpathxmlApplicationContext/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/03/20/spring-classpathxmlApplicationContext/" class="post-title-link" itemprop="url">Spring源码分析之ClassPathXmlApplicationContext</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-03-20 13:45:00 / 修改时间：14:49:46" itemprop="dateCreated datePublished" datetime="2020-03-20T13:45:00+08:00">2020-03-20</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我们在分析Spring源码时，通常会自己创建一个独立的应用上下文，比如本文说的ClassPathXmlApplicationContext。我们在实际开发过程中一般框架内部会初始化一个应用程序上下文，比如springmvc中的XmlWebApplicationContext还有springboot中的AnnotationConfigServletWebServerApplicationContext。</p>
-<h2 id="ClassPathXmlApplicationContext-简介"><a href="#ClassPathXmlApplicationContext-简介" class="headerlink" title="ClassPathXmlApplicationContext 简介"></a>ClassPathXmlApplicationContext 简介</h2><p>官方文档是这么说的：</p>
-<p>Standalone XML application context, taking the context definition files from the class path,<br>interpreting plain paths as class path resource names that include the package path<br>(e.g. “mypackage/myresource.txt”). Useful for test harnesses(测试框架) as well as<br>for application contexts embedded within JARs.</p>
-<p>也就是说它可以创建独立应用程序上下文，获取上下文的定义文件等等。它的主要功能如下：</p>
-<ol>
-<li><p>定义了很多构造函数，只是参数不同，不同的参数具体会影响配置资源的定义和spring应用上下文的刷新(refresh函数)。</p>
-</li>
-<li><p>配置资源路径的不同，获取方式的不同。如果设置configLocations参数，那么会通过该类的父类也就是抽象类AbstractRefreshableConfigApplicationContext的resolvePath函数来解析。如果使用带有class参数的构造函数，那么会使用ClassPathResource来获取资源。</p>
-</li>
-</ol>
-<h3 id="AbstractEnvironment"><a href="#AbstractEnvironment" class="headerlink" title="AbstractEnvironment"></a>AbstractEnvironment</h3><p>resolvePath函数内部其实是调用AbstractEnvironment的resolveRequiredPlaceholders方法，方法内部会调用propertyResolver它的父类AbstractPropertyResolver的resolveRequiredPlaceholders方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ConfigurablePropertyResolver propertyResolver =</span><br><span class="line">			<span class="keyword">new</span> PropertySourcesPropertyResolver(<span class="keyword">this</span>.propertySources);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">resolveRequiredPlaceholders</span><span class="params">(String text)</span> <span class="keyword">throws</span> IllegalArgumentException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.propertyResolver.resolveRequiredPlaceholders(text);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>参考资料：</p>
-<p><a href="https://blog.csdn.net/qq_37960603/article/details/82709660" target="_blank" rel="external">Spring 中 ClassPathXmlApplicationContext 类的简单使用</a><br><a href="https://blog.csdn.net/zhangshk_/article/details/82704010" target="_blank" rel="external">彻底搞懂Class.getResource和ClassLoader.getResource的区别和底层原理</a><br><a href="https://baijiahao.baidu.com/s?id=1655259813981508769&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">SpringMVC加载流程</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/07/06/spring-import-annotation/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/07/06/spring-import-annotation/" class="post-title-link" itemprop="url">spring源码分析之@Import注解</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-07-06 17:42:36 / 修改时间：23:03:36" itemprop="dateCreated datePublished" datetime="2019-07-06T17:42:36+08:00">2019-07-06</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Import定义"><a href="#Import定义" class="headerlink" title="@Import定义"></a>@Import定义</h2><p>Indicates one or more @Configuration classes to import.</p>
-<p>表示一个或多个类会被导入，参考@Configuration.</p>
-<p>Provides functionality equivalent to the <import> element in Spring XML.</import></p>
-<p>提供在xml中<import>标签相同的功能.</import></p>
-<p>Allows for importing   @Configuration classes, ImportSelector and  ImportBeanDefinitionRegistrar implementations,as well as regular component classes (as of 4.2; analogous to  AnnotationConfigApplicationContext#register).</p>
-<p>允许导入@Configuration类，ImportSelector和ImportBeanDefinitionRegistrar的实现类,等同于正常的组件类(4.2开始;类似于AnnotationConfigApplicationContext.register).</p>
-<p>不过我从spring文档中看到AnnotationConfigRegistry接口是从4.1版本开始的</p>
-<p>@Bean definitions declared in imported @Configuration classes should be accessed by using org.springframework.beans.factory.annotation.Autowired @Autowired injection. Either the bean itself can be autowired, or the configuration class instance declaring the bean can be autowired. The latter approach allows for explicit, IDE-friendly navigation between @Configuration class methods.</p>
-<p>在导入类里定义的Bean应该可以被Autowired注入访问。bean自身或者定义bean的配置类都能被autowired。后者能在类方法之间被显式的导航. 这个我们在之后使用示例中会展示。</p>
-<p>May be declared at the class level or as a meta-annotation.</p>
-<p>在class层级定义或者当做一个meta-annotation。</p>
-<p>If XML or other non-@Configuration bean definition resources need to be imported, use the @ImportResource annotation instead.</p>
-<p>如果xml或者其他没有@Configuration的bean资源需要被导入，那就使用@ImportResource注解来替代。</p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.jianshu.com/p/7eb0c2b214a7" target="_blank" rel="external">Spring Import 三种用法与源码解读</a></li>
-<li><a href="https://blog.csdn.net/pange1991/article/details/81356594" target="_blank" rel="external">Spring @Import注解 —— 导入资源</a></li>
-<li><a href="https://blog.csdn.net/horacehe16/article/details/79811763" target="_blank" rel="external">@Autowired用法详解</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1181,7 +1155,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">225</span>
+                    <span class="site-state-item-count">228</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1274,7 +1248,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1346,7 +1324,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

@@ -323,6 +323,490 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/07/01/angular-service-injector/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/07/01/angular-service-injector/" class="post-title-link" itemprop="url">angularjs 1.5.8源码解析之service到底干了什么</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-07-01 22:13:53" itemprop="dateCreated datePublished" datetime="2017-07-01T22:13:53+08:00">2017-07-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-23 21:54:44" itemprop="dateModified" datetime="2020-03-23T21:54:44+08:00">2020-03-23</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="provide-service函数"><a href="#provide-service函数" class="headerlink" title="$provide.service函数"></a>$provide.service函数</h2><p>上篇文章<a href="https://mp.weixin.qq.com/s/B3-VS8jnOSOKtDz91rtP0g" target="_blank" rel="external">创建service</a>最后我们提到了<br>$provide.service,也就是说模块调用service方法 其实内部到loadModules的时候通过runInvokeQueue<br>会调用内置的$provide.service函数。</p>
+<p>比如我写了个方法如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> herModule = angular.module(<span class="string">'herModule'</span>, []);</span><br><span class="line">herModule.service(<span class="string">'herService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.her = <span class="number">1</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>我们一步步来分析它是怎么调用的，首先看第一步</p>
+<h3 id="provideCache"><a href="#provideCache" class="headerlink" title="provideCache"></a>provideCache</h3><p>我们在之前的文章<a href="https://mp.weixin.qq.com/s/1IUhjOQoVfEdds0nt-8Hlw" target="_blank" rel="external">依赖注入器的产生</a>中看到createInjector的时候会把provideCache传入providerInjector，也就是说我们在调用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">    function supportObject(delegate) &#123;</span><br><span class="line">       return function(key, value) &#123;       </span><br><span class="line">         //当key是 对象的时候 就把delegate函数放入闭包里</span><br><span class="line">         if (isObject(key)) &#123;</span><br><span class="line">           //reverseParams 为了适应foreach里调用函数的参数顺序</span><br><span class="line">           forEach(key, reverseParams(delegate));// function(value, key) &#123;iteratorFn(key, value);&#125;;</span><br><span class="line">         &#125; else &#123;</span><br><span class="line">            //调用参数delegate方法</span><br><span class="line">           return delegate(key, value);</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    var providerCache = &#123;</span><br><span class="line">       //supportObject 都返回一个新函数,内部调用service</span><br><span class="line">       $provide: &#123;</span><br><span class="line">           service: supportObject(service),</span><br><span class="line">           //省略部分代码</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
+<p>$provide对象不止有service一个属性函数，supportObject 都返回一个新函数,内部调用service。</p>
+<h3 id="内部service函数"><a href="#内部service函数" class="headerlink" title="内部service函数"></a>内部service函数</h3><p>service函数内部其实就是调用factory函数<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">service</span>(<span class="params">name, constructor</span>) </span>&#123;</span><br><span class="line">   <span class="comment">//factoryFn就是个对象数组</span></span><br><span class="line">  <span class="keyword">return</span> factory(name, [<span class="string">'$injector'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$injector</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//实例化构造函数，返回实例</span></span><br><span class="line">    <span class="keyword">return</span> $injector.instantiate(<span class="keyword">constructor</span>);</span><br><span class="line">  &#125;]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="内部factory函数"><a href="#内部factory函数" class="headerlink" title="内部factory函数"></a>内部factory函数</h3><p>factory函数内部又调用provider函数<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//factoryFn有可能就是对象数组</span></span><br><span class="line"><span class="comment">//enforce代表是否要有返回值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factory</span>(<span class="params">name, factoryFn, enforce</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> provider(name, &#123;</span><br><span class="line">    <span class="attr">$get</span>: enforce !== <span class="literal">false</span> ? enforceReturnValue(name, factoryFn) : factoryFn</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回一个有返回值的方法而已</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">enforceReturnValue</span>(<span class="params">name, factory</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">enforcedReturnValue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> result = instanceInjector.invoke(factory, <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="内部provider函数"><a href="#内部provider函数" class="headerlink" title="内部provider函数"></a>内部provider函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">provider</span>(<span class="params">name, provider_</span>) </span>&#123;</span><br><span class="line">    assertNotHasOwnProperty(name, <span class="string">'service'</span>);</span><br><span class="line">    <span class="keyword">if</span> (isFunction(provider_) || isArray(provider_)) &#123;</span><br><span class="line">      provider_ = providerInjector.instantiate(provider_);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> providerCache[name + providerSuffix] = provider_;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>其中最终调用的就是provider方法把一开始的serviceName加上providerSuffix当作对象key，然后<code>{$get:[&#39;$injector&#39;, function($injector) {return $injector.instantiate(constructor);}]}</code>放入了providerCache。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/21/scala-config/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/21/scala-config/" class="post-title-link" itemprop="url">scala_config</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-21 16:20:06" itemprop="dateCreated datePublished" datetime="2017-06-21T16:20:06+08:00">2017-06-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala-typesafe-config库读取配置"><a href="#scala-typesafe-config库读取配置" class="headerlink" title="scala typesafe config库读取配置"></a>scala typesafe config库读取配置</h2><p>这两天在看一个akka remote actor future超时的问题</p>
+<p>之前的超时是在remoteActor里配置的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def remoteActor = TypedActor.context.system.actorSelection(actorInfo.remoteActorPath)</span><br></pre></td></tr></table></figure>
+<p>然后调用的时候是用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Await.result(remoteActor.?(GetCarMonthlyInfo(date,parkCode))(Timeout.intToTimeout(<span class="number">5000000</span>)), timeout)</span><br></pre></td></tr></table></figure></p>
+<p>结果发现还是会出现<figure class="highlight plain"><figcaption><span>times out in 5000 ms```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">问题出在哪里呢？</span><br><span class="line"></span><br><span class="line">其实出在TypedActor本身，默认配置读取的jar包里的reference.conf</span><br><span class="line">```java</span><br><span class="line">typed &#123;</span><br><span class="line">      # Default timeout for typed actor methods with non-void return type</span><br><span class="line">      timeout = 5s</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TypedActor(system).DefaultReturnTimeout</span><br></pre></td></tr></table></figure>
+<p>这里的配置会和应用的配置文件合并</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> val config: Config = &#123;</span><br><span class="line">     <span class="comment">//cfg 应用配置文件</span></span><br><span class="line">     <span class="comment">//defaultReference 默认配置</span></span><br><span class="line">      val config = cfg.withFallback(ConfigFactory.defaultReference(classLoader))</span><br><span class="line">      config.checkValid(ConfigFactory.defaultReference(classLoader), <span class="string">"akka"</span>)</span><br><span class="line">      config</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>路径：config-1.2.1-sources.jar!\com\typesafe\config\impl\AbstractConfigValue.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> AbstractConfigValue <span class="title">withFallback</span><span class="params">(ConfigMergeable mergeable)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ignoresFallbacks()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ConfigValue other = ((MergeableValue) mergeable).toFallbackValue();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (other <span class="keyword">instanceof</span> Unmergeable) &#123;</span><br><span class="line">            <span class="keyword">return</span> mergedWithTheUnmergeable((Unmergeable) other);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (other <span class="keyword">instanceof</span> AbstractConfigObject) &#123;</span><br><span class="line">            <span class="keyword">return</span> mergedWithObject((AbstractConfigObject) other);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mergedWithNonObject((AbstractConfigValue) other);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/19/angular-newRouter/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/06/19/angular-newRouter/" class="post-title-link" itemprop="url">Angular路由组件newRouter</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-19 21:57:20" itemprop="dateCreated datePublished" datetime="2017-06-19T21:57:20+08:00">2017-06-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-10 20:55:11" itemprop="dateModified" datetime="2019-05-10T20:55:11+08:00">2019-05-10</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="ngNewRouter"><a href="#ngNewRouter" class="headerlink" title="ngNewRouter"></a>ngNewRouter</h2><p>项目中使用<a href="https://github.com/angular/router" target="_blank" rel="external">ngNewRouter</a>,看它的源码时候发现了</p>
+<p><a href="https://github.com/sindresorhus/gulp-traceur" target="_blank" rel="external">gulp-traceur</a> 是由Sindre Sorhus开发的</p>
+<p>看网上说是<a href="https://w3ctech.com/topic/107" target="_blank" rel="external">国外23位知名JavaScript开发者</a>之一</p>
+<p>里面源码涉及到了angular injector中的factory函数</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/19/uglifyjs-purefuncs/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -640,501 +1124,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/17/angular-injector5/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/06/17/angular-injector5/" class="post-title-link" itemprop="url">angular_injector5</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-06-17 16:57:01" itemprop="dateCreated datePublished" datetime="2017-06-17T16:57:01+08:00">2017-06-17</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="angular-injector-剖析流程"><a href="#angular-injector-剖析流程" class="headerlink" title="angular injector 剖析流程"></a>angular injector 剖析流程</h2><p>angular中的注入器是承载angular整个运行的基石，如果想弄清楚angular的来龙去脉，那injector这块必须得熟悉。</p>
-<h3 id="createInjector"><a href="#createInjector" class="headerlink" title="createInjector"></a>createInjector</h3><p>createInjector方法是入口函数，方法参数是modulesToLoad和strictDi,</p>
-<p>我们主要关注modulesToLoad参数，字面含义就是待加载的模块。</p>
-<h4 id="providerCache"><a href="#providerCache" class="headerlink" title="providerCache"></a>providerCache</h4><p>函数一开始就定义了providerCache对象，顾名思义就是提供provider的缓存。</p>
-<p>providerCache内部又定义了$provide对象属性，暂且不管。</p>
-<h4 id="providerInjector"><a href="#providerInjector" class="headerlink" title="providerInjector"></a>providerInjector</h4><p>定义provider的注入器，同时也定义了providerCache.$injector.<br>最终是返回一个用于提供protoInstanceInjector查找instance的方法对象</p>
-<h4 id="publishExternalAPI"><a href="#publishExternalAPI" class="headerlink" title="publishExternalAPI"></a>publishExternalAPI</h4><p>通过setupModuleLoader 方法，顾名思义为设置模块加载器， 定义了 angularModule 对象为angular.module方法</p>
-<p>里面很重要的一个方法就是<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>随之定义了angular.module(‘ng’,[‘ngLocale’], [‘$provide’,function($provide){}])</p>
-<p>把ng模块放入了modules对象集合</p>
-<p>先是定义<figure class="highlight plain"><figcaption><span>config = invokeLater('$injector', 'invoke', 'push', configBlocks);```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### invokeLater</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">function invokeLater(provider, method, insertMethod, queue) &#123;</span><br><span class="line">          if (!queue) queue = invokeQueue;</span><br><span class="line">          return function() &#123;</span><br><span class="line">            queue[insertMethod || &apos;push&apos;]([provider, method, arguments]);</span><br><span class="line">            return moduleInstance;</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>通过以下方法把<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">if (configFn) &#123;</span><br><span class="line">          config(configFn);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>configBlocks一开始定义为空数组，然后push 了一个数组对象<code>[&#39;$injector&#39;,&#39;invoke&#39;,[&#39;$provide&#39;,function($provide){}]]</code></p>
-<p>  下篇文章继续分析push了以后是从哪调用的。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/16/java-servlet/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/06/16/java-servlet/" class="post-title-link" itemprop="url">java_servlet</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-06-16 22:24:15" itemprop="dateCreated datePublished" datetime="2017-06-16T22:24:15+08:00">2017-06-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="scalatraServlet实现"><a href="#scalatraServlet实现" class="headerlink" title="scalatraServlet实现"></a>scalatraServlet实现</h2><p>前几天看了别人的面试题，提到了HttpServlet实现了哪几个接口，</p>
-<p>今天就抽空看了下scalatraServlet中的源码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpServlet</span> <span class="keyword">extends</span> <span class="title">GenericServlet</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericServlet</span></span><br><span class="line">  <span class="keyword">implements</span> <span class="title">Servlet</span>, <span class="title">ServletConfig</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h3><p>Defines methods that all servlets must implement.<br>就是说定义了所有servlets必须实现的方法。</p>
-<h3 id="ServletConfig"><a href="#ServletConfig" class="headerlink" title="ServletConfig"></a>ServletConfig</h3><ul>
-<li>A servlet configuration object used by a servlet container</li>
-<li>to pass information to a servlet during initialization.</li>
-</ul>
-<p>一个被servlet容器用来传递信息给servlet初始化的配置对象</p>
-<h3 id="java-io-Serializable"><a href="#java-io-Serializable" class="headerlink" title="java.io.Serializable"></a>java.io.Serializable</h3><p>java的序列化接口</p>
-<p>Serializability of a class is enabled by the class implementing the<br>java.io.Serializable interface. Classes that do not implement this<br> interface will not have any of their state serialized or<br>deserialized.  </p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/06/16/angular-api1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/06/16/angular-api1/" class="post-title-link" itemprop="url">angular_api1</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-06-16 21:57:07" itemprop="dateCreated datePublished" datetime="2017-06-16T21:57:07+08:00">2017-06-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="angular基础api"><a href="#angular基础api" class="headerlink" title="angular基础api"></a>angular基础api</h2><h3 id="angular-isNumber"><a href="#angular-isNumber" class="headerlink" title="angular.isNumber"></a>angular.isNumber</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * @ngdoc function</span><br><span class="line"> * @name angular.isNumber</span><br><span class="line"> * @module ng</span><br><span class="line"> * @kind function</span><br><span class="line"> *</span><br><span class="line"> * @description</span><br><span class="line"> * Determines if a reference is a `Number`.</span><br><span class="line"> *判断一个引用是否是数字</span><br><span class="line"> * This includes the "special" numbers `NaN`, `+Infinity` and `-Infinity`.</span><br><span class="line"> *包含特殊number NaN `+Infinity` and `-Infinity`.</span><br><span class="line"> * If you wish to exclude these then you can use the native</span><br><span class="line"> * [`isFinite'](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isFinite)</span><br><span class="line"> * method.</span><br><span class="line"> *</span><br><span class="line"> * @param &#123;*&#125; value Reference to check.</span><br><span class="line"> * @returns &#123;boolean&#125; True if `value` is a `Number`.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isNumber</span>(<span class="params">value</span>) </span>&#123;<span class="keyword">return</span> <span class="keyword">typeof</span> value === <span class="string">'number'</span>;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="nextUid"><a href="#nextUid" class="headerlink" title="nextUid"></a>nextUid</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * A consistent(一致的) way of creating unique IDs in angular.</span><br><span class="line"> *</span><br><span class="line"> * Using simple numbers allows us to generate 28.6 million unique ids per second for 10 years before</span><br><span class="line"> * we hit number precision issues in JavaScript.</span><br><span class="line"> *</span><br><span class="line"> * Math.pow(2,53) 2的53次幂/ 60 / 60 / 24 / 365 / 10 = 28.6M</span><br><span class="line"> *</span><br><span class="line"> * @returns &#123;number&#125; an unique alpha-numeric string</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">nextUid</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> ++uid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>10年内每秒可以生成 28.6 million的唯一标识<br><a href="http://blog.csdn.net/zhaokuner/article/details/23246795" target="_blank" rel="external"> js的精确整数最大为:Math.pow(2,53)-1 =9007199254740991.</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1176,7 +1170,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">225</span>
+                    <span class="site-state-item-count">228</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1269,7 +1263,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1341,7 +1339,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

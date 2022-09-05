@@ -323,6 +323,496 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/09/01/angular-ng-attr/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/09/01/angular-ng-attr/" class="post-title-link" itemprop="url">angular之ng-attr属性</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-09-01 10:49:55" itemprop="dateCreated datePublished" datetime="2017-09-01T10:49:55+08:00">2017-09-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="ngAttr-绑定任意属性"><a href="#ngAttr-绑定任意属性" class="headerlink" title="ngAttr 绑定任意属性"></a>ngAttr 绑定任意属性</h2><p>官网上说是为了可以绕开浏览器的约束：</p>
+<p>Web browsers are sometimes picky about what values they consider valid for attributes.<br>For example, considering this template:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">svg</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"&#123;&#123;cx&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">circle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以用ng-attr-cx来绕开浏览器的限制</p>
+<p>当用了ngAttr属性后，$interpolate服务的allOrNothing标记被用到了，任何表达式里的值是undefined的时候，</p>
+<p>属性会被移除且不包含到元素上。</p>
+<p>下面的属性也会出现类似问题，select的size 属性，textarea的placeholder属性，button的type属性，</p>
+<p>progress的value属性。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/30/angular-normalize-directive/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/08/30/angular-normalize-directive/" class="post-title-link" itemprop="url">angular_指令标准化</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-08-30 10:34:14" itemprop="dateCreated datePublished" datetime="2017-08-30T10:34:14+08:00">2017-08-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular-指令匹配"><a href="#angular-指令匹配" class="headerlink" title="angular 指令匹配"></a>angular 指令匹配</h2><p>angular 官网自定义指令提到了如下信息：</p>
+<p>AngularJS normalizes an element’s tag and attribute name to determine which elements match which directives. We typically refer to directives by their case-sensitive camelCase normalized name (e.g. ngModel). However, since HTML is case-insensitive, we refer to directives in the DOM by lower-case forms, typically using dash-delimited attributes on DOM elements (e.g. ng-model).</p>
+<p>The normalization process is as follows:</p>
+<p>Strip x- and data- from the front of the element/attributes.<br>Convert the :, -, or _-delimited name to camelCase.</p>
+<p>意思就是跳过x-和data-,然后 把:,-,_这种分隔字符 做驼峰处理。比如下面就比配ngBind指令</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">ng-bind</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">ng:bind</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">ng_bind</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">data-ng-bind</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">x-ng-bind</span>=<span class="string">"name"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="angular内部源码"><a href="#angular内部源码" class="headerlink" title="angular内部源码"></a>angular内部源码</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> SPECIAL_CHARS_REGEXP = <span class="regexp">/([\:\-\_]+(.))/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Converts snake_case to camelCase.</span><br><span class="line"> * Also there is special case for Moz prefix starting with upper case letter.</span><br><span class="line"> * @param name Name to normalize</span><br><span class="line"> *骆驼 https://my.oschina.net/yongqing/blog/300313</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">camelCase</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> name.</span><br><span class="line">    replace(SPECIAL_CHARS_REGEXP, <span class="function"><span class="keyword">function</span>(<span class="params">_, separator, letter, offset</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> offset ? letter.toUpperCase() : letter;</span><br><span class="line">    &#125;).</span><br><span class="line">    replace(MOZ_HACK_REGEXP, <span class="string">'Moz$1'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//非获取匹配，匹配pattern但不获取匹配结果，不进行存储供以后使用。这在使用或字符“(|)”来组合一个模式的各个部分时很有用。</span></span><br><span class="line"><span class="comment">//例如“industr(?:y|ies)”就是一个比“industry|industries”更简略的表达式。</span></span><br><span class="line"><span class="keyword">var</span> PREFIX_REGEXP = <span class="regexp">/^((?:x|data)[\:\-_])/i</span>;</span><br><span class="line"><span class="comment">//http://www.cnblogs.com/whitewolf/p/3495822.html</span></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Converts all accepted directives format into proper directive name.</span><br><span class="line"> * @param name Name to normalize</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">directiveNormalize</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> camelCase(name.replace(PREFIX_REGEXP, <span class="string">''</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/24/javascript-array-unique/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/08/24/javascript-array-unique/" class="post-title-link" itemprop="url">javascript数组去重</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-08-24 11:22:34" itemprop="dateCreated datePublished" datetime="2017-08-24T11:22:34+08:00">2017-08-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>看到<a href="https://github.com/jawil/blog/issues/22" target="_blank" rel="external">面试分享：一年经验初探阿里巴巴前端社招 </a>这篇文章，学习到了很多，也发现了自己其实有很多不知道，所以记录下。。</p>
+<h2 id="数组去重"><a href="#数组去重" class="headerlink" title="数组去重"></a>数组去重</h2><p>博主提到了这些方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///ES6实现：</span></span><br><span class="line">[...new <span class="built_in">Set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">'a'</span>,<span class="number">1</span>,<span class="string">'a'</span>])]</span><br><span class="line"></span><br><span class="line"><span class="comment">///ES5实现：</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">'a'</span>,<span class="number">1</span>,<span class="string">'a'</span>].filter(<span class="function"><span class="keyword">function</span>(<span class="params">ele,index,array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> index===array.indexOf(ele)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>然后有人回复说用Map,我查了下，应该是<a href="http://blog.csdn.net/earscher/article/details/52803988" target="_blank" rel="external">这种方式</a>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.prototype.unique = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> arr = [];</span><br><span class="line">        <span class="keyword">var</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!map.has(<span class="keyword">this</span>[i]))&#123;</span><br><span class="line">                arr.push(<span class="keyword">this</span>[i]);</span><br><span class="line">                map.set(<span class="keyword">this</span>[i],<span class="literal">true</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Array</span>.prototype.unique2 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> arr = [];</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">set</span> = new Set(this);</span><br><span class="line">        <span class="keyword">set</span>.forEach(function (item) &#123;</span><br><span class="line">            arr.push(item);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="二分查找时间复杂度分析"><a href="#二分查找时间复杂度分析" class="headerlink" title="二分查找时间复杂度分析"></a>二分查找时间复杂度分析</h2><p>博主在二分查找的时间复杂度怎么求，是多少 问题上 没回答上来，我看的时候也忘记了，遂查了下：</p>
+<p>二分查找的基本思想是将n个元素分成大致相等的两部分，去a[n/2]与x做比较，如果x=a[n/2],则找到x,算法中止；如果x&lt;a[n/2],则只要在数组a的左半部分继续搜索x,如果x&gt;a[n/2],则只要在数组a的右半部搜索x.</p>
+<p>时间复杂度无非就是while循环的次数！</p>
+<p>总共有n个元素，</p>
+<p>渐渐跟下去就是n,n/2,n/4,….n/2^k，其中k就是循环的次数</p>
+<p>由于你n/2^k取整后&gt;=1</p>
+<p>即令n/2^k=1</p>
+<p>可得k=log2n,（是以2为底，n的对数）</p>
+<p>参考资料：<br><a href="http://blog.csdn.net/frances_han/article/details/6458067" target="_blank" rel="external">二分查找时间复杂度的计算(转)</a><br><a href="http://www.cnblogs.com/qiaozhoulin/p/5328090.html" target="_blank" rel="external">二分查找时间复杂度分析</a><br><a href="http://blog.csdn.net/sosesoa/article/details/52775202" target="_blank" rel="external">理解O(log2N)和O(Nlog2N)</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/07/scalatra-requestImplicits/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -637,515 +1127,11 @@ compiled({ &#39;user&#39;: &#39;mustache&#39; });
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/07/typescript-define/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/08/07/typescript-define/" class="post-title-link" itemprop="url">typescript定义文件疑惑</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-08-07 11:24:26" itemprop="dateCreated datePublished" datetime="2017-08-07T11:24:26+08:00">2017-08-07</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-13 21:31:35" itemprop="dateModified" datetime="2019-05-13T21:31:35+08:00">2019-05-13</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="typescript声明文件"><a href="#typescript声明文件" class="headerlink" title="typescript声明文件"></a>typescript声明文件</h2><p>今天在看lodash的声明文件，看到下面这一段有点疑问：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">declare <span class="keyword">var</span> _: _.LoDashStatic;</span><br><span class="line"></span><br><span class="line">declare namespace _ &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果我在namespace里导出一个function,如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">declare namespace _ &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>):<span class="title">void</span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>那vscode会提示错误Duplicate identifier,我们回到TypeScript官网文档看下：</p>
-<p>与类型相比，你可能已经理解了什么是值。 值是运行时名字，可以在表达式里引用。 比如 let x = 5;创建一个名为x的值。</p>
-<p>同样，以下方式能够创建值：</p>
-<p>let，const，和var声明<br>包含值的namespace或module声明<br>enum声明<br>class声明<br>指向值的import声明<br>function声明</p>
-<p>只要不产生冲突就是合法的。 一个普通的规则是值总是会和同名的其它值产生冲突除非它们在不同命名空间里。</p>
-<p>也就是说值冲突了，但是如果我把declare var 换成declare class 那就是可以的</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">declare namespace _ &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>):<span class="title">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title">declare</span> <span class="title">class</span> <span class="title">_</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>typescript官网是这么说的：</p>
-<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Note that <span class="keyword">in</span> this example, we added a value <span class="keyword">to</span> the <span class="keyword">static</span> side <span class="keyword">of</span> C (its <span class="function"><span class="keyword">constructor</span> <span class="title">function</span>). <span class="title">This</span> <span class="title">is</span> <span class="title">because</span> <span class="title">we</span> <span class="title">added</span> <span class="title">a</span> <span class="title">value</span>, <span class="title">and</span> <span class="title">the</span> <span class="title">container</span> <span class="title">for</span> <span class="title">all</span> <span class="title">values</span> <span class="title">is</span> <span class="title">another</span> <span class="title">value</span> <span class="params">(types are contained <span class="keyword">by</span> namespaces, <span class="keyword">and</span> namespaces are contained <span class="keyword">by</span> other namespaces)</span>.</span></span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/04/angular2-forwardRef/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/08/04/angular2-forwardRef/" class="post-title-link" itemprop="url">angular2源码之forwardRef</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-08-04 13:37:00" itemprop="dateCreated datePublished" datetime="2017-08-04T13:37:00+08:00">2017-08-04</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天抽空看了下angular2的依赖注入部分的源码，看到forward_ref.ts这个文件，源码位置如下</p>
-<p><a href="https://github.com/angular/angular/blob/master/packages/core/src/di/forward_ref.ts" target="_blank" rel="external">forward_ref.ts</a></p>
-<h2 id="forwardRef"><a href="#forwardRef" class="headerlink" title="forwardRef"></a>forwardRef</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;Type&#125; <span class="keyword">from</span> <span class="string">'../type'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;stringify&#125; <span class="keyword">from</span> <span class="string">'../util'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//混合类型</span></span><br><span class="line"><span class="comment">//相当于可以是任意方法来实现这个接口</span></span><br><span class="line"><span class="keyword">export</span> interface ForwardRefFn &#123; (): any; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//forwardRefFn加入属性__forward_ref__</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">forwardRef</span>(<span class="params">forwardRefFn: ForwardRefFn</span>): <span class="title">Type</span>&lt;<span class="title">any</span>&gt; </span>&#123;</span><br><span class="line">  (&lt;any&gt;forwardRefFn).__forward_ref__ = forwardRef;</span><br><span class="line">  (&lt;any&gt;forwardRefFn).toString = function() &#123; return stringify(this()); &#125;;</span><br><span class="line">  return (&lt;Type&lt;any&gt;&gt;&lt;any&gt;forwardRefFn);</span><br><span class="line">  //TypeScript也使用尖括号来表示类型断言，JSX的语法带来了解析的困难。因此，TypeScript在 .tsx文件里禁用了使用尖括号的类型断言。</span><br><span class="line">  //类型断言好比其它语言里的类型转换，但是不进行特殊的数据检查和解构。 它没有运行时的影响，只是在编译阶段起作用。 TypeScript会假设你，程序员，已经进行了必须的检查。</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//如果type是function 而且有__forward_ref__属性 且 __forward_ref__为forwardRef,那么就执行这个type</span><br><span class="line">export function resolveForwardRef(type: any): any &#123;</span><br><span class="line">  if (typeof type === 'function' &amp;&amp; type.hasOwnProperty('__forward_ref__') &amp;&amp;</span><br><span class="line">      type.__forward_ref__ === forwardRef) &#123;</span><br><span class="line">    return (&lt;ForwardRefFn&gt;type)();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    return type;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>编译为js后是这样的：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">forwardRef</span>(<span class="params">forwardRefFn</span>) </span>&#123;</span><br><span class="line">  forwardRefFn.__forward_ref__ = forwardRef;</span><br><span class="line">  forwardRefFn.toString = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> stringify(<span class="keyword">this</span>()); &#125;;</span><br><span class="line">  <span class="keyword">return</span> forwardRefFn;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">resolveForwardRef</span>(<span class="params">type</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isFunction(type) &amp;&amp; type.hasOwnProperty(<span class="string">'__forward_ref__'</span>) &amp;&amp;</span><br><span class="line">        type.__forward_ref__ === forwardRef) &#123;</span><br><span class="line">        <span class="keyword">return</span> type();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> type;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Type"><a href="#Type" class="headerlink" title="Type"></a>Type</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//const是对let的一个增强，它能阻止对一个变量再次赋值。</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> Type = <span class="built_in">Function</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">isType</span>(<span class="params">v: any</span>): <span class="title">v</span> <span class="title">is</span> <span class="title">Type</span>&lt;<span class="title">any</span>&gt; </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">typeof</span> v === <span class="string">'function'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//类可以创建出类型，所以你能够在允许使用接口的地方使用类。</span></span><br><span class="line"><span class="keyword">export</span> interface Type&lt;T&gt; extends <span class="built_in">Function</span> &#123; <span class="keyword">new</span> (...args: any[]): T; &#125;</span><br></pre></td></tr></table></figure>
-<p>注意到在导出interface Type<t>时，我们定义了constructor,constructor存在于类的静态部分</t></p>
-<p>涉及到的知识点：</p>
-<p>1.typescript的<a href="https://www.tslang.cn/docs/handbook/interfaces.html" target="_blank" rel="external">interface</a></p>
-<p>2.typescript的<a href="https://www.tslang.cn/docs/handbook/modules.html" target="_blank" rel="external">export</a></p>
-<p>3.typescript的<a href="https://www.tslang.cn/docs/handbook/variable-declarations.html" target="_blank" rel="external">const</a></p>
-<p>4.typescript的<a href="https://www.tslang.cn/docs/handbook/classes.html" target="_blank" rel="external">继承</a></p>
-<p>5.typescript的<a href="https://www.tslang.cn/docs/handbook/advanced-types.html" target="_blank" rel="external">类型别名</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/02/angular-scope-first/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/08/02/angular-scope-first/" class="post-title-link" itemprop="url">angular源码分析之scope步步解析</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-08-02 11:31:28" itemprop="dateCreated datePublished" datetime="2017-08-02T11:31:28+08:00">2017-08-02</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>看了<a href="https://teropa.info/build-your-own-angular/build_your_own_angularjs_sample.pdf" target="_blank" rel="external">Scopes and DirtyChecking</a>这篇文章深有体会，所以打算简单翻译一下以做记录。</p>
-<h2 id="Scope对象"><a href="#Scope对象" class="headerlink" title="Scope对象"></a>Scope对象</h2><p>Scopes能通过Scope的构造函数new来创建。结果就是一个简单的javascript对象。先创建一个简单的例子。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Scope</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> scope = <span class="keyword">new</span> Scope();</span><br><span class="line">scope.aProperty = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="Watching对象属性：-watch和-digest"><a href="#Watching对象属性：-watch和-digest" class="headerlink" title="Watching对象属性：$watch和$digest"></a>Watching对象属性：$watch和$digest</h2><p>$watch和$digest是同一个硬币的俩面，他们一起承载消费周期的核心：反应数据的变化</p>
-<p>通过$watch你可以添加一个watcher到scope对象上。当scope上有变化发生时watcher会收到通知。</p>
-<p>你可以通过两个函数参数调用$watch 函数:</p>
-<p>1.一个watch函数，可以指定你感兴趣的数据。<br>2.一个listener函数，当数据改变时会被调用。</p>
-<p>在angular里，你通常会指定一个watch表达式来代替watch函数</p>
-<p>一个watch表达式可以是一个字符串，像”user.firstName”，可以放在数据绑定，指令属性或者javascript代码里。</p>
-<p>它在angualr内部被解析和编译成watch函数。</p>
-<p>另外一个是$digest函数，它会遍历scope上所有的watchers,运行他们的watch和listener函数</p>
-<p>Scope首先需要存储所有被注册的watchers：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Scope</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="keyword">this</span>.$$watchers = [];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Scope.prototype.$watch = <span class="function"><span class="keyword">function</span>(<span class="params">watchFn,listenerFn</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> watcher = &#123;</span><br><span class="line">     <span class="attr">watchFn</span>: watchFn,</span><br><span class="line">     <span class="attr">listenerFn</span>:listenerFn</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">this</span>.$$watchers.push(watcher);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>最后有个$digest函数，让我们定义个简单版本，只是遍历所有注册过的watchers，然后调用他们的listener函数。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Scope.prototype.$digest = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  _.foreach(<span class="keyword">this</span>.$$watchers,<span class="function"><span class="keyword">function</span>(<span class="params">watcher</span>)</span>&#123;</span><br><span class="line">      watcher.listenerFn();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>我们也能看到angular scopes有重要的性能指标：<br>1.不是通过scope附加的data在性能上必须考虑。如果没有watcher监控属性，它就不关心是否是在scope上。angular不会遍历scope上的所有属性，它只会遍历watchers。<br>2.美一个watch函数在每一个$digest调用中被调用。基于这个原因，得考虑你拥有的watches,还有你的watch函数和表达式的性能。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1187,7 +1173,7 @@ compiled({ &#39;user&#39;: &#39;mustache&#39; });
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">225</span>
+                    <span class="site-state-item-count">228</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1280,7 +1266,11 @@ compiled({ &#39;user&#39;: &#39;mustache&#39; });
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1352,7 +1342,7 @@ compiled({ &#39;user&#39;: &#39;mustache&#39; });
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

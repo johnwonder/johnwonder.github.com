@@ -323,6 +323,478 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/08/29/jquery-event_1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/08/29/jquery-event_1/" class="post-title-link" itemprop="url">jquery_event[1]</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-08-29 21:44:44" itemprop="dateCreated datePublished" datetime="2016-08-29T21:44:44+08:00">2016-08-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:29:03" itemprop="dateModified" datetime="2019-05-09T20:29:03+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><h3 id="添加元素事件"><a href="#添加元素事件" class="headerlink" title="添加元素事件"></a>添加元素事件</h3><p>1.0源码:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> e = (<span class="string">"blur,focus,load,resize,scroll,unload,click,dblclick,"</span> +</span><br><span class="line">		<span class="string">"mousedown,mouseup,mousemove,mouseover,mouseout,change,reset,select,"</span> +</span><br><span class="line">		<span class="string">"submit,keydown,keypress,keyup,error"</span>).split(<span class="string">","</span>);</span><br><span class="line">	<span class="comment">//比如$("#element").click(function()&#123;&#125;);其实执行的就是bind</span></span><br><span class="line">	<span class="comment">// Go through all the event names, but make sure that</span></span><br><span class="line">	<span class="comment">// it is enclosed properly</span></span><br><span class="line">    <span class="comment">//适当地封闭</span></span><br><span class="line">    <span class="comment">//包装在一个function中执行</span></span><br><span class="line">	<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; e.length; i++ ) <span class="keyword">new</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">var</span> o = e[i];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Handle event binding</span></span><br><span class="line">		<span class="comment">//处理事件绑定 调用bind方法</span></span><br><span class="line">		jQuery.fn[o] = <span class="function"><span class="keyword">function</span>(<span class="params">f</span>)</span>&#123;</span><br><span class="line">			<span class="comment">//如果没参数f绑定 那么就执行事件。。</span></span><br><span class="line">			<span class="keyword">return</span> f ? <span class="keyword">this</span>.bind(o, f) : <span class="keyword">this</span>.trigger(o);</span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Handle event unbinding</span></span><br><span class="line">		jQuery.fn[<span class="string">"un"</span>+o] = <span class="function"><span class="keyword">function</span>(<span class="params">f</span>)</span>&#123; <span class="keyword">return</span> <span class="keyword">this</span>.unbind(o, f); &#125;;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Finally, handle events that only fire once</span></span><br><span class="line">		<span class="comment">//绑定只能触发一次事件</span></span><br><span class="line">		jQuery.fn[<span class="string">"one"</span>+o] = <span class="function"><span class="keyword">function</span>(<span class="params">f</span>)</span>&#123;</span><br><span class="line">			<span class="comment">// Attach the event listener</span></span><br><span class="line">			<span class="comment">//遍历元素绑定</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">				<span class="comment">//巧妙运用闭包</span></span><br><span class="line">				<span class="keyword">var</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Add the event</span></span><br><span class="line">				jQuery.event.add( <span class="keyword">this</span>, o, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">					<span class="comment">// If this function has already been executed, stop</span></span><br><span class="line">					<span class="comment">//只能执行一次</span></span><br><span class="line">					<span class="keyword">if</span> ( count++ ) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">					<span class="comment">// And execute the bound function</span></span><br><span class="line">					<span class="keyword">return</span> f.apply(<span class="keyword">this</span>, [e]);</span><br><span class="line">				&#125;);</span><br><span class="line">			&#125;);</span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// If Mozilla is used</span></span><br><span class="line">	<span class="keyword">if</span> ( jQuery.browser.mozilla || jQuery.browser.opera ) &#123;</span><br><span class="line">		<span class="comment">// Use the handy event callback</span></span><br><span class="line">		<span class="built_in">document</span>.addEventListener( <span class="string">"DOMContentLoaded"</span>, jQuery.ready, <span class="literal">false</span> );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// If IE is used, use the excellent hack by Matthias Miller</span></span><br><span class="line">	<span class="comment">// http://www.outofhanwell.com/blog/index.php?title=the_window_onload_problem_revisited</span></span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> ( jQuery.browser.msie ) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Only works if you document.write() it</span></span><br><span class="line">    <span class="comment">//script标签的defer属性，这个defer属性是IE独有的。当它被设为true的时候，表示这段script要等文档加载好了才执行。</span></span><br><span class="line">		<span class="built_in">document</span>.write(<span class="string">"&lt;scr"</span> + <span class="string">"ipt id=__ie_init defer=true "</span> +</span><br><span class="line">			<span class="string">"src=//:&gt;&lt;\/script&gt;"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Use the defer script hack</span></span><br><span class="line">		<span class="keyword">var</span> script = <span class="built_in">document</span>.getElementById(<span class="string">"__ie_init"</span>);</span><br><span class="line">		script.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			<span class="keyword">if</span> ( <span class="keyword">this</span>.readyState == <span class="string">"complete"</span> )</span><br><span class="line">				jQuery.ready();</span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Clear from memory</span></span><br><span class="line">		script = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// If Safari  is used</span></span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> ( jQuery.browser.safari ) &#123;</span><br><span class="line">		<span class="comment">// Continually check to see if the document.readyState is valid</span></span><br><span class="line">		<span class="comment">//用个定时器轮询 1.2.6改为setTimeout( arguments.callee, 0 );</span></span><br><span class="line">		<span class="comment">//1.4.3改为document.addEventListener</span></span><br><span class="line">		jQuery.safariTimer = setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			<span class="comment">// loaded and complete are both valid states</span></span><br><span class="line">			<span class="keyword">if</span> ( <span class="built_in">document</span>.readyState == <span class="string">"loaded"</span> ||</span><br><span class="line">				<span class="built_in">document</span>.readyState == <span class="string">"complete"</span> ) &#123;</span><br><span class="line"></span><br><span class="line">				<span class="comment">// If either one are found, remove the timer</span></span><br><span class="line">				clearInterval( jQuery.safariTimer );</span><br><span class="line">				jQuery.safariTimer = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">				<span class="comment">// and execute any waiting functions</span></span><br><span class="line">				jQuery.ready();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;, <span class="number">10</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// A fallback to window.onload, that will always work</span></span><br><span class="line">	jQuery.event.add( <span class="built_in">window</span>, <span class="string">"load"</span>, jQuery.ready );</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h3 id="jQuery-event-add函数："><a href="#jQuery-event-add函数：" class="headerlink" title="jQuery.event.add函数："></a>jQuery.event.add函数：</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Bind an event to an element</span></span><br><span class="line">	<span class="comment">// Original by Dean Edwards</span></span><br><span class="line">	add: function(element, <span class="class"><span class="keyword">type</span>, <span class="title">handler</span>) </span>&#123;</span><br><span class="line">		<span class="comment">// For whatever reason, IE has trouble passing the window object</span></span><br><span class="line">		<span class="comment">// around, causing it to be cloned in the process</span></span><br><span class="line">		<span class="keyword">if</span> ( jQuery.browser.msie &amp;&amp; element.setInterval != undefined )</span><br><span class="line">			element = window;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Make sure that the function being executed has a unique ID</span></span><br><span class="line">		<span class="keyword">if</span> ( !handler.guid )</span><br><span class="line">			handler.guid = <span class="keyword">this</span>.guid++;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Init the element's event structure</span></span><br><span class="line">		<span class="comment">//初始化元素事件结构</span></span><br><span class="line">		<span class="keyword">if</span> (!element.events)</span><br><span class="line">			element.events = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Get the current list of functions bound to this event</span></span><br><span class="line">		<span class="keyword">var</span> handlers = element.events[<span class="class"><span class="keyword">type</span>]</span>;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// If it hasn't been initialized yet</span></span><br><span class="line">		<span class="keyword">if</span> (!handlers) &#123;</span><br><span class="line">			<span class="comment">// Init the event handler queue</span></span><br><span class="line">			handlers = element.events[<span class="class"><span class="keyword">type</span>] </span>= &#123;&#125;;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Remember an existing handler, if it's already there</span></span><br><span class="line">			<span class="keyword">if</span> (element[<span class="string">"on"</span> + <span class="class"><span class="keyword">type</span>])</span></span><br><span class="line">				handlers[<span class="number">0</span>] = element[<span class="string">"on"</span> + <span class="class"><span class="keyword">type</span>]</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Add the function to the element's handler list</span></span><br><span class="line">		<span class="comment">//核心一句 添加此handler函数到handlers 对象</span></span><br><span class="line">		handlers[handler.guid] = handler;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// And bind the global event handler to the element</span></span><br><span class="line">		<span class="comment">//最终执行的是jQuery.event.handle方法</span></span><br><span class="line">		<span class="comment">//handle方法内部遍历调用events[type]</span></span><br><span class="line">		<span class="comment">//还有阻止冒泡</span></span><br><span class="line">		element[<span class="string">"on"</span> + <span class="class"><span class="keyword">type</span>] </span>= <span class="keyword">this</span>.handle;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Remember the function in a global list (for triggering)</span></span><br><span class="line">		<span class="keyword">if</span> (!<span class="keyword">this</span>.global[<span class="class"><span class="keyword">type</span>])</span></span><br><span class="line">			<span class="keyword">this</span>.global[<span class="class"><span class="keyword">type</span>] </span>= [];</span><br><span class="line">		<span class="keyword">this</span>.global[<span class="class"><span class="keyword">type</span>].<span class="title">push</span>(<span class="params"> element </span>)</span>;</span><br><span class="line">		<span class="comment">//放到global对象的type数组中</span></span><br><span class="line">		<span class="comment">//用于trigger函数调用</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="jQuery-fn-bind函数"><a href="#jQuery-fn-bind函数" class="headerlink" title="jQuery.fn.bind函数"></a>jQuery.fn.bind函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bind: <span class="function"><span class="keyword">function</span>(<span class="params"> type, fn </span>) </span>&#123;</span><br><span class="line">	<span class="comment">//如果fn是字符串</span></span><br><span class="line">	<span class="comment">//比如".css()",那么就执行$(this).css()方法</span></span><br><span class="line">	<span class="keyword">if</span> ( fn.constructor == <span class="built_in">String</span> )</span><br><span class="line">		fn = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"e"</span>, ( !fn.indexOf(<span class="string">"."</span>) ? <span class="string">"$(this)"</span> : <span class="string">"return "</span> ) + fn);</span><br><span class="line">	jQuery.event.add( <span class="keyword">this</span>, type, fn );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/08/28/hexo-cli_contextjs/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/08/28/hexo-cli_contextjs/" class="post-title-link" itemprop="url">hexo-cli源码分析之context.js</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-08-28 21:55:04" itemprop="dateCreated datePublished" datetime="2016-08-28T21:55:04+08:00">2016-08-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="hexo-cli-1-0-2源码解读"><a href="#hexo-cli-1-0-2源码解读" class="headerlink" title="hexo-cli 1.0.2源码解读"></a>hexo-cli 1.0.2源码解读</h2><h3 id="hexo入口函数中的Context"><a href="#hexo入口函数中的Context" class="headerlink" title="hexo入口函数中的Context"></a>hexo入口函数中的Context</h3><p>hexo.js中定义了context.js，用来实例化hexo对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Context</span>(<span class="params">base, args</span>) </span>&#123;</span><br><span class="line">  base = base || process.cwd();</span><br><span class="line">  args = args || &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  EventEmitter.call(<span class="keyword">this</span>);<span class="comment">//用到了nodejs的EventEmitter</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.base_dir = base;</span><br><span class="line">  <span class="keyword">this</span>.log = logger(args);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.extend = &#123;</span><br><span class="line">    <span class="attr">console</span>: <span class="keyword">new</span> ConsoleExtend()</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>(<span class="string">'util'</span>).inherits(Context, EventEmitter);</span><br><span class="line"></span><br><span class="line">Context.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Do nothing</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Context.prototype.call = <span class="function"><span class="keyword">function</span>(<span class="params">name, args, callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!callback &amp;&amp; <span class="keyword">typeof</span> args === <span class="string">'function'</span>) &#123;<span class="comment">//如果没有callback且args为函数</span></span><br><span class="line">    callback = args;</span><br><span class="line">    args = &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//用了bluebird的Promise</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> c = self.extend.console.get(name);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (c) &#123;</span><br><span class="line">      c.call(self, args).then(resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Console `'</span> + name + <span class="string">'` has not been registered yet!'</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;).asCallback(callback);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Context.prototype.exit = <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (err) &#123;</span><br><span class="line">    <span class="keyword">this</span>.log.fatal(</span><br><span class="line">      &#123;<span class="attr">err</span>: err&#125;,</span><br><span class="line">      <span class="string">'Something\'s wrong. Maybe you can find the solution here: %s'</span>,</span><br><span class="line">      chalk.underline(<span class="string">'http://hexo.io/docs/troubleshooting.html'</span>)</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Context.prototype.unwatch = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Do nothing</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = Context;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/08/28/hexo-cli_hexojs/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/08/28/hexo-cli_hexojs/" class="post-title-link" itemprop="url">hexo-cli源码分析之入口文件hexo.js</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-08-28 10:40:21" itemprop="dateCreated datePublished" datetime="2016-08-28T10:40:21+08:00">2016-08-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="hexo-cli-1-0-2源码解读"><a href="#hexo-cli-1-0-2源码解读" class="headerlink" title="hexo-cli 1.0.2源码解读"></a>hexo-cli 1.0.2源码解读</h2><h3 id="hexo入口函数"><a href="#hexo入口函数" class="headerlink" title="hexo入口函数"></a>hexo入口函数</h3><p>package.json中定义了<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"bin"</span>: &#123;</span><br><span class="line">  <span class="string">"hexo"</span>: <span class="string">"./bin/hexo"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>所以到bin目录下的hexo<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br><span class="line"><span class="meta"></span><br><span class="line">'use strict'</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>(<span class="string">'../lib/hexo'</span>)();</span><br></pre></td></tr></table></figure></p>
+<p>再到lib目录下的hexo.js，发现定义了module.exports= entry,那么找到entry方法</p>
+<p>在没有找到hexo模块的情况下什么命令都不起作用<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">entry</span>(<span class="params">cwd, args</span>) </span>&#123;</span><br><span class="line">  cwd = cwd || process.cwd();</span><br><span class="line">  <span class="comment">//如果没有输入cwd那么就获取运行当前脚本的工作目录的路径</span></span><br><span class="line">  <span class="comment">//ChangeWorkingDirectory cwd</span></span><br><span class="line">  <span class="comment">//比如 hexo n 那么就是&#123; _: [ 'n' ] &#125;</span></span><br><span class="line">  <span class="comment">//hexo n --cwd e:\ss 就是&#123; _: [ 'help' ], cwd: 'e:\\ss' &#125;</span></span><br><span class="line">  args = camelCaseKeys(args || minimist(process.argv.slice(<span class="number">2</span>)));</span><br><span class="line"></span><br><span class="line">  <span class="comment">//Context中注册了EventEmitter</span></span><br><span class="line">  <span class="keyword">var</span> hexo = <span class="keyword">new</span> Context(cwd, args);</span><br><span class="line">  <span class="keyword">var</span> log = hexo.log;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Change the title in console</span></span><br><span class="line">  process.title = <span class="string">'hexo'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handleError</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">    log.fatal(err);</span><br><span class="line">    process.exit(<span class="number">2</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//findPkg其实就是检查package.json中是否有hexo</span></span><br><span class="line">  <span class="comment">//并加载node_modules中的hexo 模块</span></span><br><span class="line">  <span class="keyword">return</span> findPkg(cwd, args).then(<span class="function"><span class="keyword">function</span>(<span class="params">path</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!path) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    hexo.base_dir = path;</span><br><span class="line">    <span class="comment">//加载node_modules中的hexo模块</span></span><br><span class="line">    <span class="keyword">return</span> loadModule(path, args).catch(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      log.error(<span class="string">'Local hexo not found in %s'</span>, chalk.magenta(tildify(path)));</span><br><span class="line">      log.error(<span class="string">'Try running: \'npm install hexo --save\''</span>);</span><br><span class="line">      process.exit(<span class="number">2</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">mod</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mod) hexo = mod;</span><br><span class="line">    log = hexo.log;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">require</span>(<span class="string">'./console'</span>)(hexo);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> hexo.init();</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> cmd = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!args.h &amp;&amp; !args.help) &#123;</span><br><span class="line">      cmd = args._.shift();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (cmd) &#123;</span><br><span class="line">        <span class="keyword">var</span> c = hexo.extend.console.get(cmd);</span><br><span class="line">        <span class="keyword">if</span> (!c) cmd = <span class="string">'help'</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cmd = <span class="string">'help'</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      cmd = <span class="string">'help'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    watchSignal(hexo);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> hexo.call(cmd, args).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> hexo.exit();</span><br><span class="line">    &#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> hexo.exit(err).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        handleError(err);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;).catch(handleError);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://www.css88.com/archives/4548" target="_blank" rel="external">process</a><br><a href="http://biyeah.iteye.com/blog/1308954" target="_blank" rel="external">NodeJs中的EventEmitter</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/08/27/jquery_staticfilter/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -618,479 +1090,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/08/27/jquery_filter/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/08/27/jquery_filter/" class="post-title-link" itemprop="url">jquery之filter函数解析</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-08-27 08:46:49" itemprop="dateCreated datePublished" datetime="2016-08-27T08:46:49+08:00">2016-08-27</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:28:39" itemprop="dateModified" datetime="2019-05-09T20:28:39+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="jquery1-0源码解读"><a href="#jquery1-0源码解读" class="headerlink" title="jquery1.0源码解读"></a>jquery1.0源码解读</h2><h3 id="filter函数"><a href="#filter函数" class="headerlink" title="filter函数"></a>filter函数</h3><p>1.0源码:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">filter: <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//返回pushStack的结果</span></span><br><span class="line">	<span class="comment">//这种 与加或 的方法值得学习</span></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.pushStack(</span><br><span class="line">		<span class="comment">//如果参数是数组 那么就调用map函数</span></span><br><span class="line">		<span class="comment">//返回新的结果</span></span><br><span class="line">		t.constructor == <span class="built_in">Array</span> &amp;&amp;</span><br><span class="line">		jQuery.map(<span class="keyword">this</span>,<span class="function"><span class="keyword">function</span>(<span class="params">a</span>)</span>&#123;</span><br><span class="line">			<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; t.length; i++ )</span><br><span class="line">				<span class="keyword">if</span> ( jQuery.filter(t[i],[a]).r.length )</span><br><span class="line">					<span class="keyword">return</span> a;</span><br><span class="line">		&#125;) ||</span><br><span class="line">		<span class="comment">//如果参数是true那么就直接get()获取</span></span><br><span class="line">		<span class="comment">//如果参数是false那么就返回空数组</span></span><br><span class="line">		t.constructor == <span class="built_in">Boolean</span> &amp;&amp;</span><br><span class="line">		( t ? <span class="keyword">this</span>.get() : [] ) ||</span><br><span class="line">		<span class="comment">//如果参数是函数那么就调用grep函数</span></span><br><span class="line">		t.constructor == <span class="built_in">Function</span> &amp;&amp;</span><br><span class="line">		jQuery.grep( <span class="keyword">this</span>, t ) ||</span><br><span class="line">		<span class="comment">//如果参数是其他类型那么就调用静态的filter函数</span></span><br><span class="line">		jQuery.filter(t,<span class="keyword">this</span>).r, <span class="built_in">arguments</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="根据函数类型判断再内部调用不同的函数："><a href="#根据函数类型判断再内部调用不同的函数：" class="headerlink" title="根据函数类型判断再内部调用不同的函数："></a>根据函数类型判断再内部调用不同的函数：</h2><h3 id="1-grep函数内部就是遍历元素数组，调用参数函数t，如果满足t函数，那么就push到result数组。"><a href="#1-grep函数内部就是遍历元素数组，调用参数函数t，如果满足t函数，那么就push到result数组。" class="headerlink" title="1.grep函数内部就是遍历元素数组，调用参数函数t，如果满足t函数，那么就push到result数组。"></a>1.grep函数内部就是遍历元素数组，调用参数函数t，如果满足t函数，那么就push到result数组。</h3><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">grep: <span class="built_in">function</span>(elems, fn, <span class="built_in">inv</span>) &#123;</span><br><span class="line">	<span class="comment">// If a string is passed in for the function, make a function</span></span><br><span class="line">	<span class="comment">// for it (a handy shortcut)</span></span><br><span class="line">	<span class="keyword">if</span> ( <span class="function"><span class="keyword">fn</span>.<span class="title">constructor</span> </span>== <span class="keyword">String</span> )</span><br><span class="line">		<span class="function"><span class="keyword">fn</span> </span>= <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"a"</span>,<span class="string">"i"</span>,<span class="string">"return "</span> + fn);</span><br><span class="line">	<span class="comment">//定义局部数组</span></span><br><span class="line">	var result = [];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Go through the array, only saving the items</span></span><br><span class="line">	<span class="comment">// that pass the validator function</span></span><br><span class="line">	<span class="keyword">for</span> ( var i = <span class="number">0</span>; i &lt; elems.length; i++ )</span><br><span class="line">		if ( !<span class="built_in">inv</span> &amp;&amp; <span class="keyword">fn</span>(elems[i],i) || <span class="built_in">inv</span> &amp;&amp; !<span class="keyword">fn</span>(elems[i],i) )</span><br><span class="line">			result.push( elems[i] );</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>比如<br><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> elems = $(<span class="string">'li'</span>);</span><br><span class="line"></span><br><span class="line">elems.filter(<span class="function"><span class="keyword">function</span>(<span class="params">index</span>) </span>&#123;</span><br><span class="line">	<span class="comment">//index就是elems的一个元素</span></span><br><span class="line"> 		<span class="keyword">return</span> $(<span class="string">"strong"</span>,index).length == <span class="number">1</span>;<span class="comment">//</span></span><br><span class="line">&#125;).css(<span class="string">'background-color'</span>, <span class="string">'red'</span>);</span><br></pre></td></tr></table></figure></p>
-<p>jQuery的静态方法是通过extent扩展方法生成的：<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jQuery</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jQuery.extend = <span class="function"><span class="keyword">function</span><span class="params">(obj,prop)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//巧妙的运用了obj =this;转换了角色</span></span><br><span class="line">	<span class="comment">//obj就变成jQuery</span></span><br><span class="line">	<span class="comment">//prop就变成了obj</span></span><br><span class="line">	<span class="keyword">if</span> ( !prop ) &#123; prop = obj; obj = <span class="keyword">this</span>; &#125;</span><br><span class="line">	<span class="keyword">for</span> ( <span class="keyword">var</span> i <span class="keyword">in</span> prop ) obj[i] = prop[i];</span><br><span class="line">	<span class="keyword">return</span> obj;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//jQuery静态方法就可以通过如下方法引入</span></span><br><span class="line">jQuery.extend(&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/08/26/entityframework-first/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/08/26/entityframework-first/" class="post-title-link" itemprop="url">entityframework_随想</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-08-26 13:51:05" itemprop="dateCreated datePublished" datetime="2016-08-26T13:51:05+08:00">2016-08-26</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:27:51" itemprop="dateModified" datetime="2019-05-09T20:27:51+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="EntityFramework之DbContext"><a href="#EntityFramework之DbContext" class="headerlink" title="EntityFramework之DbContext"></a>EntityFramework之DbContext</h2><h3 id="1-IdentityDbContext-貌似在AutomaticMigrationsEnabled-false时仍然可以生成数据库。DbContext貌似就不可以。"><a href="#1-IdentityDbContext-貌似在AutomaticMigrationsEnabled-false时仍然可以生成数据库。DbContext貌似就不可以。" class="headerlink" title="1. IdentityDbContext 貌似在AutomaticMigrationsEnabled=false时仍然可以生成数据库。DbContext貌似就不可以。"></a>1. IdentityDbContext 貌似在AutomaticMigrationsEnabled=false时仍然可以生成数据库。DbContext貌似就不可以。</h3><h3 id="2-AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data-loss之类的错误，可能跟-MigrationHistory表有关。"><a href="#2-AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data-loss之类的错误，可能跟-MigrationHistory表有关。" class="headerlink" title="2. AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data loss之类的错误，可能跟_MigrationHistory表有关。"></a>2. AutomaticMigration为true时删除数据库某个表的字段后再新增实体的属性时，有可能会报data loss之类的错误，可能跟_MigrationHistory表有关。</h3><h3 id="3-把-Migration表清空后，如果对象新增属性，会报数据库中已存在名为-‘’-的对象的错误-。"><a href="#3-把-Migration表清空后，如果对象新增属性，会报数据库中已存在名为-‘’-的对象的错误-。" class="headerlink" title="3. 把_Migration表清空后，如果对象新增属性，会报数据库中已存在名为 ‘’ 的对象的错误 。"></a>3. 把_Migration表清空后，如果对象新增属性，会报数据库中已存在名为 ‘’ 的对象的错误 。</h3><p>一开始如果没有用AutomaticMigration生成数据库，之后新增对象属性，如果配置了Database.SetInitializer 那么会报已存在””的对象。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/08/25/comeback/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/08/25/comeback/" class="post-title-link" itemprop="url">i come back</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-08-25 22:35:01" itemprop="dateCreated datePublished" datetime="2016-08-25T22:35:01+08:00">2016-08-25</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>**将近一年没写博客了，这次回来希望能坚持下去。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/41/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/41/">41</a><span class="page-number current">42</span><a class="page-number" href="/page/43/">43</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/43/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/41/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/41/">41</a><span class="page-number current">42</span><a class="page-number" href="/page/43/">43</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/43/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1132,7 +1136,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">225</span>
+                    <span class="site-state-item-count">228</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1225,7 +1229,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1297,7 +1305,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

@@ -323,6 +323,488 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/21/angular-injector-service/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/21/angular-injector-service/" class="post-title-link" itemprop="url">angularjs源码分析--创建service</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-21 19:57:09" itemprop="dateCreated datePublished" datetime="2020-03-21T19:57:09+08:00">2020-03-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-23 21:07:39" itemprop="dateModified" datetime="2020-03-23T21:07:39+08:00">2020-03-23</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>angular中的service服务方法很多地方都会可以用到，内部其实也是依赖angularjs强大的依赖注入能力。<br>我们先看昨天文章<a href="https://mp.weixin.qq.com/s/2F0Zs9cRiY5AjEC0Ez0oOw" target="_blank" rel="external">模块创建</a>使用的案例：</p>
+<h2 id="angular-module"><a href="#angular-module" class="headerlink" title="angular.module"></a>angular.module</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建myModule模块</span></span><br><span class="line"><span class="keyword">var</span> myModule = angular.module(<span class="string">'myModule'</span>, []);</span><br><span class="line">myModule.service(<span class="string">'myService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.my = <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//创建注入器，把service放入providerCache</span></span><br><span class="line"><span class="keyword">var</span> injector = angular.injector([<span class="string">"myModule"</span>]);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">explicit</span>(<span class="params">serviceA</span>) </span>&#123;alert(serviceA.my);&#125;;</span><br><span class="line">explicit.$inject = [<span class="string">'myService'</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取providerCache，调用构造函数，弹出0.</span></span><br><span class="line">injector.invoke(explicit);</span><br></pre></td></tr></table></figure>
+<h2 id="service"><a href="#service" class="headerlink" title="service"></a>service</h2><p>关于angular模块的创建，我们上一篇文章已经讲过，我们就看下模块的service方法,在新建模块后这个模块<br>实例就拥有了service函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> invokeQueue = [];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">  <span class="attr">_invokeQueue</span>: invokeQueue,</span><br><span class="line">  <span class="attr">service</span>: invokeLaterAndSetModuleName(<span class="string">'$provide'</span>, <span class="string">'service'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeLaterAndSetModuleName</span>(<span class="params">provider, method</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//实际的service方法 ，通过闭包把$provide 和service 放入返回函数中</span></span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">recipeName, factoryFunction</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (factoryFunction &amp;&amp; isFunction(factoryFunction)) factoryFunction.$$moduleName = name;</span><br><span class="line">        invokeQueue.push([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">        <span class="comment">//比如service 就是 provider= $provide  method = service</span></span><br><span class="line">        <span class="keyword">return</span> moduleInstance;</span><br><span class="line">      &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>那么我们就可以知道在调用service的方法其实就是把$provide,service,还有参数(这边就是arguments)放入invokeQueue中，<br>从名字看出来这是个调用队列，那就有个疑问了，这个invokeQueue是干啥的呢？ 什么时候会调用这个invokeQueue呢？<br>那就是createInjector函数中的loadModules函数。</p>
+<h3 id="loadModules"><a href="#loadModules" class="headerlink" title="loadModules"></a>loadModules</h3><p>loadModules函数会在createInjector的时候去调用，看看它对service起的作用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createInjector</span>(<span class="params">modulesToLoad</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> runBlocks = loadModules(modulesToLoad);</span><br><span class="line"></span><br><span class="line">   <span class="comment">//模块加载</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">loadModules</span>(<span class="params">modulesToLoad</span>) </span>&#123;</span><br><span class="line">    assertArg(isUndefined(modulesToLoad) || isArray(modulesToLoad), <span class="string">'modulesToLoad'</span>, <span class="string">'not an array'</span>);</span><br><span class="line">    <span class="keyword">var</span> runBlocks = [], moduleFn;</span><br><span class="line">    <span class="comment">//遍历modulesToLoad数组</span></span><br><span class="line">    forEach(modulesToLoad, <span class="function"><span class="keyword">function</span>(<span class="params">module</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (loadedModules.get(<span class="built_in">module</span>)) <span class="keyword">return</span>;</span><br><span class="line">      loadedModules.put(<span class="built_in">module</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//调用invokeQueue</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">runInvokeQueue</span>(<span class="params">queue</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> i, ii;</span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>, ii = queue.length; i &lt; ii; i++) &#123;</span><br><span class="line">          <span class="keyword">var</span> invokeArgs = queue[i], <span class="comment">//invokeArgs也是个数组</span></span><br><span class="line">              <span class="comment">//获取provider</span></span><br><span class="line">          provider = providerInjector.get(invokeArgs[<span class="number">0</span>]);</span><br><span class="line">          <span class="comment">//调用provider中的方法  </span></span><br><span class="line">          <span class="comment">//比如injectorProvider  调用invoke方法 传入函数</span></span><br><span class="line">          <span class="comment">//函数的参数可以注入</span></span><br><span class="line">          provider[invokeArgs[<span class="number">1</span>]].apply(provider, invokeArgs[<span class="number">2</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (isString(<span class="built_in">module</span>)) &#123;</span><br><span class="line">          <span class="comment">//获取module</span></span><br><span class="line">          <span class="comment">//moduleFn就是 moduleInstance</span></span><br><span class="line">          moduleFn = angularModule(<span class="built_in">module</span>);</span><br><span class="line">          <span class="comment">//moduleFn.requires 比如['ngLocale']</span></span><br><span class="line">          runBlocks = runBlocks.concat(loadModules(moduleFn.requires)).concat(moduleFn._runBlocks);</span><br><span class="line">          runInvokeQueue(moduleFn._invokeQueue);</span><br><span class="line">          <span class="comment">//像module.service时加入的service ，那么需要把这些service加入prividerCache</span></span><br><span class="line">          runInvokeQueue(moduleFn._configBlocks);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isFunction(<span class="built_in">module</span>)) &#123;</span><br><span class="line">            runBlocks.push(providerInjector.invoke(<span class="built_in">module</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isArray(<span class="built_in">module</span>)) &#123;</span><br><span class="line">            runBlocks.push(providerInjector.invoke(<span class="built_in">module</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          assertArgFn(<span class="built_in">module</span>, <span class="string">'module'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (isArray(<span class="built_in">module</span>)) &#123;</span><br><span class="line">          <span class="built_in">module</span> = <span class="built_in">module</span>[<span class="built_in">module</span>.length - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> $injectorMinErr(<span class="string">'modulerr'</span>, <span class="string">"Failed to instantiate module &#123;0&#125; due to:\n&#123;1&#125;"</span>,</span><br><span class="line">                  <span class="built_in">module</span>, e.stack || e.message || e);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> runBlocks;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看到关键一句代码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">传入我们创建service时push进去的数组元素，最关键的就是这两句代码.</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  function runInvokeQueue()&#123;</span><br><span class="line">    provider = providerInjector.get(invokeArgs[0]);</span><br><span class="line">    //调用provider中的方法  </span><br><span class="line">    //比如injectorProvider  调用invoke方法 传入函数</span><br><span class="line">    //函数的参数可以注入</span><br><span class="line">    provider[invokeArgs[1]].apply(provider, invokeArgs[2]);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>invokeArgs[0]就是$provide,invokeArgs[1]就是service,那么实际调用的就是$provide.service函数，参数就是<code>[&#39;myService&#39;, function() {
+            this.my = 0;
+}]</code>,关于$provide.service函数我们下篇文章再分析。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/20/spring-classpathxmlApplicationContext/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/20/spring-classpathxmlApplicationContext/" class="post-title-link" itemprop="url">Spring源码分析之ClassPathXmlApplicationContext</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-20 13:45:00 / 修改时间：14:49:46" itemprop="dateCreated datePublished" datetime="2020-03-20T13:45:00+08:00">2020-03-20</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们在分析Spring源码时，通常会自己创建一个独立的应用上下文，比如本文说的ClassPathXmlApplicationContext。我们在实际开发过程中一般框架内部会初始化一个应用程序上下文，比如springmvc中的XmlWebApplicationContext还有springboot中的AnnotationConfigServletWebServerApplicationContext。</p>
+<h2 id="ClassPathXmlApplicationContext-简介"><a href="#ClassPathXmlApplicationContext-简介" class="headerlink" title="ClassPathXmlApplicationContext 简介"></a>ClassPathXmlApplicationContext 简介</h2><p>官方文档是这么说的：</p>
+<p>Standalone XML application context, taking the context definition files from the class path,<br>interpreting plain paths as class path resource names that include the package path<br>(e.g. “mypackage/myresource.txt”). Useful for test harnesses(测试框架) as well as<br>for application contexts embedded within JARs.</p>
+<p>也就是说它可以创建独立应用程序上下文，获取上下文的定义文件等等。它的主要功能如下：</p>
+<ol>
+<li><p>定义了很多构造函数，只是参数不同，不同的参数具体会影响配置资源的定义和spring应用上下文的刷新(refresh函数)。</p>
+</li>
+<li><p>配置资源路径的不同，获取方式的不同。如果设置configLocations参数，那么会通过该类的父类也就是抽象类AbstractRefreshableConfigApplicationContext的resolvePath函数来解析。如果使用带有class参数的构造函数，那么会使用ClassPathResource来获取资源。</p>
+</li>
+</ol>
+<h3 id="AbstractEnvironment"><a href="#AbstractEnvironment" class="headerlink" title="AbstractEnvironment"></a>AbstractEnvironment</h3><p>resolvePath函数内部其实是调用AbstractEnvironment的resolveRequiredPlaceholders方法，方法内部会调用propertyResolver它的父类AbstractPropertyResolver的resolveRequiredPlaceholders方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ConfigurablePropertyResolver propertyResolver =</span><br><span class="line">			<span class="keyword">new</span> PropertySourcesPropertyResolver(<span class="keyword">this</span>.propertySources);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">resolveRequiredPlaceholders</span><span class="params">(String text)</span> <span class="keyword">throws</span> IllegalArgumentException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.propertyResolver.resolveRequiredPlaceholders(text);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>参考资料：</p>
+<p><a href="https://blog.csdn.net/qq_37960603/article/details/82709660" target="_blank" rel="external">Spring 中 ClassPathXmlApplicationContext 类的简单使用</a><br><a href="https://blog.csdn.net/zhangshk_/article/details/82704010" target="_blank" rel="external">彻底搞懂Class.getResource和ClassLoader.getResource的区别和底层原理</a><br><a href="https://baijiahao.baidu.com/s?id=1655259813981508769&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">SpringMVC加载流程</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/07/06/spring-import-annotation/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/06/spring-import-annotation/" class="post-title-link" itemprop="url">spring源码分析之@Import注解</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-06 17:42:36 / 修改时间：23:03:36" itemprop="dateCreated datePublished" datetime="2019-07-06T17:42:36+08:00">2019-07-06</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Import定义"><a href="#Import定义" class="headerlink" title="@Import定义"></a>@Import定义</h2><p>Indicates one or more @Configuration classes to import.</p>
+<p>表示一个或多个类会被导入，参考@Configuration.</p>
+<p>Provides functionality equivalent to the <import> element in Spring XML.</import></p>
+<p>提供在xml中<import>标签相同的功能.</import></p>
+<p>Allows for importing   @Configuration classes, ImportSelector and  ImportBeanDefinitionRegistrar implementations,as well as regular component classes (as of 4.2; analogous to  AnnotationConfigApplicationContext#register).</p>
+<p>允许导入@Configuration类，ImportSelector和ImportBeanDefinitionRegistrar的实现类,等同于正常的组件类(4.2开始;类似于AnnotationConfigApplicationContext.register).</p>
+<p>不过我从spring文档中看到AnnotationConfigRegistry接口是从4.1版本开始的</p>
+<p>@Bean definitions declared in imported @Configuration classes should be accessed by using org.springframework.beans.factory.annotation.Autowired @Autowired injection. Either the bean itself can be autowired, or the configuration class instance declaring the bean can be autowired. The latter approach allows for explicit, IDE-friendly navigation between @Configuration class methods.</p>
+<p>在导入类里定义的Bean应该可以被Autowired注入访问。bean自身或者定义bean的配置类都能被autowired。后者能在类方法之间被显式的导航. 这个我们在之后使用示例中会展示。</p>
+<p>May be declared at the class level or as a meta-annotation.</p>
+<p>在class层级定义或者当做一个meta-annotation。</p>
+<p>If XML or other non-@Configuration bean definition resources need to be imported, use the @ImportResource annotation instead.</p>
+<p>如果xml或者其他没有@Configuration的bean资源需要被导入，那就使用@ImportResource注解来替代。</p>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://www.jianshu.com/p/7eb0c2b214a7" target="_blank" rel="external">Spring Import 三种用法与源码解读</a></li>
+<li><a href="https://blog.csdn.net/pange1991/article/details/81356594" target="_blank" rel="external">Spring @Import注解 —— 导入资源</a></li>
+<li><a href="https://blog.csdn.net/horacehe16/article/details/79811763" target="_blank" rel="external">@Autowired用法详解</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/06/26/spring-harvest/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -642,499 +1124,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/06/26/spring-source-BeanFactory/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/06/26/spring-source-BeanFactory/" class="post-title-link" itemprop="url">spring5.1.1源码剖析之BeanFactory接口</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-26 13:42:54 / 修改时间：21:55:42" itemprop="dateCreated datePublished" datetime="2019-06-26T13:42:54+08:00">2019-06-26</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="关于BeanFactory接口"><a href="#关于BeanFactory接口" class="headerlink" title="关于BeanFactory接口"></a>关于BeanFactory接口</h2><p>The org.springframework.beans and org.springframework.context packages are the basis for Spring Framework’s IoC container. The BeanFactory interface provides an advanced configuration mechanism capable of managing any type of object. ApplicationContext is a sub-interface of BeanFactory。</p>
-<p><code>org.springframework.beans</code> 和 <code>org.springframework.context</code> 两个包是Spring框架IoC<br>容器的基础。BeanFactory接口为任何类型提供了高级配置能力。ApplicationContext是BeanFactory的子接口,它提供了以下功能：</p>
-<ol>
-<li><p>Easier integration with Spring’s AOP features<br>(与Spring AOP特性的简单集成)</p>
-</li>
-<li><p>Message resource handling (for use in internationalization) (处理Message resource,用于国际化)</p>
-</li>
-<li><p>Event publication (事件发布)</p>
-</li>
-<li><p>Application-layer specific contexts such as the WebApplicationContext for use in web applications. (应用层指定上下文,比如Web应用的WebApplicationContext)</p>
-</li>
-</ol>
-<p>为啥这么说呢？我们来看AppplicationContext接口：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationContext</span> <span class="keyword">extends</span> <span class="title">EnvironmentCapable</span>, <span class="title">ListableBeanFactory</span>, <span class="title">HierarchicalBeanFactory</span>,</span><br><span class="line">  <span class="title">MessageSource</span>, <span class="title">ApplicationEventPublisher</span>, <span class="title">ResourcePatternResolver</span> </span>&#123;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>ApplicationEventPublisher跟Event publication相关</li>
-<li>MessageSource跟Message resource handling相关</li>
-</ol>
-<p>In short, the BeanFactory provides the configuration framework and basic functionality, and the ApplicationContext adds more enterprise-specific functionality. The ApplicationContext is a complete superset of the BeanFactory and is used exclusively in this chapter in descriptions of Spring’s IoC container.</p>
-<p>大致意思如下：</p>
-<p>简单的说，BeanFactory提供配置框架和基础的函数，子接口ApplicationContext加入了针对商业特定的方法。<br>ApplicationContext是BeanFactory完整的超集，在这个Spring IoC容器章节描述中会专门使用。</p>
-<p>In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called beans. A bean is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container. Otherwise, a bean is simply one of many objects in your application. Beans, and the dependencies among them, are reflected in the configuration metadata used by a container.</p>
-<p>在Spring世界里，构成应用程序主干和被IoC容器管理的对象称之为beans。一个bean要么实例化，组装，要么被容器管理。除此以外，一个bean就是你应用里许多对象中的一个。<br>Beans和他们的依赖是在容器使用的配置元数据里反射的。</p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html" target="_blank" rel="external"> Introduction to the Spring IoC Container and Beans</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/06/18/spring-cloud-zuul/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/06/18/spring-cloud-zuul/" class="post-title-link" itemprop="url">Spring Cloud zuul知识点和问题整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-18 15:45:51" itemprop="dateCreated datePublished" datetime="2019-06-18T15:45:51+08:00">2019-06-18</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><a href="https://www.cnblogs.com/lexiaofei/p/7080257.html" target="_blank" rel="external">zuul入门（1）zuul 的概念和原理</a></li>
-<li><a href="https://www.liangzl.com/get-article-detail-20957.html" target="_blank" rel="external">白话SpringCloud | 第九章：路由网关(Zuul)的使用</a></li>
-<li><a href="https://www.cnblogs.com/hellxz/p/9282756.html" target="_blank" rel="external">Spring Cloud (十三) Zuul：静态路由、静态过滤器与动态路由的实现</a></li>
-<li><a href="https://blog.csdn.net/forezp/article/details/69934399" target="_blank" rel="external">史上最简单的SpringCloud教程 | 第四篇:断路器（Hystrix）</a></li>
-<li><a href="http://blog.didispace.com/spring-cloud-tips-ribbon-eager/" target="_blank" rel="external">Spring Cloud实战小贴士：Ribbon的饥饿加载(eager-load)模式</a></li>
-<li><a href="https://blog.csdn.net/lidew521/article/details/84661158" target="_blank" rel="external">SpringCloud工作笔记069—The Hystrix timeout of 60000ms for the command sc-auth is set lower than the</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/06/18/spring-cloud-eureka/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/06/18/spring-cloud-eureka/" class="post-title-link" itemprop="url">Spring Cloud eureka知识点和问题整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-18 12:52:05" itemprop="dateCreated datePublished" datetime="2019-06-18T12:52:05+08:00">2019-06-18</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="cannot-excute-request-on-any-known-Server"><a href="#cannot-excute-request-on-any-known-Server" class="headerlink" title="cannot excute request  on any known Server"></a>cannot excute request  on any known Server</h3><ol>
-<li><a href="https://blog.csdn.net/weixin_42465125/article/details/88337698" target="_blank" rel="external">新版Eureka Server 加上Spring Security安全认证之后，客户端无法注册和客户端启动Up后就Down的问题</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1176,7 +1170,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">225</span>
+                    <span class="site-state-item-count">228</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1269,7 +1263,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1341,7 +1339,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

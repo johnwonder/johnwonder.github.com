@@ -323,6 +323,459 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/06/06/power-algorithm/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/06/06/power-algorithm/" class="post-title-link" itemprop="url">每日算法一题之判断一个数是否是2的n次方</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-06 17:15:59 / 修改时间：17:44:59" itemprop="dateCreated datePublished" datetime="2020-06-06T17:15:59+08:00">2020-06-06</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>题目： 如何判断一个数是否是2的n次方，要求时间复杂度为O(1).</p>
+<p>常规数学解法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isPowerOfTwo</span>(<span class="params">n</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n &gt; <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="keyword">while</span>(n &gt; <span class="number">1</span>)&#123;</span><br><span class="line">       <span class="keyword">if</span>(n%<span class="number">2</span> == <span class="number">0</span>)&#123;</span><br><span class="line">        n = n / <span class="number">2</span>;</span><br><span class="line">       &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果面试官看见你写出这样的代码，可能印象就会大打折扣，因为时间复杂度不是O(1),虽然解法没问题，那么我们要往编程方面换个思路。</p>
+<p>思路： 考察的是位运算，尤其是对二进制的理解；当一个数为2的n 次方时，整个二进制数，只有他本位是1 其他位为0，如果我们给这个数减一，那么本位变为0 其他位全部变成1；我们可以通过&amp;运算， 如果为0即为2的n次方; 本题暂不讨论n为分数（既浮点数）的情况。</p>
+<p>例子： 我们通过8来进行举例 他是2的3次方。</p>
+<p>0 0 0 0 1 0 0 0 //数字8<br>0 0 0 0 0 1 1 1 //数字7<br>0 0 0 0 0 0 0 0 //&amp;运算的结果</p>
+<p>代码实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  <span class="keyword">boolean</span> <span class="title">isPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> n &gt; <span class="number">0</span> &amp;&amp; (n &amp; n - <span class="number">1</span>) == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://blog.csdn.net/Fly_Fly_Zhang/article/details/86547604" target="_blank" rel="external">随笔-如何判断一个数是否是2的n次方O(1)算法</a></li>
+<li><a href="https://www.jb51.net/article/129068.htm" target="_blank" rel="external">js 判断一个数字是不是2的n次方幂的实例</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/18/mybatisplus-sql-session/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/04/18/mybatisplus-sql-session/" class="post-title-link" itemprop="url">mybatisplus版本引发的连接泄漏血案</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-18 15:51:25 / 修改时间：16:45:20" itemprop="dateCreated datePublished" datetime="2020-04-18T15:51:25+08:00">2020-04-18</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上周几次接到同事电话说线上环境用户登陆失败，我一查线上日志看到很多Connection timeout的错，</p>
+<p>因为我们用到了HikariCP连接池，理论上来说不会出现连接泄漏的问题，我就加了HikariCP的<code>leakDetectionThreshold</code>连接泄漏检测配置。</p>
+<p>今晚又被提示说登陆不上了，我一看日志，果真如提前预料的那样也是<code>Connection timeout</code>的错，但是这次竟然日志中没有出现<code>Apparent connection leak detected</code>类似的字样，甚是奇怪。</p>
+<p>其实在去年年底的时候已经出现过几次，当时我是定位到mybatisplus中ActiveRecord用法(比如updateById等操作)会导致Connection timeout，当时也没去深入源码看是什么问题就草草略过，只是叫同事不要用ActiveRecord的操作(可惜同事还是继续用的乐此不疲)，后来又遇到多数据源下Spring事务不生效的问题，是因为不是用同一个dynamicDatasource的Bean导致的，之后也想当然认为ActiveRecord引发的Connection timout是这个问题引起的，当时系统也没多少用户访问，所以问题没暴露的频繁。</p>
+<p>这次几回出现这个异常看来是另有隐情， 我想从根本上解决问题，首先就把日志级别调为debug模式，然后我结合着用户日志行为分析（这几次是每到傍晚6点过后就会出现问题),模拟用户界面操作，果然过一会连接数飙升，在HikariCP经过Cleanup后也没移除，既有连接一直处于active状态，说明连接是存在泄漏。接着我发现了为什么<code>leakDetectionThreshold</code>没生效？竟然是因为我没在代码里加上相应配置，只是在配置文件中加上而已(因为我们是用的自定义数据源，所以配置也需要在HikariCP的配置Bean中手动加上)。</p>
+<p>果然过了我配置的60s检测时间过后就抛出了一条<code>Apparent connection leak detected</code>的异常，异常定位到我们使用ActiveRecord的updateById那边，这边我也同时想到了 在我们写的类似代码里调用ActiveRecord的时候是不会被Spring管理的，因为我们操作的Entity是自己new出来然后去selectById的，不是经过注入的Service去调用的。 接着我下意识点开updateById的定义，发现了重要线索，里面竟然在update过后没有调用closeSession，我也看了insert方法是有close操作的。所以到这里我想应该是mybatisplus本身的bug,然后我一看我们项目引用的版本竟然是RC版，我瞬间感觉崩溃(当时竟然没去考虑这个版本问题)。为了证明这一点，我去github上的mybatisplus版本release记录中去看，发现他们在3.0.4中才把这个bug修复，加上了finally close的操作，而我们用的只是3.0.1-RC版本。</p>
+<p>最后我把pom中mybatisplus版本升到了3.0.4把这个坑给填上了。</p>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://www.jianshu.com/p/3f6f17402551" target="_blank" rel="external">聊聊hikari连接池的leakDetectionThreshold</a></li>
+<li><a href="https://github.com/baomidou/mybatis-plus/commit/1ddc7c6f3fa2def6f99529f6eb7b9bc6b9ba0874#diff-15832634917bd47cfba57e75b0d99690" target="_blank" rel="external">去除全局缓存sqlSession,增加Model,通用service层sqlSession释放.修改测试用例异常范围</a></li>
+<li><a href="https://gitee.com/baomidou/mybatis-plus/issues/IPCR7" target="_blank" rel="external">使用mybatis plus的activerecorde怎么开启事务呢</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/14/spring-annotation-config/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/04/14/spring-annotation-config/" class="post-title-link" itemprop="url">spring中的annotation-config</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-14 21:57:16 / 修改时间：21:57:55" itemprop="dateCreated datePublished" datetime="2020-04-14T21:57:16+08:00">2020-04-14</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/09/spring-contextinitializer/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -624,476 +1077,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/07/spring-applicationcontextInitializer/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/04/07/spring-applicationcontextInitializer/" class="post-title-link" itemprop="url">spring中的ApplicationContextInitializer揭秘</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-04-07 21:49:11" itemprop="dateCreated datePublished" datetime="2020-04-07T21:49:11+08:00">2020-04-07</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-04-09 22:17:52" itemprop="dateModified" datetime="2020-04-09T22:17:52+08:00">2020-04-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>看<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">在它上面有这么几行注释：</span><br><span class="line"></span><br><span class="line">Note that clients of any &#123;@link ConfigurableEnvironment&#125; may further customize property sources via the &#123;@link #getPropertySources()&#125; accessor, typically within an &#123;@link org.springframework.context.ApplicationContextInitializer ApplicationContextInitializer&#125;.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">意思就是实现ConfigurableEnvironment的应用都有可能通过getPropertySources访问器来自定义property sources,比如通过ApplicationContextInitializer。</span><br><span class="line"></span><br><span class="line">那么我们来看看ApplicationContextInitializer这个接口是怎样的</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```Java</span><br><span class="line">public interface ApplicationContextInitializer&lt;C extends ConfigurableApplicationContext&gt; &#123;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Initialize the given application context.</span><br><span class="line">	 * @param applicationContext the application to configure</span><br><span class="line">	 */</span><br><span class="line">	void initialize(C applicationContext);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>里面就一个initialize函数，但是传入了一个重要的参数applicationContext,而且这个参数继承自ConfigurableApplicationContext，这个接口就如之前提到的实现了EnvironmentCapable接口，有了getEnvironment方法，就可以通过类似如下例子来自定义：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ConfigurableEnvironment env = applicationContext.getEnvironment();</span><br><span class="line"> env.getPropertySources().addLast(<span class="keyword">new</span> PropertySourceX(...));</span><br></pre></td></tr></table></figure>
-<p>那有哪些实现了ApplicationContextInitializer接口的类呢，有什么作用呢？下回再解！</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/06/spring-envrionment-profile/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/04/06/spring-envrionment-profile/" class="post-title-link" itemprop="url">解开spring中Profile的神秘面纱之一</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-04-06 21:26:07 / 修改时间：21:48:57" itemprop="dateCreated datePublished" datetime="2020-04-06T21:26:07+08:00">2020-04-06</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天在看<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```Java</span><br><span class="line">/**</span><br><span class="line">	 * Name of property to set to specify active profiles: &#123;@value&#125;. Value may be comma</span><br><span class="line">	 * delimited.</span><br><span class="line">	 * &lt;p&gt;Note that certain shell environments such as Bash disallow the use of the period</span><br><span class="line">	 * character in variable names. Assuming that Spring&apos;s &#123;@link SystemEnvironmentPropertySource&#125;</span><br><span class="line">	 * is in use, this property may be specified as an environment variable as</span><br><span class="line">	 * &#123;@code SPRING_PROFILES_ACTIVE&#125;.</span><br><span class="line">	 * @see ConfigurableEnvironment#setActiveProfiles</span><br><span class="line">	 */</span><br><span class="line">	public static final String ACTIVE_PROFILES_PROPERTY_NAME = &quot;spring.profiles.active&quot;;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Name of property to set to specify profiles active by default: &#123;@value&#125;. Value may</span><br><span class="line">	 * be comma delimited.</span><br><span class="line">	 * &lt;p&gt;Note that certain shell environments such as Bash disallow the use of the period</span><br><span class="line">	 * character in variable names. Assuming that Spring&apos;s &#123;@link SystemEnvironmentPropertySource&#125;</span><br><span class="line">	 * is in use, this property may be specified as an environment variable as</span><br><span class="line">	 * &#123;@code SPRING_PROFILES_DEFAULT&#125;.</span><br><span class="line">	 * @see ConfigurableEnvironment#setDefaultProfiles</span><br><span class="line">	 */</span><br><span class="line">	public static final String DEFAULT_PROFILES_PROPERTY_NAME = &quot;spring.profiles.default&quot;;</span><br></pre></td></tr></table></figure></p>
-<p>这里面的<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">那么这个类里就包含了对我们这些配置的读写操作。参考网上的说法：</span><br><span class="line"></span><br><span class="line">如果当spring.profiles.active属性被设置时，那么Spring会优先使用该属性对应值来激活Profile。当spring.profiles.active没有被设置时，那么Spring会根据spring.profiles.default属性的对应值来进行Profile进行激活。如果上面的两个属性都没有被设置，那么就不会有任务Profile被激活，只有定义在Profile之外的Bean才会被创建。</span><br><span class="line"></span><br><span class="line">我们先看对默认配置的读写操作：</span><br><span class="line"></span><br><span class="line">### setDefaultProfiles</span><br><span class="line"></span><br><span class="line">```Java</span><br><span class="line">    /**</span><br><span class="line">    * Specify the set of profiles to be made active by default if no other profiles</span><br><span class="line">    * are explicitly made active through &#123;@link #setActiveProfiles&#125;.</span><br><span class="line">    * &lt;p&gt;Calling this method removes overrides any reserved default profiles</span><br><span class="line">    * that may have been added during construction of the environment.</span><br><span class="line">    * @see #AbstractEnvironment()</span><br><span class="line">    * @see #getReservedDefaultProfiles()</span><br><span class="line">    */</span><br><span class="line">    //https://blog.csdn.net/jamet/article/details/77508182</span><br><span class="line">    @Override</span><br><span class="line">    public void setDefaultProfiles(String... profiles) &#123;</span><br><span class="line">    Assert.notNull(profiles, &quot;Profile array must not be null&quot;);</span><br><span class="line">      synchronized (this.defaultProfiles) &#123;</span><br><span class="line">        this.defaultProfiles.clear();</span><br><span class="line">        for (String profile : profiles) &#123;</span><br><span class="line">          validateProfile(profile);</span><br><span class="line">          this.defaultProfiles.add(profile);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">      /**</span><br><span class="line">  	 * Validate the given profile, called internally prior to adding to the set of</span><br><span class="line">  	 * active or default profiles.</span><br><span class="line">  	 * &lt;p&gt;Subclasses may override to impose further restrictions on profile syntax.</span><br><span class="line">  	 * @throws IllegalArgumentException if the profile is null, empty, whitespace-only or</span><br><span class="line">  	 * begins with the profile NOT operator (!).</span><br><span class="line">  	 * @see #acceptsProfiles</span><br><span class="line">  	 * @see #addActiveProfile</span><br><span class="line">  	 * @see #setDefaultProfiles</span><br><span class="line">  	 */</span><br><span class="line">  	protected void validateProfile(String profile) &#123;</span><br><span class="line">  		if (!StringUtils.hasText(profile)) &#123;</span><br><span class="line">  			throw new IllegalArgumentException(&quot;Invalid profile [&quot; + profile + &quot;]: must contain text&quot;);</span><br><span class="line">  		&#125;</span><br><span class="line">  		if (profile.charAt(0) == &apos;!&apos;) &#123;</span><br><span class="line">  			throw new IllegalArgumentException(&quot;Invalid profile [&quot; + profile + &quot;]: must not begin with ! operator&quot;);</span><br><span class="line">  		&#125;</span><br><span class="line">  	&#125;</span><br></pre></td></tr></table></figure></p>
-<p>其中defaultProfiles是个Set集合，它会先验证传入的一个或多个profile字符串不能为空且不能以!开头，然后放入集合中。</p>
-<h3 id="doGetDefaultProfiles"><a href="#doGetDefaultProfiles" class="headerlink" title="doGetDefaultProfiles"></a>doGetDefaultProfiles</h3><p>获取默认的Profiles</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Return the set of default profiles explicitly set via</span><br><span class="line"> * &#123;<span class="doctag">@link</span> #setDefaultProfiles(String...)&#125; or if the current set of default profiles</span><br><span class="line"> * consists only of &#123;<span class="doctag">@linkplain</span> #getReservedDefaultProfiles() reserved default</span><br><span class="line"> * profiles&#125;, then check for the presence of the</span><br><span class="line"> * &#123;<span class="doctag">@value</span> #DEFAULT_PROFILES_PROPERTY_NAME&#125; property and assign its value (if any)</span><br><span class="line"> * to the set of default profiles.</span><br><span class="line"> * <span class="doctag">@see</span> #AbstractEnvironment()</span><br><span class="line"> * <span class="doctag">@see</span> #getDefaultProfiles()</span><br><span class="line"> * <span class="doctag">@see</span> #DEFAULT_PROFILES_PROPERTY_NAME</span><br><span class="line"> * <span class="doctag">@see</span> #getReservedDefaultProfiles()</span><br><span class="line"> */</span></span><br><span class="line"><span class="comment">//https://blog.csdn.net/jamet/article/details/77508182</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Set&lt;String&gt; <span class="title">doGetDefaultProfiles</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">synchronized</span> (<span class="keyword">this</span>.defaultProfiles) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.defaultProfiles.equals(getReservedDefaultProfiles())) &#123;</span><br><span class="line">      String profiles = getProperty(DEFAULT_PROFILES_PROPERTY_NAME);</span><br><span class="line">      <span class="keyword">if</span> (StringUtils.hasText(profiles)) &#123;</span><br><span class="line">        setDefaultProfiles(StringUtils.commaDelimitedListToStringArray(</span><br><span class="line">            StringUtils.trimAllWhitespace(profiles)));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.defaultProfiles;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果当前defaultProfiles为保留的Profiles(就是一个单例的包含default的集合)，那么就尝试从<code>propertyResolver</code><br>中获取,然后返回defaultProfiles集合。我们要注意到这边的Set集合实现其实是<code>LinkedHashSet</code>。<br>下回我们讲下ActiveProfiles的操作。</p>
-<p>参考资料:</p>
-<ol>
-<li><a href="https://www.jianshu.com/p/948c303b2253" target="_blank" rel="external">详解Spring中的Profile</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/05/springboot-tomcat-session/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/04/05/springboot-tomcat-session/" class="post-title-link" itemprop="url">springboot应用在同IP下Session冲突该怎么解决</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-04-05 18:08:14 / 修改时间：18:43:11" itemprop="dateCreated datePublished" datetime="2020-04-05T18:08:14+08:00">2020-04-05</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>昨天晚上想解决一个springboot应用中session失效的问题，源于公司生产环境目前是一台服务器部署两个<br>tomcat，应用通过同一个ip访问的时候session会互相冲突。我在网上找了几个解决方案，要么是在tomcat<br>中<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">server配置上添加servlet.sesssion.cookie.name属性，但是这两个我修改后都不见效，最后还把tomcat源码</span><br><span class="line">下载了下来，看它里面的代码是这么写的</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">private static String getConfiguredSessionCookieName(Context context) &#123;</span><br><span class="line"></span><br><span class="line">  // Priority is:</span><br><span class="line">  // 1. Cookie name defined in context</span><br><span class="line">  // 2. Cookie name configured for app</span><br><span class="line">  // 3. Default defined by spec</span><br><span class="line">  if (context != null) &#123;</span><br><span class="line">      String cookieName = context.getSessionCookieName();</span><br><span class="line">      if (cookieName != null &amp;&amp; cookieName.length() &gt; 0) &#123;</span><br><span class="line">          return cookieName;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      SessionCookieConfig scc =</span><br><span class="line">          context.getServletContext().getSessionCookieConfig();</span><br><span class="line">      cookieName = scc.getName();</span><br><span class="line">      if (cookieName != null &amp;&amp; cookieName.length() &gt; 0) &#123;</span><br><span class="line">          return cookieName;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>先从context获取sessionCookieName,如果没有那么再从应用的servletContext中获取sessionCookieConfig,看来我们的思路貌似是<br>没问题的，但是为什么就不生效呢？在浏览器里看cookieName还是<figure class="highlight plain"><figcaption><span>一时半会找不到答案。但是想想解决思路应该是对的，</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">最终目的要把cookie名称给修改掉。</span><br><span class="line"></span><br><span class="line">今早醒来突然想到我们的springboot应用里是根据shiro框架来实现权限和会话管理的，会不会跟这个有关系呢？脑子里突然想到这个应该是个</span><br><span class="line">正确的解决方向，于是乎爬起来看了下工程代码，不看不知道，一看就知道应该就是这边的问题，我们看到shiro框架里的```DefaultWebSessionManager</span><br></pre></td></tr></table></figure></p>
-<p>是这么写的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">DefaultWebSessionManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Cookie cookie = <span class="keyword">new</span> SimpleCookie(<span class="string">"JSESSIONID"</span>);</span><br><span class="line">  cookie.setHttpOnly(<span class="keyword">true</span>);</span><br><span class="line">  <span class="keyword">this</span>.sessionIdCookie = cookie;</span><br><span class="line">  <span class="keyword">this</span>.sessionIdCookieEnabled = <span class="keyword">true</span>;</span><br><span class="line">  <span class="keyword">this</span>.sessionIdUrlRewritingEnabled = <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>到这里就明白了，为啥我们改了tomcat也改了springboot本身的配置不起效果，就是因为我们是通过shiro来控制用户会话和权限控制的，<br>所以相当于是shiro把tomcat还有spring内部的cookie给替代了，那么我们只要定义一个bean继承自shiro的cookie注入然后放入shiro不就行了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"shiro.cookie"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShiroCookie</span> <span class="keyword">extends</span> <span class="title">SimpleCookie</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>问题到这就迎刃而解了，所以我们解决问题的时候也不能在一个方向钻牛角尖，有时候答案可能就在眼前，需要我们转变思路，<br>换个角度思考有可能就豁然开朗了，另外看源码确实可以一定程度上提高我们解决问题的效率。</p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.iteye.com/blog/flym-830658" target="_blank" rel="external">在Intellij idea下为tomcat7设置sessionCookieName</a></li>
-<li><a href="https://www.cnblogs.com/zhenmingliu/archive/2012/12/06/2805353.html" target="_blank" rel="external">tomcat修改jsessionid在cookie中的名称</a></li>
-<li><a href="https://www.cnblogs.com/lick468/p/11108709.html" target="_blank" rel="external">Spring boot 去除URL 里的 JSESSIONID</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1135,7 +1123,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">225</span>
+                    <span class="site-state-item-count">228</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1228,7 +1216,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1300,7 +1292,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

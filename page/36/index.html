@@ -323,6 +323,498 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/22/sbt-command/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/10/22/sbt-command/" class="post-title-link" itemprop="url">sbt_command</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-10-22 14:17:42" itemprop="dateCreated datePublished" datetime="2016-10-22T14:17:42+08:00">2016-10-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="sbt-命令解释"><a href="#sbt-命令解释" class="headerlink" title="sbt 命令解释"></a>sbt 命令解释</h2><h3 id="run-command"><a href="#run-command" class="headerlink" title="run command"></a>run command</h3><p><a href="http://www.scala-sbt.org/0.13/docs/Command-Line-Reference.html" target="_blank" rel="external">run <argument>*</argument></a>Runs a main class, passing along arguments provided on the command line.</p>
+<p>运行一个主类，如果在文件内部定义变量或者直接调用函数，那么会提示如下：</p>
+<figure class="highlight plain"><figcaption><span>class or object definition```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">因为会先编译这个文件。</span><br><span class="line"></span><br><span class="line">文件内部必须包含main方法的类：</span><br><span class="line"></span><br><span class="line">```scala</span><br><span class="line">	object HelloWorld&#123;</span><br><span class="line">	  def main(args: Array[String]) &#123;</span><br><span class="line">	   println(ChecksumAccumulator.calculate(&quot;We&quot;))</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="package-command"><a href="#package-command" class="headerlink" title="package command"></a>package command</h3><p>在sbt交互模式下输入package，会把当前目录下的project打包，然后运行run命令，如果当前能找到object对象并且有main函数，那么就会执行它。</p>
+<h3 id="exit-command"><a href="#exit-command" class="headerlink" title="exit command"></a>exit command</h3><p>输入exit命令退出sbt交互模式。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/22/REPL-import-scala/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/10/22/REPL-import-scala/" class="post-title-link" itemprop="url">scala命令行引入scala文件</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-10-22 13:26:13" itemprop="dateCreated datePublished" datetime="2016-10-22T13:26:13+08:00">2016-10-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala命令行引入scala文件"><a href="#scala命令行引入scala文件" class="headerlink" title="scala命令行引入scala文件"></a>scala命令行引入scala文件</h2><h3 id="scala-REPL"><a href="#scala-REPL" class="headerlink" title="scala REPL"></a>scala REPL</h3><p>The Scala Interpreter (often called a REPL for Read-Evaluate-Print Loop).</p>
+<p>Scala解释器读到一个表达式，对它进行求值，将它打印出来，接着再继续读下一个表达式。这个过程被称做读取–求值–打印–循环，即：REPL。<br>从技术上讲，scala程序并不是一个解释器。实际发生的是，你输入的内容被快速地编译成字节码，然后这段字节码交由Java虚拟机执行。正因为如此，大多数scala程序员更倾向于将它称做“REPL”<br><a href="https://my.oschina.net/fhd/blog/273965" target="_blank" rel="external">scala入门之REPL</a></p>
+<h3 id="scala-i"><a href="#scala-i" class="headerlink" title="scala -i"></a>scala -i</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scala -i extractors.scala</span><br></pre></td></tr></table></figure>
+<p>运行 scala -help 可以看到如下提示：</p>
+<figure class="highlight plain"><figcaption><span><file>    preload <file> before starting the repl```</file></file></span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在启动repl之前预先加载file。</span><br><span class="line"></span><br><span class="line">按照这种方式引入的话，如果碰到companion对象,那么会报如下警告：</span><br><span class="line"></span><br><span class="line">warning: previously defined class FreeUser is not a companion to object FreeUser</span><br><span class="line">.</span><br><span class="line">Companions must be defined together; you may wish to use :paste mode for this.</span><br><span class="line">defined object PreminumUser</span><br><span class="line"></span><br><span class="line">希望你用:paste模式。</span><br><span class="line"></span><br><span class="line">### :paste file</span><br><span class="line"></span><br><span class="line">先进入REPL，然后运行如下命令:</span><br><span class="line"></span><br><span class="line">```:paste file</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/17/hexo-flow-second/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/10/17/hexo-flow-second/" class="post-title-link" itemprop="url">hexo流程梳理之database</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-10-17 22:50:07" itemprop="dateCreated datePublished" datetime="2016-10-17T22:50:07+08:00">2016-10-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Hexo-List命令"><a href="#Hexo-List命令" class="headerlink" title="Hexo List命令"></a>Hexo List命令</h2><p>Hexo List命令实际调用的是<code>plugins/console/list/index.js</code>文件,核心代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> store = &#123;</span><br><span class="line"><span class="attr">page</span>: <span class="built_in">require</span>(<span class="string">'./page'</span>),</span><br><span class="line"><span class="attr">post</span>: <span class="built_in">require</span>(<span class="string">'./post'</span>),</span><br><span class="line"><span class="attr">route</span>: <span class="built_in">require</span>(<span class="string">'./route'</span>),</span><br><span class="line"><span class="attr">tag</span>: <span class="built_in">require</span>(<span class="string">'./tag'</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//外部是调用hexo实例的call函数</span></span><br><span class="line"><span class="comment">//call函数内部从Console中获取命令函数，然后再用js原生的call函数通过hexo实例调用</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">listConsole</span>(<span class="params">args</span>)</span>&#123;</span><br><span class="line"><span class="comment">/* jshint validthis: true */</span></span><br><span class="line"><span class="keyword">var</span> type = args._.shift();<span class="comment">//弹出第一个参数</span></span><br><span class="line"><span class="keyword">var</span> self = <span class="keyword">this</span>;<span class="comment">//hexo实例</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Display help message if user didn't input any arguments</span></span><br><span class="line"><span class="comment">//如果没有输入参数就调用help命令</span></span><br><span class="line"><span class="comment">//this指向hexo对象</span></span><br><span class="line"><span class="comment">//比如输入list tag 那么type就是tag</span></span><br><span class="line"><span class="keyword">if</span> (!type || !store.hasOwnProperty(type))&#123;</span><br><span class="line">  <span class="comment">//如果只输入hexo list 或者 输入store对象中没有的参数</span></span><br><span class="line">  <span class="comment">//先调用hexo实例的call方法</span></span><br><span class="line">  <span class="comment">//方法内部调用help的入口函数</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.call(<span class="string">'help'</span>, &#123;<span class="attr">_</span>: [<span class="string">'list'</span>]&#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//调用hexo实例的load方法</span></span><br><span class="line"><span class="comment">//加载数据库db.json</span></span><br><span class="line"><span class="comment">//然后调用store中存储的type命令</span></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">this</span>.load().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> store[type].call(self, args);</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>load函数内部核心代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...省略</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//调用load_database.js文件，传入hexo实例</span></span><br><span class="line"><span class="keyword">return</span> loadDatabase(<span class="keyword">this</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">Promise</span>.all([</span><br><span class="line">  self.source.process(),</span><br><span class="line">  self.theme.process()</span><br><span class="line">]);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="comment">//return;</span></span><br><span class="line"><span class="keyword">return</span> self._generate(&#123;<span class="attr">cache</span>: <span class="literal">true</span>&#125;);</span><br><span class="line">&#125;).nodeify(callback);</span><br></pre></td></tr></table></figure>
+<p>传入this参数是为了在loadDatabase内部调用hexo的db变量，也就是调用warehouse模块的load函数，db是在hexo构造函数中初始化的：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//Database为warehouse模块中的database.js</span></span><br><span class="line"><span class="keyword">this</span>.database = <span class="keyword">new</span> Database(&#123;</span><br><span class="line"><span class="attr">version</span>: dbVersion,<span class="comment">//初始化为1</span></span><br><span class="line">path: pathFn.join(base, <span class="string">'db.json'</span>)<span class="comment">//传入文件名</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//db.json</span></span><br><span class="line"><span class="keyword">return</span> fs.exists(path).then(<span class="function"><span class="keyword">function</span>(<span class="params">exist</span>)</span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!exist) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">log.debug(<span class="string">'Loading database.'</span>);</span><br><span class="line">  <span class="keyword">return</span> db.load();<span class="comment">//load函数之后再展开细讲</span></span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  ctx._dbLoaded = <span class="literal">true</span>;</span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  log.error(<span class="string">'Database load failed. Deleting database.'</span>);</span><br><span class="line">  <span class="keyword">return</span> fs.unlink(path);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="Hexo-warehouse模块"><a href="#Hexo-warehouse模块" class="headerlink" title="Hexo warehouse模块"></a>Hexo warehouse模块</h2><h3 id="database-js构造函数"><a href="#database-js构造函数" class="headerlink" title="database.js构造函数"></a>database.js构造函数</h3><p>hexo在构造函数中实例化Database之后，就通过<code>register_models.js</code>注册了database的model，相当于数据库的模型，这样就为之后调用model做准备：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//传入options参数，如上面所说的version和path</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Database</span>(<span class="params">options</span>)</span>&#123;</span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Database options.</span><br><span class="line"> *</span><br><span class="line"> * @property &#123;Object&#125; options</span><br><span class="line"> * @private</span><br><span class="line"> */</span></span><br><span class="line"> <span class="comment">//调用扩展函数</span></span><br><span class="line"><span class="keyword">this</span>.options = extend(&#123;</span><br><span class="line">  <span class="attr">version</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">onUpgrade</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;,</span><br><span class="line">  <span class="attr">onDowngrade</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">&#125;, options);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Models.</span><br><span class="line"> *</span><br><span class="line"> * @property &#123;Object&#125; _models</span><br><span class="line"> * @private</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">this</span>._models = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Model constructor for this database instance.</span><br><span class="line"> *</span><br><span class="line"> * @property &#123;Function&#125; Model</span><br><span class="line"> * @param &#123;String&#125; name</span><br><span class="line"> * @param &#123;Schema|Object&#125; [schema]</span><br><span class="line"> * @constructor</span><br><span class="line"> * @private</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">var</span> _Model = <span class="keyword">this</span>.Model = <span class="function"><span class="keyword">function</span>(<span class="params">name, schema</span>)</span>&#123;</span><br><span class="line">  <span class="comment">//内部调用Model.js</span></span><br><span class="line">  Model.call(<span class="keyword">this</span>, name, schema);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">util.inherits(_Model, Model);</span><br><span class="line">_Model.prototype._database = <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="database-js-model方法"><a href="#database-js-model方法" class="headerlink" title="database.js model方法"></a>database.js model方法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  <span class="comment">//hexo构造函数：传入hexo对象</span></span><br><span class="line">  registerModels(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//registerModels内部代码：</span></span><br><span class="line">  <span class="comment">//加载所有模型对象</span></span><br><span class="line">  <span class="keyword">var</span> models = <span class="built_in">require</span>(<span class="string">'../models'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">ctx</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> db = ctx.database;<span class="comment">//又一次引用database</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(models);</span><br><span class="line">  <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">    key = keys[i];</span><br><span class="line">    db.model(key, models[key](ctx));<span class="comment">//db.model方法</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中<code>../models</code>包含的模型如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">exports.Asset = <span class="built_in">require</span>(<span class="string">'./asset'</span>);</span><br><span class="line">exports.Cache = <span class="built_in">require</span>(<span class="string">'./cache'</span>);</span><br><span class="line">exports.Category = <span class="built_in">require</span>(<span class="string">'./category'</span>);</span><br><span class="line">exports.Data = <span class="built_in">require</span>(<span class="string">'./data'</span>);</span><br><span class="line">exports.Page = <span class="built_in">require</span>(<span class="string">'./page'</span>);</span><br><span class="line">exports.Post = <span class="built_in">require</span>(<span class="string">'./post'</span>);</span><br><span class="line">exports.PostAsset = <span class="built_in">require</span>(<span class="string">'./post_asset'</span>);</span><br><span class="line">exports.PostCategory = <span class="built_in">require</span>(<span class="string">'./post_category'</span>);</span><br><span class="line">exports.PostTag = <span class="built_in">require</span>(<span class="string">'./post_tag'</span>);</span><br><span class="line">exports.Tag = <span class="built_in">require</span>(<span class="string">'./tag'</span>);<span class="comment">//tag模型</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Database.prototype.model = <span class="function"><span class="keyword">function</span>(<span class="params">name, schema</span>)</span>&#123;</span><br><span class="line">  <span class="comment">//构造函数中初始化this._models</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._models[name])&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._models[name];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//调用this.Model构造函数</span></span><br><span class="line">  <span class="keyword">var</span> model = <span class="keyword">this</span>._models[name] = <span class="keyword">new</span> <span class="keyword">this</span>.Model(name, schema);</span><br><span class="line">  <span class="keyword">return</span> model;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>流程如下：<blockquote>
+<ul>
+<li>hexo实例化初始化Database,然后注册各个model</li>
+<li>hexo list命令调用database的load方法加载</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/17/binary-search/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -632,490 +1124,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/12/wordpress-delete-googleapi/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/10/12/wordpress-delete-googleapi/" class="post-title-link" itemprop="url">wordpress删除googleapi</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-10-12 22:23:20" itemprop="dateCreated datePublished" datetime="2016-10-12T22:23:20+08:00">2016-10-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:38:12" itemprop="dateModified" datetime="2019-05-09T20:38:12+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="wordpress加载慢"><a href="#wordpress加载慢" class="headerlink" title="wordpress加载慢"></a>wordpress加载慢</h2><p>wordpress默认启用twentysixteen皮肤，注释掉<code>wp-content/theme/twentysixteen/functions.php</code>中的代码：</p>
-<p>wordpress很有趣，今年是2016年，那么默认皮肤就是2016…<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">twentysixteen_scripts</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">// Add custom fonts, used in the main stylesheet.</span></span><br><span class="line"><span class="comment">//注释掉这段code即可</span></span><br><span class="line"><span class="comment">//wp_enqueue_style( 'twentysixteen-fonts', twentysixteen_fonts_url(), array(), null );</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Add Genericons, used in the main stylesheet.</span></span><br><span class="line">wp_enqueue_style( <span class="string">'genericons'</span>, get_template_directory_uri() . <span class="string">'/genericons/genericons.css'</span>, <span class="keyword">array</span>(), <span class="string">'3.4.1'</span> );</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/11/consumergroup/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/10/11/consumergroup/" class="post-title-link" itemprop="url">kafka-consumergroup</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-10-11 20:45:59" itemprop="dateCreated datePublished" datetime="2016-10-11T20:45:59+08:00">2016-10-11</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:26:17" itemprop="dateModified" datetime="2019-05-09T20:26:17+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="kafka-查看当前有多少group"><a href="#kafka-查看当前有多少group" class="headerlink" title="kafka 查看当前有多少group"></a>kafka 查看当前有多少group</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafka-run-class<span class="selector-class">.bat</span> kafka<span class="selector-class">.admin</span><span class="selector-class">.ConsumerGroupCommand</span> --zookeeper localhost:<span class="number">2181</span> --list</span><br></pre></td></tr></table></figure>
-<h2 id="kafka-查看group情况"><a href="#kafka-查看group情况" class="headerlink" title="kafka 查看group情况"></a>kafka 查看group情况</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafka-run-class<span class="selector-class">.bat</span> kafka<span class="selector-class">.admin</span><span class="selector-class">.ConsumerGroupCommand</span> --zookeeper localhost:<span class="number">2181</span> --describe --group console-consumer-<span class="number">8047</span></span><br></pre></td></tr></table></figure>
-<p><a href="http://kafka.apache.org/documentation#basic_ops_consumer_group" target="_blank" rel="external">参考文档</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/03/database-find/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/10/03/database-find/" class="post-title-link" itemprop="url">database_find</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-10-03 23:44:30" itemprop="dateCreated datePublished" datetime="2016-10-03T23:44:30+08:00">2016-10-03</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-09 20:27:37" itemprop="dateModified" datetime="2019-05-09T20:27:37+08:00">2019-05-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="hexo-的json-database之find"><a href="#hexo-的json-database之find" class="headerlink" title="hexo 的json database之find"></a>hexo 的json database之find</h2><h3 id="查找当前写的源文章"><a href="#查找当前写的源文章" class="headerlink" title="查找当前写的源文章"></a>查找当前写的源文章</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">	Box.prototype._getExistingFiles = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	  <span class="keyword">var</span> base = <span class="keyword">this</span>.base;</span><br><span class="line">	  <span class="keyword">var</span> ctx = <span class="keyword">this</span>.context;</span><br><span class="line"></span><br><span class="line">	  <span class="comment">//输出base:source\</span></span><br><span class="line">	  <span class="comment">//base:themes\landscape-f\</span></span><br><span class="line">	  <span class="comment">// console.log('base:'+base.substring(ctx.base_dir.length));</span></span><br><span class="line"></span><br><span class="line">	  <span class="keyword">var</span> relativeBase = escapeBackslash(base.substring(ctx.base_dir.length));</span><br><span class="line"></span><br><span class="line">	  <span class="built_in">console</span>.log(<span class="string">'^'</span> + escapeRegExp(relativeBase));</span><br><span class="line">	  <span class="comment">//输出^source\/</span></span><br><span class="line">	  <span class="comment">//^themes\/landscape\-f\/</span></span><br><span class="line">	  <span class="keyword">var</span> regex = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'^'</span> + escapeRegExp(relativeBase));</span><br><span class="line">	  <span class="keyword">var</span> baseLength = relativeBase.length;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">return</span> <span class="keyword">this</span>.Cache.find(&#123;<span class="attr">_id</span>: regex&#125;).map(<span class="function"><span class="keyword">function</span>(<span class="params">item</span>)</span>&#123;</span><br><span class="line">	    <span class="keyword">return</span> item._id.substring(baseLength);</span><br><span class="line">	  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>我们看到<code>this.Cache.find</code>这句代码是从缓存中查找，那么Cache是什么呢？</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">exports.Asset = <span class="built_in">require</span>(<span class="string">'./asset'</span>);</span><br><span class="line">exports.Cache = <span class="built_in">require</span>(<span class="string">'./cache'</span>);</span><br><span class="line">exports.Category = <span class="built_in">require</span>(<span class="string">'./category'</span>);</span><br><span class="line">exports.Data = <span class="built_in">require</span>(<span class="string">'./data'</span>);</span><br><span class="line">exports.Page = <span class="built_in">require</span>(<span class="string">'./page'</span>);</span><br><span class="line">exports.Post = <span class="built_in">require</span>(<span class="string">'./post'</span>);</span><br><span class="line">exports.PostAsset = <span class="built_in">require</span>(<span class="string">'./post_asset'</span>);</span><br><span class="line">exports.PostCategory = <span class="built_in">require</span>(<span class="string">'./post_category'</span>);</span><br><span class="line">exports.PostTag = <span class="built_in">require</span>(<span class="string">'./post_tag'</span>);</span><br><span class="line">exports.Tag = <span class="built_in">require</span>(<span class="string">'./tag'</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> models = <span class="built_in">require</span>(<span class="string">'../models'</span>);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">ctx</span>)</span>&#123;</span><br><span class="line">	  <span class="keyword">var</span> db = ctx.database;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(models);</span><br><span class="line">	  <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">	    key = keys[i];</span><br><span class="line">	    db.model(key, models[key](ctx));</span><br><span class="line">	  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>是从models文件夹下注册的model，然后把model放入db中。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Database.prototype.model = <span class="function"><span class="keyword">function</span>(<span class="params">name, schema</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._models[name])&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._models[name];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> model = <span class="keyword">this</span>._models[name] = <span class="keyword">new</span> <span class="keyword">this</span>.Model(name, schema);</span><br><span class="line">  <span class="keyword">return</span> model;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>我们看下<code>Cache</code>的Model:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">ctx</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> Cache = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">    <span class="attr">_id</span>: &#123;<span class="attr">type</span>: <span class="built_in">String</span>, <span class="attr">required</span>: <span class="literal">true</span>&#125;,</span><br><span class="line">    <span class="attr">shasum</span>: &#123;<span class="attr">type</span>: <span class="built_in">String</span>&#125;,</span><br><span class="line">    <span class="attr">modified</span>: &#123;<span class="attr">type</span>: <span class="built_in">Number</span>, <span class="attr">default</span>: <span class="built_in">Date</span>.now&#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> Cache;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>声明了一个Schema,Scheme构造函数中会把当前schema参数加入path中，以便于查询<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (schema)&#123;</span><br><span class="line">   	<span class="keyword">this</span>.add(schema);</span><br><span class="line"> 	&#125;</span><br><span class="line"></span><br><span class="line"> 	Schema.prototype.add = <span class="function"><span class="keyword">function</span>(<span class="params">schema, prefix_</span>)</span>&#123;</span><br><span class="line">	  <span class="keyword">var</span> prefix = prefix_ || <span class="string">''</span>;</span><br><span class="line">	  <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(schema);</span><br><span class="line">	  <span class="keyword">var</span> len = keys.length;</span><br><span class="line">	  <span class="keyword">var</span> key, value;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">if</span> (!len) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">	    key = keys[i];</span><br><span class="line">	    value = schema[key];</span><br><span class="line"></span><br><span class="line">	    <span class="keyword">this</span>.path(prefix + key, value);</span><br><span class="line">	  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Schema.prototype.path = <span class="function"><span class="keyword">function</span>(<span class="params">name, obj</span>)</span>&#123;</span><br><span class="line">	  <span class="keyword">if</span> (obj == <span class="literal">null</span>)&#123;</span><br><span class="line">	    <span class="keyword">return</span> <span class="keyword">this</span>.paths[name];</span><br><span class="line">	  &#125;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">var</span> type;</span><br><span class="line">	  <span class="keyword">var</span> nested = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> SchemaType)&#123;</span><br><span class="line">	    type = obj;</span><br><span class="line">	  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	    <span class="keyword">switch</span> (<span class="keyword">typeof</span> obj)&#123;</span><br><span class="line">	      <span class="keyword">case</span> <span class="string">'function'</span>:</span><br><span class="line">	        type = getSchemaType(name, &#123;<span class="attr">type</span>: obj&#125;);</span><br><span class="line">	        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	      <span class="comment">//比如Cache的model就是&#123;type: String, required: true&#125;</span></span><br><span class="line">	      <span class="keyword">case</span> <span class="string">'object'</span>:</span><br><span class="line">	        <span class="keyword">if</span> (obj.type)&#123;</span><br><span class="line">	          type = getSchemaType(name, obj);</span><br><span class="line">	        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isArray(obj))&#123;</span><br><span class="line">	          type = <span class="keyword">new</span> Types.Array(name, &#123;</span><br><span class="line">	            <span class="attr">child</span>: obj.length ? getSchemaType(name, obj[<span class="number">0</span>]) : <span class="keyword">new</span> SchemaType(name)</span><br><span class="line">	          &#125;);</span><br><span class="line">	        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	          type = <span class="keyword">new</span> Types.Object();</span><br><span class="line">	          nested = <span class="built_in">Object</span>.keys(obj).length &gt; <span class="number">0</span>;</span><br><span class="line">	        &#125;</span><br><span class="line"></span><br><span class="line">	        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	      <span class="keyword">default</span>:</span><br><span class="line">	        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Invalid value for schema path `'</span> + name + <span class="string">'`'</span>);</span><br><span class="line">	    &#125;</span><br><span class="line">	  &#125;</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">this</span>.paths[name] = type;</span><br><span class="line">	  <span class="keyword">this</span>._updateStack(name, type);</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">if</span> (nested) <span class="keyword">this</span>.add(obj, name + <span class="string">'.'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSchemaType</span>(<span class="params">name, options</span>)</span>&#123;</span><br><span class="line">	  <span class="keyword">var</span> Type = options.type || options;</span><br><span class="line">	  <span class="keyword">var</span> typeName = Type.name;</span><br><span class="line"></span><br><span class="line">	  <span class="comment">//String就是内置的类型</span></span><br><span class="line">	  <span class="keyword">if</span> (builtinTypes[typeName])&#123;</span><br><span class="line">	    <span class="keyword">return</span> <span class="keyword">new</span> Types[typeName](name, options);</span><br><span class="line">	  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	    <span class="keyword">return</span> <span class="keyword">new</span> Type(name, options);</span><br><span class="line">	  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> builtinTypes = &#123;</span><br><span class="line">  <span class="attr">String</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">Number</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">Boolean</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">Array</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">Object</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">Date</span>: <span class="literal">true</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>最重要的就是各种Types:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">exports.Mixed = <span class="built_in">require</span>(<span class="string">'../schematype'</span>);</span><br><span class="line">exports.String = <span class="built_in">require</span>(<span class="string">'./string'</span>);</span><br><span class="line">exports.Number = <span class="built_in">require</span>(<span class="string">'./number'</span>);</span><br><span class="line">exports.Boolean = <span class="built_in">require</span>(<span class="string">'./boolean'</span>);</span><br><span class="line">exports.Array = <span class="built_in">require</span>(<span class="string">'./array'</span>);</span><br><span class="line">exports.Object = <span class="built_in">require</span>(<span class="string">'./object'</span>);</span><br><span class="line">exports.Date = <span class="built_in">require</span>(<span class="string">'./date'</span>);</span><br><span class="line">exports.Virtual = <span class="built_in">require</span>(<span class="string">'./virtual'</span>);</span><br><span class="line">exports.CUID = <span class="built_in">require</span>(<span class="string">'./cuid'</span>);</span><br><span class="line">exports.Enum = <span class="built_in">require</span>(<span class="string">'./enum'</span>);</span><br><span class="line">exports.Integer = <span class="built_in">require</span>(<span class="string">'./integer'</span>);</span><br></pre></td></tr></table></figure>
-<p>比如String:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SchemaTypeString</span>(<span class="params">name, options</span>)</span>&#123;</span><br><span class="line">  SchemaType.call(<span class="keyword">this</span>, name, options);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">SchemaTypeString.prototype.match = <span class="function"><span class="keyword">function</span>(<span class="params">value, query, data</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> query.test === <span class="string">'function'</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> query.test(value);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> value === query;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>这边的match方法就是在schema类的_parseQuery中有可能用到的，下回再讲。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/35/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/37/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/35/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/37/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1157,7 +1170,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">225</span>
+                    <span class="site-state-item-count">228</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1250,7 +1263,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1322,7 +1339,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
