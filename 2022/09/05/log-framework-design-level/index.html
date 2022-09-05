@@ -103,19 +103,19 @@
 
 
 
-  <meta name="description" content="在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
-本篇先来谈下日志框架中普遍会采用的一个设计要点：日志级别。日志级别通常都会有如下几个">
+  <meta name="description" content="日志级别概述  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
+  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就">
 <meta property="og:type" content="article">
 <meta property="og:title" content="日志框架设计之日志级别">
 <meta property="og:url" content="http://johnwonder.github.io/2022/09/05/log-framework-design-level/index.html">
 <meta property="og:site_name" content="john's tech blog">
-<meta property="og:description" content="在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
-本篇先来谈下日志框架中普遍会采用的一个设计要点：日志级别。日志级别通常都会有如下几个">
-<meta property="og:updated_time" content="2022-09-05T13:39:01.594Z">
+<meta property="og:description" content="日志级别概述  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
+  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就">
+<meta property="og:updated_time" content="2022-09-05T13:49:55.912Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="日志框架设计之日志级别">
-<meta name="twitter:description" content="在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
-本篇先来谈下日志框架中普遍会采用的一个设计要点：日志级别。日志级别通常都会有如下几个">
+<meta name="twitter:description" content="日志级别概述  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
+  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就">
 
 
 
@@ -371,7 +371,7 @@
                 
               
 
-              <time title="创建时间：2022-09-05 21:10:27 / 修改时间：21:39:01" itemprop="dateCreated datePublished" datetime="2022-09-05T21:10:27+08:00">2022-09-05</time>
+              <time title="创建时间：2022-09-05 21:10:27 / 修改时间：21:49:55" itemprop="dateCreated datePublished" datetime="2022-09-05T21:10:27+08:00">2022-09-05</time>
             
 
             
@@ -431,8 +431,8 @@
       
 
       
-        <p>在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们<br>的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。</p>
-<p>本篇先来谈下日志框架中普遍会采用的一个设计要点：日志级别。<br>日志级别通常都会有如下几个级别来分别对应软件生命周期的各个阶段：</p>
+        <h2 id="日志级别概述"><a href="#日志级别概述" class="headerlink" title="日志级别概述"></a>日志级别概述</h2><p>  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。</p>
+<p>  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就是日志的级别。系统运行到某一行打印日志的代码时会根据当前配置的日志级别来决定是否输出这行日志消息。日志级别通常都会有如下几个级别来分别对应软件生命周期的各个阶段：</p>
 <ol>
 <li>调试级别，代码中通常会使用Debug这个词，这个级别可以帮助开发人员在开发过程中需要调试时打印出有帮助的信息。</li>
 <li>信息级别，代码中通常会使用Info这个词，这个级别的日志一般用于软件运行过程中非开发人员也能够看到的正常的信息。</li>
@@ -564,8 +564,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -730,6 +739,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#日志级别概述"><span class="nav-number">1.</span> <span class="nav-text">日志级别概述</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
       <div class="wechat_OA">
     <span>欢迎关注我的公众号：沉迷Spring</span>
