@@ -323,6 +323,377 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2021/06/22/spring-primary-essence/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2021/06/22/spring-primary-essence/" class="post-title-link" itemprop="url">从Primary注解的角度看Spring的设计之美</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-06-22 09:37:43 / 修改时间：09:40:04" itemprop="dateCreated datePublished" datetime="2021-06-22T09:37:43+08:00">2021-06-22</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上篇文章我们总结了开发Spring应用时出现NoUniqueBeanDefinitionException问题的解决方案，那么这篇文章我们就来回答下存在多个相同类型的Bean时Primary注解标注的Bean怎么就能够成功注入，也可以借此从点到面领略下Spring的设计之美。</p>
+<h2 id="揭秘"><a href="#揭秘" class="headerlink" title="揭秘"></a>揭秘</h2><h3 id="Primary注解的本质"><a href="#Primary注解的本质" class="headerlink" title="Primary注解的本质"></a>Primary注解的本质</h3><p>还记得我们在使用xml配置Bean的时候也可以使用primary属性吗？其实它本质就是会在生成BeanDenifinition的时候设置它的primary属性为true。以下示例代码在BeanDefinitionParserDelegate类中可以找到。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置primary 属性</span></span><br><span class="line"><span class="keyword">if</span> (ele.hasAttribute(PRIMARY_ATTRIBUTE)) &#123;</span><br><span class="line">	bd.setPrimary(TRUE_VALUE.equals(ele.getAttribute(PRIMARY_ATTRIBUTE)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么我们可以猜想下Primary注解是否也是做了同样的事情呢？答案是肯定的。</p>
+<p>Spring在扫描它关注的类后，会检查是否标注有Primary注解，如果有的话就设置该BeanDefinitiond的primary属性为true.</p>
+<p>扫描关注类的示例源代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Set&lt;BeanDefinitionHolder&gt; <span class="title">doScan</span><span class="params">(String... basePackages)</span> </span>&#123;</span><br><span class="line">   Set&lt;BeanDefinitionHolder&gt; beanDefinitions = <span class="keyword">new</span> LinkedHashSet&lt;&gt;();</span><br><span class="line">   <span class="keyword">for</span> (String basePackage : basePackages) &#123;</span><br><span class="line">      Set&lt;BeanDefinition&gt; candidates = findCandidateComponents(basePackage);</span><br><span class="line">      <span class="keyword">for</span> (BeanDefinition candidate : candidates) &#123;</span><br><span class="line">     			<span class="comment">//省略部分代码</span></span><br><span class="line">         <span class="keyword">if</span> (candidate <span class="keyword">instanceof</span> AnnotatedBeanDefinition) &#123;</span><br><span class="line">            <span class="comment">//内部会处理@Primary注解</span></span><br><span class="line">            AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">if</span> (checkCandidate(beanName, candidate)) &#123;</span><br><span class="line">            <span class="comment">//内部调用 GenericApplicationContext registerBeanDefinition 2020-09-11</span></span><br><span class="line">            registerBeanDefinition(definitionHolder, <span class="keyword">this</span>.registry);</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> beanDefinitions;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>AnnotationConfigUtils内部会继续对该candidate(候选者)的一些注解做处理：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">processCommonDefinitionAnnotations</span><span class="params">(AnnotatedBeanDefinition abd, AnnotatedTypeMetadata metadata)</span> </span>&#123;</span><br><span class="line"> 		<span class="comment">//省略部分源码</span></span><br><span class="line">   <span class="keyword">if</span> (metadata.isAnnotated(Primary.class.getName())) &#123;</span><br><span class="line">      abd.setPrimary(<span class="keyword">true</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么标注Bean注解的方法上的Primary注解是否也是这样类似处理的呢？可以说Spring内部尽量让封装进行到底，我们来一探究竟：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loadBeanDefinitionsForBeanMethod</span><span class="params">(BeanMethod beanMethod)</span> </span>&#123;</span><br><span class="line">  <span class="comment">//省略前后代码</span></span><br><span class="line"> 	  ConfigurationClassBeanDefinition beanDef = <span class="keyword">new</span> ConfigurationClassBeanDefinition(configClass, metadata);</span><br><span class="line">		beanDef.setResource(configClass.getResource());</span><br><span class="line">		beanDef.setSource(<span class="keyword">this</span>.sourceExtractor.extractSource(metadata, configClass.getResource()));</span><br><span class="line">	  <span class="comment">//省略前后代码</span></span><br><span class="line">		AnnotationConfigUtils.processCommonDefinitionAnnotations(beanDef, metadata);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到最后一行代码又利用了AnnotationConfigUtils.processCommonDefinitionAnnotations方法来处理我们的Primary注解。</p>
+<p>到这里我们又可以猜测Spring最终还是对BeanDefinition的primary属性做筛选判断。</p>
+<h3 id="Primary筛选机制"><a href="#Primary筛选机制" class="headerlink" title="Primary筛选机制"></a>Primary筛选机制</h3><p>Spring在获取Bean的时候首先会获取到所有的符合所需类型的Bean，我们直奔主题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; <span class="function">NamedBeanHolder&lt;T&gt; <span class="title">resolveNamedBean</span><span class="params">(</span><br><span class="line">      ResolvableType requiredType, @Nullable Object[] args, <span class="keyword">boolean</span> nonUniqueAsNull)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line"></span><br><span class="line">  	<span class="comment">//调用ListableBeanFactory接口的getBeanNamesForType方法</span></span><br><span class="line">		<span class="comment">//去 beanDefinitionNames  中去找</span></span><br><span class="line">		String[] candidateNames = getBeanNamesForType(requiredType);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (candidateNames.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">			List&lt;String&gt; autowireCandidates = <span class="keyword">new</span> ArrayList&lt;&gt;(candidateNames.length);</span><br><span class="line">			<span class="keyword">for</span> (String beanName : candidateNames) &#123;</span><br><span class="line">				<span class="comment">//去 beanDefinitionMap 中去查找 没有 或者 找到了</span></span><br><span class="line">				<span class="comment">//只要有一个是 autowireCandidate的 那就只会去找 autowireCandidates的</span></span><br><span class="line">				<span class="keyword">if</span> (!containsBeanDefinition(beanName) || getBeanDefinition(beanName).isAutowireCandidate()) &#123;</span><br><span class="line">					autowireCandidates.add(beanName);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//如果autowireCandidates不为空 那就重新赋值candidateNames</span></span><br><span class="line">			<span class="comment">//也就是只关心autowireCandidate的 bean</span></span><br><span class="line">			<span class="keyword">if</span> (!autowireCandidates.isEmpty()) &#123;</span><br><span class="line">				candidateNames = StringUtils.toStringArray(autowireCandidates);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码出自DefaultListableBeanFactory,我们可以归纳下这段代码的主要逻辑：首先获取符合Bean类型的所有Bean名称集合，如果集合包含的数量大于1，那么就再遍历该集合继续筛选：如果容器中不包含该beanName所对应的BeanDefinition或者该对应的BeanDefinition的AutowireCandidate属性为true(可以理解为符合自动注入候选者之一)，那么就加入autowireCandidates集合。最后如果autowireCandidates集合不为空，那么就把candidateNames重新引用autowireCandidates集合。这里我们也就可以解释上篇文章提到的把相同类型的Bean其中一个的autowire-candidate属性设为false也可以解决问题的原因了。</p>
+<p>Spring不是筛选到这里就结束了，它会继续在最新的candidateNames集合上做筛选。请注意下述代码紧跟上述代码之后：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; <span class="function">NamedBeanHolder&lt;T&gt; <span class="title">resolveNamedBean</span><span class="params">(</span><br><span class="line">      ResolvableType requiredType, @Nullable Object[] args, <span class="keyword">boolean</span> nonUniqueAsNull)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line"></span><br><span class="line">  	<span class="comment">//紧跟上述代码逻辑</span></span><br><span class="line">  	<span class="comment">//获取到的候选名称只有1个的情况</span></span><br><span class="line">    <span class="keyword">if</span> (candidateNames.length == <span class="number">1</span>) &#123;</span><br><span class="line">       String beanName = candidateNames[<span class="number">0</span>];</span><br><span class="line">       <span class="comment">//内部调用getBean方法</span></span><br><span class="line">       <span class="comment">//还是调用 父 抽象类 AbstractBeanFactory的getBean方法 根据名称去get</span></span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> NamedBeanHolder&lt;&gt;(beanName, (T) getBean(beanName, clazz, args));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (candidateNames.length &gt; <span class="number">1</span>) &#123;<span class="comment">////获取到的候选名称有多个的情况</span></span><br><span class="line">       Map&lt;String, Object&gt; candidates = <span class="keyword">new</span> LinkedHashMap&lt;&gt;(candidateNames.length);</span><br><span class="line">       <span class="keyword">for</span> (String beanName : candidateNames) &#123;</span><br><span class="line">          <span class="comment">//如果 已经存在单例对象了 singletonObjects 中 且参数为空</span></span><br><span class="line">          <span class="keyword">if</span> (containsSingleton(beanName) &amp;&amp; args == <span class="keyword">null</span>) &#123;</span><br><span class="line">             <span class="comment">//直接获取bean</span></span><br><span class="line">             Object beanInstance = getBean(beanName);</span><br><span class="line">             candidates.put(beanName, (beanInstance <span class="keyword">instanceof</span> NullBean ? <span class="keyword">null</span> : beanInstance));</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">else</span> &#123;</span><br><span class="line">             candidates.put(beanName, getType(beanName));</span><br><span class="line">          &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//如果候选的bean数量大于1</span></span><br><span class="line">       <span class="comment">//检查是否是有Primay</span></span><br><span class="line">       String candidateName = determinePrimaryCandidate(candidates, clazz);</span><br><span class="line">       <span class="keyword">if</span> (candidateName == <span class="keyword">null</span>) &#123;</span><br><span class="line">          <span class="comment">//https://blog.csdn.net/gamezjl/article/details/108572474</span></span><br><span class="line">          candidateName = determineHighestPriorityCandidate(candidates, clazz);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (candidateName != <span class="keyword">null</span>) &#123;</span><br><span class="line">          Object beanInstance = candidates.get(candidateName);</span><br><span class="line">          <span class="keyword">if</span> (beanInstance == <span class="keyword">null</span> || beanInstance <span class="keyword">instanceof</span> Class) &#123;</span><br><span class="line">             beanInstance = getBean(candidateName, clazz, args);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">new</span> NamedBeanHolder&lt;&gt;(candidateName, (T) beanInstance);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (!nonUniqueAsNull) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> NoUniqueBeanDefinitionException(requiredType, candidates.keySet());</span><br><span class="line">       &#125;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们主要关注的还是candidateNames集合数量大于1的情况，一上来就会遍历candidateNames集合把对应的beanName以及根据beanName获取到的bean实例获取该bean类型放入candidates这个LinkedHashMap键值对集合里。然后就到了跟本文最为密切相关的函数里了，也就是<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```java</span><br><span class="line">protected String determinePrimaryCandidate(Map&lt;String, Object&gt; candidates, Class&lt;?&gt; requiredType) &#123;</span><br><span class="line">   String primaryBeanName = null;</span><br><span class="line">   for (Map.Entry&lt;String, Object&gt; entry : candidates.entrySet()) &#123;</span><br><span class="line">      String candidateBeanName = entry.getKey();</span><br><span class="line">      Object beanInstance = entry.getValue();</span><br><span class="line">      //也会去父容器里判断是否是Primary的</span><br><span class="line">      if (isPrimary(candidateBeanName, beanInstance)) &#123;</span><br><span class="line">         if (primaryBeanName != null) &#123;</span><br><span class="line">            //判断当前bean工厂是否有对应的beandefinition</span><br><span class="line">            boolean candidateLocal = containsBeanDefinition(candidateBeanName);</span><br><span class="line">            boolean primaryLocal = containsBeanDefinition(primaryBeanName);</span><br><span class="line">            //判断是否有多于1个的primary bean</span><br><span class="line">            if (candidateLocal &amp;&amp; primaryLocal) &#123;</span><br><span class="line">               throw new NoUniqueBeanDefinitionException(requiredType, candidates.size(),</span><br><span class="line">                     &quot;more than one &apos;primary&apos; bean found among candidates: &quot; + candidates.keySet());</span><br><span class="line">            &#125;</span><br><span class="line">            else if (candidateLocal) &#123;</span><br><span class="line">               primaryBeanName = candidateBeanName;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         else &#123;</span><br><span class="line">            primaryBeanName = candidateBeanName;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   return primaryBeanName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这段函数代码逻辑不算复杂，主要就是遍历candidates键值对集合对象(在这里我们也可以学到Map集合遍历的方法：**可以根据它的<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```java</span><br><span class="line">protected boolean isPrimary(String beanName, Object beanInstance) &#123;</span><br><span class="line">   if (containsBeanDefinition(beanName)) &#123;</span><br><span class="line">      return getMergedLocalBeanDefinition(beanName).isPrimary();</span><br><span class="line">   &#125;</span><br><span class="line">   BeanFactory parent = getParentBeanFactory();</span><br><span class="line">   return (parent instanceof DefaultListableBeanFactory &amp;&amp;</span><br><span class="line">         ((DefaultListableBeanFactory) parent).isPrimary(beanName, beanInstance));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里一开始又判断了下是否包含bean名称对应的beanDefintition，如果当前beanFactory有该beanDefintition的话就获取合并过后的BeanDefinition然后返回它的isPrimary属性，没有就去parentBeanFactory中尝试获取。</p>
+<p>也就是说isPrimary函数中做了两件事：</p>
+<ol>
+<li>去本地Bean工厂判断是否有这个Bean定义，有就合并(<strong>简单理解合并主要是为了可以获取到继承Bean中的属性</strong>)并且返回Primary属性。</li>
+<li>本地Bean工厂不存在该Bean定义那么就会去ParentBeanFactory中去执行相同逻辑了。</li>
+</ol>
+<p>借助源码我们可以清晰地明白Primary筛选的主要过程了。如果Primary筛选过后发现没有符合的该怎么办呢？Spring不是到此结束了，它会继续尝试筛选Priority相关的属性，也就是我们上篇文章提到的解决方案。</p>
+<h3 id="Primary筛选失败处理"><a href="#Primary筛选失败处理" class="headerlink" title="Primary筛选失败处理"></a>Primary筛选失败处理</h3><p>Primary筛选失败就进入<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```java</span><br><span class="line">protected String determineHighestPriorityCandidate(Map&lt;String, Object&gt; candidates, Class&lt;?&gt; requiredType) &#123;</span><br><span class="line">   String highestPriorityBeanName = null;</span><br><span class="line">   Integer highestPriority = null;</span><br><span class="line">   for (Map.Entry&lt;String, Object&gt; entry : candidates.entrySet()) &#123;</span><br><span class="line">      String candidateBeanName = entry.getKey();</span><br><span class="line">      Object beanInstance = entry.getValue();</span><br><span class="line">      if (beanInstance != null) &#123;</span><br><span class="line">         //获取优先级@Priority注解</span><br><span class="line">         //通过 OrderComparator 来比较</span><br><span class="line">         Integer candidatePriority = getPriority(beanInstance);</span><br><span class="line">         if (candidatePriority != null) &#123;</span><br><span class="line">            if (highestPriorityBeanName != null) &#123;</span><br><span class="line">               //如果优先级一样就抛出异常</span><br><span class="line">               if (candidatePriority.equals(highestPriority)) &#123;</span><br><span class="line">                  throw new NoUniqueBeanDefinitionException(requiredType, candidates.size(),</span><br><span class="line">                        &quot;Multiple beans found with the same priority (&apos;&quot; + highestPriority +</span><br><span class="line">                        &quot;&apos;) among candidates: &quot; + candidates.keySet());</span><br><span class="line">               &#125;</span><br><span class="line">               else if (candidatePriority &lt; highestPriority) &#123;</span><br><span class="line">                  highestPriorityBeanName = candidateBeanName;</span><br><span class="line">                  highestPriority = candidatePriority;</span><br><span class="line">               &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            else &#123;</span><br><span class="line">               highestPriorityBeanName = candidateBeanName;</span><br><span class="line">               highestPriority = candidatePriority;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   return highestPriorityBeanName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>跟determinePrimaryCandidate函数差不多的逻辑，也是筛选candidates对象集合，主要我们关注它内部的<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```java</span><br><span class="line">protected Integer getPriority(Object beanInstance) &#123;</span><br><span class="line">   Comparator&lt;Object&gt; comparator = getDependencyComparator();</span><br><span class="line">   if (comparator instanceof OrderComparator) &#123;</span><br><span class="line">      return ((OrderComparator) comparator).getPriority(beanInstance);</span><br><span class="line">   &#125;</span><br><span class="line">   return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>到这里我们可以终于看到上篇文章提到的dependencyComparator的身影了，至于getPriority内部如何去判断已经无关大碍，限于本篇篇幅，有兴趣的朋友可以自行去Spring源码中一探究竟。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>从一个Primary注解的角度看Spring的设计：Spring内部的逻辑处理步骤比较深，虽然如此还是保持地很严密，几乎看不出任何漏洞且留给开发人员扩展的点非常多</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2021/06/13/spring-NoUniqueBeanDefinitionException/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2021/06/13/spring-NoUniqueBeanDefinitionException/" class="post-title-link" itemprop="url">Spring应用抛出NoUniqueBeanDefinitionException异常时该怎么办</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-06-13 10:27:54" itemprop="dateCreated datePublished" datetime="2021-06-13T10:27:54+08:00">2021-06-13</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-06-17 22:11:49" itemprop="dateModified" datetime="2021-06-17T22:11:49+08:00">2021-06-17</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们在开发Spring应用时可能会不小心注入两个相同类型的Bean，比如实现了两个相同Service接口的类,示例伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">SampleService</span> </span>&#123;</span><br><span class="line">  <span class="function">String <span class="title">getName</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ServiceA</span> <span class="keyword">implements</span> <span class="title">SampleService</span></span>&#123;</span><br><span class="line">   <span class="function">String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="string">"john"</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ServiceB</span> <span class="keyword">implements</span> <span class="title">SampleService</span></span>&#123;</span><br><span class="line">   <span class="function">String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="string">"wonder"</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这时候我们用SampleService接口注入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">SampleService sampleService;</span><br></pre></td></tr></table></figure>
+<p>启动应用后，Spring就会优雅地提示如下错误：</p>
+<blockquote>
+<p>Exception in thread “main” org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type ‘com.john.primary.SampleService’ available: expected single matching bean but found 2: ServiceA,ServiceB</p>
+</blockquote>
+<p>但是我们不想报错且想获取其中某一个Bean，这时候我们该怎么办呢？</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>既然包含了两个相同类型的Bean,通常来说我们只要把其中一个Bean不注入就好，那如果我们想保留这两个相同类型的Bean,但是又想让SampleService正常注入呢？</p>
+<p>如果我们是用早期Spring的Xml配置Bean时，可以使用如下两种方式解决：</p>
+<ol>
+<li><p>那么我们可以在其中一个Bean配置里加上autowire-candidate=”false”</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"serviceA"</span> <span class="attr">class</span>=<span class="string">"com.john.primary.ServiceA"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"serviceB"</span> <span class="attr">class</span>=<span class="string">"com.john.primary.ServiceB"</span> <span class="attr">autowire-candidate</span>=<span class="string">"false"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>或者在其中一个Bean配置里加上primary=”true”:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"serviceA"</span> <span class="attr">class</span>=<span class="string">"com.john.primary.ServiceA"</span> <span class="attr">primary</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"serviceB"</span> <span class="attr">class</span>=<span class="string">"com.john.primary.ServiceB"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>采用javax.annotation.Priority注解</p>
+<p>这种方式需要我们在BeanFactory里加上dependencyComparator，示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory)context.getBeanFactory();</span><br><span class="line"><span class="comment">//@Priority注解比较</span></span><br><span class="line">beanFactory.setDependencyComparator(AnnotationAwareOrderComparator.INSTANCE);</span><br><span class="line">SampleService sampleService= context.getBean(SampleService.class);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现注解Order或者实现org.springframework.core.Ordered接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//@Order</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceA</span> <span class="keyword">implements</span> <span class="title">SampleService</span>,<span class="title">Ordered</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"ServiceA&#123;&#125;"</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方式需要我们重写AnnotationAwareOrderComparator的getPriority方法，示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PriorityOrderComparator</span> <span class="keyword">extends</span> <span class="title">AnnotationAwareOrderComparator</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span><br><span class="line">    * Shared default instance of &#123;<span class="doctag">@code</span> PriorityOrderComparator&#125;.</span><br><span class="line">    */</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> PriorityOrderComparator INSTANCE = <span class="keyword">new</span> PriorityOrderComparator();</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> Integer <span class="title">getPriority</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">     	 <span class="comment">//先获取Priority</span></span><br><span class="line">       Integer order = <span class="keyword">super</span>.getPriority(obj);</span><br><span class="line">       <span class="keyword">if</span>(order == <span class="keyword">null</span>)</span><br><span class="line">         <span class="comment">//获取Order注解或者Ordered接口返回值</span></span><br><span class="line">         <span class="keyword">return</span>  <span class="keyword">super</span>.findOrder(obj);</span><br><span class="line">       <span class="keyword">return</span>  order;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>我们还可以使用目前流行的注解方式来实现，Spring文档中也提到过：</p>
+<blockquote>
+<p>Because autowiring by type may lead to multiple candidates, it is often necessary to have more control over the selection process. One way to accomplish this is with Spring’s @Primary annotation. @Primary indicates that a particular bean should be given preference when multiple beans are candidates to be autowired to a single-valued dependency. If exactly one primary bean exists among the candidates, it becomes the autowired value.</p>
+</blockquote>
+<p>那么可以使用如下方式：</p>
+<ol>
+<li><p>@Primary注解：</p>
+<p>该注解可以标注在类上或者方法上，示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ServiceA</span> <span class="keyword">implements</span> <span class="title">SampleService</span></span>&#123;</span><br><span class="line">   <span class="function">String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="string">"john"</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注解在有@Bean注解的方法上：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="function">SampleService <span class="title">sampleService</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> ServiceA();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>还是采用Xml配置中的第三或者第四种解决方案，<strong>只是采用第四种方案的话还是需要重新扩展AnnotationAwareOrderComparator</strong></p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章介绍了解决<strong>org.springframework.beans.factory.NoUniqueBeanDefinitionException</strong>异常的一些解决方案，从这些解决方案可以看出Spring框架的设计精妙，留给我们开发者的扩展点实在很多了。下篇文章我们来了解下这些解决方案的实现原理，如果你也有其他的解决方案，请留言告诉我。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/07/09/algorithm-steps/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -766,331 +1137,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/06/08/algorithm-timecomplexity/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/06/08/algorithm-timecomplexity/" class="post-title-link" itemprop="url">每日算法之时间复杂度理解</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-06-08 22:01:09 / 修改时间：22:04:40" itemprop="dateCreated datePublished" datetime="2020-06-08T22:01:09+08:00">2020-06-08</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>时间复杂度</p>
-<ol>
-<li>时间复杂度的表示方式用符号来表示就是大O。</li>
-</ol>
-<p>T(n)=O(f(n))<br>其中，T(n)就是算法的时间复杂度；<br>f(n)表示执行与算法优劣和问题规模有关的执行数；<br>O()表示一种运算符号，和加减乘除类似。作用就是去除其他项，包括与最高项相乘的常数，只保留最高项，比如f(n)=2n^2+1,O(f(n))=O(n^2)</p>
-<ol start="2">
-<li>常见的时间复杂度量级进行大O的理解：</li>
-</ol>
-<p>常数阶O(1)<br>无论代码执行了多少行，其他区域不会影响到操作，这个代码的时间复杂度都是O(1)<br>void swapTwoInts(int &amp;a, int &amp;b){<br>  int temp = a;<br>  a = b;<br>  b = temp;<br>}</p>
-<p>线性阶O(n)<br>一个普通for循环里面的代码会执行 n 遍，因此它消耗的时间是随着 n 的变化而变化的，因此可以用O(n)来表示它的时间复杂度</p>
-<p>平方阶O(n²)<br>存在双重循环的时候，即把 O(n) 的代码再嵌套循环一遍，它的时间复杂度就是 O(n²) 了</p>
-<p>对数阶O(logn)<br>比如一个函数，总是把参数除以2，既：n/2，折半查找的核心步骤就是这个。那么最终函数运行时间，应该是：log n，也就是O(log n)<br>线性对数阶O(nlogn)<br>将时间复杂度为O(logn)的代码循环N遍的话，那么它的时间复杂度就是 n * O(logn)，也就是了O(nlogn)。</p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.zhihu.com/question/20196775?sort=created" target="_blank" rel="external">如何清晰的理解算法中的时间复杂度？</a></li>
-<li><a href="https://www.cnblogs.com/pugang/archive/2012/06/27/2565093.html" target="_blank" rel="external">快速排序算法C++实现[评注版]</a></li>
-<li><a href="https://www.cnblogs.com/pugang/archive/2012/07/02/2573075.html" target="_blank" rel="external">快速排序算法的时间复杂度分析[详解Master method]</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/06/07/algorithm-fib/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/06/07/algorithm-fib/" class="post-title-link" itemprop="url">每日算法一题之斐波那契数列</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-06-07 19:37:56" itemprop="dateCreated datePublished" datetime="2020-06-07T19:37:56+08:00">2020-06-07</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-07-09 21:00:59" itemprop="dateModified" datetime="2020-07-09T21:00:59+08:00">2020-07-09</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>记得多年前面试的时候就在手写斐波那契数列上栽过，今天就趁这机会在这总结下。这题虽是老生常谈了，</p>
-<p>但相信我这里分享的一定会给自己和你们一个温故而知新的机会。</p>
-<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>斐波那契数列是一位意大利的数学家，他闲着没事去研究兔子繁殖的过程，研究着就发现，可以写成这么一个序列：1，1，2，3，5，8，13，21… 也就是每个数等于它前两个数之和。那么给你第 n 个数，问 F(n) 是多少。</p>
-<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>首先我们给一个通用的解法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (N == <span class="number">0</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (N == <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> fib(N-<span class="number">1</span>) + fib(N-<span class="number">2</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个算法的复杂度太高了，有些函数会重复执行的。</p>
-<h2 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> b = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(N == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> a;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(N == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= N; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> tmp = a + b;</span><br><span class="line">            a = b;</span><br><span class="line">            b = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://mp.weixin.qq.com/s/AOze7X3R2hdaDqhCybLIrw" target="_blank" rel="external">这才是面试官想听的：详解「递归」正确的打开方式</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1137,7 +1183,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">228</span>
+                    <span class="site-state-item-count">230</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1234,7 +1280,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">39</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">41</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

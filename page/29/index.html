@@ -323,6 +323,327 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/24/scala-object/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/03/24/scala-object/" class="post-title-link" itemprop="url">scala_object</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-24 09:26:06" itemprop="dateCreated datePublished" datetime="2017-03-24T09:26:06+08:00">2017-03-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala-object-线程安全"><a href="#scala-object-线程安全" class="headerlink" title="scala object 线程安全"></a>scala object 线程安全</h2><p>这篇<a href="http://www.scala-lang.org/old/node/6610" target="_blank" rel="external">Scala thread-safety question</a>回复</p>
+<p>提到如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">object Class &#123;</span><br><span class="line">val students = <span class="keyword">new</span> mutable.List()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>“object” initialization is thread safe. “mutable.List” is not thread<br>safe and needs to be synchronized.</p>
+<p>然后我们自己定义一个object用于测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">  object  TestObject &#123;</span><br><span class="line"></span><br><span class="line">    val prop1 = <span class="string">"sad"</span></span><br><span class="line"></span><br><span class="line">    lazy  val prop2 = <span class="string">"testLazy"</span></span><br><span class="line">    println(<span class="string">"propinitialize"</span>)</span><br><span class="line">    <span class="keyword">private</span> val props: java.util.Map[String, Object] = <span class="keyword">new</span> java.util.HashMap[String, Object]</span><br><span class="line"></span><br><span class="line">    props.put(<span class="string">"prop2"</span>,prop2)<span class="comment">//访问prop2的时候会给prop2赋值</span></span><br><span class="line"></span><br><span class="line">    <span class="function">def <span class="title">initialize</span><span class="params">()</span> </span>= &#123;</span><br><span class="line">      println(<span class="string">"initialize"</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">def <span class="title">apply</span><span class="params">()</span> </span>=&#123;</span><br><span class="line"></span><br><span class="line">      println(props.get(<span class="string">"prop2"</span>).toString)</span><br><span class="line">      println(<span class="string">"initializing"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用以下代码测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">object  TestObjectInitializer extends  App &#123;</span><br><span class="line"></span><br><span class="line">  val exce = Executors.newFixedThreadPool(<span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (i &lt;- <span class="number">0</span>.to(<span class="number">100</span>))&#123;</span><br><span class="line">    val runner = <span class="keyword">new</span> Runnable &#123;</span><br><span class="line">      <span class="function">def <span class="title">run</span><span class="params">()</span>: Unit </span>= &#123;</span><br><span class="line"></span><br><span class="line">        TestObject()</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    exce.submit(runner)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  println(<span class="string">"initialized"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印如下代码：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">propinitialize</span><br><span class="line">initialized</span><br><span class="line">testLazy</span><br><span class="line">testLazy</span><br><span class="line">initializing</span><br><span class="line">testLazy</span><br><span class="line">testLazy</span><br><span class="line">initializing</span><br><span class="line">testLazy</span><br><span class="line">testLazy</span><br><span class="line">initializing</span><br><span class="line">initializing</span></span><br></pre></td></tr></table></figure>
+<p>propinitialize只执行一次。</p>
+<p>参考资料：<br><a href="http://stackoverflow.com/questions/19934176/scala-singleton-object-with-multi-threading" target="_blank" rel="external">Scala Singleton Object with Multi-threading</a><br><a href="http://stackoverflow.com/questions/8318461/how-to-make-object-a-mutable-stack-thread-safe" target="_blank" rel="external">How to make object (a mutable stack) thread-safe</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/18/scalatra-LifeCycle/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/03/18/scalatra-LifeCycle/" class="post-title-link" itemprop="url">scalatra_LifeCycle</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-18 23:09:15" itemprop="dateCreated datePublished" datetime="2017-03-18T23:09:15+08:00">2017-03-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scalatra是如何启动的"><a href="#scalatra是如何启动的" class="headerlink" title="scalatra是如何启动的"></a>scalatra是如何启动的</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ScalatraListener</span> <span class="keyword">extends</span> <span class="title">ServletContextListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.scalatra.servlet.ScalatraListener._</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>[<span class="keyword">this</span>] val logger: Logger = Logger[<span class="keyword">this</span>.type]</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>[<span class="keyword">this</span>] <span class="keyword">var</span> cycle: LifeCycle = _</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>[<span class="keyword">this</span>] <span class="keyword">var</span> servletContext: ServletContext = <span class="function">_</span><br><span class="line"></span><br><span class="line">override def <span class="title">contextInitialized</span><span class="params">(sce: ServletContextEvent)</span>: Unit </span>= &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//contextInitialized 后赋值给servletContext</span></span><br><span class="line">    configureServletContext(sce)</span><br><span class="line">    configureCycleClass(Thread.currentThread.getContextClassLoader)</span><br><span class="line">  &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> e: Throwable =&gt;</span><br><span class="line">      logger.error(<span class="string">"Failed to initialize scalatra application at "</span> + sce.getServletContext.getContextPath, e)</span><br><span class="line">      <span class="keyword">throw</span> e</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">def <span class="title">contextDestroyed</span><span class="params">(sce: ServletContextEvent)</span>: Unit </span>= &#123;</span><br><span class="line">  <span class="keyword">if</span> (cycle != <span class="keyword">null</span>) &#123;</span><br><span class="line">    logger.info(<span class="string">"Destroying life cycle class: %s"</span>.format(cycle.getClass.getName))</span><br><span class="line">    cycle.destroy(servletContext)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> def <span class="title">configureExecutionContext</span><span class="params">(sce: ServletContextEvent)</span>: Unit </span>= &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//寻找LifeCycle</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> def <span class="title">probeForCycleClass</span><span class="params">(classLoader: ClassLoader)</span>: <span class="params">(String, LifeCycle)</span> </span>= &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> def <span class="title">configureServletContext</span><span class="params">(sce: ServletContextEvent)</span>: Unit </span>= &#123;</span><br><span class="line">  <span class="comment">//定义servletContext 从sce获取</span></span><br><span class="line">  servletContext = sce.getServletContext</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> def <span class="title">configureCycleClass</span><span class="params">(classLoader: ClassLoader)</span>: Unit </span>= &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">object ScalatraListener &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DO NOT RENAME THIS CLASS NAME AS IT BREAKS THE ENTIRE WORLD</span></span><br><span class="line"><span class="comment">// TOGETHER WITH THE WORLD IT WILL BREAK ALL EXISTING SCALATRA APPS</span></span><br><span class="line"><span class="comment">// RENAMING THIS CLASS WILL RESULT IN GETTING SHOT, IF YOU SURVIVE YOU WILL BE SHOT AGAIN</span></span><br><span class="line">val DefaultLifeCycle: String = <span class="string">"ScalatraBootstrap"</span></span><br><span class="line">val OldDefaultLifeCycle: String = <span class="string">"Scalatra"</span></span><br><span class="line">val LifeCycleKey: String = <span class="string">"org.scalatra.LifeCycle"</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/18/angular-injector-module/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -800,323 +1121,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/14/linux-command1/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/03/14/linux-command1/" class="post-title-link" itemprop="url">linux_command1</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-14 17:12:29" itemprop="dateCreated datePublished" datetime="2017-03-14T17:12:29+08:00">2017-03-14</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="ps相关"><a href="#ps相关" class="headerlink" title="ps相关"></a>ps相关</h2><p><code>ps -ef|grep java</code> 筛选出跟java相关的进程  </p>
-<p><code>ps -u -p 22350</code> 查看进程ID为22350的详细信息<code>`</code>  </p>
-<p>##　nohup相关</p>
-<p><code>nohup java -jar -Xmx2048m  /home/appserver/apiserver/apiserver.jar</code></p>
-<p>参考资料：  </p>
-<p><a href="http://blog.csdn.net/hongweigg/article/details/44828353" target="_blank" rel="external">Linux 查找指定名称的进程并显示进程详细信息</a><br><a href="http://www.cnblogs.com/hf8051/p/4494735.html" target="_blank" rel="external">linux – 进程的查看、进程id的获取、进程的杀死</a>  </p>
-<p><a href="http://www.cnblogs.com/allenblogs/archive/2011/05/19/2051136.html" target="_blank" rel="external">linux的nohup命令的用法。</a><br><a href="http://blog.csdn.net/tang9140/article/details/38899345" target="_blank" rel="external">linux下利用nohup后台运行jar文件包程序</a><br><a href="http://www.jb51.net/LINUXjishu/34604.html" target="_blank" rel="external">Linux Top 命令解析 比较详细</a></p>
-<p><a href="http://blog.csdn.net/qiuxin315/article/details/6828467" target="_blank" rel="external">pmap : 理解linux的进程内存占用 </a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/14/angular-assertArg/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/03/14/angular-assertArg/" class="post-title-link" itemprop="url">angular-assertArg</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-14 12:53:11" itemprop="dateCreated datePublished" datetime="2017-03-14T12:53:11+08:00">2017-03-14</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="angular-1-5-8-源码解析"><a href="#angular-1-5-8-源码解析" class="headerlink" title="angular 1.5.8 源码解析"></a>angular 1.5.8 源码解析</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">* throw error if the argument is falsy.</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">assertArg</span>(<span class="params">arg, name, reason</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//如果arg 判断错误 就抛出ngMinErr</span></span><br><span class="line">    <span class="keyword">if</span> (!arg) &#123;</span><br><span class="line">      <span class="keyword">throw</span> ngMinErr(<span class="string">'areq'</span>, <span class="string">"Argument '&#123;0&#125;' is &#123;1&#125;"</span>, (name || <span class="string">'?'</span>), (reason || <span class="string">"required"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//接受数组的annotate</span></span><br><span class="line"><span class="comment">//比如['$scope',function($scope)&#123;&#125;]</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">assertArgFn</span>(<span class="params">arg, name, acceptArrayAnnotation</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (acceptArrayAnnotation &amp;&amp; isArray(arg)) &#123;</span><br><span class="line">        arg = arg[arg.length - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    assertArg(isFunction(arg), name, <span class="string">'not a function, got '</span> +</span><br><span class="line">        (arg &amp;&amp; <span class="keyword">typeof</span> arg === <span class="string">'object'</span> ? arg.constructor.name || <span class="string">'Object'</span> : <span class="keyword">typeof</span> arg));</span><br><span class="line">    <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1163,7 +1167,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">228</span>
+                    <span class="site-state-item-count">230</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1260,7 +1264,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">39</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">41</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

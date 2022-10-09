@@ -103,19 +103,19 @@
 
 
 
-  <meta name="description" content="日志级别概述  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
-  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就">
+  <meta name="description" content="日志级别概述  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如使用Java语言开发的时候，我们通常会使用Logback,Log4j2等，而使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
+  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就是日志">
 <meta property="og:type" content="article">
 <meta property="og:title" content="日志框架设计之日志级别">
 <meta property="og:url" content="http://johnwonder.github.io/2022/09/05/log-framework-design-level/index.html">
 <meta property="og:site_name" content="john's tech blog">
-<meta property="og:description" content="日志级别概述  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
-  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就">
-<meta property="og:updated_time" content="2022-09-05T13:49:55.912Z">
+<meta property="og:description" content="日志级别概述  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如使用Java语言开发的时候，我们通常会使用Logback,Log4j2等，而使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
+  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就是日志">
+<meta property="og:updated_time" content="2022-09-05T13:50:51.377Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="日志框架设计之日志级别">
-<meta name="twitter:description" content="日志级别概述  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
-  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就">
+<meta name="twitter:description" content="日志级别概述  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如使用Java语言开发的时候，我们通常会使用Logback,Log4j2等，而使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。
+  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就是日志">
 
 
 
@@ -371,7 +371,7 @@
                 
               
 
-              <time title="创建时间：2022-09-05 21:10:27 / 修改时间：21:49:55" itemprop="dateCreated datePublished" datetime="2022-09-05T21:10:27+08:00">2022-09-05</time>
+              <time title="创建时间：2022-09-05 21:10:27 / 修改时间：21:50:51" itemprop="dateCreated datePublished" datetime="2022-09-05T21:10:27+08:00">2022-09-05</time>
             
 
             
@@ -431,7 +431,7 @@
       
 
       
-        <h2 id="日志级别概述"><a href="#日志级别概述" class="headerlink" title="日志级别概述"></a>日志级别概述</h2><p>  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如目前使用Java语言开发项目的时候，我们应该会使用Logback,Log4j2等，使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。</p>
+        <h2 id="日志级别概述"><a href="#日志级别概述" class="headerlink" title="日志级别概述"></a>日志级别概述</h2><p>  在平时的软件开发过程中，我们通常会使用某一种日志框架来记录我们的系统日志，比如使用Java语言开发的时候，我们通常会使用Logback,Log4j2等，而使用Go语言开发的时候可能会使用到Go自带的日志Api或者Zap框架等。那么这些框架是如何设计与实现的呢？从本篇开始我们就来逐一探讨这些框架的设计与实现。</p>
 <p>  本篇先来谈下日志框架中普遍会采用的一个设计要点：Level,也就是日志的级别。系统运行到某一行打印日志的代码时会根据当前配置的日志级别来决定是否输出这行日志消息。日志级别通常都会有如下几个级别来分别对应软件生命周期的各个阶段：</p>
 <ol>
 <li>调试级别，代码中通常会使用Debug这个词，这个级别可以帮助开发人员在开发过程中需要调试时打印出有帮助的信息。</li>
@@ -514,6 +514,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2022/09/15/log-framework-design-springboot/" rel="prev" title="日志框架设计之SpringBoot日志模块的设计">
+                日志框架设计之SpringBoot日志模块的设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -589,7 +593,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">228</span>
+                    <span class="site-state-item-count">230</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -686,7 +690,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">39</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">41</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

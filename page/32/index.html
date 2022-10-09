@@ -323,6 +323,324 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/01/19/angular-bindjquery/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/01/19/angular-bindjquery/" class="post-title-link" itemprop="url">angular源码剖析之绑定jQuery</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-01-19 16:30:17" itemprop="dateCreated datePublished" datetime="2017-01-19T16:30:17+08:00">2017-01-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-17 20:30:54" itemprop="dateModified" datetime="2019-05-17T20:30:54+08:00">2019-05-17</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular1-5-8-绑定jquery库"><a href="#angular1-5-8-绑定jquery库" class="headerlink" title="angular1.5.8 绑定jquery库"></a>angular1.5.8 绑定jquery库</h2><h3 id="jq函数"><a href="#jq函数" class="headerlink" title="jq函数"></a>jq函数</h3><p>先看jq方法:  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> jq = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (isDefined(jq.name_)) <span class="keyword">return</span> jq.name_;</span><br><span class="line"><span class="keyword">var</span> el;</span><br><span class="line"><span class="keyword">var</span> i, ii = ngAttrPrefixes.length, prefix, name;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; ii; ++i) &#123;</span><br><span class="line">  <span class="comment">//line 1513 var ngAttrPrefixes = ['ng-', 'data-ng-', 'ng:', 'x-ng-'];</span></span><br><span class="line">  prefix = ngAttrPrefixes[i];</span><br><span class="line">  <span class="comment">//https://developer.mozilla.org/zh-CN/docs/Web/API/Document/querySelector</span></span><br><span class="line">  <span class="keyword">if</span> (el = <span class="built_in">window</span>.document.querySelector(<span class="string">'['</span> + prefix.replace(<span class="string">':'</span>, <span class="string">'\\:'</span>) + <span class="string">'jq]'</span>)) &#123;</span><br><span class="line">    <span class="comment">//获取ng-jq属性</span></span><br><span class="line">    name = el.getAttribute(prefix + <span class="string">'jq'</span>);</span><br><span class="line">    <span class="keyword">break</span>;<span class="comment">//只会获取一次</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (jq.name_ = name);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="绑定jquery库"><a href="#绑定jquery库" class="headerlink" title="绑定jquery库"></a>绑定jquery库</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bindJQueryFired = <span class="literal">false</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bindJQuery</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="keyword">var</span> originalCleanData;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (bindJQueryFired) &#123;</span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//http://div.io/topic/1154</span></span><br><span class="line"><span class="comment">// bind to jQuery if present;</span></span><br><span class="line"><span class="keyword">var</span> jqName = jq(); <span class="comment">// 调用jq方法</span></span><br><span class="line">jQuery = isUndefined(jqName) ? <span class="built_in">window</span>.jQuery :   <span class="comment">// use jQuery (if present)</span></span><br><span class="line">         !jqName             ? <span class="literal">undefined</span>     :   <span class="comment">// use jqLite</span></span><br><span class="line">                               <span class="built_in">window</span>[jqName];   <span class="comment">// use jQuery specified by `ngJq`</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Use jQuery if it exists with proper functionality, otherwise default to us.</span></span><br><span class="line"><span class="comment">// Angular 1.2+ requires jQuery 1.7+ for on()/off() support.</span></span><br><span class="line"><span class="comment">//要支持on off 方法</span></span><br><span class="line"><span class="comment">// Angular 1.3+ technically requires at least jQuery 2.1+ but it may work with older</span></span><br><span class="line"><span class="comment">// versions. It will not work for sure with jQuery &lt;1.7, though.</span></span><br><span class="line"><span class="keyword">if</span> (jQuery &amp;&amp; jQuery.fn.on) &#123;</span><br><span class="line">  jqLite = jQuery;</span><br><span class="line">  extend(jQuery.fn, &#123;</span><br><span class="line">    <span class="attr">scope</span>: JQLitePrototype.scope,</span><br><span class="line">    <span class="attr">isolateScope</span>: JQLitePrototype.isolateScope,</span><br><span class="line">    <span class="attr">controller</span>: JQLitePrototype.controller,</span><br><span class="line">    <span class="attr">injector</span>: JQLitePrototype.injector,</span><br><span class="line">    <span class="attr">inheritedData</span>: JQLitePrototype.inheritedData</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//monkey patch (猴子补丁)</span></span><br><span class="line">  <span class="comment">//用来在运行时动态修改已有的代码，而不需要修改原始代码。</span></span><br><span class="line">  <span class="comment">//http://blog.csdn.net/fwenzhou/article/details/8742838</span></span><br><span class="line">  <span class="comment">// All nodes removed from the DOM via various jQuery APIs like .remove()</span></span><br><span class="line">  <span class="comment">// are passed through jQuery.cleanData. Monkey-patch this method to fire</span></span><br><span class="line">  <span class="comment">// the $destroy event on all removed nodes.</span></span><br><span class="line">  originalCleanData = jQuery.cleanData;</span><br><span class="line">  jQuery.cleanData = <span class="function"><span class="keyword">function</span>(<span class="params">elems</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> events;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, elem; (elem = elems[i]) != <span class="literal">null</span>; i++) &#123;</span><br><span class="line">      events = jQuery._data(elem, <span class="string">"events"</span>);</span><br><span class="line">      <span class="keyword">if</span> (events &amp;&amp; events.$destroy) &#123;</span><br><span class="line">        jQuery(elem).triggerHandler(<span class="string">'$destroy'</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//最终调用originalCleanData方法 就是jquery.cleanData函数</span></span><br><span class="line">    originalCleanData(elems);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  jqLite = JQLite;<span class="comment">//使用内置的JQLite 库</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">angular.element = jqLite;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Prevent double-proxying.</span></span><br><span class="line"><span class="comment">//阻止双代理</span></span><br><span class="line">bindJQueryFired = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="内置jQLite"><a href="#内置jQLite" class="headerlink" title="内置jQLite"></a>内置jQLite</h3><p>我们来看内置的JQLite库：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//line 2968</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">JQLite</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (element <span class="keyword">instanceof</span> JQLite) &#123;</span><br><span class="line"><span class="keyword">return</span> element;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> argIsString;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isString(element)) &#123;</span><br><span class="line">element = trim(element);</span><br><span class="line">argIsString = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> JQLite)) &#123;</span><br><span class="line"><span class="keyword">if</span> (argIsString &amp;&amp; element.charAt(<span class="number">0</span>) != <span class="string">'&lt;'</span>) &#123;</span><br><span class="line">  <span class="keyword">throw</span> jqLiteMinErr(<span class="string">'nosel'</span>, <span class="string">'Looking up elements via selectors is not supported by jqLite! See: http://docs.angularjs.org/api/angular.element'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> JQLite(element);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (argIsString) &#123;</span><br><span class="line">jqLiteAddNodes(<span class="keyword">this</span>, jqLiteParseHTML(element));</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">jqLiteAddNodes(<span class="keyword">this</span>, element);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参考资料:<br><a href="https://segmentfault.com/q/1010000000599102" target="_blank" rel="external">何使用angular.js中的jqlite</a><br><a href="http://www.jianshu.com/p/e184fc15f3f4" target="_blank" rel="external">Angular内嵌jqlite语法大全</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/01/14/angular-bind/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/01/14/angular-bind/" class="post-title-link" itemprop="url">angular源码分析之bind函数</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-01-14 15:10:23" itemprop="dateCreated datePublished" datetime="2017-01-14T15:10:23+08:00">2017-01-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular-bind函数分析"><a href="#angular-bind函数分析" class="headerlink" title="angular.bind函数分析"></a>angular.bind函数分析</h2><p>解释：返回一个调用self的函数fn（self代表fn里的this）.可以给fn提供参数args.这个功能也被称为局部操作，以区别功能.<br>格式：angular.bind(self,fn,args);<br>self：object  对象； fn的上下文对象，在fn中可以用this调用<br>fn：function； 绑定的方法  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">name</span>: <span class="string">"Any"</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> fn = <span class="function"><span class="keyword">function</span> (<span class="params">Adj</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name + <span class="string">"is a boy!!! And he is "</span> + Adj + <span class="string">" !!!"</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> f = angular.bind(obj, fn, <span class="string">"handsome"</span>);</span><br><span class="line">f();<span class="comment">//Any is a boy!!! And he is handsome!!!</span></span><br><span class="line"><span class="keyword">var</span> t = angular.bind(obj, fn);</span><br><span class="line">t(<span class="string">"ugly"</span>);<span class="comment">// Any is a boy!!! And he is ugly!!!</span></span><br></pre></td></tr></table></figure>
+<p>上源码:  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">concat</span>(<span class="params">array1, array2, index</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> array1.concat(slice.call(array2, index));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sliceArgs</span>(<span class="params">args, startIndex</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> slice.call(args, startIndex || <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bind</span>(<span class="params">self, fn</span>) </span>&#123;</span><br><span class="line"><span class="keyword">var</span> curryArgs = <span class="built_in">arguments</span>.length &gt; <span class="number">2</span> ? sliceArgs(<span class="built_in">arguments</span>, <span class="number">2</span>) : [];</span><br><span class="line"><span class="comment">//判断是否是函数 且不能是正则类型</span></span><br><span class="line"><span class="keyword">if</span> (isFunction(fn) &amp;&amp; !(fn <span class="keyword">instanceof</span> <span class="built_in">RegExp</span>)) &#123;</span><br><span class="line">  <span class="keyword">return</span> curryArgs.length</span><br><span class="line">    ? <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">arguments</span>.length</span><br><span class="line">          ? fn.apply(self, concat(curryArgs, <span class="built_in">arguments</span>, <span class="number">0</span>))</span><br><span class="line">          : fn.apply(self, curryArgs);</span><br><span class="line">      &#125;</span><br><span class="line">    : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">arguments</span>.length</span><br><span class="line">          ? fn.apply(self, <span class="built_in">arguments</span>)</span><br><span class="line">          : fn.call(self);</span><br><span class="line">      &#125;;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// In IE, native methods are not functions so they cannot be bound (note: they don't need to be).</span></span><br><span class="line">  <span class="keyword">return</span> fn;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/01/08/angular-typedArray/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -788,340 +1106,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/12/30/jquery-attr/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/12/30/jquery-attr/" class="post-title-link" itemprop="url">jquery_attr</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-12-30 22:07:48" itemprop="dateCreated datePublished" datetime="2016-12-30T22:07:48+08:00">2016-12-30</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="jquery1-0-attr-函数分析"><a href="#jquery1-0-attr-函数分析" class="headerlink" title="jquery1.0 attr 函数分析"></a>jquery1.0 attr 函数分析</h2><p>先上代码：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">attr: <span class="function"><span class="keyword">function</span>(<span class="params"> key, value, type </span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Check to see if we're setting style values</span></span><br><span class="line">  <span class="comment">//检查是否是设置属性</span></span><br><span class="line">  <span class="keyword">return</span> key.constructor != <span class="built_in">String</span> || value != <span class="literal">undefined</span> ?</span><br><span class="line">    <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="comment">// See if we're setting a hash of styles</span></span><br><span class="line">      <span class="comment">//key是一个对象</span></span><br><span class="line">      <span class="comment">//例如 &#123; "width":“15px”&#125;</span></span><br><span class="line">      <span class="keyword">if</span> ( value == <span class="literal">undefined</span> )</span><br><span class="line">        <span class="comment">// Set all the styles</span></span><br><span class="line">        <span class="keyword">for</span> ( <span class="keyword">var</span> prop <span class="keyword">in</span> key )</span><br><span class="line">          jQuery.attr(</span><br><span class="line">            type ? <span class="keyword">this</span>.style : <span class="keyword">this</span>,</span><br><span class="line">            prop, key[prop]</span><br><span class="line">          );</span><br><span class="line"></span><br><span class="line">      <span class="comment">// See if we're setting a single key/value style</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        jQuery.attr(</span><br><span class="line">          type ? <span class="keyword">this</span>.style : <span class="keyword">this</span>,<span class="comment">//这边的this已经是dom对象</span></span><br><span class="line">          key, value</span><br><span class="line">        );</span><br><span class="line">    &#125;) :</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Look for the case where we're accessing a style value</span></span><br><span class="line">    <span class="comment">//读取属性值 css -&gt;调用静态方法jQuery.curCSS</span></span><br><span class="line">    jQuery[ type || <span class="string">"attr"</span> ]( <span class="keyword">this</span>[<span class="number">0</span>], key );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="jquery1-0-静态-attr函数"><a href="#jquery1-0-静态-attr函数" class="headerlink" title="jquery1.0 静态 attr函数"></a>jquery1.0 静态 attr函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">attr: <span class="function"><span class="keyword">function</span>(<span class="params">elem, name, value</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> fix = &#123;</span><br><span class="line">    <span class="string">"for"</span>: <span class="string">"htmlFor"</span>,</span><br><span class="line">    <span class="string">"class"</span>: <span class="string">"className"</span>,</span><br><span class="line">    <span class="string">"float"</span>: <span class="string">"cssFloat"</span>,</span><br><span class="line">    <span class="attr">innerHTML</span>: <span class="string">"innerHTML"</span>,</span><br><span class="line">    <span class="attr">className</span>: <span class="string">"className"</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( fix[name] ) &#123;</span><br><span class="line">    <span class="keyword">if</span> ( value != <span class="literal">undefined</span> ) elem[fix[name]] = value;</span><br><span class="line">    <span class="keyword">return</span> elem[fix[name]];</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> ( elem.getAttribute ) &#123;</span><br><span class="line">    <span class="keyword">if</span> ( value != <span class="literal">undefined</span> ) elem.setAttribute( name, value );</span><br><span class="line">    <span class="keyword">return</span> elem.getAttribute( name, <span class="number">2</span> );</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    name = name.replace(<span class="regexp">/-([a-z])/ig</span>,<span class="function"><span class="keyword">function</span>(<span class="params">z,b</span>)</span>&#123;<span class="keyword">return</span> b.toUpperCase();&#125;);</span><br><span class="line">    <span class="keyword">if</span> ( value != <span class="literal">undefined</span> ) elem[name] = value;</span><br><span class="line">    <span class="keyword">return</span> elem[name];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从中我们可以学到如下几点：</p>
-<blockquote>
-<p>jquery.each方法</p>
-</blockquote>
-<blockquote>
-<p>jquery静态方法的调用</p>
-</blockquote>
-<blockquote>
-<p>dom是如何给元素设置属性的</p>
-</blockquote>
-<blockquote>
-<p>一个函数中既包含设置又包含读取的功能</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/12/30/jquery-wrap/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/12/30/jquery-wrap/" class="post-title-link" itemprop="url">jquery_wrap</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-12-30 21:47:01" itemprop="dateCreated datePublished" datetime="2016-12-30T21:47:01+08:00">2016-12-30</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="jquery1-0-wrap函数分析"><a href="#jquery1-0-wrap函数分析" class="headerlink" title="jquery1.0 wrap函数分析"></a>jquery1.0 wrap函数分析</h2><p>先上代码：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">wrap: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// The elements to wrap the target around</span></span><br><span class="line">  <span class="comment">//包装目标元素的元素</span></span><br><span class="line">  <span class="keyword">var</span> a = jQuery.clean(<span class="built_in">arguments</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Wrap each of the matched elements individually</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// Clone the structure that we're using to wrap</span></span><br><span class="line">    <span class="keyword">var</span> b = a[<span class="number">0</span>].cloneNode(<span class="literal">true</span>);<span class="comment">//选择a[0]元素</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Insert it before the element to be wrapped</span></span><br><span class="line">          <span class="comment">//在当前元素之前插入包装节点</span></span><br><span class="line">    <span class="keyword">this</span>.parentNode.insertBefore( b, <span class="keyword">this</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Find he deepest point in the wrap structure</span></span><br><span class="line">    <span class="comment">//找出最深的第一个包装的元素</span></span><br><span class="line">    <span class="keyword">while</span> ( b.firstChild )</span><br><span class="line">      b = b.firstChild;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Move the matched element to within the wrap structure</span></span><br><span class="line">    <span class="comment">//把匹配的当前元素移动到包装元素内</span></span><br><span class="line">    b.appendChild( <span class="keyword">this</span> );</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从中我们可以学到以下几点：</p>
-<blockquote>
-<p>dom元素的操作</p>
-</blockquote>
-<blockquote>
-<p>jquery.clean方法的应用</p>
-</blockquote>
-<p>关于jquery.clean方法我们已经在之前<a href="http://johnwonder.github.io/2016/09/05/jquery-clean/">这篇博客</a>中分析过</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1168,7 +1152,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">228</span>
+                    <span class="site-state-item-count">230</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1265,7 +1249,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">39</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">41</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

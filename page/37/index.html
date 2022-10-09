@@ -323,6 +323,330 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/17/binary-search/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/10/17/binary-search/" class="post-title-link" itemprop="url">算法--二分法查找</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-10-17 16:03:03" itemprop="dateCreated datePublished" datetime="2016-10-17T16:03:03+08:00">2016-10-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="二分法"><a href="#二分法" class="headerlink" title="二分法"></a>二分法</h2><p><a href="http://baike.baidu.com/link?url=TzhiEIwhX5ycN0LxEWtUXaIsRYiv4xVo9CdaDi_TFGVhhCQXbMp4KSW4oPUxMytSN-HeKwa9XyHkS9_e1U6R9COk7rHmRfRW8SQyUCfq6fn2j-QYV0S0qpF9-VhGf0TU" target="_blank" rel="external">数学领域术语</a><br>对于区间[a，b]上连续不断且f（a）·f（b）&lt;0的函数y=f（x），通过不断地把函数f（x）的零点所在的区间一分为二，使区间的两个端点逐步逼近零点，进而得到零点近似值的方法叫二分法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span>[] data,<span class="keyword">int</span> aim)</span></span>&#123;<span class="comment">//以int数组为例，aim为需要查找的数</span></span><br><span class="line">  <span class="keyword">int</span> start = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> end = data.length-<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span> mid = (start+end)/<span class="number">2</span>;<span class="comment">//a</span></span><br><span class="line">  <span class="keyword">while</span>(data[mid]!=aim &amp;&amp; end&gt;start)&#123;<span class="comment">//如果data[mid]等于aim则死循环，所以排除</span></span><br><span class="line">      <span class="keyword">if</span>(data[mid]&gt;aim)&#123;</span><br><span class="line">          end = mid-<span class="number">1</span>;</span><br><span class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span>(data[mid]&lt;aim)&#123;</span><br><span class="line">          start = mid+<span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      mid = (start+end)/<span class="number">2</span>;<span class="comment">//b，注意a，b</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> (data[mid]!=aim)?-<span class="number">1</span>:mid;<span class="comment">//返回结果</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/15/hexo-flow-first/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/10/15/hexo-flow-first/" class="post-title-link" itemprop="url">hexo流程梳理之别名注册</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-10-15 21:58:37" itemprop="dateCreated datePublished" datetime="2016-10-15T21:58:37+08:00">2016-10-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-24 20:26:02" itemprop="dateModified" datetime="2019-05-24T20:26:02+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="hexo-命令注册"><a href="#hexo-命令注册" class="headerlink" title="hexo 命令注册"></a>hexo 命令注册</h2><p>hexo构造函数中实例化extend.console,在hexo cli中先注册hexo help version命令</p>
+<p>核心的注册逻辑：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> c = <span class="keyword">this</span>.store[name.toLowerCase()] = fn;</span><br><span class="line">c.options = options;</span><br><span class="line">c.desc = desc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">this</span>.alias = abbrev(<span class="built_in">Object</span>.keys(<span class="keyword">this</span>.store));</span><br></pre></td></tr></table></figure></p>
+<h3 id="abbrev模块"><a href="#abbrev模块" class="headerlink" title="abbrev模块"></a>abbrev模块</h3><p>abbrev是Isaac Z. Schlueter 创建的一个<code>handy for command-line scripts, or other cases where you want to be able to accept shorthands.</code>(专门为了处理命令行脚本，或者接受速记)</p>
+<p>Isaac Z. Schlueter ：npm inventor and CEO. Early contributor and former BDFL of Node.js. Author of many JavaScripts. Been making internets for a pretty long time.<br>(npm的创造者和CEO)</p>
+<p><a href="https://en.wikipedia.org/wiki/Benevolent_dictator_for_life" target="_blank" rel="external">BDFL</a>：Benevolent Dictator For Life (BDFL) is a title given to a small number of open-source software development leaders, typically project founders who retain the final say in disputes or arguments within the community.<br>是给少数开源软件开发领导者的标题，类似在社区里有说话权的项目创始人</p>
+<p>比如以下几位都是nodejs的<a href="http://nodeguide.com/community.html" target="_blank" rel="external">贡献者</a>：<br>    <a href="https://github.com/ry" target="_blank" rel="external">Ryan Dahl</a>(跟PAAS Heroku 有关)<br>    <a href="https://github.com/isaacs" target="_blank" rel="external">Isaac Schlueter</a> (在Oakland CA 奥克兰（美国加利福尼亚州西部港市）)<br>    <a href="https://github.com/piscisaureus" target="_blank" rel="external">Bert Belder</a> (为node提供windows支持的主要开发者)<br>    <a href="https://github.com/visionmedia" target="_blank" rel="external">TJ Holowaychuk</a> (大名鼎鼎的TJ,express,jade的作者)<br>    <a href="https://github.com/creationix" target="_blank" rel="external">Tim Caswell</a> (connect的作者)<br>    <a href="https://github.com/felixge" target="_blank" rel="external">Felix Geisendörfer</a> ( works on projects node-formidable, node-mysql 在Berlin, Germany （德国柏林）)<br>    <a href="https://github.com/mikeal" target="_blank" rel="external">Mikeal Rogers</a> (request的作者，在旧金山 San Francisco)<br>    <a href="https://github.com/cloudhead" target="_blank" rel="external">Alexis Sellier</a> ( less.js, vows 在柏林)<br>    <a href="https://github.com/jashkenas" target="_blank" rel="external">Jeremy Ashkenas</a> ( CoffeeScript, underscore, backbone, docco 的作者 在纽约 NYC)<br>    <a href="https://github.com/jed" target="_blank" rel="external">Jed Schmidt</a> (  fab.js )<br>    <a href="https://github.com/marak" target="_blank" rel="external">Marak Squires</a> (mostly known for pumping out dozens of node.js libraries per month)<br>    <a href="https://github.com/pkrumins" target="_blank" rel="external">Peteris Krumins</a> ( browserling 在拉脱维亚)<br>    <a href="https://github.com/substack" target="_blank" rel="external">James Halliday</a> ( dnode, optimist and browserify的作者)</p>
+<p>abbrev是在注册命令时为了存储别名时用的一个模块，比如输入<code>hexo n</code>的时候hexo会识别出是调用了<code>new</code>命令。就像它在readme.md中所说的Just like <a href="http://apidock.com/ruby/Abbrev" target="_blank" rel="external">ruby’s Abbrev</a>.就像ruby中的Abbrev模块。</p>
+<p>Usage:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> store = &#123;</span><br><span class="line"></span><br><span class="line">	<span class="string">'new'</span> : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;,</span><br><span class="line">	<span class="string">'deploy'</span> : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;,</span><br><span class="line">	<span class="string">'publish'</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"> <span class="built_in">console</span>.log(<span class="built_in">Object</span>.keys(store));</span><br><span class="line"><span class="comment">//print array</span></span><br><span class="line"><span class="comment">//[ 'new', 'deploy', 'publish' ]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> alias = abbrev(<span class="built_in">Object</span>.keys(store));</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(alias);</span><br><span class="line"></span><br><span class="line"><span class="comment">//print</span></span><br><span class="line"><span class="built_in">console</span>.log(alias);</span><br><span class="line"></span><br><span class="line">&#123; <span class="attr">d</span>: <span class="string">'deploy'</span>,</span><br><span class="line">  <span class="attr">de</span>: <span class="string">'deploy'</span>,</span><br><span class="line">  <span class="attr">dep</span>: <span class="string">'deploy'</span>,</span><br><span class="line">  <span class="attr">depl</span>: <span class="string">'deploy'</span>,</span><br><span class="line">  <span class="attr">deplo</span>: <span class="string">'deploy'</span>,</span><br><span class="line">  <span class="attr">deploy</span>: <span class="string">'deploy'</span>,</span><br><span class="line">  <span class="attr">n</span>: <span class="string">'new'</span>,</span><br><span class="line">  <span class="attr">ne</span>: <span class="string">'new'</span>,</span><br><span class="line">  <span class="attr">new</span>: <span class="string">'new'</span>,</span><br><span class="line">  <span class="attr">p</span>: <span class="string">'publish'</span>,</span><br><span class="line">  <span class="attr">pu</span>: <span class="string">'publish'</span>,</span><br><span class="line">  <span class="attr">pub</span>: <span class="string">'publish'</span>,</span><br><span class="line">  <span class="attr">publ</span>: <span class="string">'publish'</span>,</span><br><span class="line">  <span class="attr">publi</span>: <span class="string">'publish'</span>,</span><br><span class="line">  <span class="attr">publis</span>: <span class="string">'publish'</span>,</span><br><span class="line">  <span class="attr">publish</span>: <span class="string">'publish'</span> &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="hexo-命令获取"><a href="#hexo-命令获取" class="headerlink" title="hexo 命令获取"></a>hexo 命令获取</h2><p> 通过存储在Console实例中的alias字典对象中获取实际的命令Key(alias字典对象就是通过调用abbrev生成的),然后去实际的store对象中获取命令。</p>
+<p> 核心的获取逻辑：</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	Console.prototype.get = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">  name = name.toLowerCase();</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.store[<span class="keyword">this</span>.alias[name]];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="abbrev源码分析"><a href="#abbrev源码分析" class="headerlink" title="abbrev源码分析"></a>abbrev源码分析</h2> <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">abbrev</span> (<span class="params">list</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//如果参数不等于1 或者参数list不是数组</span></span><br><span class="line">  <span class="comment">//那么就调用Array的slice方法</span></span><br><span class="line">  <span class="comment">//返回一个新的数组，包含从 start 到 end （不包括该元素）的 arrayObject 中的元素。</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">arguments</span>.length !== <span class="number">1</span> || !<span class="built_in">Array</span>.isArray(list)) &#123;</span><br><span class="line">  	<span class="comment">//返回新的list数组</span></span><br><span class="line">    list = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">0</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//放入args数组</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = list.length, args = [] ; i &lt; l ; i ++) &#123;</span><br><span class="line">    args[i] = <span class="keyword">typeof</span> list[i] === <span class="string">"string"</span> ? list[i] : <span class="built_in">String</span>(list[i])</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//排序，调用lexSort方法</span></span><br><span class="line">  <span class="comment">// sort them lexicographically(按字典顺序), so that they're next to their nearest kin</span></span><br><span class="line">  args = args.sort(lexSort)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// walk through each, seeing how much it has in common with the next and previous</span></span><br><span class="line">  <span class="keyword">var</span> abbrevs = &#123;&#125;</span><br><span class="line">    , prev = <span class="string">""</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = args.length ; i &lt; l ; i ++) &#123;</span><br><span class="line">    <span class="keyword">var</span> current = args[i]</span><br><span class="line">      , next = args[i + <span class="number">1</span>] || <span class="string">""</span></span><br><span class="line">      , nextMatches = <span class="literal">true</span></span><br><span class="line">      , prevMatches = <span class="literal">true</span></span><br><span class="line">    <span class="keyword">if</span> (current === next) <span class="keyword">continue</span></span><br><span class="line">		<span class="comment">//循环结束j要么找到不等于前后的字符 要么就是整个当前字符串</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>, cl = current.length ; j &lt; cl ; j ++) &#123;</span><br><span class="line">      <span class="keyword">var</span> curChar = current.charAt(j)</span><br><span class="line">      <span class="comment">//跟next和prev元素内的字符做比较，如果都不相等，那么就直接跳出这个元素的比较循环</span></span><br><span class="line">      nextMatches = nextMatches &amp;&amp; curChar === next.charAt(j)</span><br><span class="line">      prevMatches = prevMatches &amp;&amp; curChar === prev.charAt(j)</span><br><span class="line">      <span class="keyword">if</span> (!nextMatches &amp;&amp; !prevMatches) &#123;</span><br><span class="line">        j ++</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    prev = current<span class="comment">//把prev指向当前args元素</span></span><br><span class="line">    <span class="keyword">if</span> (j === cl) &#123;</span><br><span class="line">      abbrevs[current] = current</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//比如abc a ab abc</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> a = current.substr(<span class="number">0</span>, j) ; j &lt;= cl ; j ++) &#123;</span><br><span class="line">      abbrevs[a] = current</span><br><span class="line">      a += current.charAt(j)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> abbrevs</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">lexSort</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> a === b ? <span class="number">0</span> : a &gt; b ? <span class="number">1</span> : <span class="number">-1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 可以尝试写个C#的版本。。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/12/wordpress-delete-googleapi/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -787,325 +1111,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/10/01/list-tag/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/10/01/list-tag/" class="post-title-link" itemprop="url">list_tag</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-10-01 22:50:29" itemprop="dateCreated datePublished" datetime="2016-10-01T22:50:29+08:00">2016-10-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="hexo-list-命令之tag"><a href="#hexo-list-命令之tag" class="headerlink" title="hexo list 命令之tag"></a>hexo list 命令之tag</h2><p>hexo list命令是由hexo实例调用的</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//调用hexo类的call方法</span></span><br><span class="line"><span class="keyword">return</span> hexo.call(cmd, args).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> hexo.exit();</span><br><span class="line">   &#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> hexo.exit(err).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">       handleError(err);</span><br><span class="line">     &#125;);</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   ...省略</span><br><span class="line">   Hexo.prototype.call = <span class="function"><span class="keyword">function</span>(<span class="params">name, args, callback</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!callback &amp;&amp; <span class="keyword">typeof</span> args === <span class="string">'function'</span>)&#123;</span><br><span class="line">    callback = args;</span><br><span class="line">    args = &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">  	<span class="comment">//从console类获取存储的命令</span></span><br><span class="line">    <span class="keyword">var</span> c = self.extend.console.get(name);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (c)&#123;</span><br><span class="line">      c.call(self, args).then(resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Console `'</span> + name + <span class="string">'` has not been registered yet!'</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;).nodeify(callback);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>先调用list命令：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">listConsole</span>(<span class="params">args</span>)</span>&#123;</span><br><span class="line">  <span class="comment">/* jshint validthis: true */</span></span><br><span class="line">  <span class="keyword">var</span> type = args._.shift();</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Display help message if user didn't input any arguments</span></span><br><span class="line">  <span class="keyword">if</span> (!type || !store.hasOwnProperty(type))&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.call(<span class="string">'help'</span>, &#123;<span class="attr">_</span>: [<span class="string">'list'</span>]&#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.load().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> store[type].call(self, args);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>加载数据库,统计数量<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Hexo.prototype.load = <span class="function"><span class="keyword">function</span>(<span class="params">callback</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> loadDatabase(<span class="keyword">this</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  	<span class="comment">//处理 插入数据库操作</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.all([</span><br><span class="line">      self.source.process(),</span><br><span class="line">      self.theme.process()</span><br><span class="line">    ]);</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> self._generate(&#123;<span class="attr">cache</span>: <span class="literal">true</span>&#125;);</span><br><span class="line">  &#125;).nodeify(callback);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> chalk = <span class="built_in">require</span>(<span class="string">'chalk'</span>);</span><br><span class="line"><span class="keyword">var</span> table = <span class="built_in">require</span>(<span class="string">'text-table'</span>);</span><br><span class="line"><span class="keyword">var</span> common = <span class="built_in">require</span>(<span class="string">'./common'</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">listTag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">/* jshint validthis: true */</span></span><br><span class="line">  <span class="comment">//获取hexo实例的model方法</span></span><br><span class="line">  <span class="keyword">var</span> Tag = <span class="keyword">this</span>.model(<span class="string">'Tag'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//获取tag数据 从tag model获取</span></span><br><span class="line">  <span class="keyword">var</span> data = Tag.sort(&#123;<span class="attr">name</span>: <span class="number">1</span>&#125;).map(<span class="function"><span class="keyword">function</span>(<span class="params">tag</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> [tag.name, <span class="built_in">String</span>(tag.length), chalk.magenta(tag.path)];</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Table header</span></span><br><span class="line">  <span class="keyword">var</span> header = [<span class="string">'Name'</span>, <span class="string">'Posts'</span>, <span class="string">'Path'</span>].map(<span class="function"><span class="keyword">function</span>(<span class="params">str</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> chalk.underline(str);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//压入表头到data数组</span></span><br><span class="line">  data.unshift(header);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> t = table(data, &#123;</span><br><span class="line">    <span class="attr">align</span>: [<span class="string">'l'</span>, <span class="string">'r'</span>, <span class="string">'l'</span>],</span><br><span class="line">    <span class="attr">stringLength</span>: common.stringLength</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(t);</span><br><span class="line">  <span class="keyword">if</span> (data.length === <span class="number">1</span>) <span class="built_in">console</span>.log(<span class="string">'No tags.'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = listTag;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/09/29/hexo-scaffold/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/09/29/hexo-scaffold/" class="post-title-link" itemprop="url">hexo scaffold的创建过程</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-09-29 22:08:49" itemprop="dateCreated datePublished" datetime="2016-09-29T22:08:49+08:00">2016-09-29</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="layout从哪边来"><a href="#layout从哪边来" class="headerlink" title="layout从哪边来"></a>layout从哪边来</h2><h3 id="new-js"><a href="#new-js" class="headerlink" title="new.js"></a>new.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> data = &#123;</span><br><span class="line">   <span class="attr">title</span>: args._.pop(),<span class="comment">//标题</span></span><br><span class="line">   layout: args._.length ? args._[<span class="number">0</span>] : <span class="keyword">this</span>.config.default_layout,</span><br><span class="line">   <span class="attr">slug</span>: args.s || args.slug,</span><br><span class="line">   <span class="attr">path</span>: args.p || args.path</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> ...省略</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.post.create(data, args.r || args.replace).then(<span class="function"><span class="keyword">function</span>(<span class="params">post</span>)</span>&#123;</span><br><span class="line">   self.log.info(<span class="string">'Created: %s'</span>, chalk.magenta(tildify(post.path)));</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="post-js"><a href="#post-js" class="headerlink" title="post.js"></a>post.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//默认layout为post</span></span><br><span class="line">data.layout = (data.layout || config.default_layout).toLowerCase();</span><br><span class="line"></span><br><span class="line">...省略</span><br><span class="line"><span class="keyword">this</span>._getScaffold(data.layout)</span><br><span class="line"></span><br><span class="line">...省略</span><br><span class="line">Post.prototype._getScaffold = <span class="function"><span class="keyword">function</span>(<span class="params">layout</span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> ctx = <span class="keyword">this</span>.context;</span><br><span class="line"></span><br><span class="line"><span class="comment">//从scaffold目录中获取post.md</span></span><br><span class="line"><span class="keyword">return</span> ctx.scaffold.get(layout).then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (result != <span class="literal">null</span>) <span class="keyword">return</span> result;</span><br><span class="line">    <span class="keyword">return</span> ctx.scaffold.get(<span class="string">'normal'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="hexo-front-matter-front-matter-js"><a href="#hexo-front-matter-front-matter-js" class="headerlink" title="hexo-front-matter/front_matter.js"></a>hexo-front-matter/front_matter.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> split = yfm.split(scaffold);</span><br><span class="line"></span><br><span class="line"> ...省略</span><br><span class="line"> <span class="keyword">var</span> rPrefixSep = <span class="regexp">/^(-&#123;3,&#125;|;&#123;3,&#125;)/</span>;</span><br><span class="line"> <span class="keyword">var</span> rFrontMatter = <span class="regexp">/^(-&#123;3,&#125;|;&#123;3,&#125;)\n([\s\S]+?)\n\1(?:$|\n([\s\S]*)$)/</span>;</span><br><span class="line"> <span class="keyword">var</span> rFrontMatterNew = <span class="regexp">/^([\s\S]+?)\n(-&#123;3,&#125;|;&#123;3,&#125;)(?:$|\n([\s\S]*)$)/</span>;</span><br><span class="line"></span><br><span class="line"> ...省略</span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">split</span>(<span class="params">str</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> str !== <span class="string">'string'</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'str is required!'</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(str);</span><br><span class="line">  <span class="keyword">if</span> (rFrontMatter.test(str)) <span class="keyword">return</span> splitOld(str);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//post.md中默认内容 匹配rFrontMatterNew</span></span><br><span class="line">  <span class="keyword">if</span> (rFrontMatterNew.test(str)) <span class="keyword">return</span> splitNew(str);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;<span class="attr">content</span>: str&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">splitNew</span>(<span class="params">str</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'splitNew'</span>);</span><br><span class="line">  <span class="keyword">if</span> (rPrefixSep.test(str)) <span class="keyword">return</span> &#123;<span class="attr">content</span>: str&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> match = str.match(rFrontMatterNew);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">data</span>: match[<span class="number">1</span>],</span><br><span class="line">    <span class="attr">content</span>: match[<span class="number">3</span>] || <span class="string">''</span>,</span><br><span class="line">    <span class="attr">separator</span>: match[<span class="number">2</span>],</span><br><span class="line">    <span class="attr">prefixSeparator</span>: <span class="literal">false</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> frontMatter = prepareFrontMatter(_.clone(data));</span><br><span class="line"></span><br><span class="line">...省略</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">prepareFrontMatter</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line"> <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(data);</span><br><span class="line"> <span class="keyword">var</span> key = <span class="string">''</span>;</span><br><span class="line"> <span class="keyword">var</span> item;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = keys.length; i &lt; len; i++)&#123;</span><br><span class="line">   key = keys[i];</span><br><span class="line">   item = data[key];</span><br><span class="line"><span class="comment">//时间格式化</span></span><br><span class="line">   <span class="keyword">if</span> (moment.isMoment(item))&#123;</span><br><span class="line">     data[key] = item.utc().format(<span class="string">'YYYY-MM-DD HH:mm:ss'</span>);</span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (moment.isDate(item))&#123;</span><br><span class="line">     data[key] = moment.utc(item).format(<span class="string">'YYYY-MM-DD HH:mm:ss'</span>);</span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> item === <span class="string">'string'</span>)&#123;</span><br><span class="line">     data[key] = <span class="string">'"'</span> + item + <span class="string">'"'</span>;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>最后调用 swig模板引擎 编译splitedata对象</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> renderedData = swig.compile(split.data)(frontMatter);</span><br><span class="line"></span><br><span class="line"><span class="keyword">this</span>.compile = <span class="function"><span class="keyword">function</span> (<span class="params">source, options</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> key = options ? options.filename : <span class="literal">null</span>,</span><br><span class="line">      cached = key ? cacheGet(key, options) : <span class="literal">null</span>,</span><br><span class="line">      context,</span><br><span class="line">      contextLength,</span><br><span class="line">      pre;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cached) &#123;</span><br><span class="line">      <span class="keyword">return</span> cached;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    context = getLocals(options);</span><br><span class="line">    contextLength = utils.keys(context).length;</span><br><span class="line">    pre = <span class="keyword">this</span>.precompile(source, options);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">compiled</span>(<span class="params">locals</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> lcls;</span><br><span class="line">      <span class="keyword">if</span> (locals &amp;&amp; contextLength) &#123;</span><br><span class="line">        lcls = utils.extend(&#123;&#125;, context, locals);</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (locals &amp;&amp; !contextLength) &#123;</span><br><span class="line">        lcls = locals;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!locals &amp;&amp; contextLength) &#123;</span><br><span class="line">        lcls = context;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        lcls = &#123;&#125;;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> pre.tpl(self, lcls, filters, utils, efn);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    utils.extend(compiled, pre.tokens);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (key) &#123;</span><br><span class="line">      cacheSet(key, options, compiled);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> compiled;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1152,7 +1157,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">228</span>
+                    <span class="site-state-item-count">230</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1249,7 +1254,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">39</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">41</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

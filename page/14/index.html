@@ -323,6 +323,314 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/05/08/redis-knownpoints1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/08/redis-knownpoints1/" class="post-title-link" itemprop="url">redis知识点整理</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-08 16:41:52 / 修改时间：20:26:59" itemprop="dateCreated datePublished" datetime="2019-05-08T16:41:52+08:00">2019-05-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1、Redis如何做内存优化？尽可能使用散列表（hashes），散列表（是说散列表里面存储的数少）使用的内存非常小，所以你应该尽可能的将你的数据模型抽象到一个散列表里面。比如你的web系统中有一个用户对象，不要为这个用户的名称，姓氏，邮箱，密码设置单独的key,而是应该把这个用户的所有信息存储到一张散列表里面。</p>
+<p>2.mySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据</p>
+<p>相关知识：redis 内存数据集大小上升到一定大小的时候，就会施行数据淘汰策略。</p>
+<p>redis 提供 6种数据淘汰策略：<br>voltile-lru：从已设置过期时间的数据集（server.db[i].expires）中挑选最近最少使用的数据淘汰<br>volatile-ttl：从已设置过期时间的数据集（server.db[i].expires）中挑选将要过期的数据淘汰<br>volatile-random：从已设置过期时间的数据集（server.db[i].expires）中任意选择数据淘汰<br>allkeys-lru：从数据集（server.db[i].dict）中挑选最近最少使用的数据淘汰<br>allkeys-random：从数据集（server.db[i].dict）中任意选择数据淘汰<br>no-enviction（驱逐）：禁止驱逐数据</p>
+<p><a href="https://www.jianshu.com/p/36a646cef11a" target="_blank" rel="external">30道Redis面试题，面试官能问的都被我找到了</a><br><a href="https://www.cnblogs.com/jasontec/p/9699242.html" target="_blank" rel="external">Redis常见面试题</a>)</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/05/08/spring-security-1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/08/spring-security-1/" class="post-title-link" itemprop="url">spring security框架基础知识点</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-08 15:43:02" itemprop="dateCreated datePublished" datetime="2019-05-08T15:43:02+08:00">2019-05-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1、引入包spring-boot-starter-security<br>2.@EnableWebSecurity 注解<br>3.WebSecurityConfigurerAdapter适配器</p>
+<p>参考资料：<br><a href="https://www.jianshu.com/p/0c54788c94f3" target="_blank" rel="external">Spring Security原理篇(一) 启动原理</a></p>
+<ol>
+<li><a href="https://cloud.tencent.com/developer/article/1353426" target="_blank" rel="external">SpringCloud组件：你的Eureka服务注册中心安全吗？</a></li>
+<li><a href="https://blog.csdn.net/FangX_u/article/details/82589727" target="_blank" rel="external">spring cloud-给Eureka Server加上安全的用户认证</a></li>
+<li><a href="https://blog.csdn.net/weixin_42465125/article/details/88337698" target="_blank" rel="external">新版Eureka Server 加上Spring Security安全认证之后，客户端无法注册和客户端启动Up后就Down的问题</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/05/05/KnowPoints/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -816,346 +1124,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2018/03/01/angular-provider-cachefactory/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/03/01/angular-provider-cachefactory/" class="post-title-link" itemprop="url">angular源码剖析之Provider系列--CacheFactoryProvider</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-03-01 15:04:17" itemprop="dateCreated datePublished" datetime="2018-03-01T15:04:17+08:00">2018-03-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-30 20:43:17" itemprop="dateModified" datetime="2019-05-30T20:43:17+08:00">2019-05-30</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="CacheFactoryProvider-简介"><a href="#CacheFactoryProvider-简介" class="headerlink" title="CacheFactoryProvider 简介"></a>CacheFactoryProvider 简介</h2><p>源码里是这么描述的：<br>Factory that constructs {@link $cacheFactory.Cache Cache} objects and gives access to<br>them.<br>意思就是通过cacheFactory可以构造一个Cache对象来给予访问和执行权限。</p>
-<p>这个Cache对象<a href="https://code.angularjs.org/1.5.8/docs/api/ng/type/$cacheFactory.Cache" target="_blank" rel="external">官方文档</a>是这么说的：<br>A cache object used to store and retrieve data, primarily used by $http and the script directive to cache templates and other data.<br>用我自己的话来说就是 提供存储和访问缓存对象的服务,angular内部主要被$http,script指令用于<br>缓存template和其他数据。我们自己可以在Controller内部使用。</p>
-<h2 id="CacheFactoryProvider-用法"><a href="#CacheFactoryProvider-用法" class="headerlink" title="CacheFactoryProvider 用法"></a>CacheFactoryProvider 用法</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype html&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">ng-app</span>=<span class="string">"myapp"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"Generator"</span> <span class="attr">content</span>=<span class="string">"EditPlus®"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"Author"</span> <span class="attr">content</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"Keywords"</span> <span class="attr">content</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"Description"</span> <span class="attr">content</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"js/angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-controller</span>=<span class="string">"MyController"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">script</span> &gt;</span><span class="javascript"></span><br><span class="line">       <span class="keyword">var</span> app=angular.module(<span class="string">'myapp'</span>,[]);</span><br><span class="line">       app.controller(<span class="string">'MyController'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,$cacheFactory</span>)</span>&#123;</span><br><span class="line">         <span class="keyword">var</span> myCache = $cacheFactory(<span class="string">"myCache"</span>,&#123;<span class="attr">capacity</span>: <span class="number">6</span>&#125;);</span><br><span class="line">         <span class="comment">//var myCache1 = $cacheFactory("myCache",&#123;capacity: 6&#125;); //会报错</span></span><br><span class="line">         myCache.put(<span class="string">"name"</span>,<span class="string">"john"</span>);</span><br><span class="line">         myCache.put(<span class="string">"name1"</span>,<span class="string">"wonder"</span>);</span><br><span class="line">         myCache.put(<span class="string">"name"</span>,<span class="string">"john"</span>);</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">       app.controller(<span class="string">'getCacheController'</span>,[<span class="string">'$scope'</span>,<span class="string">'$cacheFactory'</span>,</span><br><span class="line">          <span class="function"><span class="keyword">function</span>(<span class="params">$scope,$cacheFactory</span>)</span>&#123;  </span><br><span class="line">                <span class="keyword">var</span> cache = $cacheFactory.get(<span class="string">'myCache'</span>);  </span><br><span class="line">                <span class="keyword">var</span> name = cache.get(<span class="string">'name'</span>);  </span><br><span class="line">                <span class="built_in">console</span>.log(name);  <span class="comment">//打印john</span></span><br><span class="line">            &#125;]);  </span><br><span class="line">     </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>看了上面这个一个简单的例子，读者可能会产生如下疑惑：  </p>
-<ol>
-<li>不是名为CacheFactoryProvider吗，怎么在代码里只看到cacheFactory呢？</li>
-<li>cacheFactory是怎么存储对象的？<br>下面我们来依次解答这两个问题</li>
-</ol>
-<h2 id="cacheFactory的注入"><a href="#cacheFactory的注入" class="headerlink" title="$cacheFactory的注入"></a>$cacheFactory的注入</h2><p>我们首先来看第一个问题，这个问题要牵涉到angular里面的依赖注入机制，我们前面的分析也讲过，<br>angular会在启动之前通过调用<code>publishExternalAPI</code> 函数先发布一些扩展API,同时定义ng<br>模块，在定义ng模块的时候就传入了注入provider的方法  </p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">angularModule(<span class="string">'ng'</span>, [<span class="string">'ngLocale'</span>], [<span class="string">'$provide'</span>,</span><br><span class="line">     <span class="comment">//通过参数注入$provide</span></span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">ngModule</span><span class="params">($provide)</span> </span>&#123;</span><br><span class="line">          <span class="comment">///部分代码省略</span></span><br><span class="line">         $provide.provider(&#123;</span><br><span class="line">           $cacheFactory: $CacheFactoryProvider,</span><br><span class="line">         &#125;);</span><br><span class="line">    &#125;])</span><br></pre></td></tr></table></figure>
-<p>$cacheFactory出现了，它是通过javascript的键值对象作为键传给provider方法。那么它是如何存储<br>对象的呢？首先我们看它的定义：</p>
-<h2 id="CacheFactoryProvider的定义"><a href="#CacheFactoryProvider的定义" class="headerlink" title="CacheFactoryProvider的定义"></a>CacheFactoryProvider的定义</h2><p>内部定义了依赖注入核心的<code>$get</code>方法,<code>$get</code>方法返回cacheFactory方法(也就是上面实例代码里的<br>  <code>$cacheFactory</code>参数)。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$CacheFactoryProvider</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//定义$get方法供依赖调用</span></span><br><span class="line">  <span class="comment">//controller中获取cacheFactory时会调用此方法</span></span><br><span class="line">  <span class="comment">//这个$get方法也是获取provider的关键方法</span></span><br><span class="line">   <span class="keyword">this</span>.$<span class="keyword">get</span> = function() &#123;</span><br><span class="line">     <span class="keyword">var</span> caches = &#123;&#125;;<span class="comment">//闭包的一个运用</span></span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">cacheFactory</span>(<span class="params">cacheId, options</span>) </span>&#123;</span><br><span class="line">       <span class="comment">//部分代码省略</span></span><br><span class="line">       <span class="comment">//可以用if来判断</span></span><br><span class="line">       <span class="keyword">if</span> (cacheId <span class="keyword">in</span> caches) &#123;<span class="comment">//如果caches中已经存在cacheId</span></span><br><span class="line">           <span class="comment">//实例代码里抛出的错误就在此处、</span></span><br><span class="line">           <span class="comment">//统一调用minErr函数</span></span><br><span class="line">          <span class="keyword">throw</span> minErr(<span class="string">'$cacheFactory'</span>)(<span class="string">'iid'</span>, <span class="string">"CacheId '&#123;0&#125;' is already taken!"</span></span><br><span class="line">                                        , cacheId);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">var</span> size = <span class="number">0</span>,</span><br><span class="line">         <span class="comment">//把options 和&#123;id:cacheId&#125; 放入&#123;&#125; 中 不是深拷贝</span></span><br><span class="line">         stats = extend(&#123;&#125;, options, &#123;<span class="attr">id</span>: cacheId&#125;),</span><br><span class="line">         data = createMap(),<span class="comment">//通过Object.create(null) 创建个空对象</span></span><br><span class="line">         capacity = (options &amp;&amp; options.capacity) || <span class="built_in">Number</span>.MAX_VALUE,</span><br><span class="line">         lruHash = createMap(),</span><br><span class="line">         freshEnd = <span class="literal">null</span>,</span><br><span class="line">         staleEnd = <span class="literal">null</span>;</span><br><span class="line">         <span class="comment">//返回caches中的一个对象</span></span><br><span class="line">         <span class="keyword">return</span> caches[cacheId] = &#123;</span><br><span class="line">              <span class="comment">//省略部分代码</span></span><br><span class="line">              <span class="comment">//存储里讲解</span></span><br><span class="line">              put:<span class="function"><span class="keyword">function</span>(<span class="params">key,value</span>)</span>&#123;</span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">get</span>: <span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">remove</span>: <span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">removeAll</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">destroy</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">info</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">              &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">//刷新节点次序</span></span><br><span class="line">         <span class="function"><span class="keyword">function</span> <span class="title">refresh</span>(<span class="params">entry</span>) </span>&#123;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">//</span></span><br><span class="line">         <span class="function"><span class="keyword">function</span> <span class="title">link</span>(<span class="params">nextEntry, prevEntry</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">         &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//所有的缓存</span></span><br><span class="line">      cacheFactory.info = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> info = &#123;&#125;;</span><br><span class="line">        forEach(caches, <span class="function"><span class="keyword">function</span>(<span class="params">cache, cacheId</span>) </span>&#123;</span><br><span class="line">          info[cacheId] = cache.info();</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> info;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      cacheFactory.get = <span class="function"><span class="keyword">function</span>(<span class="params">cacheId</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> caches[cacheId];</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> cacheFactory;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="CacheFactoryProvider的存储"><a href="#CacheFactoryProvider的存储" class="headerlink" title="CacheFactoryProvider的存储"></a>CacheFactoryProvider的存储</h2><p>存储分为这几个核心方法:<code>put</code>,<code>refresh</code>,<code>remove</code>,<code>link</code></p>
-<h3 id="put函数"><a href="#put函数" class="headerlink" title="put函数"></a>put函数</h3><p>value会放入data对象中，key会放入lruHash链表<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> put: <span class="function"><span class="keyword">function</span>(<span class="params">key, value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isUndefined(value)) <span class="keyword">return</span>;</span><br><span class="line">      <span class="comment">//如果设定的capcity小于maxvalue</span></span><br><span class="line">    <span class="keyword">if</span> (capacity &lt; <span class="built_in">Number</span>.MAX_VALUE) &#123;</span><br><span class="line">      <span class="comment">//lruHash 存了当前的key 还有可能是 p 和n  (previous和next)</span></span><br><span class="line">      <span class="keyword">var</span> lruEntry = lruHash[key] || (lruHash[key] = &#123;<span class="attr">key</span>: key&#125;);</span><br><span class="line">      <span class="comment">//刷新各节点的次序</span></span><br><span class="line">      refresh(lruEntry);<span class="comment">//把当前entry放入链表末尾</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果key 在data里不存在 那么增加size</span></span><br><span class="line">    <span class="keyword">if</span> (!(key <span class="keyword">in</span> data)) size++;</span><br><span class="line">    data[key] = value;</span><br><span class="line">    <span class="comment">//当大于capacity时 会清除最早加入的那个</span></span><br><span class="line">    <span class="keyword">if</span> (size &gt; capacity) &#123;</span><br><span class="line">      <span class="keyword">this</span>.remove(staleEnd.key);<span class="comment">//移除淘汰节点stableEnd</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="get函数"><a href="#get函数" class="headerlink" title="get函数"></a>get函数</h3><p>Retrieves named data stored in the {@link $cacheFactory.Cache Cache} object<br>获取存储在cache对象中的指定数据<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">get</span>: function(key) &#123;</span><br><span class="line">  <span class="keyword">if</span> (capacity &lt; <span class="built_in">Number</span>.MAX_VALUE) &#123;</span><br><span class="line">    <span class="keyword">var</span> lruEntry = lruHash[key];</span><br><span class="line">    <span class="keyword">if</span> (!lruEntry) <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">// 获取first的时候 因为staleEnd为first 所以会让staleEnd指向 second</span></span><br><span class="line">    <span class="comment">// 内部会执行link 使得 second.p = null</span></span><br><span class="line">    <span class="comment">// first.p =  third  third.n = first</span></span><br><span class="line">    <span class="comment">//stableEnd为 second freshEnd为first</span></span><br><span class="line">    refresh(lruEntry);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> data[key];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="remove函数"><a href="#remove函数" class="headerlink" title="remove函数"></a>remove函数</h3><p>Removes an entry from the {@link $cacheFactory.Cache Cache} object.<br>从cache对象删除一个entry</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">remove: <span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">          <span class="comment">//如果capacity小于maxvalue</span></span><br><span class="line">          <span class="keyword">if</span> (capacity &lt; <span class="built_in">Number</span>.MAX_VALUE) &#123;</span><br><span class="line">            <span class="comment">//先取出当前key的entry</span></span><br><span class="line">            <span class="keyword">var</span> lruEntry = lruHash[key];</span><br><span class="line">            <span class="keyword">if</span> (!lruEntry) <span class="keyword">return</span>;</span><br><span class="line">            <span class="comment">//第一次超过时 freshEnd 为third  lryEntry为first</span></span><br><span class="line">            <span class="keyword">if</span> (lruEntry == freshEnd) freshEnd = lruEntry.p;</span><br><span class="line">             <span class="comment">//第一次超过时 staleEnd 为first  lryEntry为first</span></span><br><span class="line">             <span class="comment">//所以 会让 stalEnd 指向second 以便于下次移除时</span></span><br><span class="line">            <span class="keyword">if</span> (lruEntry == staleEnd) staleEnd = lruEntry.n;</span><br><span class="line">            <span class="comment">//把淘汰节点的一个节点选中</span></span><br><span class="line">            <span class="comment">//第一次超过时 lryEntry.n为 second  lryEntry.p 为null</span></span><br><span class="line">            <span class="comment">//执行结果为 second.p = null</span></span><br><span class="line">            link(lruEntry.n,lruEntry.p);</span><br><span class="line">            <span class="comment">//把当前key从lruHash中删除</span></span><br><span class="line">            <span class="keyword">delete</span> lruHash[key];</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">if</span> (!(key <span class="keyword">in</span> data)) <span class="keyword">return</span>;</span><br><span class="line">          <span class="keyword">delete</span> data[key];</span><br><span class="line">          size--;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="refresh函数"><a href="#refresh函数" class="headerlink" title="refresh函数"></a>refresh函数</h3><p>makes the <code>entry</code> the freshEnd of the LRU linked list。<br>把entry 放入链表的末尾<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">refresh</span>(<span class="params">entry</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (entry != freshEnd) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!staleEnd) &#123; <span class="comment">//staleEnd为空那么就让他指向当前entry</span></span><br><span class="line">      staleEnd = entry;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (staleEnd == entry) &#123;</span><br><span class="line">      <span class="comment">//如果淘汰节点等于当前节点</span></span><br><span class="line">      staleEnd = entry.n; <span class="comment">//用于把 当前的下一个节点 用作淘汰节点</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//放入第一个元素时 entry.n,entry.p都为undefined</span></span><br><span class="line">    link(entry.n, entry.p); <span class="comment">//当前的上一个节点 和当前的下一个节点</span></span><br><span class="line">    link(entry, freshEnd); <span class="comment">// 当前的节点 和 最新的末尾节点</span></span><br><span class="line">    freshEnd = entry;  </span><br><span class="line">    freshEnd.n = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">//第一次执行完 结果为: freshEnd = first  staleEnd为first  </span></span><br><span class="line">    <span class="comment">//first.p=null first.n=null</span></span><br><span class="line">    <span class="comment">//第二次执行完 结果为：freshEnd = second staleEnd为first</span></span><br><span class="line">    <span class="comment">// first.p=null first.n= second</span></span><br><span class="line">    <span class="comment">// scecond.p = first scecond.n = null</span></span><br><span class="line">    <span class="comment">//第三次执行完 freshEnd = third staleEnd为first first.p=null</span></span><br><span class="line">    <span class="comment">//first.n= second</span></span><br><span class="line">    <span class="comment">// second.p = first second.n = null</span></span><br><span class="line">    <span class="comment">// third.p = second third.n = null</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="link函数"><a href="#link函数" class="headerlink" title="link函数"></a>link函数</h3><p>bidirectionally(双向链表) links two entries of the LRU linked list<br>双向链接链表里的两个元素。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">link</span>(<span class="params">nextEntry, prevEntry</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//undefined 不等于undefined</span></span><br><span class="line">      <span class="keyword">if</span> (nextEntry != prevEntry) &#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="keyword">if</span> (nextEntry) nextEntry.p = prevEntry;</span><br><span class="line">        <span class="comment">//p stands for previous, 'prev' didn't minify</span></span><br><span class="line">        <span class="keyword">if</span> (prevEntry) prevEntry.n = nextEntry;</span><br><span class="line">         <span class="comment">//n stands for next, 'next' didn't minify</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h6 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h6><ol>
-<li><a href="https://www.cnblogs.com/bopo/p/9255654.html" target="_blank" rel="external">【算法】—— LRU算法</a></li>
-<li><a href="https://flychao88.iteye.com/blog/1977653" target="_blank" rel="external">缓存淘汰算法–LRU算法</a></li>
-<li><a href="https://mp.weixin.qq.com/s/L-rTC-qlnvKxbwUI1FmeHw" target="_blank" rel="external">漫画：什么是LRU算法？</a></li>
-<li><a href="https://mp.weixin.qq.com/s/HE22NfxaCP6p5t39izvWdg" target="_blank" rel="external">头条面试题：如何实现 LRU 原理？</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2018/02/28/linux-shell-sed/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/02/28/linux-shell-sed/" class="post-title-link" itemprop="url">linux shell命令之sed</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-02-28 17:32:48" itemprop="dateCreated datePublished" datetime="2018-02-28T17:32:48+08:00">2018-02-28</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-17 20:30:54" itemprop="dateModified" datetime="2019-05-17T20:30:54+08:00">2019-05-17</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="linux命令学习之sed"><a href="#linux命令学习之sed" class="headerlink" title="linux命令学习之sed"></a>linux命令学习之sed</h2><p>今天在看<a href="https://beego.me/" target="_blank" rel="external">beego</a>工具<a href="https://github.com/beego/bee" target="_blank" rel="external">bee</a>源码的时候，<br>看到它的makefile文件开头有这么一段命令</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VERSION = <span class="constructor">$(<span class="params">shell</span> <span class="params">grep</span> '<span class="params">const</span> <span class="params">version</span>' <span class="params">cmd</span><span class="operator">/</span><span class="params">commands</span><span class="operator">/</span><span class="params">version</span><span class="operator">/</span><span class="params">version</span>.<span class="params">go</span> | <span class="params">sed</span> -E '<span class="params">s</span><span class="operator">/</span>.<span class="operator">*</span><span class="string">"(.+)"</span>$$<span class="operator">/</span><span class="params">v</span>\1<span class="operator">/</span>')</span></span><br></pre></td></tr></table></figure>
-<p>动脑思考了下它的含义，总结如下：<br>调用shell命令grep 查找cmd/commands/version/version.go文件中的const version ，我们看到<br>这个文件中的const version 一行为<code>const version = &quot;1.9.1&quot;</code><br>然后调用sed命令把这个文本替换为v1.9.1 ，最后赋值给VERSION变量<br>sed -e命令就是多点编辑命令，比如 sed -e ‘/v1/v2/‘就是把v1替换为v2</p>
-<p>sed元字符(..) 匹配子串，保存匹配的字符，如s/(love)able/\1rs，loveable被替换成lovers。<br>相当于正则表达式</p>
-<p>参考资料:<br><a href="http://man.linuxde.net/sed" target="_blank" rel="external">sed命令</a><br><a href="https://www.cnblogs.com/ftl1012/p/sed.html" target="_blank" rel="external">Linux sed命令详解</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1202,7 +1170,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">228</span>
+                    <span class="site-state-item-count">230</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1299,7 +1267,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">39</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">41</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

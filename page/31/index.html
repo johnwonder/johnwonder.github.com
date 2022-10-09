@@ -323,6 +323,324 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/02/22/angular-injector3/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/02/22/angular-injector3/" class="post-title-link" itemprop="url">angular源码剖析之模块加载器</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-02-22 13:40:45" itemprop="dateCreated datePublished" datetime="2017-02-22T13:40:45+08:00">2017-02-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-16 22:21:20" itemprop="dateModified" datetime="2019-07-16T22:21:20+08:00">2019-07-16</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="angular1-5-8源码分析"><a href="#angular1-5-8源码分析" class="headerlink" title="angular1.5.8源码分析"></a>angular1.5.8源码分析</h2><h3 id="setupModuleLoader方法"><a href="#setupModuleLoader方法" class="headerlink" title="setupModuleLoader方法"></a>setupModuleLoader方法</h3><p>模仿setupModuleLoader方法看看如何angular是如何构造angular.module的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setupModuleLoader</span>(<span class="params">window</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数内部声明函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义全局angular变量</span></span><br><span class="line"><span class="keyword">var</span> angular = ensure(<span class="built_in">window</span>, <span class="string">'angular'</span>, <span class="built_in">Object</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回angular.module变量</span></span><br><span class="line"><span class="keyword">return</span> ensure(angular, <span class="string">'module'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> modules = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">module</span>(<span class="params">name, requires, configFn</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">return</span> ensure(modules, name, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">                  <span class="attr">hello</span> : <span class="string">'hello angular'</span></span><br><span class="line">               &#125;;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">return</span> moduleInstance;</span><br><span class="line">          &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> <span class="built_in">window</span> = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">angularModule = setupModuleLoader(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line">angularModule(<span class="string">'ng'</span>, [<span class="string">'ngLocale'</span>], [<span class="string">'$provide'</span>, <span class="function"><span class="keyword">function</span> <span class="title">ngModule</span>(<span class="params">$provide</span>) </span>&#123;&#125;]);</span><br><span class="line"></span><br><span class="line"><span class="comment">//已经存在ng这个module</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.angular.module(<span class="string">'ng'</span>).hello)</span><br></pre></td></tr></table></figure>
+<p>控制台输出hello angular</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/02/21/angular-injector-moduleinstance/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/02/21/angular-injector-moduleinstance/" class="post-title-link" itemprop="url">angular1.5.8 源码分析之依赖注入--模块创建</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-02-21 14:01:32" itemprop="dateCreated datePublished" datetime="2017-02-21T14:01:32+08:00">2017-02-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-21 20:47:48" itemprop="dateModified" datetime="2020-03-21T20:47:48+08:00">2020-03-21</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>模块创建主要是用到了setupModuleLoader函数.</p>
+<h3 id="setupModuleLoader函数"><a href="#setupModuleLoader函数" class="headerlink" title="setupModuleLoader函数"></a>setupModuleLoader函数</h3><p>angular的模块是在依赖注入时必不可少的一个功能单元，所以要弄懂它的依赖注入，那必须讲它的模块设计。<br>总的来说通过angular.module的实现源码我们可以看到js闭包的强大功能。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line">  angular 模块加载器</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setupModuleLoader</span>(<span class="params">window</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//省略部分代码</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensure</span>(<span class="params">obj, name, factory</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//比如下方的ensure(angular,'module',function()&#123;&#125;)</span></span><br><span class="line">  <span class="keyword">return</span> obj[name] || (obj[name] = factory());</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> angular = ensure(<span class="built_in">window</span>, <span class="string">'angular'</span>, <span class="built_in">Object</span>);</span><br><span class="line"><span class="comment">//此处定义了angular.module方法</span></span><br><span class="line"><span class="keyword">return</span> ensure(angular, <span class="string">'module'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">/** @type &#123;Object.&lt;string, angular.Module&gt;&#125; */</span></span><br><span class="line">  <span class="keyword">var</span> modules = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 注释掉了 函数的描述*/</span></span><br><span class="line">  <span class="comment">//调用angular.module() 时执行的函数</span></span><br><span class="line">  <span class="comment">//requires 必须传递 ，比如[]数组</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">module</span>(<span class="params">name, requires, configFn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> assertNotHasOwnProperty = <span class="function"><span class="keyword">function</span>(<span class="params">name, context</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (name === <span class="string">'hasOwnProperty'</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> ngMinErr(<span class="string">'badname'</span>, <span class="string">'hasOwnProperty is not a valid &#123;0&#125; name'</span>, context);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">//判断moduleName 是不是 hasOwnProperty</span></span><br><span class="line">    assertNotHasOwnProperty(name, <span class="string">'module'</span>);</span><br><span class="line">    <span class="keyword">if</span> (requires &amp;&amp; modules.hasOwnProperty(name)) &#123;</span><br><span class="line">      modules[name] = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ensure(modules, name, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (!requires) &#123;</span><br><span class="line">        <span class="keyword">throw</span> $injectorMinErr(<span class="string">'nomod'</span>, <span class="string">"Module '&#123;0&#125;' is not available! You either misspelled "</span> +</span><br><span class="line">           <span class="string">"the module name or forgot to load it. If registering a module ensure that you "</span> +</span><br><span class="line">           <span class="string">"specify the dependencies as the second argument."</span>, name);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/** @type &#123;!Array.&lt;Array.&lt;*&gt;&gt;&#125; */</span></span><br><span class="line">      <span class="comment">//数组里也是数组</span></span><br><span class="line">      <span class="comment">//调用队列</span></span><br><span class="line">      <span class="keyword">var</span> invokeQueue = [];</span><br><span class="line">      <span class="comment">//数组里是函数</span></span><br><span class="line">      <span class="comment">//配置块</span></span><br><span class="line">      <span class="keyword">var</span> configBlocks = [];</span><br><span class="line">      <span class="comment">//数组里是函数</span></span><br><span class="line">      <span class="comment">//运行块</span></span><br><span class="line">      <span class="keyword">var</span> runBlocks = [];</span><br><span class="line"></span><br><span class="line">      <span class="comment">/*</span><br><span class="line">          返回一个方法</span><br><span class="line">          方法内部调用configBlocks['push'](['$injector','invoke',arguments])</span><br><span class="line">          然后返回moduleInstance</span><br><span class="line">          config就是一个返回moduleInstance的函数</span><br><span class="line">      */</span></span><br><span class="line">      <span class="comment">//调用config方法会把参数放入configBlocks中</span></span><br><span class="line">      <span class="keyword">var</span> config = invokeLater(<span class="string">'$injector'</span>, <span class="string">'invoke'</span>, <span class="string">'push'</span>, configBlocks);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">        <span class="comment">// Private state</span></span><br><span class="line">        <span class="comment">//私有变量</span></span><br><span class="line">        _invokeQueue: invokeQueue,</span><br><span class="line">        <span class="attr">_configBlocks</span>: configBlocks,</span><br><span class="line">        <span class="attr">_runBlocks</span>: runBlocks,</span><br><span class="line">        <span class="comment">//传入的依赖</span></span><br><span class="line">        requires: requires,</span><br><span class="line"></span><br><span class="line">        <span class="attr">name</span>: name,</span><br><span class="line">        <span class="comment">//返回调用$provide的provider方法</span></span><br><span class="line">        provider: invokeLaterAndSetModuleName(<span class="string">'$provide'</span>, <span class="string">'provider'</span>),</span><br><span class="line">        <span class="comment">//返回调用$provide的factory方法</span></span><br><span class="line">        factory: invokeLaterAndSetModuleName(<span class="string">'$provide'</span>, <span class="string">'factory'</span>),</span><br><span class="line">        <span class="comment">//返回调用$provide的service方法</span></span><br><span class="line">        service: invokeLaterAndSetModuleName(<span class="string">'$provide'</span>, <span class="string">'service'</span>),</span><br><span class="line">        <span class="comment">//返回调用$provide的value方法</span></span><br><span class="line">        value: invokeLater(<span class="string">'$provide'</span>, <span class="string">'value'</span>),</span><br><span class="line">        <span class="comment">//返回调用$provide的constant方法</span></span><br><span class="line">        constant: invokeLater(<span class="string">'$provide'</span>, <span class="string">'constant'</span>, <span class="string">'unshift'</span>),</span><br><span class="line">        <span class="comment">//返回调用$provide的decorator方法</span></span><br><span class="line">        decorator: invokeLaterAndSetModuleName(<span class="string">'$provide'</span>, <span class="string">'decorator'</span>),</span><br><span class="line">        <span class="comment">//返回调用$animateProvider的register方法</span></span><br><span class="line">        animation: invokeLaterAndSetModuleName(<span class="string">'$animateProvider'</span>, <span class="string">'register'</span>),</span><br><span class="line">        <span class="comment">//返回调用$filterProvider的register方法</span></span><br><span class="line">        filter: invokeLaterAndSetModuleName(<span class="string">'$filterProvider'</span>, <span class="string">'register'</span>),</span><br><span class="line">        <span class="comment">//返回调用$controllProvider的register方法</span></span><br><span class="line">        controller: invokeLaterAndSetModuleName(<span class="string">'$controllerProvider'</span>, <span class="string">'register'</span>),</span><br><span class="line">        <span class="comment">//返回调用$compileProvider的directive方法</span></span><br><span class="line">        directive: invokeLaterAndSetModuleName(<span class="string">'$compileProvider'</span>, <span class="string">'directive'</span>),</span><br><span class="line">        <span class="comment">//返回调用$compileProvider的component方法</span></span><br><span class="line">        component: invokeLaterAndSetModuleName(<span class="string">'$compileProvider'</span>, <span class="string">'component'</span>),</span><br><span class="line"></span><br><span class="line">        <span class="attr">config</span>: config,</span><br><span class="line"></span><br><span class="line">        <span class="comment">//调用run方法会把参数block加入runBlocks队列。</span></span><br><span class="line">        run: <span class="function"><span class="keyword">function</span>(<span class="params">block</span>) </span>&#123;</span><br><span class="line">          runBlocks.push(block);</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//configFn有可能就是['$provide',function($provide)&#123;&#125;]</span></span><br><span class="line">      <span class="comment">//config 就是调用configBlocks[insertMethod || 'push']([provider, method, arguments]);</span></span><br><span class="line">      <span class="comment">//这里的arguments就是configFn</span></span><br><span class="line">      <span class="keyword">if</span> (configFn) &#123;</span><br><span class="line">        <span class="comment">//如果有configFn方法，那么就放入configBlocks队列</span></span><br><span class="line">        config(configFn);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> moduleInstance;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="invokeLater"><a href="#invokeLater" class="headerlink" title="invokeLater"></a>invokeLater</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//延迟调用</span></span><br><span class="line"><span class="comment">//module.value 就是先调用的invokeLater返回的一个函数</span></span><br><span class="line"><span class="comment">//然后调用module.value()的时候就是把provider,method  arguments放入 queue</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeLater</span>(<span class="params">provider, method, insertMethod, queue</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!queue) queue = invokeQueue;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//就是调的数组的[].push方法</span></span><br><span class="line">    queue[insertMethod || <span class="string">'push'</span>]([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">    <span class="keyword">return</span> moduleInstance;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="invokeLaterAndSetModuleName"><a href="#invokeLaterAndSetModuleName" class="headerlink" title="invokeLaterAndSetModuleName"></a>invokeLaterAndSetModuleName</h3><p>从名字看来 很像懒加载模式, 返回函数用来稍后调用<br>把provider放入invokeQueue队列中</p>
+<p>调用的时候如果factoryFunction是函数 那么就设置它的moduleName为当前模块名称<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//比如controller是'$controllerProvider', 'register'</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeLaterAndSetModuleName</span>(<span class="params">provider, method</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//调用controller 后</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">recipeName, factoryFunction</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (factoryFunction &amp;&amp; isFunction(factoryFunction)) factoryFunction.$$moduleName = name;</span><br><span class="line">    invokeQueue.push([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">    <span class="keyword">return</span> moduleInstance;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当调用<code>var myModule = angular.module(&#39;myModule&#39;, []);</code>的时候 就返回moduleInstance了。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/02/21/angular-foreach/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -792,324 +1110,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/01/19/angular-bindjquery/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/01/19/angular-bindjquery/" class="post-title-link" itemprop="url">angular源码剖析之绑定jQuery</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-01-19 16:30:17" itemprop="dateCreated datePublished" datetime="2017-01-19T16:30:17+08:00">2017-01-19</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-17 20:30:54" itemprop="dateModified" datetime="2019-05-17T20:30:54+08:00">2019-05-17</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="angular1-5-8-绑定jquery库"><a href="#angular1-5-8-绑定jquery库" class="headerlink" title="angular1.5.8 绑定jquery库"></a>angular1.5.8 绑定jquery库</h2><h3 id="jq函数"><a href="#jq函数" class="headerlink" title="jq函数"></a>jq函数</h3><p>先看jq方法:  </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> jq = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (isDefined(jq.name_)) <span class="keyword">return</span> jq.name_;</span><br><span class="line"><span class="keyword">var</span> el;</span><br><span class="line"><span class="keyword">var</span> i, ii = ngAttrPrefixes.length, prefix, name;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; ii; ++i) &#123;</span><br><span class="line">  <span class="comment">//line 1513 var ngAttrPrefixes = ['ng-', 'data-ng-', 'ng:', 'x-ng-'];</span></span><br><span class="line">  prefix = ngAttrPrefixes[i];</span><br><span class="line">  <span class="comment">//https://developer.mozilla.org/zh-CN/docs/Web/API/Document/querySelector</span></span><br><span class="line">  <span class="keyword">if</span> (el = <span class="built_in">window</span>.document.querySelector(<span class="string">'['</span> + prefix.replace(<span class="string">':'</span>, <span class="string">'\\:'</span>) + <span class="string">'jq]'</span>)) &#123;</span><br><span class="line">    <span class="comment">//获取ng-jq属性</span></span><br><span class="line">    name = el.getAttribute(prefix + <span class="string">'jq'</span>);</span><br><span class="line">    <span class="keyword">break</span>;<span class="comment">//只会获取一次</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (jq.name_ = name);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="绑定jquery库"><a href="#绑定jquery库" class="headerlink" title="绑定jquery库"></a>绑定jquery库</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bindJQueryFired = <span class="literal">false</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bindJQuery</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="keyword">var</span> originalCleanData;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (bindJQueryFired) &#123;</span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//http://div.io/topic/1154</span></span><br><span class="line"><span class="comment">// bind to jQuery if present;</span></span><br><span class="line"><span class="keyword">var</span> jqName = jq(); <span class="comment">// 调用jq方法</span></span><br><span class="line">jQuery = isUndefined(jqName) ? <span class="built_in">window</span>.jQuery :   <span class="comment">// use jQuery (if present)</span></span><br><span class="line">         !jqName             ? <span class="literal">undefined</span>     :   <span class="comment">// use jqLite</span></span><br><span class="line">                               <span class="built_in">window</span>[jqName];   <span class="comment">// use jQuery specified by `ngJq`</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Use jQuery if it exists with proper functionality, otherwise default to us.</span></span><br><span class="line"><span class="comment">// Angular 1.2+ requires jQuery 1.7+ for on()/off() support.</span></span><br><span class="line"><span class="comment">//要支持on off 方法</span></span><br><span class="line"><span class="comment">// Angular 1.3+ technically requires at least jQuery 2.1+ but it may work with older</span></span><br><span class="line"><span class="comment">// versions. It will not work for sure with jQuery &lt;1.7, though.</span></span><br><span class="line"><span class="keyword">if</span> (jQuery &amp;&amp; jQuery.fn.on) &#123;</span><br><span class="line">  jqLite = jQuery;</span><br><span class="line">  extend(jQuery.fn, &#123;</span><br><span class="line">    <span class="attr">scope</span>: JQLitePrototype.scope,</span><br><span class="line">    <span class="attr">isolateScope</span>: JQLitePrototype.isolateScope,</span><br><span class="line">    <span class="attr">controller</span>: JQLitePrototype.controller,</span><br><span class="line">    <span class="attr">injector</span>: JQLitePrototype.injector,</span><br><span class="line">    <span class="attr">inheritedData</span>: JQLitePrototype.inheritedData</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//monkey patch (猴子补丁)</span></span><br><span class="line">  <span class="comment">//用来在运行时动态修改已有的代码，而不需要修改原始代码。</span></span><br><span class="line">  <span class="comment">//http://blog.csdn.net/fwenzhou/article/details/8742838</span></span><br><span class="line">  <span class="comment">// All nodes removed from the DOM via various jQuery APIs like .remove()</span></span><br><span class="line">  <span class="comment">// are passed through jQuery.cleanData. Monkey-patch this method to fire</span></span><br><span class="line">  <span class="comment">// the $destroy event on all removed nodes.</span></span><br><span class="line">  originalCleanData = jQuery.cleanData;</span><br><span class="line">  jQuery.cleanData = <span class="function"><span class="keyword">function</span>(<span class="params">elems</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> events;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, elem; (elem = elems[i]) != <span class="literal">null</span>; i++) &#123;</span><br><span class="line">      events = jQuery._data(elem, <span class="string">"events"</span>);</span><br><span class="line">      <span class="keyword">if</span> (events &amp;&amp; events.$destroy) &#123;</span><br><span class="line">        jQuery(elem).triggerHandler(<span class="string">'$destroy'</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//最终调用originalCleanData方法 就是jquery.cleanData函数</span></span><br><span class="line">    originalCleanData(elems);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  jqLite = JQLite;<span class="comment">//使用内置的JQLite 库</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">angular.element = jqLite;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Prevent double-proxying.</span></span><br><span class="line"><span class="comment">//阻止双代理</span></span><br><span class="line">bindJQueryFired = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="内置jQLite"><a href="#内置jQLite" class="headerlink" title="内置jQLite"></a>内置jQLite</h3><p>我们来看内置的JQLite库：  </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//line 2968</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">JQLite</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (element <span class="keyword">instanceof</span> JQLite) &#123;</span><br><span class="line"><span class="keyword">return</span> element;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> argIsString;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isString(element)) &#123;</span><br><span class="line">element = trim(element);</span><br><span class="line">argIsString = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> JQLite)) &#123;</span><br><span class="line"><span class="keyword">if</span> (argIsString &amp;&amp; element.charAt(<span class="number">0</span>) != <span class="string">'&lt;'</span>) &#123;</span><br><span class="line">  <span class="keyword">throw</span> jqLiteMinErr(<span class="string">'nosel'</span>, <span class="string">'Looking up elements via selectors is not supported by jqLite! See: http://docs.angularjs.org/api/angular.element'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> JQLite(element);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (argIsString) &#123;</span><br><span class="line">jqLiteAddNodes(<span class="keyword">this</span>, jqLiteParseHTML(element));</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">jqLiteAddNodes(<span class="keyword">this</span>, element);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>参考资料:<br><a href="https://segmentfault.com/q/1010000000599102" target="_blank" rel="external">何使用angular.js中的jqlite</a><br><a href="http://www.jianshu.com/p/e184fc15f3f4" target="_blank" rel="external">Angular内嵌jqlite语法大全</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/01/14/angular-bind/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/01/14/angular-bind/" class="post-title-link" itemprop="url">angular源码分析之bind函数</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-01-14 15:10:23" itemprop="dateCreated datePublished" datetime="2017-01-14T15:10:23+08:00">2017-01-14</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="angular-bind函数分析"><a href="#angular-bind函数分析" class="headerlink" title="angular.bind函数分析"></a>angular.bind函数分析</h2><p>解释：返回一个调用self的函数fn（self代表fn里的this）.可以给fn提供参数args.这个功能也被称为局部操作，以区别功能.<br>格式：angular.bind(self,fn,args);<br>self：object  对象； fn的上下文对象，在fn中可以用this调用<br>fn：function； 绑定的方法  </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">name</span>: <span class="string">"Any"</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> fn = <span class="function"><span class="keyword">function</span> (<span class="params">Adj</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name + <span class="string">"is a boy!!! And he is "</span> + Adj + <span class="string">" !!!"</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> f = angular.bind(obj, fn, <span class="string">"handsome"</span>);</span><br><span class="line">f();<span class="comment">//Any is a boy!!! And he is handsome!!!</span></span><br><span class="line"><span class="keyword">var</span> t = angular.bind(obj, fn);</span><br><span class="line">t(<span class="string">"ugly"</span>);<span class="comment">// Any is a boy!!! And he is ugly!!!</span></span><br></pre></td></tr></table></figure>
-<p>上源码:  </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">concat</span>(<span class="params">array1, array2, index</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> array1.concat(slice.call(array2, index));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sliceArgs</span>(<span class="params">args, startIndex</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> slice.call(args, startIndex || <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bind</span>(<span class="params">self, fn</span>) </span>&#123;</span><br><span class="line"><span class="keyword">var</span> curryArgs = <span class="built_in">arguments</span>.length &gt; <span class="number">2</span> ? sliceArgs(<span class="built_in">arguments</span>, <span class="number">2</span>) : [];</span><br><span class="line"><span class="comment">//判断是否是函数 且不能是正则类型</span></span><br><span class="line"><span class="keyword">if</span> (isFunction(fn) &amp;&amp; !(fn <span class="keyword">instanceof</span> <span class="built_in">RegExp</span>)) &#123;</span><br><span class="line">  <span class="keyword">return</span> curryArgs.length</span><br><span class="line">    ? <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">arguments</span>.length</span><br><span class="line">          ? fn.apply(self, concat(curryArgs, <span class="built_in">arguments</span>, <span class="number">0</span>))</span><br><span class="line">          : fn.apply(self, curryArgs);</span><br><span class="line">      &#125;</span><br><span class="line">    : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">arguments</span>.length</span><br><span class="line">          ? fn.apply(self, <span class="built_in">arguments</span>)</span><br><span class="line">          : fn.call(self);</span><br><span class="line">      &#125;;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// In IE, native methods are not functions so they cannot be bound (note: they don't need to be).</span></span><br><span class="line">  <span class="keyword">return</span> fn;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1156,7 +1156,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">228</span>
+                    <span class="site-state-item-count">230</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1253,7 +1253,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">39</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">41</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
