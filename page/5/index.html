@@ -323,6 +323,148 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/14/spring-annotation-config/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/04/14/spring-annotation-config/" class="post-title-link" itemprop="url">spring中的annotation-config</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-14 21:57:16 / 修改时间：21:57:55" itemprop="dateCreated datePublished" datetime="2020-04-14T21:57:16+08:00">2020-04-14</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/09/spring-contextinitializer/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -934,166 +1076,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/05/springboot-tomcat-session/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/04/05/springboot-tomcat-session/" class="post-title-link" itemprop="url">springboot应用在同IP下Session冲突该怎么解决</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-04-05 18:08:14 / 修改时间：18:43:11" itemprop="dateCreated datePublished" datetime="2020-04-05T18:08:14+08:00">2020-04-05</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>昨天晚上想解决一个springboot应用中session失效的问题，源于公司生产环境目前是一台服务器部署两个<br>tomcat，应用通过同一个ip访问的时候session会互相冲突。我在网上找了几个解决方案，要么是在tomcat<br>中<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">server配置上添加servlet.sesssion.cookie.name属性，但是这两个我修改后都不见效，最后还把tomcat源码</span><br><span class="line">下载了下来，看它里面的代码是这么写的</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">private static String getConfiguredSessionCookieName(Context context) &#123;</span><br><span class="line"></span><br><span class="line">  // Priority is:</span><br><span class="line">  // 1. Cookie name defined in context</span><br><span class="line">  // 2. Cookie name configured for app</span><br><span class="line">  // 3. Default defined by spec</span><br><span class="line">  if (context != null) &#123;</span><br><span class="line">      String cookieName = context.getSessionCookieName();</span><br><span class="line">      if (cookieName != null &amp;&amp; cookieName.length() &gt; 0) &#123;</span><br><span class="line">          return cookieName;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      SessionCookieConfig scc =</span><br><span class="line">          context.getServletContext().getSessionCookieConfig();</span><br><span class="line">      cookieName = scc.getName();</span><br><span class="line">      if (cookieName != null &amp;&amp; cookieName.length() &gt; 0) &#123;</span><br><span class="line">          return cookieName;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>先从context获取sessionCookieName,如果没有那么再从应用的servletContext中获取sessionCookieConfig,看来我们的思路貌似是<br>没问题的，但是为什么就不生效呢？在浏览器里看cookieName还是<figure class="highlight plain"><figcaption><span>一时半会找不到答案。但是想想解决思路应该是对的，</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">最终目的要把cookie名称给修改掉。</span><br><span class="line"></span><br><span class="line">今早醒来突然想到我们的springboot应用里是根据shiro框架来实现权限和会话管理的，会不会跟这个有关系呢？脑子里突然想到这个应该是个</span><br><span class="line">正确的解决方向，于是乎爬起来看了下工程代码，不看不知道，一看就知道应该就是这边的问题，我们看到shiro框架里的```DefaultWebSessionManager</span><br></pre></td></tr></table></figure></p>
-<p>是这么写的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">DefaultWebSessionManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Cookie cookie = <span class="keyword">new</span> SimpleCookie(<span class="string">"JSESSIONID"</span>);</span><br><span class="line">  cookie.setHttpOnly(<span class="keyword">true</span>);</span><br><span class="line">  <span class="keyword">this</span>.sessionIdCookie = cookie;</span><br><span class="line">  <span class="keyword">this</span>.sessionIdCookieEnabled = <span class="keyword">true</span>;</span><br><span class="line">  <span class="keyword">this</span>.sessionIdUrlRewritingEnabled = <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>到这里就明白了，为啥我们改了tomcat也改了springboot本身的配置不起效果，就是因为我们是通过shiro来控制用户会话和权限控制的，<br>所以相当于是shiro把tomcat还有spring内部的cookie给替代了，那么我们只要定义一个bean继承自shiro的cookie注入然后放入shiro不就行了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"shiro.cookie"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShiroCookie</span> <span class="keyword">extends</span> <span class="title">SimpleCookie</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>问题到这就迎刃而解了，所以我们解决问题的时候也不能在一个方向钻牛角尖，有时候答案可能就在眼前，需要我们转变思路，<br>换个角度思考有可能就豁然开朗了，另外看源码确实可以一定程度上提高我们解决问题的效率。</p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.iteye.com/blog/flym-830658" target="_blank" rel="external">在Intellij idea下为tomcat7设置sessionCookieName</a></li>
-<li><a href="https://www.cnblogs.com/zhenmingliu/archive/2012/12/06/2805353.html" target="_blank" rel="external">tomcat修改jsessionid在cookie中的名称</a></li>
-<li><a href="https://www.cnblogs.com/lick468/p/11108709.html" target="_blank" rel="external">Spring boot 去除URL 里的 JSESSIONID</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1135,7 +1122,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">230</span>
+                    <span class="site-state-item-count">231</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1236,7 +1223,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">41</span>
+                      
+                    
+                    <span class="site-state-item-count">42</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

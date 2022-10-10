@@ -323,6 +323,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/28/angularjs-extend/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/28/angularjs-extend/" class="post-title-link" itemprop="url">angularjs1.5.8源码解析之extend函数</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-28 21:33:56 / 修改时间：21:52:15" itemprop="dateCreated datePublished" datetime="2020-03-28T21:33:56+08:00">2020-03-28</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>angularjs中很多常用函数在我们平时的js开发中很有帮助，可以极大的帮助我们提高开发效率，<br>今天我们继续来学习下它里面的一个频繁使用的函数extend.</p>
+<h2 id="extend函数"><a href="#extend函数" class="headerlink" title="extend函数"></a>extend函数</h2><p>文档中是这样描述的：Extends the destination object <code>dst</code> by copying own enumerable properties from the <code>src</code> object(s) to <code>dst</code>。<br>翻译下就是通过拷贝src对象的枚举属性到dst对象来实现扩展dst对象。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">extend</span>(<span class="params">dst</span>) </span>&#123;</span><br><span class="line"><span class="comment">//slice 返回一个新的数组，包含从 start 到 end （如果指定end，不包括该元素）的 arrayObject 中的元素。</span></span><br><span class="line"><span class="comment">//end 可选。规定从何处结束选取。该参数是数组片断结束处的数组下标。</span></span><br><span class="line"><span class="comment">//如果没有指定该参数，那么切分的数组包含从 start 到数组结束的所有元素。如果这个参数是负数，那么它规定的是从数组尾部开始算起的元素。</span></span><br><span class="line"><span class="keyword">return</span> baseExtend(dst, slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>), <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其实该函数的核心是内部baseExtend函数：</p>
+<h2 id="baseExtend函数"><a href="#baseExtend函数" class="headerlink" title="baseExtend函数"></a>baseExtend函数</h2><p>deep参数为true代表是深拷贝，深拷贝简单点说就是通过递归拷贝把所有内部对象克隆复制。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">baseExtend</span>(<span class="params">dst, objs, deep</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> h = dst.$$hashKey;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, ii = objs.length; i &lt; ii; ++i) &#123;</span><br><span class="line">    <span class="keyword">var</span> obj = objs[i];</span><br><span class="line">     <span class="comment">//obj 不是对象 且不是函数 那就跳过</span></span><br><span class="line">    <span class="keyword">if</span> (!isObject(obj) &amp;&amp; !isFunction(obj)) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(obj);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>, jj = keys.length; j &lt; jj; j++) &#123;</span><br><span class="line">      <span class="keyword">var</span> key = keys[j];</span><br><span class="line">      <span class="keyword">var</span> src = obj[key];</span><br><span class="line"></span><br><span class="line">      <span class="comment">//如果深拷贝 且当前对象是object类型</span></span><br><span class="line">      <span class="keyword">if</span> (deep &amp;&amp; isObject(src)) &#123;</span><br><span class="line">        <span class="comment">//如果是日期</span></span><br><span class="line">        <span class="keyword">if</span> (isDate(src)) &#123;</span><br><span class="line">          dst[key] = <span class="keyword">new</span> <span class="built_in">Date</span>(src.valueOf());</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isRegExp(src)) &#123;</span><br><span class="line">          <span class="comment">//如果是正则</span></span><br><span class="line">          dst[key] = <span class="keyword">new</span> <span class="built_in">RegExp</span>(src);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (src.nodeName) &#123;</span><br><span class="line">          <span class="comment">//如果是dom节点</span></span><br><span class="line">          dst[key] = src.cloneNode(<span class="literal">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isElement(src)) &#123;</span><br><span class="line">          <span class="comment">//如果是dom元素或者 jQuery对象</span></span><br><span class="line">          dst[key] = src.clone();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">//先把dst[key]赋空对象或空数组</span></span><br><span class="line">          <span class="keyword">if</span> (!isObject(dst[key])) dst[key] = isArray(src) ? [] : &#123;&#125;;</span><br><span class="line">          <span class="comment">//递归调用</span></span><br><span class="line">          baseExtend(dst[key], [src], <span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        dst[key] = src;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> dst;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>angularjs另外一个根extend对应的merge函数就是baseExtend深拷贝的实现。</p>
+<h2 id="merge函数"><a href="#merge函数" class="headerlink" title="merge函数"></a>merge函数</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">merge</span>(<span class="params">dst</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> baseExtend(dst, slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>), <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/26/angular-jqLiteBuildFragment/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -974,172 +1122,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/07/06/spring-import-annotation/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/07/06/spring-import-annotation/" class="post-title-link" itemprop="url">spring源码分析之@Import注解</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-07-06 17:42:36 / 修改时间：23:03:36" itemprop="dateCreated datePublished" datetime="2019-07-06T17:42:36+08:00">2019-07-06</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Import定义"><a href="#Import定义" class="headerlink" title="@Import定义"></a>@Import定义</h2><p>Indicates one or more @Configuration classes to import.</p>
-<p>表示一个或多个类会被导入，参考@Configuration.</p>
-<p>Provides functionality equivalent to the <import> element in Spring XML.</import></p>
-<p>提供在xml中<import>标签相同的功能.</import></p>
-<p>Allows for importing   @Configuration classes, ImportSelector and  ImportBeanDefinitionRegistrar implementations,as well as regular component classes (as of 4.2; analogous to  AnnotationConfigApplicationContext#register).</p>
-<p>允许导入@Configuration类，ImportSelector和ImportBeanDefinitionRegistrar的实现类,等同于正常的组件类(4.2开始;类似于AnnotationConfigApplicationContext.register).</p>
-<p>不过我从spring文档中看到AnnotationConfigRegistry接口是从4.1版本开始的</p>
-<p>@Bean definitions declared in imported @Configuration classes should be accessed by using org.springframework.beans.factory.annotation.Autowired @Autowired injection. Either the bean itself can be autowired, or the configuration class instance declaring the bean can be autowired. The latter approach allows for explicit, IDE-friendly navigation between @Configuration class methods.</p>
-<p>在导入类里定义的Bean应该可以被Autowired注入访问。bean自身或者定义bean的配置类都能被autowired。后者能在类方法之间被显式的导航. 这个我们在之后使用示例中会展示。</p>
-<p>May be declared at the class level or as a meta-annotation.</p>
-<p>在class层级定义或者当做一个meta-annotation。</p>
-<p>If XML or other non-@Configuration bean definition resources need to be imported, use the @ImportResource annotation instead.</p>
-<p>如果xml或者其他没有@Configuration的bean资源需要被导入，那就使用@ImportResource注解来替代。</p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.jianshu.com/p/7eb0c2b214a7" target="_blank" rel="external">Spring Import 三种用法与源码解读</a></li>
-<li><a href="https://blog.csdn.net/pange1991/article/details/81356594" target="_blank" rel="external">Spring @Import注解 —— 导入资源</a></li>
-<li><a href="https://blog.csdn.net/horacehe16/article/details/79811763" target="_blank" rel="external">@Autowired用法详解</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1181,7 +1168,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">230</span>
+                    <span class="site-state-item-count">231</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1282,7 +1269,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">41</span>
+                      
+                    
+                    <span class="site-state-item-count">42</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

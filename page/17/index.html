@@ -323,6 +323,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/24/javascript-array-unique/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/08/24/javascript-array-unique/" class="post-title-link" itemprop="url">javascript数组去重</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-08-24 11:22:34" itemprop="dateCreated datePublished" datetime="2017-08-24T11:22:34+08:00">2017-08-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>看到<a href="https://github.com/jawil/blog/issues/22" target="_blank" rel="external">面试分享：一年经验初探阿里巴巴前端社招 </a>这篇文章，学习到了很多，也发现了自己其实有很多不知道，所以记录下。。</p>
+<h2 id="数组去重"><a href="#数组去重" class="headerlink" title="数组去重"></a>数组去重</h2><p>博主提到了这些方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///ES6实现：</span></span><br><span class="line">[...new <span class="built_in">Set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">'a'</span>,<span class="number">1</span>,<span class="string">'a'</span>])]</span><br><span class="line"></span><br><span class="line"><span class="comment">///ES5实现：</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">'a'</span>,<span class="number">1</span>,<span class="string">'a'</span>].filter(<span class="function"><span class="keyword">function</span>(<span class="params">ele,index,array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> index===array.indexOf(ele)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>然后有人回复说用Map,我查了下，应该是<a href="http://blog.csdn.net/earscher/article/details/52803988" target="_blank" rel="external">这种方式</a>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.prototype.unique = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> arr = [];</span><br><span class="line">        <span class="keyword">var</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!map.has(<span class="keyword">this</span>[i]))&#123;</span><br><span class="line">                arr.push(<span class="keyword">this</span>[i]);</span><br><span class="line">                map.set(<span class="keyword">this</span>[i],<span class="literal">true</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Array</span>.prototype.unique2 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> arr = [];</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">set</span> = new Set(this);</span><br><span class="line">        <span class="keyword">set</span>.forEach(function (item) &#123;</span><br><span class="line">            arr.push(item);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="二分查找时间复杂度分析"><a href="#二分查找时间复杂度分析" class="headerlink" title="二分查找时间复杂度分析"></a>二分查找时间复杂度分析</h2><p>博主在二分查找的时间复杂度怎么求，是多少 问题上 没回答上来，我看的时候也忘记了，遂查了下：</p>
+<p>二分查找的基本思想是将n个元素分成大致相等的两部分，去a[n/2]与x做比较，如果x=a[n/2],则找到x,算法中止；如果x&lt;a[n/2],则只要在数组a的左半部分继续搜索x,如果x&gt;a[n/2],则只要在数组a的右半部搜索x.</p>
+<p>时间复杂度无非就是while循环的次数！</p>
+<p>总共有n个元素，</p>
+<p>渐渐跟下去就是n,n/2,n/4,….n/2^k，其中k就是循环的次数</p>
+<p>由于你n/2^k取整后&gt;=1</p>
+<p>即令n/2^k=1</p>
+<p>可得k=log2n,（是以2为底，n的对数）</p>
+<p>参考资料：<br><a href="http://blog.csdn.net/frances_han/article/details/6458067" target="_blank" rel="external">二分查找时间复杂度的计算(转)</a><br><a href="http://www.cnblogs.com/qiaozhoulin/p/5328090.html" target="_blank" rel="external">二分查找时间复杂度分析</a><br><a href="http://blog.csdn.net/sosesoa/article/details/52775202" target="_blank" rel="external">理解O(log2N)和O(Nlog2N)</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/07/scalatra-requestImplicits/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -971,181 +1138,11 @@ compiled({ &#39;user&#39;: &#39;mustache&#39; });
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/08/02/angular-scope-first/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/08/02/angular-scope-first/" class="post-title-link" itemprop="url">angular源码分析之scope步步解析</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-08-02 11:31:28" itemprop="dateCreated datePublished" datetime="2017-08-02T11:31:28+08:00">2017-08-02</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>看了<a href="https://teropa.info/build-your-own-angular/build_your_own_angularjs_sample.pdf" target="_blank" rel="external">Scopes and DirtyChecking</a>这篇文章深有体会，所以打算简单翻译一下以做记录。</p>
-<h2 id="Scope对象"><a href="#Scope对象" class="headerlink" title="Scope对象"></a>Scope对象</h2><p>Scopes能通过Scope的构造函数new来创建。结果就是一个简单的javascript对象。先创建一个简单的例子。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Scope</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> scope = <span class="keyword">new</span> Scope();</span><br><span class="line">scope.aProperty = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="Watching对象属性：-watch和-digest"><a href="#Watching对象属性：-watch和-digest" class="headerlink" title="Watching对象属性：$watch和$digest"></a>Watching对象属性：$watch和$digest</h2><p>$watch和$digest是同一个硬币的俩面，他们一起承载消费周期的核心：反应数据的变化</p>
-<p>通过$watch你可以添加一个watcher到scope对象上。当scope上有变化发生时watcher会收到通知。</p>
-<p>你可以通过两个函数参数调用$watch 函数:</p>
-<p>1.一个watch函数，可以指定你感兴趣的数据。<br>2.一个listener函数，当数据改变时会被调用。</p>
-<p>在angular里，你通常会指定一个watch表达式来代替watch函数</p>
-<p>一个watch表达式可以是一个字符串，像”user.firstName”，可以放在数据绑定，指令属性或者javascript代码里。</p>
-<p>它在angualr内部被解析和编译成watch函数。</p>
-<p>另外一个是$digest函数，它会遍历scope上所有的watchers,运行他们的watch和listener函数</p>
-<p>Scope首先需要存储所有被注册的watchers：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Scope</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="keyword">this</span>.$$watchers = [];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Scope.prototype.$watch = <span class="function"><span class="keyword">function</span>(<span class="params">watchFn,listenerFn</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> watcher = &#123;</span><br><span class="line">     <span class="attr">watchFn</span>: watchFn,</span><br><span class="line">     <span class="attr">listenerFn</span>:listenerFn</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">this</span>.$$watchers.push(watcher);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>最后有个$digest函数，让我们定义个简单版本，只是遍历所有注册过的watchers，然后调用他们的listener函数。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Scope.prototype.$digest = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  _.foreach(<span class="keyword">this</span>.$$watchers,<span class="function"><span class="keyword">function</span>(<span class="params">watcher</span>)</span>&#123;</span><br><span class="line">      watcher.listenerFn();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>我们也能看到angular scopes有重要的性能指标：<br>1.不是通过scope附加的data在性能上必须考虑。如果没有watcher监控属性，它就不关心是否是在scope上。angular不会遍历scope上的所有属性，它只会遍历watchers。<br>2.美一个watch函数在每一个$digest调用中被调用。基于这个原因，得考虑你拥有的watches,还有你的watch函数和表达式的性能。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1187,7 +1184,7 @@ compiled({ &#39;user&#39;: &#39;mustache&#39; });
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">230</span>
+                    <span class="site-state-item-count">231</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1288,7 +1285,9 @@ compiled({ &#39;user&#39;: &#39;mustache&#39; });
                     
                       
                     
-                    <span class="site-state-item-count">41</span>
+                      
+                    
+                    <span class="site-state-item-count">42</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

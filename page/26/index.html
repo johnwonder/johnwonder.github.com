@@ -323,6 +323,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/04/21/scala-bytestring/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/04/21/scala-bytestring/" class="post-title-link" itemprop="url">scala_bytestring</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-04-21 09:58:41" itemprop="dateCreated datePublished" datetime="2017-04-21T09:58:41+08:00">2017-04-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="scala-bytestring"><a href="#scala-bytestring" class="headerlink" title="scala  bytestring"></a>scala  bytestring</h2><p>上代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">object TestByteString extends  App &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  implicit val byteOrder: ByteOrder = ByteOrder.BIG_ENDIAN</span><br><span class="line">  val bsb = <span class="keyword">new</span> ByteStringBuilder();</span><br><span class="line">  bsb.append(ByteString ( int2Bytes(<span class="number">2</span>) ));</span><br><span class="line"></span><br><span class="line">  val bs = bsb.result();</span><br><span class="line"></span><br><span class="line">  println(bs.iterator.getInt)</span><br><span class="line"></span><br><span class="line">  <span class="function">def <span class="title">int2Bytes</span><span class="params">(value: Int)</span>: Array[Byte] </span>= &#123;</span><br><span class="line"></span><br><span class="line">   Array(((value &gt;&gt; <span class="number">24</span>) &amp; <span class="number">0xFF</span>).toByte, ((value &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xFF</span>).toByte, ((value &gt;&gt; <span class="number">8</span>) &amp; <span class="number">0xFF</span>).toByte, (value &amp; <span class="number">0xFF</span>).toByte)</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们来看看ByteIterator的getInt方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">def <span class="title">getInt</span><span class="params">(implicit byteOrder: ByteOrder)</span>: Int </span>= &#123;</span><br><span class="line"><span class="keyword">if</span> (byteOrder == ByteOrder.BIG_ENDIAN)</span><br><span class="line">  ((next() &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">24</span></span><br><span class="line">    | (next() &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">16</span></span><br><span class="line">    | (next() &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">8</span></span><br><span class="line">    | (next() &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">0</span>)</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (byteOrder == ByteOrder.LITTLE_ENDIAN)</span><br><span class="line">  ((next() &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">0</span></span><br><span class="line">    | (next() &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">8</span></span><br><span class="line">    | (next() &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">16</span></span><br><span class="line">    | (next() &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">24</span>)</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Unknown byte order "</span> + byteOrder)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相当于遍历byte数组再左移再用或运算</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/04/18/angular-scope-apply/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -953,182 +1112,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/04/06/angular-jqlite/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/04/06/angular-jqlite/" class="post-title-link" itemprop="url">angular1.5.8源码解析之JQLite函数</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-04-06 14:01:55" itemprop="dateCreated datePublished" datetime="2017-04-06T14:01:55+08:00">2017-04-06</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-03-25 21:50:22" itemprop="dateModified" datetime="2020-03-25T21:50:22+08:00">2020-03-25</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>前言：为了搞清楚上篇文章提到的data函数，我们必须先讲angularjs的JQLite库。<br>angularjs有个内嵌的轻量级的jquery:jqLite，它的参数只有两种，一种是Dom元素，一种是类似html元素的字符串</p>
-<h2 id="JQLite定义"><a href="#JQLite定义" class="headerlink" title="JQLite定义"></a>JQLite定义</h2><p>从定义可以看到，JQLite不支持不带html格式的字符串传入：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">JQLite</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//如果传入的参数已经是JQLite实例，那直接返回</span></span><br><span class="line">  <span class="keyword">if</span> (element <span class="keyword">instanceof</span> JQLite) &#123;</span><br><span class="line">    <span class="keyword">return</span> element;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> argIsString;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isString(element)) &#123;</span><br><span class="line">    element = trim(element);</span><br><span class="line">    argIsString = <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//this 有可能就是window</span></span><br><span class="line">  <span class="comment">//如果参数是字符串 且不是以&lt;开头</span></span><br><span class="line">  <span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> JQLite)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (argIsString &amp;&amp; element.charAt(<span class="number">0</span>) != <span class="string">'&lt;'</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> jqLiteMinErr(<span class="string">'nosel'</span>, <span class="string">'Looking up elements via selectors is not supported by jqLite!'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> JQLite(element);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//字符串还需要调用jqLiteParseHTML函数解析</span></span><br><span class="line">  <span class="keyword">if</span> (argIsString) &#123;</span><br><span class="line">    jqLiteAddNodes(<span class="keyword">this</span>, jqLiteParseHTML(element));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    jqLiteAddNodes(<span class="keyword">this</span>, element);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如果参数以&lt;开头那还需要<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## jqLiteParseHTML</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  //简单的标记正则</span><br><span class="line">  var SINGLE_TAG_REGEXP = /^&lt;([\w-]+)\s*\/?&gt;(?:&lt;\/\1&gt;|)$/;</span><br><span class="line"></span><br><span class="line">  function jqLiteParseHTML(html, context) &#123;</span><br><span class="line">    context = context || window.document;</span><br><span class="line">    var parsed;</span><br><span class="line"></span><br><span class="line">    if ((parsed = SINGLE_TAG_REGEXP.exec(html))) &#123;</span><br><span class="line">      //parsed[1]是类似 div 的字符串</span><br><span class="line">      return [context.createElement(parsed[1])];</span><br><span class="line">    &#125;</span><br><span class="line">    //制造Fragment</span><br><span class="line">    if ((parsed = jqLiteBuildFragment(html, context))) &#123;</span><br><span class="line">      return parsed.childNodes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return [];</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>SINGLE_TAG_REGEXP中有几点知识点：</p>
-<ol>
-<li><p>非获取匹配，匹配pattern但不获取匹配结果，不进行存储供以后使用。这在使用或字符“(|)”来组合一个模式的各个部分时很有用。<br>例如“industr(?:y|ies)”就是一个比“industry|industries”更简略的表达式</p>
-</li>
-<li><p>\1  \2……  都要和正则表达式集合()一起使用,简单的说就是\1表示重复正则第一个圆括号内匹配到的内容<br> \2表示重复正则第二个圆括号内匹配到的内容</p>
-</li>
-<li><p>?匹配前面的子表达式零次或一次。例如，“do(es)?”可以匹配“do”或“does”。?等价于{0,1}。</p>
-</li>
-</ol>
-<p>如果符合正则SINGLE_TAG_REGEXP那就通过document.createElement来返回，否则 通过jqLiteBuildFragment<br>函数来构建html片段，关于jqLiteBuildFragment我们下篇文章再分析。</p>
-<p>最后调用jqLiteAddNodes把元素放入JQLite对象中。</p>
-<h2 id="jqLiteAddNodes"><a href="#jqLiteAddNodes" class="headerlink" title="jqLiteAddNodes"></a>jqLiteAddNodes</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jqLiteAddNodes</span>(<span class="params">root, elements</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (elements) &#123;</span><br><span class="line">    <span class="comment">// if a Node (the most common case)</span></span><br><span class="line">    <span class="comment">//绝大多数情况是单个节点</span></span><br><span class="line">    <span class="keyword">if</span> (elements.nodeType) &#123;</span><br><span class="line">      root[root.length++] = elements;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">var</span> length = elements.length;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// if an Array or NodeList and not a Window</span></span><br><span class="line">      <span class="comment">//如果是数组或者NodeList 且不是window</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> length === <span class="string">'number'</span> &amp;&amp; elements.window !== elements) &#123;</span><br><span class="line">        <span class="keyword">if</span> (length) &#123;</span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            root[root.length++] = elements[i];</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        root[root.length++] = elements;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们通过<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```js</span><br><span class="line">//try to bind to jquery now so that one can write jqLite(document).ready()</span><br><span class="line">//but we will rebind on bootstrap again.</span><br><span class="line">bindJQuery();</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">var bindJQueryFired = false;</span><br><span class="line">function bindJQuery() &#123;</span><br><span class="line">var originalCleanData;</span><br><span class="line"></span><br><span class="line">if (bindJQueryFired) &#123;</span><br><span class="line">  return;</span><br><span class="line">&#125;</span><br><span class="line">//http://div.io/topic/1154</span><br><span class="line">// bind to jQuery if present;</span><br><span class="line">var jqName = jq(); // 调用jq方法返回jq库名称</span><br><span class="line">jQuery = isUndefined(jqName) ? window.jQuery :   // use jQuery (if present)</span><br><span class="line">         !jqName             ? undefined     :   // use jqLite</span><br><span class="line">                               window[jqName];   // use jQuery specified by `ngJq`</span><br><span class="line"></span><br><span class="line">if (jQuery &amp;&amp; jQuery.fn.on) &#123;</span><br><span class="line">  jqLite = jQuery;</span><br><span class="line">  //扩展fn函数</span><br><span class="line">   //省略部分代码，</span><br><span class="line">   //重写了jQuery的cleanData,扩展了jQuery.fn</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  jqLite = JQLite;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">angular.element = jqLite;</span><br><span class="line">// Prevent double-proxying.</span><br><span class="line">//阻止双代理</span><br><span class="line">bindJQueryFired = true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>到到这里我们发现angular.element就是jqLite函数。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/25/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/27/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/25/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/27/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1170,7 +1158,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">230</span>
+                    <span class="site-state-item-count">231</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1271,7 +1259,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">41</span>
+                      
+                    
+                    <span class="site-state-item-count">42</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

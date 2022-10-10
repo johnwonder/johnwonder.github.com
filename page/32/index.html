@@ -323,6 +323,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/02/06/json4s-problem/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/02/06/json4s-problem/" class="post-title-link" itemprop="url">json4s_problem</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-02-06 13:27:41" itemprop="dateCreated datePublished" datetime="2017-02-06T13:27:41+08:00">2017-02-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="json4s是个什么东东"><a href="#json4s是个什么东东" class="headerlink" title="json4s是个什么东东"></a>json4s是个什么东东</h2><p>首先去<a href="http://json4s.org/" target="_blank" rel="external">官网</a>,看到标题就是One AST to rule them all。  </p>
+<p><a href="https://www.zhihu.com/question/33107553" target="_blank" rel="external">AST</a>:抽象语法树（Abstract Syntax Tree）也称为AST语法树，指的是源代码语法所对应的树状结构。也就是说，对于一种具体编程语言下的源代码，通过构建语法树的形式将源代码中的语句映射到树中的每一个节点上。  </p>
+<p>At this moment there are at least 6 json libraries for scala, not counting the java json libraries. All these libraries have a very similar AST. This project aims to provide a single AST to be used by other scala json libraries.<br>也就是说这个项目是要提供一个抽象语法树给其他scala的json库使用</p>
+<p>At this moment the approach taken to working with the AST has been taken from lift-json and the native package is in fact lift-json but outside of the lift project.<br>当前可以与这个AST一起使用的是从lift-json借过来的。</p>
+<h2 id="Jackson"><a href="#Jackson" class="headerlink" title="Jackson"></a>Jackson</h2><p>In addition to the native parser there is also an implementation that uses jackson for parsing to the AST. The jackson module includes most of the jackson-module-scala functionality and the ability to use it with the lift-json AST.  </p>
+<p>可以用jackson去解析AST.</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/01/19/angular-bindjquery/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -944,173 +1104,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2016/12/30/angular-initmember/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/12/30/angular-initmember/" class="post-title-link" itemprop="url">angular_源码分析之初始变量</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-12-30 22:37:20" itemprop="dateCreated datePublished" datetime="2016-12-30T22:37:20+08:00">2016-12-30</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="变量定义"><a href="#变量定义" class="headerlink" title="变量定义"></a>变量定义</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">//String正则</span></span><br><span class="line">  <span class="comment">//. 正则表示 除\n外的任意字符</span></span><br><span class="line">  <span class="comment">// + 表示 1 到无穷</span></span><br><span class="line">  <span class="keyword">var</span> REGEX_STRING_REGEXP = <span class="regexp">/^\/(.+)\/([a-z]*)$/</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The name of a form control's ValidityState property.</span></span><br><span class="line">  <span class="comment">// This is used so that it's possible for internal tests to create mock ValidityStates.</span></span><br><span class="line">  <span class="keyword">var</span> VALIDITY_STATE_PROPERTY = <span class="string">'validity'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> hasOwnProperty = <span class="built_in">Object</span>.prototype.hasOwnProperty;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> lowercase = <span class="function"><span class="keyword">function</span>(<span class="params">string</span>) </span>&#123;<span class="keyword">return</span> isString(string) ? string.toLowerCase() : string;&#125;;</span><br><span class="line">  <span class="keyword">var</span> uppercase = <span class="function"><span class="keyword">function</span>(<span class="params">string</span>) </span>&#123;<span class="keyword">return</span> isString(string) ? string.toUpperCase() : string;&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> manualLowercase = <span class="function"><span class="keyword">function</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/* jshint bitwise: false */</span></span><br><span class="line">  <span class="comment">//根据charCodeAt来区分</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//charCodeAt() 方法可返回指定位置的字符的 Unicode 编码。这个返回值是 0 - 65535 之间的整数。</span></span><br><span class="line">  <span class="keyword">return</span> isString(s)</span><br><span class="line">      ? s.replace(<span class="regexp">/[A-Z]/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ch</span>) </span>&#123;<span class="keyword">return</span> <span class="built_in">String</span>.fromCharCode(ch.charCodeAt(<span class="number">0</span>) | <span class="number">32</span>);&#125;)</span><br><span class="line">      : s;</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">var</span> manualUppercase = <span class="function"><span class="keyword">function</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/* jshint bitwise: false */</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">//位运算符由否定好(~)表示，它是ECMAScript中为数不多的与二进制算术有关的运算符之一。位运算符NOT是三步的处理过程：</span></span><br><span class="line"> <span class="comment">//把运算数转为32位二进制数字</span></span><br><span class="line"> <span class="comment">//再转为它的二进制反码</span></span><br><span class="line"> <span class="comment">//把二进制反码转为浮点数</span></span><br><span class="line"> <span class="comment">//参考 https://my.oschina.net/luozt/blog/302294</span></span><br><span class="line"> <span class="comment">//http://www.cnblogs.com/oneword/archive/2009/12/23/1631039.html</span></span><br><span class="line"> <span class="comment">//10 = 1010</span></span><br><span class="line"> <span class="comment">// 反码 0101</span></span><br><span class="line"><span class="comment">//http://blog.sina.com.cn/s/blog_77abbf390100qwss.html</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//负数的二进制表示方法</span></span><br><span class="line"> <span class="comment">//http://www.360doc.com/content/12/0801/17/6828497_227700914.shtml</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> isString(s)</span><br><span class="line">      ? s.replace(<span class="regexp">/[a-z]/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ch</span>) </span>&#123;<span class="keyword">return</span> <span class="built_in">String</span>.fromCharCode(ch.charCodeAt(<span class="number">0</span>) &amp; ~<span class="number">32</span>);&#125;)</span><br><span class="line">      : s;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//Turkish 是啥玩意</span></span><br><span class="line">  <span class="comment">// String#toLowerCase and String#toUpperCase don't produce correct results in browsers with Turkish</span></span><br><span class="line">  <span class="comment">// locale, for this reason we need to detect this case and redefine lowercase/uppercase methods</span></span><br><span class="line">  <span class="comment">// with correct but slower alternatives. See https://github.com/angular/angular.js/issues/11387</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="string">'i'</span> !== <span class="string">'I'</span>.toLowerCase()) &#123;</span><br><span class="line">  lowercase = manualLowercase;</span><br><span class="line">  uppercase = manualUppercase;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span></span><br><span class="line">    msie,             <span class="comment">// holds major version number for IE, or NaN if UA is not IE.</span></span><br><span class="line">    jqLite,           <span class="comment">// delay binding since jQuery could be loaded after us.</span></span><br><span class="line">    jQuery,           <span class="comment">// delay binding</span></span><br><span class="line">    slice             = [].slice,</span><br><span class="line">    splice            = [].splice,</span><br><span class="line">    push              = [].push,</span><br><span class="line">    toString          = <span class="built_in">Object</span>.prototype.toString,</span><br><span class="line">    getPrototypeOf    = <span class="built_in">Object</span>.getPrototypeOf,</span><br><span class="line">    ngMinErr          = minErr(<span class="string">'ng'</span>),</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** @name angular */</span></span><br><span class="line">    angular           = <span class="built_in">window</span>.angular || (<span class="built_in">window</span>.angular = &#123;&#125;),</span><br><span class="line">    angularModule,</span><br><span class="line">    uid               = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">  *documentMode 是IE独有的属性</span><br><span class="line">  * documentMode is an IE-only property</span><br><span class="line">  * http://msdn.microsoft.com/en-us/library/ie/cc196988(v=vs.85).aspx</span><br><span class="line">  */</span></span><br><span class="line">  msie = <span class="built_in">window</span>.document.documentMode;</span><br></pre></td></tr></table></figure>
-<h3 id="REGEX-STRING-REGEXP用法"><a href="#REGEX-STRING-REGEXP用法" class="headerlink" title="REGEX_STRING_REGEXP用法"></a>REGEX_STRING_REGEXP用法</h3><p>REGEX_STRING_REGEXP 在源码22232行使用:</p>
-<p>里面涉及到了forEach函数还有ngAttributeAliasDirectives</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//别名属性对象</span></span><br><span class="line"><span class="keyword">var</span> ALIASED_ATTR = &#123;</span><br><span class="line">  <span class="string">'ngMinlength'</span>: <span class="string">'minlength'</span>,</span><br><span class="line">  <span class="string">'ngMaxlength'</span>: <span class="string">'maxlength'</span>,</span><br><span class="line">  <span class="string">'ngMin'</span>: <span class="string">'min'</span>,</span><br><span class="line">  <span class="string">'ngMax'</span>: <span class="string">'max'</span>,</span><br><span class="line">  <span class="string">'ngPattern'</span>: <span class="string">'pattern'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// aliased input attrs are evaluated</span></span><br><span class="line"><span class="comment">//别名属性被求值</span></span><br><span class="line"><span class="comment">//遍历</span></span><br><span class="line"><span class="comment">//定义ngAttributeAliasDirectives</span></span><br><span class="line">forEach(ALIASED_ATTR, <span class="function"><span class="keyword">function</span>(<span class="params">htmlAttr, ngAttr</span>) </span>&#123;</span><br><span class="line">ngAttributeAliasDirectives[ngAttr] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">priority</span>: <span class="number">100</span>,</span><br><span class="line">    <span class="attr">link</span>: <span class="function"><span class="keyword">function</span>(<span class="params">scope, element, attr</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//ngPattern的特殊例子</span></span><br><span class="line">      <span class="comment">//当一个字面意义的正则被用作表达式时</span></span><br><span class="line">      <span class="comment">//这种我们就不必watch任何东西了。</span></span><br><span class="line">      <span class="comment">//比如ng-pattern="/[a-zA-Z]/"</span></span><br><span class="line">      <span class="comment">//special case ngPattern when a literal regular expression value</span></span><br><span class="line">      <span class="comment">//is used as the expression (this way we don't have to watch anything).</span></span><br><span class="line">      <span class="keyword">if</span> (ngAttr === <span class="string">"ngPattern"</span> &amp;&amp; attr.ngPattern.charAt(<span class="number">0</span>) == <span class="string">"/"</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> match = attr.ngPattern.match(REGEX_STRING_REGEXP);</span><br><span class="line">        <span class="keyword">if</span> (match) &#123;</span><br><span class="line">          attr.$<span class="keyword">set</span>("ngPattern", new RegExp(match[1], match[2]));</span><br><span class="line">          return;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      scope.$watch(attr[ngAttr], function ngAttrAliasWatchAction(value) &#123;</span><br><span class="line">        attr.$<span class="keyword">set</span>(ngAttr, value);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="foreach函数"><a href="#foreach函数" class="headerlink" title="foreach函数"></a>foreach函数</h3><p>foreach第一个参数为值，第二个参数为键，源码分析可以看我的另一篇博客<br><a href="http://johnwonder.github.io/2017/02/21/angular-foreach/">angular1.5.8 foreach 源码分析</a><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">       <span class="keyword">if</span> (hasOwnProperty.call(obj, key)) &#123;</span><br><span class="line">         iterator.call(context, obj[key], key, obj);</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="ngAttributeAliasDirectives"><a href="#ngAttributeAliasDirectives" class="headerlink" title="ngAttributeAliasDirectives"></a>ngAttributeAliasDirectives</h3><p><code>ngAttributeAliasDirectives</code>在<code>publishExternalAPI</code>函数中使用到了</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">$provide.provider(<span class="string">'$compile'</span>, $CompileProvider).</span><br><span class="line">      directive(&#123;</span><br><span class="line">          <span class="attr">a</span>: htmlAnchorDirective,</span><br><span class="line">          <span class="attr">input</span>: inputDirective,</span><br><span class="line">          <span class="attr">textarea</span>: inputDirective,</span><br><span class="line">          <span class="attr">form</span>: formDirective,</span><br><span class="line">          <span class="attr">script</span>: scriptDirective,</span><br><span class="line">          <span class="attr">select</span>: selectDirective,</span><br><span class="line">          <span class="attr">style</span>: styleDirective,</span><br><span class="line">          <span class="attr">option</span>: optionDirective,</span><br><span class="line">          <span class="attr">ngBind</span>: ngBindDirective,</span><br><span class="line">          <span class="attr">ngBindHtml</span>: ngBindHtmlDirective,</span><br><span class="line">          <span class="attr">ngBindTemplate</span>: ngBindTemplateDirective,</span><br><span class="line">          <span class="attr">ngClass</span>: ngClassDirective,</span><br><span class="line">          <span class="attr">ngClassEven</span>: ngClassEvenDirective,</span><br><span class="line">          <span class="attr">ngClassOdd</span>: ngClassOddDirective,</span><br><span class="line">          <span class="attr">ngCloak</span>: ngCloakDirective,</span><br><span class="line">          <span class="attr">ngController</span>: ngControllerDirective,</span><br><span class="line">          <span class="attr">ngForm</span>: ngFormDirective,</span><br><span class="line">          <span class="attr">ngHide</span>: ngHideDirective,</span><br><span class="line">          <span class="attr">ngIf</span>: ngIfDirective,</span><br><span class="line">          <span class="attr">ngInclude</span>: ngIncludeDirective,</span><br><span class="line">          <span class="attr">ngInit</span>: ngInitDirective,</span><br><span class="line">          <span class="attr">ngNonBindable</span>: ngNonBindableDirective,</span><br><span class="line">          <span class="attr">ngPluralize</span>: ngPluralizeDirective,</span><br><span class="line">          <span class="attr">ngRepeat</span>: ngRepeatDirective,</span><br><span class="line">          <span class="attr">ngShow</span>: ngShowDirective,</span><br><span class="line">          <span class="attr">ngStyle</span>: ngStyleDirective,</span><br><span class="line">          <span class="attr">ngSwitch</span>: ngSwitchDirective,</span><br><span class="line">          <span class="attr">ngSwitchWhen</span>: ngSwitchWhenDirective,</span><br><span class="line">          <span class="attr">ngSwitchDefault</span>: ngSwitchDefaultDirective,</span><br><span class="line">          <span class="attr">ngOptions</span>: ngOptionsDirective,</span><br><span class="line">          <span class="attr">ngTransclude</span>: ngTranscludeDirective,</span><br><span class="line">          <span class="attr">ngModel</span>: ngModelDirective,</span><br><span class="line">          <span class="attr">ngList</span>: ngListDirective,</span><br><span class="line">          <span class="attr">ngChange</span>: ngChangeDirective,</span><br><span class="line">          <span class="attr">pattern</span>: patternDirective,</span><br><span class="line">          <span class="attr">ngPattern</span>: patternDirective,</span><br><span class="line">          <span class="attr">required</span>: requiredDirective,</span><br><span class="line">          <span class="attr">ngRequired</span>: requiredDirective,</span><br><span class="line">          <span class="attr">minlength</span>: minlengthDirective,</span><br><span class="line">          <span class="attr">ngMinlength</span>: minlengthDirective,</span><br><span class="line">          <span class="attr">maxlength</span>: maxlengthDirective,</span><br><span class="line">          <span class="attr">ngMaxlength</span>: maxlengthDirective,</span><br><span class="line">          <span class="attr">ngValue</span>: ngValueDirective,</span><br><span class="line">          <span class="attr">ngModelOptions</span>: ngModelOptionsDirective</span><br><span class="line">      &#125;).</span><br><span class="line">      directive(&#123;</span><br><span class="line">        <span class="attr">ngInclude</span>: ngIncludeFillContentDirective</span><br><span class="line">      &#125;).</span><br><span class="line">      directive(ngAttributeAliasDirectives).</span><br><span class="line">      directive(ngEventDirectives);</span><br></pre></td></tr></table></figure>
-<p>参考资料:<br><a href="http://www.jb51.net/article/77049.htm" target="_blank" rel="external">AngularJS使用ngMessages进行表单验证</a><br><a href="http://blog.csdn.net/w329300817/article/details/51981955" target="_blank" rel="external">AngularJS 最常用的八种功能</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/31/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><span class="page-number current">32</span><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/33/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/31/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><span class="page-number current">32</span><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/33/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1152,7 +1150,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">230</span>
+                    <span class="site-state-item-count">231</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1253,7 +1251,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">41</span>
+                      
+                    
+                    <span class="site-state-item-count">42</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
