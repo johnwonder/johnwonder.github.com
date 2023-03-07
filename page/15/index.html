@@ -323,6 +323,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/03/12/angular-run-flow/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/12/angular-run-flow/" class="post-title-link" itemprop="url">angular源码分析之运行流程</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-12 15:03:12" itemprop="dateCreated datePublished" datetime="2019-03-12T15:03:12+08:00">2019-03-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-06 14:32:02" itemprop="dateModified" datetime="2019-07-06T14:32:02+08:00">2019-07-06</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>梳理下angular的运行流程：</p>
+<p>JQLitePrototype.ready</p>
+<p>JQLite.on<br>此处涉及到expandoStore 的问题<br>on里面主要是addHandler 放到eventFns里</p>
+<p>等到onload后 再调用</p>
+<p>angularInit<br>bootstrap<br>doBootstrap<br>createInjector<br>injectionArgs<br>invoke -&gt; $RootScopeProvider</p>
+<p>以表达式 文本插值来梳理：</p>
+<p>collectDirectives -&gt; addTextInterpolateDirective -&gt; $interpolate</p>
+<p>$interpolate函数中调用parse函数，parse函数里<br>addInterceptor(parsedExpression, interceptorFn)<br>parsedExpression 为解析后的表达式，interceptorFn 为 parseStringifyInterceptor</p>
+<p>parsedExpression外面再封装一层 regularInterceptedExpression函数</p>
+<p>regularInterceptedExpression函数的watchDelegate 为inputsWatchDelegate。</p>
+<p>$interpolate函数返回的 interpolateFn实际是 调用 extend函数过后的函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回interpolationFn方法</span></span><br><span class="line">        <span class="keyword">return</span> extend(<span class="function"><span class="keyword">function</span> <span class="title">interpolationFn</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">var</span> ii = expressions.length;</span><br><span class="line">            <span class="keyword">var</span> values = <span class="keyword">new</span> <span class="built_in">Array</span>(ii);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">              <span class="comment">//根据表达式来解析</span></span><br><span class="line">              <span class="keyword">for</span> (; i &lt; ii; i++) &#123;</span><br><span class="line">                <span class="comment">//调用parseFns得到value</span></span><br><span class="line">                values[i] = parseFns[i](context);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">return</span> compute(values);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">              $exceptionHandler($interpolateMinErr.interr(text, err));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">          &#125;, &#123;</span><br><span class="line">          <span class="comment">// all of these properties are undocumented for now</span></span><br><span class="line">          exp: text, <span class="comment">//just for compatibility with regular watchers created via $watch</span></span><br><span class="line">          expressions: expressions,</span><br><span class="line">          <span class="attr">$$watchDelegate</span>: <span class="function"><span class="keyword">function</span>(<span class="params">scope, listener</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> lastValue;</span><br><span class="line">            <span class="keyword">return</span> scope.$watchGroup(parseFns, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatcher</span>(<span class="params">values, oldValues</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">var</span> currValue = compute(values);</span><br><span class="line">              <span class="keyword">if</span> (isFunction(listener)) &#123;</span><br><span class="line">                listener.call(<span class="keyword">this</span>, currValue, values !== oldValues ? lastValue : currValue, scope);</span><br><span class="line">              &#125;</span><br><span class="line">              lastValue = currValue;</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<p>所以此时的调用文本指令的时候，此时scope已经为childScope:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scope.$watch(interpolateFn, <span class="function"><span class="keyword">function</span> <span class="title">interpolateFnWatchAction</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">             node[<span class="number">0</span>].nodeValue = value;</span><br><span class="line">           &#125;);</span><br></pre></td></tr></table></figure>
+<p>这里的interpolateFn 就是上面的function interpolationFn(context) 函数，</p>
+<p>因为带有watchDelegate,所以直接调用watchDelegate返回:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果被解析过后的watch函数有watch的代理那就返回这个代理watch函数</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//会创建一个watcher</span></span><br><span class="line"><span class="comment">//watcher里放入listener(类似spring里的监听器)</span></span><br><span class="line"><span class="comment">//数据变化时会触发listener</span></span><br><span class="line">$watch: <span class="function"><span class="keyword">function</span>(<span class="params">watchExp, listener, objectEquality, prettyPrintExpression</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">get</span> = $parse(watchExp);//watchExp为函数时直接返回watchExp</span><br><span class="line"></span><br><span class="line">        if (<span class="keyword">get</span>.$$watchDelegate) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">get</span>.$$watchDelegate(this, listener, objectEquality, <span class="keyword">get</span>, watchExp);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>从而进入<br>scope.$watchGroup :</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$watchGroup</span>: <span class="title">function</span>(<span class="params">watchExpressions, listener</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (watchExpressions.length === <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="comment">// Special case size of one</span></span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">this</span>.$watch(watchExpressions[<span class="number">0</span>], <span class="function"><span class="keyword">function</span> <span class="title">watchGroupAction</span>(<span class="params">value, oldValue, scope</span>) </span>&#123;</span><br><span class="line">            newValues[<span class="number">0</span>] = value;</span><br><span class="line">            oldValues[<span class="number">0</span>] = oldValue;</span><br><span class="line">            listener(newValues, (value === oldValue) ? newValues : oldValues, scope);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时watchExpressions就是 parseFns ，那继续进入watch,那此时的watchDelegate就是</p>
+<p>inputsWatchDelegate。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inputsWatchDelegate</span>(<span class="params">scope, listener, objectEquality, parsedExpression, prettyPrintExpression</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">var</span> inputExpressions = parsedExpression.inputs;</span><br><span class="line">   <span class="keyword">var</span> lastResult;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> (inputExpressions.length === <span class="number">1</span>) &#123;</span><br><span class="line">     <span class="keyword">var</span> oldInputValueOf = expressionInputDirtyCheck; <span class="comment">// init to something unique so that equals check fails</span></span><br><span class="line">     inputExpressions = inputExpressions[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">return</span> scope.$watch(<span class="function"><span class="keyword">function</span> <span class="title">expressionInputWatch</span>(<span class="params">scope</span>) </span>&#123;</span><br><span class="line">       <span class="keyword">var</span> newInputValue = inputExpressions(scope);</span><br><span class="line">       <span class="keyword">if</span> (!expressionInputDirtyCheck(newInputValue, oldInputValueOf)) &#123;</span><br><span class="line">         lastResult = parsedExpression(scope, <span class="literal">undefined</span>, <span class="literal">undefined</span>, [newInputValue]);</span><br><span class="line">         oldInputValueOf = newInputValue &amp;&amp; getValueOf(newInputValue);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> lastResult;</span><br><span class="line">     &#125;, listener, objectEquality, prettyPrintExpression);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>实际这个插值的watchers就只有一个，就是这个expressionInputWatch</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/01/07/scala-caseclass-apply/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -967,160 +1144,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/10/18/angular-jqlite-contents/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/10/18/angular-jqlite-contents/" class="post-title-link" itemprop="url">angular_jqlite_contents</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-10-18 14:51:32" itemprop="dateCreated datePublished" datetime="2017-10-18T14:51:32+08:00">2017-10-18</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1167,7 +1190,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">231</span>
+                    <span class="site-state-item-count">232</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1270,7 +1293,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">42</span>
+                      
+                    
+                    <span class="site-state-item-count">43</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1342,7 +1367,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

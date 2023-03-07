@@ -323,6 +323,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/18/kmp-algorithm/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/03/18/kmp-algorithm/" class="post-title-link" itemprop="url">kmp-algorithm</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-18 12:57:19" itemprop="dateCreated datePublished" datetime="2017-03-18T12:57:19+08:00">2017-03-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="kmp算法理解一"><a href="#kmp算法理解一" class="headerlink" title="kmp算法理解一"></a>kmp算法理解一</h2><p>前几个月之前读了<a href="http://blog.csdn.net/joylnwang/article/details/6778316/" target="_blank" rel="external">KMP算法详解</a>之后，一知半解，昨天再次读了之后有点感悟：</p>
+<p>上代码：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">inline <span class="built_in">void</span> BuildNext(<span class="keyword">const</span> char* pattern, size_t length, unsigned <span class="built_in">int</span>* next)  </span><br><span class="line">&#123;  </span><br><span class="line">  unsigned <span class="built_in">int</span> i, t;  </span><br><span class="line"></span><br><span class="line">  i = <span class="number">1</span>;  </span><br><span class="line">  t = <span class="number">0</span>;  </span><br><span class="line">  next[<span class="number">1</span>] = <span class="number">0</span>;  </span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span>(i &lt; length + <span class="number">1</span>)  </span><br><span class="line">  &#123;  </span><br><span class="line">      <span class="comment">//abcabcacab</span></span><br><span class="line">      <span class="comment">//当求next[5]时，先计算前4位</span></span><br><span class="line">      <span class="comment">//当i = 4时 ,t = 1</span></span><br><span class="line">      <span class="comment">//找到满足pattern[k] = pattern[j]的最大k值</span></span><br><span class="line">      <span class="comment">//退出循环就是找到</span></span><br><span class="line">      <span class="keyword">while</span>(t &gt; <span class="number">0</span> &amp;&amp; pattern[i - <span class="number">1</span>] != pattern[t - <span class="number">1</span>])  </span><br><span class="line">      &#123;  </span><br><span class="line">          t = next[t];  </span><br><span class="line">      &#125;  </span><br><span class="line"></span><br><span class="line">      ++t;  </span><br><span class="line">      ++i;  </span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(pattern[i - <span class="number">1</span>] == pattern[t - <span class="number">1</span>])  </span><br><span class="line">      &#123;  </span><br><span class="line">          next[i] = next[t];  </span><br><span class="line">      &#125;  </span><br><span class="line">      <span class="keyword">else</span>  </span><br><span class="line">      &#123;  </span><br><span class="line">          next[i] = t;  </span><br><span class="line">      &#125;  </span><br><span class="line">  &#125;  </span><br><span class="line"></span><br><span class="line">  <span class="comment">//pattern末尾的结束符控制，用于寻找目标字符串中的所有匹配结果用  </span></span><br><span class="line">  <span class="keyword">while</span>(t &gt; <span class="number">0</span> &amp;&amp; pattern[i - <span class="number">1</span>] != pattern[t - <span class="number">1</span>])  </span><br><span class="line">  &#123;  </span><br><span class="line">      t = next[t];  </span><br><span class="line">  &#125;  </span><br><span class="line"></span><br><span class="line">  ++t;  </span><br><span class="line">  ++i;  </span><br><span class="line"></span><br><span class="line">  next[i] = t;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/15/angular-injector4/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -958,164 +1115,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2017/03/11/http-etag/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/03/11/http-etag/" class="post-title-link" itemprop="url">http_etag</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-11 15:09:24" itemprop="dateCreated datePublished" datetime="2017-03-11T15:09:24+08:00">2017-03-11</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-07 20:32:35" itemprop="dateModified" datetime="2019-05-07T20:32:35+08:00">2019-05-07</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="http-etag"><a href="#http-etag" class="headerlink" title="http etag"></a>http etag</h2><p>Etag[1] 是URL的Entity Tag，用于标示URL对象是否改变，区分不同语言和Session等等。具体内部含义是使服务器控制的，就像Cookie那样。<br>HTTP协议规格说明定义ETag为“被请求变量的实体值”。另一种说法是，ETag是一个可以与Web资源关联的记号（token）。典型的Web资源可以一个Web页，但也可能是JSON或XML文档。服务器单独负责判断记号是什么及其含义，并在HTTP响应头中将其传送到客户端，以下是服务器端返回的格式：ETag:”50b1c1d4f775c61:df3”客户端的查询更新格式是这样的：If-None-Match : W / “50b1c1d4f775c61:df3”如果ETag没改变，则返回状态304然后不返回，这也和Last-Modified一样。测试Etag主要在断点下载时比较有用。</p>
-<h2 id="scalatra-cache"><a href="#scalatra-cache" class="headerlink" title="scalatra cache"></a>scalatra cache</h2><p>先看源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">trait CacheSupport &#123; self: ScalatraBase =&gt;</span><br><span class="line">implicit val cacheBackend: Cache <span class="comment">//在具体的servlet中实现</span></span><br><span class="line">implicit val keyStrategy: KeyStrategy = DefaultKeyStrategy</span><br><span class="line">implicit val headerStrategy: HeaderStrategy = DefaultHeaderStrategy <span class="comment">//重写了HeaderStrategy的方法</span></span><br><span class="line"></span><br><span class="line">def cache[A](key: String, ttl: Option[Duration])(value: =&gt; A): A = &#123;</span><br><span class="line">  cacheBackend.get[A](key) match &#123;</span><br><span class="line">    <span class="function"><span class="keyword">case</span> <span class="title">Some</span><span class="params">(v)</span> </span>=&gt; v</span><br><span class="line">    <span class="keyword">case</span> None =&gt; cacheBackend.put(key, value, ttl)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//用于网页设置etag用</span></span><br><span class="line">def cached[A](ttl: Option[Duration])(result: =&gt; A)(implicit keyStrategy: KeyStrategy,</span><br><span class="line">    headerStrategy: HeaderStrategy,</span><br><span class="line">    request: HttpServletRequest,</span><br><span class="line">    response: HttpServletResponse): A = &#123;</span><br><span class="line"></span><br><span class="line">    val key = keyStrategy.key</span><br><span class="line"></span><br><span class="line">    cacheBackend.get[(String, A)](key) match &#123;</span><br><span class="line">      <span class="function"><span class="keyword">case</span> <span class="title">Some</span><span class="params">(v)</span> </span>=&gt;</span><br><span class="line">        <span class="keyword">if</span> (headerStrategy.isUnchanged(v._1)) halt(<span class="number">304</span>)</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">          headerStrategy.setRevision(v._1) <span class="comment">// response.setHeader("ETag", revision)</span></span><br><span class="line">          v._2</span><br><span class="line">        &#125;</span><br><span class="line">      <span class="keyword">case</span> None =&gt;</span><br><span class="line">        val res = result <span class="comment">//网页内容</span></span><br><span class="line">        val rev = headerStrategy.getNewRevision() <span class="comment">//默认获取当前时间</span></span><br><span class="line">        cacheBackend.put(key, (rev, res), ttl)</span><br><span class="line">        headerStrategy.setRevision(rev)</span><br><span class="line">        res</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="http://blog.csdn.net/chenzhiqin20/article/details/10947857" target="_blank" rel="external">HTTP Header中的ETag </a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1162,7 +1161,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">231</span>
+                    <span class="site-state-item-count">232</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1265,7 +1264,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">42</span>
+                      
+                    
+                    <span class="site-state-item-count">43</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1337,7 +1338,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

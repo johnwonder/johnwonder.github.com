@@ -323,6 +323,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2015/09/30/orchard-controllfind/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2015/09/30/orchard-controllfind/" class="post-title-link" itemprop="url">orchard中Controller是如何找到的</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-09-30 16:05:00" itemprop="dateCreated datePublished" datetime="2015-09-30T16:05:00+08:00">2015-09-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-09 20:30:26" itemprop="dateModified" datetime="2019-05-09T20:30:26+08:00">2019-05-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Orchard-控制器解析1"><a href="#Orchard-控制器解析1" class="headerlink" title="Orchard 控制器解析1"></a>Orchard 控制器解析1</h2><h3 id="CompositionStrategy类"><a href="#CompositionStrategy类" class="headerlink" title="CompositionStrategy类"></a>CompositionStrategy类</h3><p>CompositionStrategy中跟控制器相关的就是Compose函数。看代码：<br><figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> var allRoutes = new <span class="type">List</span>&lt;<span class="type">RouteDescriptor</span>&gt;();</span><br><span class="line"> var controllers = <span class="type">BuildBlueprint</span>(features, <span class="type">IsController</span>, <span class="type">BuildController</span>, excludedTypes);</span><br><span class="line"></span><br><span class="line">//通过<span class="type">Feature</span>设置<span class="type">AreaName</span></span><br><span class="line"> private static <span class="type">ControllerBlueprint</span> <span class="type">BuildController</span>(<span class="type">Type</span> <span class="class"><span class="keyword">type</span>, <span class="type">Feature</span> feature) &#123;</span><br><span class="line">            <span class="title">var</span> <span class="title">areaName</span> = <span class="title">feature</span>.<span class="type">Descriptor</span>.<span class="type">Extension</span>.<span class="type">Id</span>;</span><br><span class="line"></span><br><span class="line">            <span class="title">var</span> <span class="title">controllerName</span> = <span class="title">type</span>.<span class="type">Name</span>;</span><br><span class="line">            <span class="title">if</span> (<span class="title">controllerName</span>.<span class="type">EndsWith</span>("<span class="type">Controller</span>"))</span><br><span class="line">                <span class="title">controllerName</span> = <span class="title">controllerName</span>.<span class="type">Substring</span>(0, <span class="title">controllerName</span>.<span class="type">Length</span> - "<span class="type">Controller</span>".<span class="type">Length</span>);</span><br><span class="line"></span><br><span class="line">            <span class="title">return</span> <span class="title">new</span> <span class="type">ControllerBlueprint</span> &#123;</span><br><span class="line">                <span class="type">Type</span> = <span class="title">type</span>,</span><br><span class="line">                <span class="type">Feature</span> = <span class="title">feature</span>,</span><br><span class="line">                <span class="type">AreaName</span> = <span class="title">areaName</span>,//<span class="type">AreaName</span>在这里加上 便于后面 <span class="type">ControllFactory</span>中去寻找</span><br><span class="line">                <span class="type">ControllerName</span> = <span class="title">controllerName</span>,</span><br><span class="line">            &#125;;</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="ShellContainerFactory类"><a href="#ShellContainerFactory类" class="headerlink" title="ShellContainerFactory类:"></a>ShellContainerFactory类:</h2><p>然后再通过ShellContainerFactory 加入orchard容器中</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">foreach (<span class="keyword">var</span> item <span class="keyword">in</span> blueprint.Controllers) &#123;</span><br><span class="line">                  <span class="comment">//这里很关键是通过AreaName和ControllerName注入</span></span><br><span class="line">                  <span class="keyword">var</span> serviceKeyName = (item.AreaName + <span class="string">"/"</span> + item.ControllerName).ToLowerInvariant();</span><br><span class="line">                  <span class="keyword">var</span> serviceKeyType = item.<span class="built_in">Type</span>;</span><br><span class="line">                  RegisterType(builder, item)</span><br><span class="line">                      .EnableDynamicProxy(dynamicProxyContext)</span><br><span class="line">                      .Keyed&lt;IController&gt;(serviceKeyName)<span class="comment">//这里供OrchardControllerFactory解析</span></span><br><span class="line">                      .Keyed&lt;IController&gt;(serviceKeyType)</span><br><span class="line">                      .WithMetadata(<span class="string">"ControllerType"</span>, item.<span class="built_in">Type</span>)</span><br><span class="line">                      .InstancePerDependency()</span><br><span class="line">                      .OnActivating(e =&gt; &#123;</span><br><span class="line">                          <span class="comment">// necessary to inject custom filters dynamically</span></span><br><span class="line">                          <span class="comment">// see FilterResolvingActionInvoker</span></span><br><span class="line">                          <span class="comment">//需要动态注入filter</span></span><br><span class="line">                          <span class="keyword">var</span> controller = e.Instance <span class="keyword">as</span> Controller;</span><br><span class="line">                          <span class="keyword">if</span> (controller != <span class="keyword">null</span>)</span><br><span class="line">                              controller.ActionInvoker = (IActionInvoker)e.Context.ResolveService(<span class="keyword">new</span> TypedService(typeof(IActionInvoker)));</span><br><span class="line">                      &#125;);</span><br><span class="line">              &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="OrchardControllerFactory"><a href="#OrchardControllerFactory" class="headerlink" title="OrchardControllerFactory"></a>OrchardControllerFactory</h2><p>然后控制器工厂OrchardControllerFactory类通过RouteData寻找Controller<br>路由数据就是在ShellRoute中找到匹配的路由数据</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> Type <span class="title">GetControllerType</span>(<span class="params">RequestContext requestContext, <span class="keyword">string</span> controllerName</span>)</span> &#123;</span><br><span class="line">      <span class="keyword">var</span> routeData = requestContext.RouteData;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Determine the area name for the request, and fall back to stock orchard controllers</span></span><br><span class="line">      <span class="keyword">var</span> areaName = routeData.GetAreaName();</span><br><span class="line">      <span class="comment">//这里通过routeData里的area controllername 然后去寻找Metadata匹配</span></span><br><span class="line">      <span class="comment">// Service name pattern matches the identification strategy</span></span><br><span class="line">      <span class="keyword">var</span> serviceKey = (areaName + <span class="string">"/"</span> + controllerName).ToLowerInvariant();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Now that the request container is known - try to resolve the controller information</span></span><br><span class="line">      Meta&lt;Lazy&lt;IController&gt;&gt; info;</span><br><span class="line">      <span class="keyword">var</span> workContext = requestContext.GetWorkContext();</span><br><span class="line">      <span class="keyword">if</span> (TryResolve(workContext, serviceKey, <span class="keyword">out</span> info)) &#123;</span><br><span class="line">          <span class="keyword">return</span> (Type) info.Metadata[<span class="string">"ControllerType"</span>];</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2015/09/30/orchard-route/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -962,167 +1121,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2015/09/24/jquery-each/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2015/09/24/jquery-each/" class="post-title-link" itemprop="url">从jquery的each函数我们可以学到什么</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2015-09-24 14:22:05" itemprop="dateCreated datePublished" datetime="2015-09-24T14:22:05+08:00">2015-09-24</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2021-05-31 11:09:05" itemprop="dateModified" datetime="2021-05-31T11:09:05+08:00">2021-05-31</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-0版each函数"><a href="#1-0版each函数" class="headerlink" title="1.0版each函数:"></a>1.0版each函数:</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"> obj, fn, args </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> ( obj.length == <span class="literal">undefined</span> )<span class="comment">//如果不是数组</span></span><br><span class="line">		<span class="keyword">for</span> ( <span class="keyword">var</span> i <span class="keyword">in</span> obj )</span><br><span class="line">			fn.apply( obj[i], args || [i, obj[i]] );</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; obj.length; i++ )</span><br><span class="line">			fn.apply( obj[i], args || [i, obj[i]] );</span><br><span class="line">	<span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>遍历obj对象，直接用fn.apply调用。</p>
-<h2 id="1-2-6版each函数："><a href="#1-2-6版each函数：" class="headerlink" title="1.2.6版each函数："></a>1.2.6版each函数：</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">function</span>(<span class="params"> object, callback, args </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> name, i = <span class="number">0</span>, length = object.length;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ( args ) &#123;</span><br><span class="line">		<span class="comment">//对象没有length属性</span></span><br><span class="line">		<span class="keyword">if</span> ( length == <span class="literal">undefined</span> ) &#123;</span><br><span class="line">			<span class="comment">//通过for in 遍历对象</span></span><br><span class="line">			<span class="keyword">for</span> ( name <span class="keyword">in</span> object )</span><br><span class="line">				<span class="keyword">if</span> ( callback.apply( object[ name ], args ) === <span class="literal">false</span> )</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span></span><br><span class="line">			<span class="keyword">for</span> ( ; i &lt; length; )</span><br><span class="line">				<span class="keyword">if</span> ( callback.apply( object[ i++ ], args ) === <span class="literal">false</span> )</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// A special, fast, case for the most common use of each</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> ( length == <span class="literal">undefined</span> ) &#123;</span><br><span class="line">			<span class="keyword">for</span> ( name <span class="keyword">in</span> object )</span><br><span class="line">				<span class="keyword">if</span> ( callback.call( object[ name ], name, object[ name ] ) === <span class="literal">false</span> )</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span></span><br><span class="line">			<span class="keyword">for</span> ( <span class="keyword">var</span> value = object[<span class="number">0</span>];</span><br><span class="line">				i &lt; length &amp;&amp; callback.call( value, i, value ) !== <span class="literal">false</span>; value = object[++i] )&#123;&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> object;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>先看下两个版本代码的区别，首先是函数参数名的调整:fn改为callback，最主要是对第三个参数的调用做修改优化,1.0直接 args || [i,obj[i]],而1.2.6<br>分开判断 ，在没有args的情况下 用call调用。而且把object.length 先保存在length变量中。</p>
-<p>从这两段代码中我们也可以学到写javascript的一些技巧，比如<code>args || [i, obj[i]]</code>这种写法，<br>args为空直接采用[i,obj[i]]而不用使用if和else来判断。这就像Python工匠里说的<a href="https://www.zlovezl.cn/articles/15-thinking-in-edge-cases/" target="_blank" rel="external">在边界处思考</a></p>
-<p>我们再来通过<a href="https://github.com/lin-xin/blog/issues/7" target="_blank" rel="external">JavaScript 中 apply 、call 的详解</a>来温故下call和apply的区别：</p>
-<p>apply 方法传入两个参数：一个是作为函数上下文的对象，另外一个是作为函数参数所组成的数组。<br>call 方法第一个参数也是作为函数上下文的对象，但是后面传入的是一个参数列表，而不是单个数组。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1169,7 +1167,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">231</span>
+                    <span class="site-state-item-count">232</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1272,7 +1270,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">42</span>
+                      
+                    
+                    <span class="site-state-item-count">43</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1344,7 +1344,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

@@ -323,6 +323,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/06/11/algorithm-coinChange/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/06/11/algorithm-coinChange/" class="post-title-link" itemprop="url">每日算法之零钱兑换</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-11 22:38:49 / 修改时间：22:44:28" itemprop="dateCreated datePublished" datetime="2020-06-11T22:38:49+08:00">2020-06-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。</p>
+<p>如果没有任何一种硬币组合能组成总金额，返回 -1。</p>
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>我们采用自下而上的方式进行思考。仍定义 F(i)，F(i) 为组成金额 i 所需最少的硬币数量，假设在计算 F(i)之前，我们已经计算出 F(0)-F(i-1)的答案。 再算上枚举的这枚硬币数量 1 的贡献，由于要硬币数量最少，所以 F(i) 为前面能转移过来的状态的最小值加上枚举的硬币数量 1。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">coinChange</span><span class="params">(<span class="keyword">int</span>[] coins, <span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> max = amount + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span>[] dp = <span class="keyword">new</span> <span class="keyword">int</span>[amount + <span class="number">1</span>];</span><br><span class="line">    Arrays.fill(dp, max);</span><br><span class="line">    dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= amount; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; coins.length; j++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (coins[j] &lt;= i) &#123;</span><br><span class="line">          dp[i] = Math.min(dp[i], dp[i - coins[j]] + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[amount] &gt; amount ? -<span class="number">1</span> : dp[amount];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>转载自：</p>
+<ol>
+<li><a href="https://leetcode-cn.com/problems/coin-change/" target="_blank" rel="external">零钱兑换</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/06/09/algorithm-remove-duplicates/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -951,161 +1101,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/18/mybatisplus-sql-session/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/04/18/mybatisplus-sql-session/" class="post-title-link" itemprop="url">mybatisplus版本引发的连接泄漏血案</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-04-18 15:51:25 / 修改时间：16:45:20" itemprop="dateCreated datePublished" datetime="2020-04-18T15:51:25+08:00">2020-04-18</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>上周几次接到同事电话说线上环境用户登陆失败，我一查线上日志看到很多Connection timeout的错，</p>
-<p>因为我们用到了HikariCP连接池，理论上来说不会出现连接泄漏的问题，我就加了HikariCP的<code>leakDetectionThreshold</code>连接泄漏检测配置。</p>
-<p>今晚又被提示说登陆不上了，我一看日志，果真如提前预料的那样也是<code>Connection timeout</code>的错，但是这次竟然日志中没有出现<code>Apparent connection leak detected</code>类似的字样，甚是奇怪。</p>
-<p>其实在去年年底的时候已经出现过几次，当时我是定位到mybatisplus中ActiveRecord用法(比如updateById等操作)会导致Connection timeout，当时也没去深入源码看是什么问题就草草略过，只是叫同事不要用ActiveRecord的操作(可惜同事还是继续用的乐此不疲)，后来又遇到多数据源下Spring事务不生效的问题，是因为不是用同一个dynamicDatasource的Bean导致的，之后也想当然认为ActiveRecord引发的Connection timout是这个问题引起的，当时系统也没多少用户访问，所以问题没暴露的频繁。</p>
-<p>这次几回出现这个异常看来是另有隐情， 我想从根本上解决问题，首先就把日志级别调为debug模式，然后我结合着用户日志行为分析（这几次是每到傍晚6点过后就会出现问题),模拟用户界面操作，果然过一会连接数飙升，在HikariCP经过Cleanup后也没移除，既有连接一直处于active状态，说明连接是存在泄漏。接着我发现了为什么<code>leakDetectionThreshold</code>没生效？竟然是因为我没在代码里加上相应配置，只是在配置文件中加上而已(因为我们是用的自定义数据源，所以配置也需要在HikariCP的配置Bean中手动加上)。</p>
-<p>果然过了我配置的60s检测时间过后就抛出了一条<code>Apparent connection leak detected</code>的异常，异常定位到我们使用ActiveRecord的updateById那边，这边我也同时想到了 在我们写的类似代码里调用ActiveRecord的时候是不会被Spring管理的，因为我们操作的Entity是自己new出来然后去selectById的，不是经过注入的Service去调用的。 接着我下意识点开updateById的定义，发现了重要线索，里面竟然在update过后没有调用closeSession，我也看了insert方法是有close操作的。所以到这里我想应该是mybatisplus本身的bug,然后我一看我们项目引用的版本竟然是RC版，我瞬间感觉崩溃(当时竟然没去考虑这个版本问题)。为了证明这一点，我去github上的mybatisplus版本release记录中去看，发现他们在3.0.4中才把这个bug修复，加上了finally close的操作，而我们用的只是3.0.1-RC版本。</p>
-<p>最后我把pom中mybatisplus版本升到了3.0.4把这个坑给填上了。</p>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.jianshu.com/p/3f6f17402551" target="_blank" rel="external">聊聊hikari连接池的leakDetectionThreshold</a></li>
-<li><a href="https://github.com/baomidou/mybatis-plus/commit/1ddc7c6f3fa2def6f99529f6eb7b9bc6b9ba0874#diff-15832634917bd47cfba57e75b0d99690" target="_blank" rel="external">去除全局缓存sqlSession,增加Model,通用service层sqlSession释放.修改测试用例异常范围</a></li>
-<li><a href="https://gitee.com/baomidou/mybatis-plus/issues/IPCR7" target="_blank" rel="external">使用mybatis plus的activerecorde怎么开启事务呢</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1152,7 +1147,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">231</span>
+                    <span class="site-state-item-count">232</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1255,7 +1250,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">42</span>
+                      
+                    
+                    <span class="site-state-item-count">43</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1327,7 +1324,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

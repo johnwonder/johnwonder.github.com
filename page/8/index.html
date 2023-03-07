@@ -323,6 +323,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/20/spring-classpathxmlApplicationContext/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/20/spring-classpathxmlApplicationContext/" class="post-title-link" itemprop="url">Spring源码分析之ClassPathXmlApplicationContext</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-20 13:45:00 / 修改时间：14:49:46" itemprop="dateCreated datePublished" datetime="2020-03-20T13:45:00+08:00">2020-03-20</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们在分析Spring源码时，通常会自己创建一个独立的应用上下文，比如本文说的ClassPathXmlApplicationContext。我们在实际开发过程中一般框架内部会初始化一个应用程序上下文，比如springmvc中的XmlWebApplicationContext还有springboot中的AnnotationConfigServletWebServerApplicationContext。</p>
+<h2 id="ClassPathXmlApplicationContext-简介"><a href="#ClassPathXmlApplicationContext-简介" class="headerlink" title="ClassPathXmlApplicationContext 简介"></a>ClassPathXmlApplicationContext 简介</h2><p>官方文档是这么说的：</p>
+<p>Standalone XML application context, taking the context definition files from the class path,<br>interpreting plain paths as class path resource names that include the package path<br>(e.g. “mypackage/myresource.txt”). Useful for test harnesses(测试框架) as well as<br>for application contexts embedded within JARs.</p>
+<p>也就是说它可以创建独立应用程序上下文，获取上下文的定义文件等等。它的主要功能如下：</p>
+<ol>
+<li><p>定义了很多构造函数，只是参数不同，不同的参数具体会影响配置资源的定义和spring应用上下文的刷新(refresh函数)。</p>
+</li>
+<li><p>配置资源路径的不同，获取方式的不同。如果设置configLocations参数，那么会通过该类的父类也就是抽象类AbstractRefreshableConfigApplicationContext的resolvePath函数来解析。如果使用带有class参数的构造函数，那么会使用ClassPathResource来获取资源。</p>
+</li>
+</ol>
+<h3 id="AbstractEnvironment"><a href="#AbstractEnvironment" class="headerlink" title="AbstractEnvironment"></a>AbstractEnvironment</h3><p>resolvePath函数内部其实是调用AbstractEnvironment的resolveRequiredPlaceholders方法，方法内部会调用propertyResolver它的父类AbstractPropertyResolver的resolveRequiredPlaceholders方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ConfigurablePropertyResolver propertyResolver =</span><br><span class="line">			<span class="keyword">new</span> PropertySourcesPropertyResolver(<span class="keyword">this</span>.propertySources);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">resolveRequiredPlaceholders</span><span class="params">(String text)</span> <span class="keyword">throws</span> IllegalArgumentException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.propertyResolver.resolveRequiredPlaceholders(text);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>参考资料：</p>
+<p><a href="https://blog.csdn.net/qq_37960603/article/details/82709660" target="_blank" rel="external">Spring 中 ClassPathXmlApplicationContext 类的简单使用</a><br><a href="https://blog.csdn.net/zhangshk_/article/details/82704010" target="_blank" rel="external">彻底搞懂Class.getResource和ClassLoader.getResource的区别和底层原理</a><br><a href="https://baijiahao.baidu.com/s?id=1655259813981508769&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">SpringMVC加载流程</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/07/06/spring-import-annotation/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -972,168 +1128,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2019/06/18/spring-cloud-zuul/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/06/18/spring-cloud-zuul/" class="post-title-link" itemprop="url">Spring Cloud zuul知识点和问题整理</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-18 15:45:51" itemprop="dateCreated datePublished" datetime="2019-06-18T15:45:51+08:00">2019-06-18</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-25 21:01:27" itemprop="dateModified" datetime="2019-06-25T21:01:27+08:00">2019-06-25</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><a href="https://www.cnblogs.com/lexiaofei/p/7080257.html" target="_blank" rel="external">zuul入门（1）zuul 的概念和原理</a></li>
-<li><a href="https://www.liangzl.com/get-article-detail-20957.html" target="_blank" rel="external">白话SpringCloud | 第九章：路由网关(Zuul)的使用</a></li>
-<li><a href="https://www.cnblogs.com/hellxz/p/9282756.html" target="_blank" rel="external">Spring Cloud (十三) Zuul：静态路由、静态过滤器与动态路由的实现</a></li>
-<li><a href="https://blog.csdn.net/forezp/article/details/69934399" target="_blank" rel="external">史上最简单的SpringCloud教程 | 第四篇:断路器（Hystrix）</a></li>
-<li><a href="http://blog.didispace.com/spring-cloud-tips-ribbon-eager/" target="_blank" rel="external">Spring Cloud实战小贴士：Ribbon的饥饿加载(eager-load)模式</a></li>
-<li><a href="https://blog.csdn.net/lidew521/article/details/84661158" target="_blank" rel="external">SpringCloud工作笔记069—The Hystrix timeout of 60000ms for the command sc-auth is set lower than the</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1180,7 +1174,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">231</span>
+                    <span class="site-state-item-count">232</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1283,7 +1277,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">42</span>
+                      
+                    
+                    <span class="site-state-item-count">43</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1355,7 +1351,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

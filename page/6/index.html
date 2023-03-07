@@ -323,6 +323,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/06/spring-envrionment-profile/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="john's tech blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/04/06/spring-envrionment-profile/" class="post-title-link" itemprop="url">解开spring中Profile的神秘面纱之一</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-06 21:26:07 / 修改时间：21:48:57" itemprop="dateCreated datePublished" datetime="2020-04-06T21:26:07+08:00">2020-04-06</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天在看<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```Java</span><br><span class="line">/**</span><br><span class="line">	 * Name of property to set to specify active profiles: &#123;@value&#125;. Value may be comma</span><br><span class="line">	 * delimited.</span><br><span class="line">	 * &lt;p&gt;Note that certain shell environments such as Bash disallow the use of the period</span><br><span class="line">	 * character in variable names. Assuming that Spring&apos;s &#123;@link SystemEnvironmentPropertySource&#125;</span><br><span class="line">	 * is in use, this property may be specified as an environment variable as</span><br><span class="line">	 * &#123;@code SPRING_PROFILES_ACTIVE&#125;.</span><br><span class="line">	 * @see ConfigurableEnvironment#setActiveProfiles</span><br><span class="line">	 */</span><br><span class="line">	public static final String ACTIVE_PROFILES_PROPERTY_NAME = &quot;spring.profiles.active&quot;;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Name of property to set to specify profiles active by default: &#123;@value&#125;. Value may</span><br><span class="line">	 * be comma delimited.</span><br><span class="line">	 * &lt;p&gt;Note that certain shell environments such as Bash disallow the use of the period</span><br><span class="line">	 * character in variable names. Assuming that Spring&apos;s &#123;@link SystemEnvironmentPropertySource&#125;</span><br><span class="line">	 * is in use, this property may be specified as an environment variable as</span><br><span class="line">	 * &#123;@code SPRING_PROFILES_DEFAULT&#125;.</span><br><span class="line">	 * @see ConfigurableEnvironment#setDefaultProfiles</span><br><span class="line">	 */</span><br><span class="line">	public static final String DEFAULT_PROFILES_PROPERTY_NAME = &quot;spring.profiles.default&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>这里面的<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">那么这个类里就包含了对我们这些配置的读写操作。参考网上的说法：</span><br><span class="line"></span><br><span class="line">如果当spring.profiles.active属性被设置时，那么Spring会优先使用该属性对应值来激活Profile。当spring.profiles.active没有被设置时，那么Spring会根据spring.profiles.default属性的对应值来进行Profile进行激活。如果上面的两个属性都没有被设置，那么就不会有任务Profile被激活，只有定义在Profile之外的Bean才会被创建。</span><br><span class="line"></span><br><span class="line">我们先看对默认配置的读写操作：</span><br><span class="line"></span><br><span class="line">### setDefaultProfiles</span><br><span class="line"></span><br><span class="line">```Java</span><br><span class="line">    /**</span><br><span class="line">    * Specify the set of profiles to be made active by default if no other profiles</span><br><span class="line">    * are explicitly made active through &#123;@link #setActiveProfiles&#125;.</span><br><span class="line">    * &lt;p&gt;Calling this method removes overrides any reserved default profiles</span><br><span class="line">    * that may have been added during construction of the environment.</span><br><span class="line">    * @see #AbstractEnvironment()</span><br><span class="line">    * @see #getReservedDefaultProfiles()</span><br><span class="line">    */</span><br><span class="line">    //https://blog.csdn.net/jamet/article/details/77508182</span><br><span class="line">    @Override</span><br><span class="line">    public void setDefaultProfiles(String... profiles) &#123;</span><br><span class="line">    Assert.notNull(profiles, &quot;Profile array must not be null&quot;);</span><br><span class="line">      synchronized (this.defaultProfiles) &#123;</span><br><span class="line">        this.defaultProfiles.clear();</span><br><span class="line">        for (String profile : profiles) &#123;</span><br><span class="line">          validateProfile(profile);</span><br><span class="line">          this.defaultProfiles.add(profile);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">      /**</span><br><span class="line">  	 * Validate the given profile, called internally prior to adding to the set of</span><br><span class="line">  	 * active or default profiles.</span><br><span class="line">  	 * &lt;p&gt;Subclasses may override to impose further restrictions on profile syntax.</span><br><span class="line">  	 * @throws IllegalArgumentException if the profile is null, empty, whitespace-only or</span><br><span class="line">  	 * begins with the profile NOT operator (!).</span><br><span class="line">  	 * @see #acceptsProfiles</span><br><span class="line">  	 * @see #addActiveProfile</span><br><span class="line">  	 * @see #setDefaultProfiles</span><br><span class="line">  	 */</span><br><span class="line">  	protected void validateProfile(String profile) &#123;</span><br><span class="line">  		if (!StringUtils.hasText(profile)) &#123;</span><br><span class="line">  			throw new IllegalArgumentException(&quot;Invalid profile [&quot; + profile + &quot;]: must contain text&quot;);</span><br><span class="line">  		&#125;</span><br><span class="line">  		if (profile.charAt(0) == &apos;!&apos;) &#123;</span><br><span class="line">  			throw new IllegalArgumentException(&quot;Invalid profile [&quot; + profile + &quot;]: must not begin with ! operator&quot;);</span><br><span class="line">  		&#125;</span><br><span class="line">  	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中defaultProfiles是个Set集合，它会先验证传入的一个或多个profile字符串不能为空且不能以!开头，然后放入集合中。</p>
+<h3 id="doGetDefaultProfiles"><a href="#doGetDefaultProfiles" class="headerlink" title="doGetDefaultProfiles"></a>doGetDefaultProfiles</h3><p>获取默认的Profiles</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Return the set of default profiles explicitly set via</span><br><span class="line"> * &#123;<span class="doctag">@link</span> #setDefaultProfiles(String...)&#125; or if the current set of default profiles</span><br><span class="line"> * consists only of &#123;<span class="doctag">@linkplain</span> #getReservedDefaultProfiles() reserved default</span><br><span class="line"> * profiles&#125;, then check for the presence of the</span><br><span class="line"> * &#123;<span class="doctag">@value</span> #DEFAULT_PROFILES_PROPERTY_NAME&#125; property and assign its value (if any)</span><br><span class="line"> * to the set of default profiles.</span><br><span class="line"> * <span class="doctag">@see</span> #AbstractEnvironment()</span><br><span class="line"> * <span class="doctag">@see</span> #getDefaultProfiles()</span><br><span class="line"> * <span class="doctag">@see</span> #DEFAULT_PROFILES_PROPERTY_NAME</span><br><span class="line"> * <span class="doctag">@see</span> #getReservedDefaultProfiles()</span><br><span class="line"> */</span></span><br><span class="line"><span class="comment">//https://blog.csdn.net/jamet/article/details/77508182</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Set&lt;String&gt; <span class="title">doGetDefaultProfiles</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">synchronized</span> (<span class="keyword">this</span>.defaultProfiles) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.defaultProfiles.equals(getReservedDefaultProfiles())) &#123;</span><br><span class="line">      String profiles = getProperty(DEFAULT_PROFILES_PROPERTY_NAME);</span><br><span class="line">      <span class="keyword">if</span> (StringUtils.hasText(profiles)) &#123;</span><br><span class="line">        setDefaultProfiles(StringUtils.commaDelimitedListToStringArray(</span><br><span class="line">            StringUtils.trimAllWhitespace(profiles)));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.defaultProfiles;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果当前defaultProfiles为保留的Profiles(就是一个单例的包含default的集合)，那么就尝试从<code>propertyResolver</code><br>中获取,然后返回defaultProfiles集合。我们要注意到这边的Set集合实现其实是<code>LinkedHashSet</code>。<br>下回我们讲下ActiveProfiles的操作。</p>
+<p>参考资料:</p>
+<ol>
+<li><a href="https://www.jianshu.com/p/948c303b2253" target="_blank" rel="external">详解Spring中的Profile</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/04/05/springboot-tomcat-session/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -925,155 +1077,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://johnwonder.github.io/2020/03/29/angularjs-provide-value/"/>
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John"/>
-      <meta itemprop="description" content=""/>
-      <meta itemprop="image" content="/images/avatar.gif"/>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="john's tech blog"/>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/03/29/angularjs-provide-value/" class="post-title-link" itemprop="url">angularjs1.5.8源码解析之value服务</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-03-29 09:20:04 / 修改时间：09:58:35" itemprop="dateCreated datePublished" datetime="2020-03-29T09:20:04+08:00">2020-03-29</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>angularjs中模块的value()方法可以对模块数据模型进行扩展,使得不同controller可以进行通信,<br>充当全局变量的作用。使用示例：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> app=angular.module(<span class="string">'app'</span>,[]);</span><br><span class="line">app.value(<span class="string">'val'</span>,&#123;&#125;);</span><br><span class="line"></span><br><span class="line">app.controller(<span class="string">'con'</span>,[<span class="string">'$scope'</span>,<span class="string">'val'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,ssr</span>)</span>&#123;</span><br><span class="line">	$scope.msg=<span class="string">''</span>;</span><br><span class="line">	$scope.submit=<span class="function"><span class="keyword">function</span>(<span class="params">temp</span>)</span><br><span class="line">	</span>&#123;</span><br><span class="line">		<span class="comment">//向全局变量存入msg</span></span><br><span class="line">		ssr.save=temp;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;])</span><br><span class="line"></span><br><span class="line">app.controller(<span class="string">'con2'</span>,[<span class="string">'$scope'</span>,<span class="string">'val'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,ssr</span>)</span>&#123;</span><br><span class="line">		$scope.showMsg=<span class="string">''</span>;</span><br><span class="line">		$scope.download=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span><br><span class="line">		</span>&#123;</span><br><span class="line">       <span class="comment">//获取全局变量</span></span><br><span class="line">			$scope.showMsg=val.save;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">&#125;])</span><br></pre></td></tr></table></figure>
-<p>跟我们之前分析过的decorator一样，value方法内部实际上也是调用$provide.value函数，我们先看看<br>moduleInstance的value方法:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> moduleInstance = &#123;</span><br><span class="line">    <span class="attr">value</span>: invokeLater(<span class="string">'$provide'</span>, <span class="string">'value'</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeLater</span>(<span class="params">provider, method, insertMethod, queue</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (!queue) queue = invokeQueue;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        queue[insertMethod || <span class="string">'push'</span>]([provider, method, <span class="built_in">arguments</span>]);</span><br><span class="line">        <span class="keyword">return</span> moduleInstance;</span><br><span class="line">      &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>可以清楚的看到，调用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">loadModules的时候再调用$provide.value方法</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  //用个valueFn包装下，返回内部带有val的方法valueRef</span><br><span class="line">  function value(name, val) &#123; return factory(name, valueFn(val), false); &#125;</span><br><span class="line"></span><br><span class="line">  function valueFn(value) &#123;return function valueRef() &#123;return value;&#125;;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>factory方法我们之前分析过，内部会把<figure class="highlight plain"><figcaption><span>provider, undefined, serviceName);```的时候实际上就会调用```valueRef```函数把存放的对象取出来。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">我们有时候会调用```$rootElement```这个对象，那找遍了angular内部并没有显示的声明$rootElementProvider方法，那么它到底存储在哪呢？</span><br><span class="line">它就是在angular启动的时候调用```doBootstrap```的时候压入modules数组顶部然后调用的$provide.value把找到的ng-app元素用jqLite包装成jqLite对象，</span><br><span class="line">然后放入全局变量$rootElement中，代码如下：</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">  //传入的modules 比如html中定义的ng-app=&quot;myApp&quot;</span><br><span class="line">  //那么为[&quot;myApp&quot;]</span><br><span class="line">  //正常的话 这时 modules已经初始化</span><br><span class="line">  modules = modules || [];</span><br><span class="line">  //unshift() 方法可向数组的开头添加一个或更多元素，并返回新的长度。</span><br><span class="line">  modules.unshift([&apos;$provide&apos;, function($provide) &#123;</span><br><span class="line">   //调用$provide方法</span><br><span class="line">   //设置$rootElement</span><br><span class="line">   $provide.value(&apos;$rootElement&apos;, element);</span><br><span class="line">  &#125;]);</span><br></pre></td></tr></table></figure></p>
-<p>下篇我们分析下angular的启动函数doBootStrap或者jqLite对象中的扩展方法或者一些常用函数。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1120,7 +1123,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">231</span>
+                    <span class="site-state-item-count">232</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1223,7 +1226,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">42</span>
+                      
+                    
+                    <span class="site-state-item-count">43</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1295,7 +1300,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
